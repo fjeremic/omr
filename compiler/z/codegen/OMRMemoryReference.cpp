@@ -3180,6 +3180,8 @@ OMR::Z::MemoryReference::generateBinaryEncoding(uint8_t * cursor, TR::CodeGenera
       // Now we need to figure out how to use the manufactured disp
       if (largeDisp)
          {
+         TR::DebugCounter::incStaticDebugCounter(comp, TR::DebugCounter::debugCounterName(comp, "z/memref/huge-displacement-upgrade/(%s)", comp->signature()));
+
          if (instr->getKind()==TR::Instruction::IsRS ||
             instr->getKind()==TR::Instruction::IsRSY ||
             instr->getKind()==TR::Instruction::IsRSL ||

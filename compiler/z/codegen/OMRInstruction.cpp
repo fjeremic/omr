@@ -1871,7 +1871,11 @@ OMR::Z::Instruction::attemptOpAdjustmentForLongDisplacement()
    {
    TR::InstOpCode::Mnemonic n_op = self()->opCodeCanBeAdjustedTo(self()->getOpCodeValue());
    if (n_op != TR::InstOpCode::BAD)
+      {
       self()->setOpCodeValue(n_op);
+      
+      TR::DebugCounter::incStaticDebugCounter(self()->cg()->comp(), TR::DebugCounter::debugCounterName(self()->cg()->comp(), "z/memref/long-displacement-upgrade/(%s)", self()->cg()->comp()->signature()));
+      }
 
    auto instructionFormat = self()->getOpCode().getInstructionFormat(self()->getOpCodeValue());
 
