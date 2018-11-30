@@ -1022,11 +1022,9 @@ OMR::X86::CodeGenerator::getSupportsOpCodeForAutoSIMD(TR::ILOpCode opcode, TR::D
        * This code will be reenabled as part of Issue 2280
        */
       case TR::getvelem:
-#if 0
          if (TR::Compiler->target.is64Bit() && (dt == TR::Int32 || dt == TR::Int64 || dt == TR::Float || dt == TR::Double))
             return true;
          else
-#endif //closes the if 0
             return false;
       default:
          return false;
