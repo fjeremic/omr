@@ -744,12 +744,10 @@ OMR::Z::CodeGenerator::CodeGenerator()
 
    self()->addSupportedLiveRegisterKind(TR_GPR);
    self()->addSupportedLiveRegisterKind(TR_FPR);
-   self()->addSupportedLiveRegisterKind(TR_GPR64);
    self()->addSupportedLiveRegisterKind(TR_VRF);
 
    self()->setLiveRegisters(new (self()->trHeapMemory()) TR_LiveRegisters(comp), TR_GPR);
    self()->setLiveRegisters(new (self()->trHeapMemory()) TR_LiveRegisters(comp), TR_FPR);
-   self()->setLiveRegisters(new (self()->trHeapMemory()) TR_LiveRegisters(comp), TR_GPR64);
    self()->setLiveRegisters(new (self()->trHeapMemory()) TR_LiveRegisters(comp), TR_VRF);
 
    self()->setSupportsPrimitiveArrayCopy();
@@ -1210,9 +1208,6 @@ void OMR::Z::CodeGenerator::changeRegisterKind(TR::Register * temp, TR_RegisterK
 void
 OMR::Z::CodeGenerator::ensure64BitRegister(TR::Register *reg)
    {
-   if (self()->use64BitRegsOn32Bit() && TR::Compiler->target.is32Bit() &&
-       reg->getKind() == TR_GPR)
-      self()->changeRegisterKind(reg, TR_GPR64);
    }
 
 bool
@@ -3387,16 +3382,7 @@ OMR::Z::CodeGenerator::allocateConsecutiveRegisterPair()
 TR::RegisterPair *
 OMR::Z::CodeGenerator::allocateConsecutiveRegisterPair(TR::Register * lowRegister, TR::Register * highRegister)
    {
-   TR::RegisterPair * regPair = NULL;
-
-   if (lowRegister->getKind() == TR_GPR64 && highRegister->getKind() == TR_GPR64)
-      {
-      regPair = self()->allocate64bitRegisterPair(lowRegister, highRegister);
-      }
-   else
-      {
-      regPair = self()->allocateRegisterPair(lowRegister, highRegister);
-      }
+   TR::RegisterPair * regPair = self()->allocateRegisterPair(lowRegister, highRegister);
 
    // Set associations for providing hint to RA
    regPair->setAssociation(TR::RealRegister::EvenOddPair);
@@ -5638,8 +5624,6 @@ OMR::Z::CodeGenerator::signExtendedHighOrderBits( TR::Node * node, TR::Register 
 bool
 OMR::Z::CodeGenerator::signExtendedHighOrderBits( TR::Node * node, TR::Register * targetRegister, TR::Register * srcRegister, uint32_t numberOfBits)
    {
-   bool is64BitReg = (targetRegister->getKind() == TR_GPR64);
-
    switch (numberOfBits)
       {
       case 16:
@@ -5652,15 +5636,11 @@ OMR::Z::CodeGenerator::signExtendedHighOrderBits( TR::Node * node, TR::Register 
          break;
 
       case 48:
-         TR_ASSERT(TR::Compiler->target.is64Bit() || is64BitReg, "This shift can only work on 64 bits register!\n");
-
          // Can use Load Halfword to sign extended & load bits 48-63 from source to target register
          generateRRInstruction(self(), TR::InstOpCode::LGHR, node, targetRegister, srcRegister);
          break;
 
       case 56:
-         TR_ASSERT(TR::Compiler->target.is64Bit() || is64BitReg, "This shift can only work on 64 bits register!\n");
-
          // Can use Load Byte to sign extended & load bits 56-63 from source to target register
          generateRRInstruction(self(), TR::InstOpCode::LGBR, node, targetRegister, srcRegister);
          break;
@@ -5706,15 +5686,11 @@ OMR::Z::CodeGenerator::clearHighOrderBits( TR::Node * node, TR::Register * targe
          break;
 
       case 48:
-         TR_ASSERT(TR::Compiler->target.is64Bit() || srcRegister->getKind()==TR_GPR64, "This shift can only work on 64 bits register!\n");
-
          // Can use Load Logical Halfword to load bits 48-63 from source to target register.
          generateRRInstruction(self(), TR::InstOpCode::LLGHR, node, targetRegister, srcRegister);
          break;
 
       case 56:
-         TR_ASSERT(TR::Compiler->target.is64Bit() || srcRegister->getKind()==TR_GPR64, "This shift can only work on 64 bits register!\n");
-
          // Can use Load Logical Character to load bits 56-63 from source to target register.
          generateRRInstruction(self(), TR::InstOpCode::LLGCR, node, targetRegister, srcRegister);
          break;
