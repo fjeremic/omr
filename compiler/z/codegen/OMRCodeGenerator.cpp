@@ -3838,7 +3838,7 @@ OMR::Z::CodeGenerator::allocateClobberableRegister(TR::Register *srcRegister)
       }
    else //todo: what about FPR?
       {
-      targetRegister = self()->allocate64bitRegister();
+      targetRegister = self()->allocateRegister();
       }
 
    if (srcRegister->containsInternalPointer())
