@@ -607,12 +607,9 @@ OMR::Z::CodeGenerator::CodeGenerator()
       _callsForPreloadList = new (self()->trHeapMemory()) TR::list<TR_BranchPreloadCallData*>(getTypedAllocator<TR_BranchPreloadCallData*>(comp->allocator()));
       }
 
-   // Check if platform supports highword facility - both hardware and OS combination.
-   if (self()->getS390ProcessorInfo()->supportsArch(TR_S390ProcessorInfo::TR_z196) && !comp->getOption(TR_MimicInterpreterFrameShape))
+   if (TR::Compiler->target.cpu.getS390SupportsHPRDebug() && !comp->getOption(TR_DisableHighWordRA) && !comp->getOption(TR_MimicInterpreterFrameShape))
       {
-      // On 31-bit zlinux we need to check RAS support
-      if (!TR::Compiler->target.isLinux() || TR::Compiler->target.is64Bit() || TR::Compiler->target.cpu.getS390SupportsHPRDebug())
-         self()->setSupportsHighWordFacility(true);
+      self()->setSupportsHighWordFacility(true);
       }
 
    self()->setOnDemandLiteralPoolRun(true);
@@ -826,7 +823,6 @@ OMR::Z::CodeGenerator::getGlobalGPRFromHPR (TR_GlobalRegisterNumber n)
 
 bool OMR::Z::CodeGenerator::prepareForGRA()
    {
-   bool enableHighWordGRA = self()->supportsHighWordFacility() && !self()->comp()->getOption(TR_DisableHighWordRA);
    bool enableVectorGRA = self()->getSupportsVectorRegisters() && !self()->comp()->getOption(TR_DisableVectorRegGRA);
 
    if (!_globalRegisterTable)
@@ -880,7 +876,7 @@ bool OMR::Z::CodeGenerator::prepareForGRA()
       // Initialize _globalGPRsPreservedAcrossCalls and _globalFPRsPreservedAcrossCalls
       // We call init here because getNumberOfGlobal[FG]PRs() is initialized during the call to initialize() above.
       //
-      if (enableHighWordGRA)
+      if (self()->supportsHighWordFacility())
          {
          _globalGPRsPreservedAcrossCalls.init(NUM_S390_GPR + NUM_S390_FPR + NUM_S390_HPR, self()->trMemory());
          _globalFPRsPreservedAcrossCalls.init(NUM_S390_GPR + NUM_S390_FPR + NUM_S390_HPR, self()->trMemory());
@@ -921,7 +917,7 @@ bool OMR::Z::CodeGenerator::prepareForGRA()
             TR_ASSERT(reg != -1, "Register pressure simulator doesn't support gaps in the global register table; reg %d must be removed", grn);
             if (self()->getFirstGlobalGPR() <= grn && grn <= self()->getLastGlobalGPR())
                {
-               if (enableHighWordGRA && self()->getFirstGlobalHPR() <= grn)
+               if (self()->supportsHighWordFacility() && self()->getFirstGlobalHPR() <= grn)
                   {
                   // this is a bit tricky, we consider Global HPRs part of Global GPRs
                   _globalRegisterBitVectors[ TR_hprSpill ].set(grn);
@@ -944,7 +940,7 @@ bool OMR::Z::CodeGenerator::prepareForGRA()
                _globalRegisterBitVectors[ TR_volatileSpill ].set(grn);
             if (linkage->getIntegerArgument(reg) || linkage->getFloatArgument(reg))
                {
-               if ((enableHighWordGRA) && (grn >= self()->getFirstGlobalGPR() && grn <= self()->getLastGlobalGPR()))
+               if ((self()->supportsHighWordFacility()) && (grn >= self()->getFirstGlobalGPR() && grn <= self()->getLastGlobalGPR()))
                   {
                   TR_GlobalRegisterNumber grnHPR = self()->getFirstGlobalHPR() - self()->getFirstGlobalGPR() + grn;
                   _globalRegisterBitVectors[ TR_linkageSpill  ].set(grnHPR);
@@ -2621,7 +2617,7 @@ OMR::Z::CodeGenerator::doRegisterAssignment(TR_RegisterKinds kindsToAssign)
 
       self()->tracePreRAInstruction(instructionCursor);
 
-      if (self()->supportsHighWordFacility() && !self()->comp()->getOption(TR_DisableHighWordRA) && !self()->comp()->getOption(TR_DisableHPRUpgrade))
+      if (self()->supportsHighWordFacility() && !self()->comp()->getOption(TR_DisableHPRUpgrade))
          {
          TR::Instruction * newInst = self()->upgradeToHPRInstruction(instructionCursor);
          if (newInst)
@@ -2629,7 +2625,7 @@ OMR::Z::CodeGenerator::doRegisterAssignment(TR_RegisterKinds kindsToAssign)
             instructionCursor = newInst;
             }
          }
-      if (self()->supportsHighWordFacility() && self()->comp()->getOption(TR_DisableHighWordRA))
+      if (self()->supportsHighWordFacility())
          self()->setAvailableHPRSpillMask(0xffff0000);
 
       prevInstruction = instructionCursor->getPrev();
@@ -4987,7 +4983,7 @@ OMR::Z::CodeGenerator::buildRegisterMapForInstruction(TR_GCStackMap * map)
    TR::GCStackAtlas * atlas = self()->getStackAtlas();
 
 
-   if (self()->supportsHighWordFacility() && !self()->comp()->getOption(TR_DisableHighWordRA))
+   if (self()->supportsHighWordFacility())
       {
       for (int32_t i = TR::RealRegister::FirstHPR; i <= TR::RealRegister::LastHPR; i++)
          {
