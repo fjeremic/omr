@@ -2852,7 +2852,7 @@ TR_RegisterCandidates::assign(TR::Block ** cfgBlocks, int32_t numberOfBlocks, in
       TR::CodeGenerator * cg = comp()->cg();
       cg->removeUnavailableRegisters(rc, blocks, availableRegisters);
 
-      if (comp()->cg()->supportsHighWordFacility() && !comp()->getOption(TR_DisableRegisterPressureSimulation))
+      if (comp()->cg()->supportsHighWordFacility() && !comp()->getOption(TR_DisableRegisterPressureSimulation) && !comp()->getOption(TR_Enable64BitRegsOn32Bit))
          {
          if (!rc->getType().isInt8() && !rc->getType().isInt16() && !rc->getType().isInt32())
             {
@@ -3769,7 +3769,7 @@ TR_RegisterCandidates::computeAvailableRegisters(TR_RegisterCandidate *rc, int32
             while (bvi.hasMoreElements())
                {
                int32_t reg = bvi.getNextElement();
-               if (reg != parmReg)
+               if (reg != parmReg && (reg >= comp()->cg()->getFirstGlobalGPR() && reg <= comp()->cg()->getLastGlobalGPR()))
                   _liveOnEntryConflicts[reg].set(entryBlockNumber);
                }
             }

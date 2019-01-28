@@ -9802,6 +9802,7 @@ OMR::Z::TreeEvaluator::passThroughEvaluator(TR::Node * node, TR::CodeGenerator *
          }
       if (cg->machine()->getHPRFromGlobalRegisterNumber(node->getGlobalRegisterNumber()) != NULL)
          {
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/gra");
          copyReg->setAssignToHPR(true);
          }
       switch (kind)
@@ -12006,6 +12007,7 @@ OMR::Z::TreeEvaluator::iRegLoadEvaluator(TR::Node * node, TR::CodeGenerator * cg
       globalReg->setAssignToHPR(false);
       if (cg->machine()->getHPRFromGlobalRegisterNumber(globalRegNum) != NULL)
          {
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/gra");
          globalReg->setAssignToHPR(true);
          }
       }
@@ -12101,6 +12103,7 @@ OMR::Z::TreeEvaluator::iRegStoreEvaluator(TR::Node * node, TR::CodeGenerator * c
          generateRILInstruction(cg, TR::InstOpCode::IIHF, child, globalReg, static_cast<int32_t>((getIntegralValue(child))));
          child->setRegister(globalReg);
          }
+      TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/gra");
       globalReg->setAssignToHPR(true);
       }
    else if (useHPR && child->getOpCode().isLoadVar() && child->getType().isInt32())
@@ -12114,6 +12117,7 @@ OMR::Z::TreeEvaluator::iRegStoreEvaluator(TR::Node * node, TR::CodeGenerator * c
          generateRXInstruction(cg, TR::InstOpCode::LFH, child, globalReg, generateS390MemoryReference(child,cg));
          child->setRegister(globalReg);
          }
+      TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/gra");
       globalReg->setAssignToHPR(true);
       }
    else
@@ -12141,7 +12145,7 @@ OMR::Z::TreeEvaluator::iRegStoreEvaluator(TR::Node * node, TR::CodeGenerator * c
                               ((child->getOpCodeValue() == TR::su2i) && (child->getFirstChild()->getOpCodeValue() == TR::cloadi)) ||
                               ((child->getOpCodeValue() == TR::l2i) && (child->getFirstChild()->getOpCodeValue() == TR::i2l));
 
-   if (cg->supportsHighWordFacility())
+   if (cg->supportsHighWordFacility() && !comp->getOption(TR_Enable64BitRegsOn32Bit))
       {
       child_sign_extended = false;
       }

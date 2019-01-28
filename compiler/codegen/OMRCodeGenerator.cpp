@@ -1110,7 +1110,7 @@ OMR::CodeGenerator::getNumberOfGlobalRegisters()
 #ifdef TR_HOST_S390
 uint16_t OMR::CodeGenerator::getNumberOfGlobalGPRs()
    {
-   if (self()->supportsHighWordFacility())
+   if (self()->supportsHighWordFacility() && !self()->comp()->getOption(TR_Enable64BitRegsOn32Bit))
       {
       return _firstGlobalHPR;
       }

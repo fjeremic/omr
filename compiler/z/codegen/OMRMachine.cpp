@@ -148,10 +148,12 @@ OMR::Z::Machine::registerCopy(TR::CodeGenerator* cg,
                TR::InstOpCode::LR;
 
             cursor = generateRRInstruction(cg, mnemonic, node, targetReg, sourceReg, precedingInstruction);
+            TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/GPR");
             }
          else
             {
             cursor = generateExtendedHighWordInstruction(node, cg, TR::InstOpCode::LLHFR, targetReg, sourceReg, 0, precedingInstruction);
+            TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/HPR");
             }
          break;
          }
@@ -164,14 +166,16 @@ OMR::Z::Machine::registerCopy(TR::CodeGenerator* cg,
             TR::InstOpCode::LHHR;
 
          cursor = generateExtendedHighWordInstruction(node, cg, mnemonic, targetReg, sourceReg, 0, precedingInstruction);
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/HPR");
          break;
          }
       case TR_FPR:
          cursor = generateRRInstruction(cg, TR::InstOpCode::LDR, node, targetReg, sourceReg, precedingInstruction);
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/FPR");
          break;
       case TR_VRF:
          cursor = generateVRRaInstruction(cg, TR::InstOpCode::VLR, node, targetReg, sourceReg, precedingInstruction);
-         
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/VRF");         
          break;
       }
 
@@ -229,6 +233,8 @@ OMR::Z::Machine::registerExchange(TR::CodeGenerator* cg,
          }
       else
          {
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/FPR", 3);
+
          TR::Instruction * currentInstruction = precedingInstruction;
          TR_BackingStore * location;
          location = cg->allocateSpill(8, false, NULL);
@@ -265,6 +271,8 @@ OMR::Z::Machine::registerExchange(TR::CodeGenerator* cg,
          }
       else
          {
+         TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/VRF", 3);
+
          TR_BackingStore * location;
          location = cg->allocateSpill(16, false, NULL);
          TR::MemoryReference * tempMR = generateS390MemoryReference(currentNode, location->getSymbolReference(), cg);
@@ -358,6 +366,15 @@ OMR::Z::Machine::registerExchange(TR::CodeGenerator* cg,
          cg->traceRAInstruction(currentInstruction);
 
          cg->freeSpill(location, TR::Compiler->om.sizeofReferenceAddress(), 0);
+
+         if (srcRegIsHPR || tgtRegIsHPR)
+            {
+            TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/HPR");
+            }
+         else
+            {
+            TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/GPR");
+            }
          }
       else
          {
@@ -367,6 +384,14 @@ OMR::Z::Machine::registerExchange(TR::CodeGenerator* cg,
 
          if (enableHighWordRA)
             {
+            if (srcRegIsHPR || tgtRegIsHPR)
+               {
+               TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/HPR");
+               }
+            else
+               {
+               TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/GPR");
+               }
             if (srcRegIsHPR != middleRegIsHPR)
                {
                currentInstruction =
@@ -418,6 +443,14 @@ OMR::Z::Machine::registerExchange(TR::CodeGenerator* cg,
             }
          else
             {
+            if (srcRegIsHPR || tgtRegIsHPR)
+               {
+               TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/HPR");
+               }
+            else
+               {
+               TR::DebugCounter::incStaticDebugCounter(cg->comp(), "hpr/shuffle/GPR");
+               }
             currentInstruction =
                generateRRInstruction(cg, opLoadReg, currentNode, sourceReg, middleReg, precedingInstruction);
             cg->traceRAInstruction(currentInstruction);
@@ -3648,6 +3681,8 @@ OMR::Z::Machine::spillRegister(TR::Instruction * currentInstruction, TR::Registe
             }
          self()->cg()->traceRegisterAssignment("\nHW RA: HW spill: %R(%R) into %R\n", virtReg, best, freeHighWordReg);
 
+         TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/HPR/register");
+
          // spill to HW
          if (alreadySpilledToHPR)
             {
@@ -3749,17 +3784,27 @@ OMR::Z::Machine::spillRegister(TR::Instruction * currentInstruction, TR::Registe
          {
          if (best->isHighWordRegister())
            {
+            TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/HPR/memory");
            opCode = TR::InstOpCode::LFH;
            }
          else if (best->isLowWordRegister() && best->getHighWordRegister()->getAssignedRegister() != virtReg)
            {
+            TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/GPR");
            opCode = TR::InstOpCode::L;
            }
+         else
+            {
+            TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/GPR");
+            }
          //TR_ASSERTC( TR::Compiler->target.is64Bit(),comp, "\nallocateSpill has incorrect spill slot size");
          //this assume kicks in for SLLG, MGHI etc on 31bit
          if (debugObj)
            self()->cg()->traceRegisterAssignment(" HW RA: spilling %R:%R", virtReg, best);
          }
+       else
+          {
+          TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/GPR");
+          }
        break;
      case TR_FPR:
        if (!comp->getOption(TR_DisableOOL) &&
@@ -3773,6 +3818,7 @@ OMR::Z::Machine::spillRegister(TR::Instruction * currentInstruction, TR::Registe
          }
        else
          {
+          TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/FPR");
          location = self()->cg()->allocateSpill(8, false, NULL, true); // TODO: Use 4 for single-precision values
          if (debugObj)
            self()->cg()->traceRegisterAssignment("\nSpilling FPR %s to (%p)\n", debugObj->getName(virtReg),location);
@@ -3780,6 +3826,7 @@ OMR::Z::Machine::spillRegister(TR::Instruction * currentInstruction, TR::Registe
        opCode = TR::InstOpCode::LD;
        break;
      case TR_VRF:
+        TR::DebugCounter::incStaticDebugCounter(comp, "hpr/spill/VRF");
        // Spill of size 16 has never been done before. The call hierarchy seems to support it but this should be watched closely.
        location = self()->cg()->allocateSpill(16, false, NULL, true);
        if (debugObj)
@@ -5723,7 +5770,7 @@ OMR::Z::Machine::initializeGlobalRegisterTable()
    // [2] https://github.com/eclipse/omr/blob/9d1d8cf3048781bc6d87e6a1079167586cc5aa4d/compiler/codegen/CodeGenRA.cpp#L2889-L2903
    // [3] https://github.com/eclipse/omr/blob/9d1d8cf3048781bc6d87e6a1079167586cc5aa4d/compiler/z/codegen/ControlFlowEvaluator.cpp#L1098-L1102
 
-   if (self()->cg()->supportsHighWordFacility() && !comp->getOption(TR_DisableRegisterPressureSimulation))
+   if (self()->cg()->supportsHighWordFacility() && !comp->getOption(TR_DisableRegisterPressureSimulation) && !comp->getOption(TR_Enable64BitRegsOn32Bit))
       {
       // HPR
       // this is a bit tricky, we consider Global HPRs part of Global GPRs
