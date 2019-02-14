@@ -100,7 +100,7 @@ namespace TR
 #define TR_ASSERT_FATAL(condition, format, ...) \
          do { (condition) ? (void)0 : TR::fatal_assertion(__FILE__, __LINE__, #condition, format, ##__VA_ARGS__); } while(0)
 
-#if defined(DEBUG) || defined(PROD_WITH_ASSUMES)
+#if defined(DEBUG) || defined(PROD_WITH_ASSUMES) || defined(ENABLE_NON_FATAL_ASSERTS)
 
    #define TR_ASSERT(condition, format, ...) \
          do { (condition) ? (void)0 : TR::assertion(__FILE__, __LINE__, #condition, format, ##__VA_ARGS__); } while(0)
