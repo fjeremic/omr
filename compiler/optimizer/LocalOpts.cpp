@@ -6993,11 +6993,11 @@ int32_t TR_InvariantArgumentPreexistence::perform()
                parmInfo.setSymbol(p);
                TR_OpaqueClassBlock *clazz = arg->getClass();
                TR_OpaqueClassBlock *clazzFromMethod = fe()->getClassFromSignature(sig, len, feMethod);
-               TR_ASSERT(!clazz ||
-                         !clazzFromMethod ||
-                         clazz == clazzFromMethod ||
-                         fe()->isInstanceOf(clazz, clazzFromMethod, true, true, true) == TR_yes,
-                         "Type from argInfo should be more specific clazz %p clazzFromMethod %p", clazz, clazzFromMethod);
+               // TR_ASSERT(!clazz ||
+               //          !clazzFromMethod ||
+               //          clazz == clazzFromMethod ||
+               //          fe()->isInstanceOf(clazz, clazzFromMethod, true, true, true) == TR_yes,
+               //          "Type from argInfo should be more specific clazz %p clazzFromMethod %p", clazz, clazzFromMethod);
 
                if (classIsFixed)
                   {

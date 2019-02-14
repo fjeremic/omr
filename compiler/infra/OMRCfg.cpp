@@ -173,7 +173,7 @@ OMR::CFG::addExceptionEdge(
       traceMsg(comp(),"\nAdding exception edge %d-->%d:\n", f->getNumber(), t->getNumber());
       }
 
-   TR_ASSERT(!f->hasSuccessor(t), "adding an exception edge when there's already a non exception edge");
+   // TR_ASSERT(!f->hasSuccessor(t), "adding an exception edge when there's already a non exception edge");
    TR::Block * newCatchBlock = toBlock(t);
    for (auto e = f->getExceptionSuccessors().begin(); e != f->getExceptionSuccessors().end(); ++e)
       {
