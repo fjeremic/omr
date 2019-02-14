@@ -658,7 +658,7 @@ class X86ImmInstruction : public TR::Instruction
 
    virtual void addMetaDataForCodeAddress(uint8_t *cursor);
 
-#if defined(DEBUG) || defined(PROD_WITH_ASSUMES)
+#if defined(DEBUG) || defined(PROD_WITH_ASSUMES) || defined(ENABLE_NON_FATAL_ASSERTS)
    // The following safe virtual downcast method is used under debug only
    // for assertion checking.
    //

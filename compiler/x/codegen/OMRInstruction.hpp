@@ -122,7 +122,7 @@ class OMR_EXTENSIBLE Instruction : public OMR::Instruction
 
    virtual TR::X86LabelInstruction *getX86LabelInstruction() { return NULL; }
 
-#if defined(DEBUG) || defined(PROD_WITH_ASSUMES)
+#if defined(DEBUG) || defined(PROD_WITH_ASSUMES) || defined(ENABLE_NON_FATAL_ASSERTS)
    // The following safe virtual downcast method is used under debug only
    // for assertion checking.
    //
