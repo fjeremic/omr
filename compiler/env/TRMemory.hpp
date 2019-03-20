@@ -795,6 +795,9 @@ TR_HeapMemory::allocate(size_t size, TR_MemoryBase::ObjectType ot)
    void operator delete[](void * p, TR::Region &region) { region.deallocate(p); } \
    static TrackedPersistentAllocator getPersistentAllocator() { return TrackedPersistentAllocator(); }
 
+// TODO: This is actually handled by eclipse/omr#3596 which is in a WIP state. We should verify what is going on with
+// that PR and likely remove this line if it gets merged. For now leaving it in here as we cannot compile without it.
+#undef TR_ALLOC
 #define TR_ALLOC(a) \
    typedef TR_TypedPersistentAllocatorBase TrackedPersistentAllocator; \
    TR_ALLOC_IMPL(a) \
