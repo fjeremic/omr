@@ -227,10 +227,10 @@ JavaBlobGenerator::stringTableOffset(BlobHeader *blobHeader, J9HashTable *string
 	DDR_RC rc = DDR_RC_OK;
 	StringTableEntry exemplar;
 
-	*offset = UINT32_MAX;
+	*offset = U_32_MAX;
 
 	exemplar.cString = cString;
-	exemplar.offset = UINT32_MAX;
+	exemplar.offset = U_32_MAX;
 
 	/* Add will return an existing entry if one matches, NULL on allocation failure, or the new node */
 	StringTableEntry *entry = (StringTableEntry *)hashTableAdd(stringTable, &exemplar);
@@ -239,11 +239,11 @@ JavaBlobGenerator::stringTableOffset(BlobHeader *blobHeader, J9HashTable *string
 		/* the string was new, but memory allocation failed */
 		ERRMSG("Unable to allocate memory for string table entry: %s", cString);
 		rc = DDR_RC_ERROR;
-	} else if (UINT32_MAX != entry->offset) {
+	} else if (U_32_MAX != entry->offset) {
 		/* an existing entry was found */
 		*offset = entry->offset;
 	} else {
-		/* If the offset is UINT32_MAX, this indicates that a new entry was added */
+		/* If the offset is U_32_MAX, this indicates that a new entry was added */
 		entry->offset = blobHeader->stringDataSize;
 
 		/* For new string entries, allocate memory to hold the string */
@@ -678,8 +678,8 @@ JavaBlobGenerator::addBlobField(Field *field, uint32_t *fieldCount, size_t baseO
 		const string adjustedPrefix = prefix + field->_name + ".";
 		rc = fieldType->acceptVisitor(BlobBuildVisitor(this, adjustedOffset, adjustedPrefix));
 	} else {
-		uint32_t nameOffset = UINT32_MAX;
-		uint32_t typeOffset = UINT32_MAX;
+		uint32_t nameOffset = U_32_MAX;
+		uint32_t typeOffset = U_32_MAX;
 		string typeName;
 
 		rc = formatFieldType(field, &typeName);
@@ -715,7 +715,7 @@ JavaBlobGenerator::addBlobField(Field *field, uint32_t *fieldCount, size_t baseO
 DDR_RC
 JavaBlobGenerator::addBlobConst(const string &name, long long value, uint32_t *constCount)
 {
-	uint32_t offset = UINT32_MAX;
+	uint32_t offset = U_32_MAX;
 	DDR_RC rc = stringTableOffset(&_buildInfo.header, _buildInfo.stringHash, name.c_str(), &offset);
 
 	if (DDR_RC_OK == rc) {
@@ -745,8 +745,8 @@ JavaBlobGenerator::addBlobStruct(const string &name, const string &superName, ui
 		return DDR_RC_OK;
 	}
 
-	uint32_t nameOffset = UINT32_MAX;
-	uint32_t superOffset = UINT32_MAX;
+	uint32_t nameOffset = U_32_MAX;
+	uint32_t superOffset = U_32_MAX;
 	DDR_RC rc = stringTableOffset(&_buildInfo.header, _buildInfo.stringHash, name.c_str(), &nameOffset);
 
 	if ((DDR_RC_OK == rc) && !superName.empty()) {
