@@ -280,10 +280,7 @@ enum TR_DispatchType
    TR_NumDispatchTypes       = 3
    };
 
-
-   FrameType getFrameType() { return _frameType; }
-   void setFrameType(enum FrameType type) { _frameType = type; }
-   virtual bool getIsLeafRoutine();
+   Linkage(TR::CodeGenerator *);
 
    Linkage(TR::CodeGenerator *, TR_S390LinkageConventions, TR_LinkageConventions);
 
