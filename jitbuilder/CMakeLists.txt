@@ -22,7 +22,7 @@
 
 include(OmrCompilerSupport)
 
-find_package(PythonInterp 3.1 REQUIRED)
+find_package(PythonInterp 2.7 REQUIRED)
 
 # JitBuilder Files
 set(JITBUILDER_OBJECTS
