@@ -566,7 +566,7 @@ enum TR_DispatchType
       return NULL;
       }
 
-   virtual TR::RealRegister::RegNum getEnvironmentPointerRegister() { return TR::RealRegister::NoReg; }
+   virtual TR::RealRegister::RegNum getENVPointerRegister() { return TR::RealRegister::NoReg; }
    virtual TR::RealRegister::RegNum getCAAPointerRegister() { return TR::RealRegister::NoReg; }
    virtual TR::RealRegister::RegNum getParentDSAPointerRegister() { return TR::RealRegister::NoReg; }
 
