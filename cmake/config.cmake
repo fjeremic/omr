@@ -85,7 +85,7 @@ set(OMR_TOOLS_IMPORTFILE "IMPORTFILE-NOTFOUND" CACHE FILEPATH
 	"Point it to the ImportTools.cmake file of a native build"
 )
 
-set(OMR_TOOLS_USE_NATIVE_ENCODING OFF CACHE BOOL
+set(OMR_TOOLS_USE_NATIVE_ENCODING ON CACHE BOOL
 	"Indicates if omr tooling should use system native character encoding (currently only defined for z/OS)"
 )
 
