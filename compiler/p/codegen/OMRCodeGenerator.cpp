@@ -123,6 +123,22 @@ OMR::Power::CodeGenerator::CodeGenerator() :
      conversionBuffer(NULL),
      _outOfLineCodeSectionList(getTypedAllocator<TR_PPCOutOfLineCodeSection*>(self()->comp()->allocator()))
    {
+   // Validate all instruction metadata
+   for (auto i = 0; i < TR::InstOpCode::NumOpCodes; ++i)
+      {
+      // Validate binary encoding
+      TR_ASSERT_FATAL(TR::InstOpCode::binaryEncodings[i] == TR::InstOpCode::metadata[i].opcode, "Error: Mismatched opcode for mnemonic %s - binaryEncodings[%d] = %d, metadata[%d] = %d", 
+         ppcOpCodeToNameMap[i][1], i, TR::InstOpCode::binaryEncodings[i], i, TR::InstOpCode::metadata[i].opcode);
+
+      // Validate properties
+      TR_ASSERT_FATAL(TR::InstOpCode::properties[i] == TR::InstOpCode::metadata[i].properties, "Error: Mismatched properties for mnemonic %s - properties[%d] = %d, metadata[%d] = %d", 
+         ppcOpCodeToNameMap[i][1], i, TR::InstOpCode::properties[i], i, TR::InstOpCode::metadata[i].properties);
+
+      // Validate names for printing debug
+      TR_ASSERT_FATAL(strcmp(ppcOpCodeToNameMap[i][1], TR::InstOpCode::metadata[i].name) == 0, "Error: Mismatched name for mnemonic %s - ppcOpCodeToNameMap[%d][1] = %s, metadata[%d] = %s", 
+         ppcOpCodeToNameMap[i][1], i, ppcOpCodeToNameMap[i][1], i, TR::InstOpCode::metadata[i].name);
+      }
+
    // Initialize Linkage for Code Generator
    self()->initializeLinkage();
 
