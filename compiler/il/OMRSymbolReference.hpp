@@ -293,11 +293,6 @@ public:
 
    bool isOSRInductionHelper();
 
-   TR::SymbolReference *getOriginalUnimprovedSymRef(TR::Compilation *comp)
-      {
-      return comp->getSymRefTab()->getOriginalUnimprovedSymRef(self());
-      }
-
 protected:
 
    /**
