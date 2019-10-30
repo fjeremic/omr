@@ -8692,3 +8692,4 @@ TR_LoopVersioner::optDetailString() const throw()
    {
    return "O^O LOOP VERSIONER: ";
    }
+
