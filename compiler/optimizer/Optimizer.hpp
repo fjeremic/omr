@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_OPTIMIZER_INCL
@@ -27,22 +28,27 @@
 #include <stddef.h>
 #include <stdint.h>
 
-namespace TR { class Compilation; }
-namespace TR { class ResolvedMethodSymbol; }
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class ResolvedMethodSymbol;
+}
 struct OptimizationStrategy;
 
-namespace TR
-{
+namespace TR {
 
-class Optimizer : public OMR::OptimizerConnector
-   {
-   public:
+class Optimizer : public OMR::OptimizerConnector {
+ public:
+  Optimizer(TR::Compilation* comp,
+            TR::ResolvedMethodSymbol* methodSymbol,
+            bool isIlGen,
+            const OptimizationStrategy* strategy = NULL,
+            uint16_t VNType = 0)
+      : OMR::OptimizerConnector(comp, methodSymbol, isIlGen, strategy, VNType) {
+  }
+};
 
-   Optimizer(TR::Compilation *comp, TR::ResolvedMethodSymbol *methodSymbol, bool isIlGen,
-         const OptimizationStrategy *strategy = NULL, uint16_t VNType = 0) :
-      OMR::OptimizerConnector(comp, methodSymbol, isIlGen, strategy, VNType) {}
-   };
-
-}
+}  // namespace TR
 
 #endif

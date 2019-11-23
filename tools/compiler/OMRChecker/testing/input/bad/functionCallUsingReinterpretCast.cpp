@@ -17,9 +17,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 /**
  * Description: Calls an extensible class member function by down
@@ -28,21 +28,23 @@
 
 #define OMR_EXTENSIBLE __attribute__((annotate("OMR_Extensible")))
 
-namespace OMR
-{
+namespace OMR {
 
-class OMR_EXTENSIBLE ExtClass
-   {
-   public:
-   void functionCalled();   // function to be called
-   void callingFunction();  // function that will make call
-                            //    with reinterpret down cast
-   };
+class OMR_EXTENSIBLE ExtClass {
+ public:
+  void functionCalled();   // function to be called
+  void callingFunction();  // function that will make call
+                           //    with reinterpret down cast
+};
 
-} // namespace OMR
+}  // namespace OMR
 
-namespace TR { class OMR_EXTENSIBLE ExtClass : public OMR::ExtClass {}; }
+namespace TR {
+class OMR_EXTENSIBLE ExtClass : public OMR::ExtClass {};
+}  // namespace TR
 
 void OMR::ExtClass::functionCalled() {}
 
-void OMR::ExtClass::callingFunction() { reinterpret_cast<TR::ExtClass *>(this)->functionCalled(); }
+void OMR::ExtClass::callingFunction() {
+  reinterpret_cast<TR::ExtClass*>(this)->functionCalled();
+}

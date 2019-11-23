@@ -16,36 +16,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_ILGENERATOR_METHOD_DETAILS_INCL
 #define TR_ILGENERATOR_METHOD_DETAILS_INCL
 
-#include "infra/Annotations.hpp"
 #include "ilgen/TestIlGeneratorMethodDetails.hpp"
+#include "infra/Annotations.hpp"
 
 class TR_ResolvedMethod;
-namespace TR { class ResolvedMethod; }
-
-namespace TR
-{
-
-class OMR_EXTENSIBLE IlGeneratorMethodDetails : public TestCompiler::IlGeneratorMethodDetailsConnector
-   {
-
-public:
-
-   IlGeneratorMethodDetails() :
-      TestCompiler::IlGeneratorMethodDetailsConnector() {}
-
-   IlGeneratorMethodDetails(TR::ResolvedMethod *method) :
-      TestCompiler::IlGeneratorMethodDetailsConnector(method) {}
-
-   IlGeneratorMethodDetails(TR_ResolvedMethod *method) :
-      TestCompiler::IlGeneratorMethodDetailsConnector(method) {}
-
-   };
+namespace TR {
+class ResolvedMethod;
 }
+
+namespace TR {
+
+class OMR_EXTENSIBLE IlGeneratorMethodDetails
+    : public TestCompiler::IlGeneratorMethodDetailsConnector {
+ public:
+  IlGeneratorMethodDetails()
+      : TestCompiler::IlGeneratorMethodDetailsConnector() {}
+
+  IlGeneratorMethodDetails(TR::ResolvedMethod* method)
+      : TestCompiler::IlGeneratorMethodDetailsConnector(method) {}
+
+  IlGeneratorMethodDetails(TR_ResolvedMethod* method)
+      : TestCompiler::IlGeneratorMethodDetailsConnector(method) {}
+};
+}  // namespace TR
 
 #endif

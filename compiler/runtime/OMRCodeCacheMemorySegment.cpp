@@ -16,29 +16,23 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "runtime/CodeCacheMemorySegment.hpp"
 #include "runtime/CodeCacheManager.hpp"
+#include "runtime/CodeCacheMemorySegment.hpp"
 
-TR::CodeCacheMemorySegment*
-OMR::CodeCacheMemorySegment::self()
-   {
-   return static_cast<TR::CodeCacheMemorySegment*>(this);
-   }
+TR::CodeCacheMemorySegment* OMR::CodeCacheMemorySegment::self() {
+  return static_cast<TR::CodeCacheMemorySegment*>(this);
+}
 
+void OMR::CodeCacheMemorySegment::adjustAlloc(int64_t adjust) {
+  self()->setSegmentAlloc(self()->segmentAlloc() + adjust);
+}
 
-void
-OMR::CodeCacheMemorySegment::adjustAlloc(int64_t adjust)
-   {
-   self()->setSegmentAlloc(self()->segmentAlloc() + adjust);
-   }
-
-
-void
-OMR::CodeCacheMemorySegment::free(TR::CodeCacheManager *manager)
-   {
-   manager->freeMemory(_base);
-   new (static_cast<TR::CodeCacheMemorySegment *>(this)) TR::CodeCacheMemorySegment();
-   }
+void OMR::CodeCacheMemorySegment::free(TR::CodeCacheManager* manager) {
+  manager->freeMemory(_base);
+  new (static_cast<TR::CodeCacheMemorySegment*>(this))
+      TR::CodeCacheMemorySegment();
+}

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -34,31 +35,41 @@
 #include "Base.hpp"
 
 /**
- * Stats structure intended to be used by the Concurrent GMP triggers (firstly, for verbose) in VLHGC.
+ * Stats structure intended to be used by the Concurrent GMP triggers (firstly,
+ * for verbose) in VLHGC.
  * @ingroup GC_Stats
  */
-class MM_ConcurrentGMPStats : public MM_Base
-{
-	/* Data Members */
-private:
-protected:
-public:
-	uintptr_t _gmpCycleID;	/**< The "_id" of the corresponding GMP cycle (since concurrent operations are always logically part of a GMP cycle) */
-	uintptr_t _scanTargetInBytes;	/**< The number of bytes a given concurrent task was expected to scan before terminating */
-	uintptr_t _bytesScanned;	/**< The number of bytes a given concurrent task did scan before it terminated (can be lower than _scanTargetInBytes if the termination was asynchronously requested) */
-	bool _terminationWasRequested;	/**< True if a given concurrent task's termination was asynchronously requested (although it might have terminated due to meeting its target, anyway - there is a timing window which allows both of these reasons to be true) */
+class MM_ConcurrentGMPStats : public MM_Base {
+  /* Data Members */
+ private:
+ protected:
+ public:
+  uintptr_t _gmpCycleID; /**< The "_id" of the corresponding GMP cycle (since
+                            concurrent operations are always logically part of a
+                            GMP cycle) */
+  uintptr_t _scanTargetInBytes; /**< The number of bytes a given concurrent task
+                                   was expected to scan before terminating */
+  uintptr_t _bytesScanned; /**< The number of bytes a given concurrent task did
+                              scan before it terminated (can be lower than
+                              _scanTargetInBytes if the termination was
+                              asynchronously requested) */
+  bool _terminationWasRequested; /**< True if a given concurrent task's
+                                    termination was asynchronously requested
+                                    (although it might have terminated due to
+                                    meeting its target, anyway - there is a
+                                    timing window which allows both of these
+                                    reasons to be true) */
 
-	/* Member Functions */
-private:
-protected:
-public:
-	MM_ConcurrentGMPStats()
-		: MM_Base()
-		, _gmpCycleID(0)
-		, _scanTargetInBytes(0)
-		, _bytesScanned(0)
-		, _terminationWasRequested(false)
-	{}
-}; 
+  /* Member Functions */
+ private:
+ protected:
+ public:
+  MM_ConcurrentGMPStats()
+      : MM_Base(),
+        _gmpCycleID(0),
+        _scanTargetInBytes(0),
+        _bytesScanned(0),
+        _terminationWasRequested(false) {}
+};
 
 #endif /* CONCURRENTGMPSTATS_HPP_ */

@@ -16,31 +16,32 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrTest.h"
 #include "threadExtendedTestHelpers.hpp"
 
-ThreadExtendedTestEnvironment *omrTestEnv;
+ThreadExtendedTestEnvironment* omrTestEnv;
 
-extern "C" int
-omr_main_entry(int argc, char **argv, char **envp)
-{
-	::testing::InitGoogleTest(&argc, argv);
-	OMREventListener::setDefaultTestListener();
-	int result = 0;
-	OMRPortLibrary portLibrary;
-	thrExtendedTestSetUp(&portLibrary);
+extern "C" int omr_main_entry(int argc, char** argv, char** envp) {
+  ::testing::InitGoogleTest(&argc, argv);
+  OMREventListener::setDefaultTestListener();
+  int result = 0;
+  OMRPortLibrary portLibrary;
+  thrExtendedTestSetUp(&portLibrary);
 
-	/*
-	 * check for fatal failures in sub-routine thrExtendedTestSetUp().
-	 */
-	if (!testing::Test::HasFatalFailure()) {
-		omrTestEnv = (ThreadExtendedTestEnvironment *)testing::AddGlobalTestEnvironment(new ThreadExtendedTestEnvironment(argc, argv, &portLibrary));
-		result = RUN_ALL_TESTS();
-	}
+  /*
+   * check for fatal failures in sub-routine thrExtendedTestSetUp().
+   */
+  if (!testing::Test::HasFatalFailure()) {
+    omrTestEnv =
+        (ThreadExtendedTestEnvironment*)testing::AddGlobalTestEnvironment(
+            new ThreadExtendedTestEnvironment(argc, argv, &portLibrary));
+    result = RUN_ALL_TESTS();
+  }
 
-	thrExtendedTestTearDown(&portLibrary);
-	return result;
+  thrExtendedTestTearDown(&portLibrary);
+  return result;
 }

@@ -17,211 +17,159 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-
+#include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <errno.h>
 
 #include "StructArray.hpp"
 
+void printStructElems(uint8_t type, int32_t value) {
+#define PRINTSTRUCTELEMS_LINE LINETOSTR(__LINE__)
+  printf("StructType { type = %#x, value = %d }\n", type, value);
+}
 
-void printStructElems(uint8_t type, int32_t value)
-   {
-   #define PRINTSTRUCTELEMS_LINE LINETOSTR(__LINE__)
-   printf("StructType { type = %#x, value = %d }\n", type, value);
-   }
+void printElemOffsets(int32_t typeOffset, int32_t valueOffset) {
+#define PRINTELEMOFFSETS_LINE LINETOSTR(__LINE__)
+  printf("StructType: OffsetOf(type) = %d, OffsetOf(value) = %d\n", typeOffset,
+         valueOffset);
+}
 
-void printElemOffsets(int32_t typeOffset, int32_t valueOffset)
-   {
-   #define PRINTELEMOFFSETS_LINE LINETOSTR(__LINE__)
-   printf("StructType: OffsetOf(type) = %d, OffsetOf(value) = %d\n", typeOffset, valueOffset);
-   }
+CreateStructArrayMethod::CreateStructArrayMethod(
+    OMR::JitBuilder::TypeDictionary* d)
+    : OMR::JitBuilder::MethodBuilder(d) {
+  DefineLine(LINETOSTR(__LINE__));
+  DefineFile(__FILE__);
 
+  StructType = d->LookupStruct("Struct");
+  pStructType = d->PointerTo(StructType);
 
-CreateStructArrayMethod::CreateStructArrayMethod(OMR::JitBuilder::TypeDictionary *d)
-   : OMR::JitBuilder::MethodBuilder(d)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
+  DefineName("testCreateStructArray");
+  DefineParameter("size", Int32);
+  DefineReturnType(pStructType);
 
-   StructType = d->LookupStruct("Struct");
-   pStructType = d->PointerTo(StructType);
+  DefineFunction("malloc", "", "", (void*)&malloc, Address, 1, Int32);
+}
 
-   DefineName("testCreateStructArray");
-   DefineParameter("size", Int32);
-   DefineReturnType(pStructType);
+bool CreateStructArrayMethod::buildIL() {
+  Store("myArray", Call("malloc", 1,
+                        Mul(Load("size"), ConstInt32(StructType->getSize()))));
 
-   DefineFunction("malloc",
-                  "",
-                  "",
-                  (void*)&malloc,
-                  Address,
-                  1,
-                  Int32);
-   }
+  OMR::JitBuilder::IlBuilder* fillArray = NULL;
+  ForLoopUp("i", &fillArray, ConstInt32(0), Load("size"), ConstInt32(1));
 
-bool
-CreateStructArrayMethod::buildIL()
-   {
-   Store("myArray",
-      Call("malloc",1,
-         Mul(
-            Load("size"),
-            ConstInt32(StructType->getSize()))));
+  fillArray->Store("element",
+                   fillArray->IndexAt(pStructType, fillArray->Load("myArray"),
+                                      fillArray->Load("i")));
 
-   OMR::JitBuilder::IlBuilder* fillArray = NULL;
-   ForLoopUp("i", &fillArray,
-      ConstInt32(0),
-      Load("size"),
-      ConstInt32(1));
+  fillArray->StoreIndirect("Struct", "type", fillArray->Load("element"),
+                           fillArray->ConvertTo(Int8, fillArray->Load("i")));
 
-   fillArray->Store("element",
-   fillArray->   IndexAt(pStructType,
-   fillArray->      Load("myArray"),
-   fillArray->      Load("i")));
+  fillArray->StoreIndirect("Struct", "value", fillArray->Load("element"),
+                           fillArray->Load("i"));
 
-   fillArray->StoreIndirect("Struct", "type",
-   fillArray->   Load("element"),
-   fillArray->   ConvertTo(Int8,
-   fillArray->      Load("i")));
+  Return(Load("myArray"));
 
-   fillArray->StoreIndirect("Struct", "value",
-   fillArray->   Load("element"),
-   fillArray->   Load("i"));
+  return true;
+}
 
-   Return(
-      Load("myArray"));
+ReadStructArrayMethod::ReadStructArrayMethod(OMR::JitBuilder::TypeDictionary* d)
+    : OMR::JitBuilder::MethodBuilder(d) {
+  DefineLine(LINETOSTR(__LINE__));
+  DefineFile(__FILE__);
 
-   return true;
-   }
+  StructType = d->LookupStruct("Struct");
+  pStructType = d->PointerTo(StructType);
 
-ReadStructArrayMethod::ReadStructArrayMethod(OMR::JitBuilder::TypeDictionary *d)
-   : OMR::JitBuilder::MethodBuilder(d)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
+  DefineName("testReadStructArray");
+  DefineParameter("myArray", pStructType);
+  DefineParameter("size", Int32);
+  DefineReturnType(NoType);
 
-   StructType = d->LookupStruct("Struct");
-   pStructType = d->PointerTo(StructType);
+  DefineFunction("printStructElems", __FILE__, PRINTSTRUCTELEMS_LINE,
+                 (void*)&printStructElems, NoType, 2, Int8, Int32);
 
-   DefineName("testReadStructArray");
-   DefineParameter("myArray", pStructType);
-   DefineParameter("size", Int32);
-   DefineReturnType(NoType);
+  DefineFunction("printElemOffsets", __FILE__, PRINTELEMOFFSETS_LINE,
+                 (void*)&printElemOffsets, NoType, 2, Int32, Int32);
+}
 
-   DefineFunction("printStructElems",
-                  __FILE__,
-                  PRINTSTRUCTELEMS_LINE,
-                  (void *)&printStructElems,
-                  NoType,
-                  2,
-                  Int8,
-                  Int32);
+bool ReadStructArrayMethod::buildIL() {
+  Call("printElemOffsets", 2,
+       ConstInt32(typeDictionary()->OffsetOf("Struct", "type")),
+       ConstInt32(typeDictionary()->OffsetOf("Struct", "value")));
 
-   DefineFunction("printElemOffsets",
-                  __FILE__,
-                  PRINTELEMOFFSETS_LINE,
-                  (void *)&printElemOffsets,
-                  NoType,
-                  2,
-                  Int32,
-                  Int32);
-   }
+  OMR::JitBuilder::IlBuilder* readArray = NULL;
+  ForLoopUp("i", &readArray, ConstInt32(0), Load("size"), ConstInt32(1));
 
-bool
-ReadStructArrayMethod::buildIL()
-   {
-   Call("printElemOffsets", 2,
-      ConstInt32(typeDictionary()->OffsetOf("Struct", "type")),
-      ConstInt32(typeDictionary()->OffsetOf("Struct", "value")));
+  readArray->Store("element",
+                   readArray->IndexAt(pStructType, readArray->Load("myArray"),
+                                      readArray->Load("i")));
 
-   OMR::JitBuilder::IlBuilder* readArray = NULL;
-   ForLoopUp("i", &readArray,
-      ConstInt32(0),
-      Load("size"),
-      ConstInt32(1));
+  readArray->Call(
+      "printStructElems", 2,
+      readArray->LoadIndirect("Struct", "type", readArray->Load("element")),
+      readArray->LoadIndirect("Struct", "value", readArray->Load("element")));
 
-   readArray->Store("element",
-   readArray->   IndexAt(pStructType,
-   readArray->      Load("myArray"),
-   readArray->      Load("i")));
+  Return();
 
-   readArray->Call("printStructElems", 2,
-   readArray->   LoadIndirect("Struct", "type",
-   readArray->      Load("element")),
-   readArray->   LoadIndirect("Struct", "value",
-   readArray->      Load("element")));
+  return true;
+}
 
-   Return();
+class StructArrayTypeDictionary : public OMR::JitBuilder::TypeDictionary {
+ public:
+  StructArrayTypeDictionary() : OMR::JitBuilder::TypeDictionary() {
+    DefineStruct("Struct");
+    DefineField("Struct", "type", Int8);
+    DefineField("Struct", "value", Int32);
+    CloseStruct("Struct");
+  }
+};
 
-   return true;
-   }
+int main(int argc, char* argv[]) {
+  printf("Step 1: initialize JIT\n");
+  bool initialized = initializeJit();
+  if (!initialized) {
+    fprintf(stderr, "FAIL: could not initialize JIT\n");
+    exit(-1);
+  }
 
+  printf("Step 2: define type dictionary\n");
+  StructArrayTypeDictionary methodTypes;
 
-class StructArrayTypeDictionary : public OMR::JitBuilder::TypeDictionary
-   {
-   public:
-   StructArrayTypeDictionary() :
-      OMR::JitBuilder::TypeDictionary()
-      {
-      DefineStruct("Struct");
-      DefineField("Struct", "type", Int8);
-      DefineField("Struct", "value", Int32);
-      CloseStruct("Struct");
-      }
-   };
+  printf("Step 3: compile createMethod builder\n");
+  CreateStructArrayMethod createMethod(&methodTypes);
+  void* createEntry;
+  int32_t rc = compileMethodBuilder(&createMethod, &createEntry);
+  if (rc != 0) {
+    fprintf(stderr, "FAIL: compilation error %d\n", rc);
+    exit(-2);
+  }
 
+  printf("Step 4: compile readMethod builder\n");
+  ReadStructArrayMethod readMethod(&methodTypes);
+  void* readEntry;
+  rc = compileMethodBuilder(&readMethod, &readEntry);
+  if (rc != 0) {
+    fprintf(stderr, "FAIL: compilation error %d\n", rc);
+    exit(-2);
+  }
 
-int
-main(int argc, char *argv[])
-   {
-   printf("Step 1: initialize JIT\n");
-   bool initialized = initializeJit();
-   if (!initialized)
-      {
-      fprintf(stderr, "FAIL: could not initialize JIT\n");
-      exit(-1);
-      }
+  printf("Step 5: invoke compiled code for createMethod\n");
+  auto arraySize = 16;
+  CreateStructArrayFunctionType* create =
+      (CreateStructArrayFunctionType*)createEntry;
+  Struct* array = create(arraySize);
 
-   printf("Step 2: define type dictionary\n");
-   StructArrayTypeDictionary methodTypes;
+  printf("Step 6: invoke compiled code for readMethod and verify results\n");
+  ReadStructArrayFunctionType* read = (ReadStructArrayFunctionType*)readEntry;
+  read(array, arraySize);
 
-   printf("Step 3: compile createMethod builder\n");
-   CreateStructArrayMethod createMethod(&methodTypes);
-   void *createEntry;
-   int32_t rc = compileMethodBuilder(&createMethod, &createEntry);
-   if (rc != 0)
-      {
-      fprintf(stderr,"FAIL: compilation error %d\n", rc);
-      exit(-2);
-      }
+  printf("Step 7: shutdown JIT\n");
+  shutdownJit();
 
-   printf("Step 4: compile readMethod builder\n");
-   ReadStructArrayMethod readMethod(&methodTypes);
-   void *readEntry;
-   rc = compileMethodBuilder(&readMethod, &readEntry);
-   if (rc != 0)
-      {
-      fprintf(stderr,"FAIL: compilation error %d\n", rc);
-      exit(-2);
-      }
-
-   printf("Step 5: invoke compiled code for createMethod\n");
-   auto arraySize = 16;
-   CreateStructArrayFunctionType *create = (CreateStructArrayFunctionType *) createEntry;
-   Struct* array = create(arraySize);
-
-   printf("Step 6: invoke compiled code for readMethod and verify results\n");
-   ReadStructArrayFunctionType *read = (ReadStructArrayFunctionType *) readEntry;
-   read(array, arraySize);
-
-   printf ("Step 7: shutdown JIT\n");
-   shutdownJit();
-
-   printf("PASS\n");
-   }
-
+  printf("PASS\n");
+}

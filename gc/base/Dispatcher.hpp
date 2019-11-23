@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -41,54 +42,61 @@ class MM_Task;
  * @todo Provide define documentation
  * @ingroup GC_Base_Core
  */
-#define J9MODRON_HANDLE_NEXT_WORK_UNIT(envPtr) envPtr->_currentTask->handleNextWorkUnit(envPtr)
+#define J9MODRON_HANDLE_NEXT_WORK_UNIT(envPtr) \
+  envPtr->_currentTask->handleNextWorkUnit(envPtr)
 
 /**
  * @todo Provide class documentation
  * @ingroup GC_Base_Core
  */
-class MM_Dispatcher : public MM_BaseVirtual
-{
-private:
-	MM_Task *_task;
-	
-protected:
-	bool initialize(MM_EnvironmentBase *env);
-	
-	virtual void prepareThreadsForTask(MM_EnvironmentBase *env, MM_Task *task, uintptr_t threadCount);
-	virtual void acceptTask(MM_EnvironmentBase *env);
-	virtual void completeTask(MM_EnvironmentBase *env);
-	virtual void cleanupAfterTask(MM_EnvironmentBase *env);
+class MM_Dispatcher : public MM_BaseVirtual {
+ private:
+  MM_Task* _task;
 
-	virtual uintptr_t recomputeActiveThreadCountForTask(MM_EnvironmentBase *env, MM_Task *task, uintptr_t newThreadCount);
+ protected:
+  bool initialize(MM_EnvironmentBase* env);
 
-public:
-	static MM_Dispatcher *newInstance(MM_EnvironmentBase *env);
-	virtual void kill(MM_EnvironmentBase *env);
-	virtual bool startUpThreads();
-	virtual void shutDownThreads();
+  virtual void prepareThreadsForTask(MM_EnvironmentBase* env,
+                                     MM_Task* task,
+                                     uintptr_t threadCount);
+  virtual void acceptTask(MM_EnvironmentBase* env);
+  virtual void completeTask(MM_EnvironmentBase* env);
+  virtual void cleanupAfterTask(MM_EnvironmentBase* env);
 
-	virtual bool condYieldFromGCWrapper(MM_EnvironmentBase *env, uint64_t timeSlack = 0) { return false; }
+  virtual uintptr_t recomputeActiveThreadCountForTask(MM_EnvironmentBase* env,
+                                                      MM_Task* task,
+                                                      uintptr_t newThreadCount);
 
-	MMINLINE virtual uintptr_t threadCount() { return 1; }
-	MMINLINE virtual uintptr_t threadCountMaximum() { return 1; }
-	MMINLINE virtual uintptr_t activeThreadCount() { return 1; }
-	MMINLINE virtual void setThreadCount(uintptr_t threadCount) {}
+ public:
+  static MM_Dispatcher* newInstance(MM_EnvironmentBase* env);
+  virtual void kill(MM_EnvironmentBase* env);
+  virtual bool startUpThreads();
+  virtual void shutDownThreads();
 
-	void run(MM_EnvironmentBase *env, MM_Task *task, uintptr_t threadCount = UDATA_MAX);
-	virtual void reinitAfterFork(MM_EnvironmentBase *env, uintptr_t newThreadCount) {}
+  virtual bool condYieldFromGCWrapper(MM_EnvironmentBase* env,
+                                      uint64_t timeSlack = 0) {
+    return false;
+  }
 
-	/**
-	 * Create a Dispatcher object.
-	 */
-	MM_Dispatcher(MM_EnvironmentBase *env) :
-		MM_BaseVirtual(),
-		_task(NULL)
-	{
-		_typeId = __FUNCTION__;
-	};
-	
-	friend class MM_Task;
+  MMINLINE virtual uintptr_t threadCount() { return 1; }
+  MMINLINE virtual uintptr_t threadCountMaximum() { return 1; }
+  MMINLINE virtual uintptr_t activeThreadCount() { return 1; }
+  MMINLINE virtual void setThreadCount(uintptr_t threadCount) {}
+
+  void run(MM_EnvironmentBase* env,
+           MM_Task* task,
+           uintptr_t threadCount = UDATA_MAX);
+  virtual void reinitAfterFork(MM_EnvironmentBase* env,
+                               uintptr_t newThreadCount) {}
+
+  /**
+   * Create a Dispatcher object.
+   */
+  MM_Dispatcher(MM_EnvironmentBase* env) : MM_BaseVirtual(), _task(NULL) {
+    _typeId = __FUNCTION__;
+  };
+
+  friend class MM_Task;
 };
 
 #endif /* DISPATCHER_HPP_ */

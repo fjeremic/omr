@@ -65,8 +65,7 @@ class GTEST_API_ TestPartResult {
         file_name_(a_file_name == NULL ? "" : a_file_name),
         line_number_(a_line_number),
         summary_(ExtractSummary(a_message)),
-        message_(a_message) {
-  }
+        message_(a_message) {}
 
   // Gets the outcome of the test part.
   Type type() const { return type_; }
@@ -165,6 +164,7 @@ class GTEST_API_ HasNewFatalFailureHelper
   virtual ~HasNewFatalFailureHelper();
   virtual void ReportTestPartResult(const TestPartResult& result);
   bool has_new_fatal_failure() const { return has_new_fatal_failure_; }
+
  private:
   bool has_new_fatal_failure_;
   TestPartResultReporterInterface* original_reporter_;

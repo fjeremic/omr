@@ -16,30 +16,27 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "env/PersistentAllocator.hpp"
 
-OMR::PersistentAllocator::PersistentAllocator(const TR::PersistentAllocatorKit &allocatorKit) :
-   _rawAllocator(allocatorKit.rawAllocator)
-   {
-   }
+OMR::PersistentAllocator::PersistentAllocator(
+    const TR::PersistentAllocatorKit& allocatorKit)
+    : _rawAllocator(allocatorKit.rawAllocator) {}
 
-void *
-OMR::PersistentAllocator::allocate(size_t size, const std::nothrow_t tag, void * hint) throw()
-   {
-   return _rawAllocator.allocate(size, tag, hint);
-   }
+void* OMR::PersistentAllocator::allocate(size_t size,
+                                         const std::nothrow_t tag,
+                                         void* hint) throw() {
+  return _rawAllocator.allocate(size, tag, hint);
+}
 
-void *
-OMR::PersistentAllocator::allocate(size_t size, void * hint)
-   {
-   return _rawAllocator.allocate(size, hint);
-   }
+void* OMR::PersistentAllocator::allocate(size_t size, void* hint) {
+  return _rawAllocator.allocate(size, hint);
+}
 
-void
-OMR::PersistentAllocator::deallocate(void * p, const size_t sizeHint) throw()
-   {
-   _rawAllocator.deallocate(p, sizeHint);
-   }
+void OMR::PersistentAllocator::deallocate(void* p,
+                                          const size_t sizeHint) throw() {
+  _rawAllocator.deallocate(p, sizeHint);
+}

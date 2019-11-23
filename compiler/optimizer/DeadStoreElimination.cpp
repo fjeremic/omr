@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "optimizer/DeadStoreElimination.hpp"
@@ -24,14 +25,12 @@
 
 #define OPT_DETAILS "O^O DEAD STORE ELIMINATION: "
 
-TR_DeadStoreElimination::TR_DeadStoreElimination(TR::OptimizationManager *manager)
-   : TR_IsolatedStoreElimination(manager)
-   {
-   _mustUseUseDefInfo = true;
-   }
+TR_DeadStoreElimination::TR_DeadStoreElimination(
+    TR::OptimizationManager* manager)
+    : TR_IsolatedStoreElimination(manager) {
+  _mustUseUseDefInfo = true;
+}
 
-const char *
-TR_DeadStoreElimination::optDetailString() const throw()
-   {
-   return "O^O DEAD STORE ELIMINATION: ";
-   }
+const char* TR_DeadStoreElimination::optDetailString() const throw() {
+  return "O^O DEAD STORE ELIMINATION: ";
+}

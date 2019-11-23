@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_LINKAGE_INLINES_INCL
@@ -26,57 +27,45 @@
 #include "codegen/Linkage.hpp"
 #include "env/TRMemory.hpp"
 
-namespace TR { class Compilation; }
-namespace TR { class Machine; }
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class Machine;
+}
 class TR_FrontEnd;
 class TR_Memory;
 
-TR::Linkage *
-OMR::Linkage::self()
-   {
-   return static_cast<TR::Linkage*>(this);
-   }
+TR::Linkage* OMR::Linkage::self() {
+  return static_cast<TR::Linkage*>(this);
+}
 
-TR::CodeGenerator *
-OMR::Linkage::cg()
-   {
-   return _cg;
-   }
+TR::CodeGenerator* OMR::Linkage::cg() {
+  return _cg;
+}
 
-TR::Machine *
-OMR::Linkage::machine()
-   {
-   return _cg->machine();
-   }
+TR::Machine* OMR::Linkage::machine() {
+  return _cg->machine();
+}
 
-TR::Compilation *
-OMR::Linkage::comp()
-   {
-   return _cg->comp();
-   }
+TR::Compilation* OMR::Linkage::comp() {
+  return _cg->comp();
+}
 
-TR_FrontEnd *
-OMR::Linkage::fe()
-   {
-   return _cg->fe();
-   }
+TR_FrontEnd* OMR::Linkage::fe() {
+  return _cg->fe();
+}
 
-TR_Memory *
-OMR::Linkage::trMemory()
-   {
-   return _cg->trMemory();
-   }
+TR_Memory* OMR::Linkage::trMemory() {
+  return _cg->trMemory();
+}
 
-TR_HeapMemory
-OMR::Linkage::trHeapMemory()
-   {
-   return self()->trMemory();
-   }
+TR_HeapMemory OMR::Linkage::trHeapMemory() {
+  return self()->trMemory();
+}
 
-TR_StackMemory
-OMR::Linkage::trStackMemory()
-   {
-   return self()->trMemory();
-   }
+TR_StackMemory OMR::Linkage::trStackMemory() {
+  return self()->trMemory();
+}
 
 #endif

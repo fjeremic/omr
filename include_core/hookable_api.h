@@ -17,20 +17,21 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef hookable_api_h
 #define hookable_api_h
 
 /**
-* @file hookable_api.h
-* @brief Public API for the HOOKABLE module.
-*
-* This file contains public function prototypes and
-* type definitions for the HOOKABLE module.
-*
-*/
+ * @file hookable_api.h
+ * @brief Public API for the HOOKABLE module.
+ *
+ * This file contains public function prototypes and
+ * type definitions for the HOOKABLE module.
+ *
+ */
 
 #include "omrcomp.h"
 
@@ -43,18 +44,18 @@ extern "C" {
 struct OMRPortLibrary;
 struct J9HookInterface;
 /**
-* @brief
-* @param hookInterface
-* @param portLib
-* @param interfaceSize
-* @return intptr_t
-*/
-intptr_t
-J9HookInitializeInterface(struct J9HookInterface **hookInterface, OMRPortLibrary *portLib, size_t interfaceSize);
+ * @brief
+ * @param hookInterface
+ * @param portLib
+ * @param interfaceSize
+ * @return intptr_t
+ */
+intptr_t J9HookInitializeInterface(struct J9HookInterface** hookInterface,
+                                   OMRPortLibrary* portLib,
+                                   size_t interfaceSize);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* hookable_api_h */
-

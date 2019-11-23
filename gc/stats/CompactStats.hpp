@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -28,9 +29,9 @@
 #if !defined(COMPACTSTATS_HPP_)
 #define COMPACTSTATS_HPP_
 
+#include "modronbase.h"
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "modronbase.h"
 
 #if defined(OMR_GC_MODRON_STANDARD)
 
@@ -41,42 +42,36 @@
  * Storage for stats relevant to the compaction phase of a collection.
  * @ingroup GC_Stats
  */
-class MM_CompactStats : public MM_Base 
-{
-public:
-	CompactReason _compactReason;
-	CompactPreventedReason _compactPreventedReason;
+class MM_CompactStats : public MM_Base {
+ public:
+  CompactReason _compactReason;
+  CompactPreventedReason _compactPreventedReason;
 
-	uintptr_t _movedObjects;
-	uintptr_t _movedBytes;
-	uintptr_t _fixupObjects;
-	uint64_t _setupStartTime;
-	uint64_t _setupEndTime;
-	uint64_t _moveStartTime;
-	uint64_t _moveEndTime;
-	uint64_t _fixupStartTime;
-	uint64_t _fixupEndTime;
-	uint64_t _rootFixupStartTime;
-	uint64_t _rootFixupEndTime;
-		
-	/* Remember gc count on last compaction of heap */
-	uintptr_t _lastHeapCompaction;
+  uintptr_t _movedObjects;
+  uintptr_t _movedBytes;
+  uintptr_t _fixupObjects;
+  uint64_t _setupStartTime;
+  uint64_t _setupEndTime;
+  uint64_t _moveStartTime;
+  uint64_t _moveEndTime;
+  uint64_t _fixupStartTime;
+  uint64_t _fixupEndTime;
+  uint64_t _rootFixupStartTime;
+  uint64_t _rootFixupEndTime;
 
-	uint64_t _startTime;	/**< Compact start time */
-	uint64_t _endTime;		/**< Compact end time */
+  /* Remember gc count on last compaction of heap */
+  uintptr_t _lastHeapCompaction;
 
-	void clear();
-	void merge(MM_CompactStats *statsToMerge);
+  uint64_t _startTime; /**< Compact start time */
+  uint64_t _endTime;   /**< Compact end time */
 
-	MM_CompactStats() :
-		MM_Base()
-		,_lastHeapCompaction(0)
-		,_startTime(0)
-		,_endTime(0)
-	{
-		clear();
-	};
+  void clear();
+  void merge(MM_CompactStats* statsToMerge);
 
+  MM_CompactStats()
+      : MM_Base(), _lastHeapCompaction(0), _startTime(0), _endTime(0) {
+    clear();
+  };
 };
 
 #endif /* OMR_GC_MODRON_COMPACTION */

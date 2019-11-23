@@ -17,59 +17,54 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMRVMTHREADLISTITERATOR_HPP_)
 #define OMRVMTHREADLISTITERATOR_HPP_
 
-#include "omrcfg.h"
-#include "omr.h"
 #include "modronbase.h"
+#include "omr.h"
+#include "omrcfg.h"
 
 #include "OMR_VMThread.hpp"
 
 /**
  * Iterate over a list of VM threads.
  */
-class GC_OMRVMThreadListIterator
-{
-	OMR_VMThread *_initialOMRVMThread;
-	OMR_VMThread *_omrVMThread;
+class GC_OMRVMThreadListIterator {
+  OMR_VMThread* _initialOMRVMThread;
+  OMR_VMThread* _omrVMThread;
 
-public:
-	/**
-	 * Create an iterator which will start with the main thread in the given javaVM
-	 */
-	GC_OMRVMThreadListIterator(OMR_VM *vm) :
-		_initialOMRVMThread(vm->_vmThreadList),
-		_omrVMThread(vm->_vmThreadList)
-	{}
+ public:
+  /**
+   * Create an iterator which will start with the main thread in the given
+   * javaVM
+   */
+  GC_OMRVMThreadListIterator(OMR_VM* vm)
+      : _initialOMRVMThread(vm->_vmThreadList),
+        _omrVMThread(vm->_vmThreadList) {}
 
-	/**
-	 * Create an iterator which will start with the given thread
-	 */
-	GC_OMRVMThreadListIterator(OMR_VMThread *thread) :
-		_initialOMRVMThread(thread),
-		_omrVMThread(thread)
-	{}
+  /**
+   * Create an iterator which will start with the given thread
+   */
+  GC_OMRVMThreadListIterator(OMR_VMThread* thread)
+      : _initialOMRVMThread(thread), _omrVMThread(thread) {}
 
-	/**
-	 * Restart the iterator back to the initial thread.
-	 */
-	MMINLINE void reset() {
-		_omrVMThread = _initialOMRVMThread;
-	}
+  /**
+   * Restart the iterator back to the initial thread.
+   */
+  MMINLINE void reset() { _omrVMThread = _initialOMRVMThread; }
 
-	/**
-	 * Restart the iterator back to a specific initial thread.
-	 */
-	MMINLINE void reset(OMR_VMThread *resetThread) {
-		_omrVMThread = _initialOMRVMThread = resetThread;
-	}
+  /**
+   * Restart the iterator back to a specific initial thread.
+   */
+  MMINLINE void reset(OMR_VMThread* resetThread) {
+    _omrVMThread = _initialOMRVMThread = resetThread;
+  }
 
-	OMR_VMThread *nextOMRVMThread();
+  OMR_VMThread* nextOMRVMThread();
 };
 
 #endif /* OMRVMTHREADLISTITERATOR_HPP_ */
-

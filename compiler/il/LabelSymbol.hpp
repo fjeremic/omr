@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_LABELSYMBOL_INCL
@@ -24,32 +25,30 @@
 
 #include "il/OMRLabelSymbol.hpp"
 
-namespace TR { class Block; }
-namespace TR { class CodeGenerator; }
+namespace TR {
+class Block;
+}
+namespace TR {
+class CodeGenerator;
+}
 
 namespace TR {
 
-class OMR_EXTENSIBLE LabelSymbol : public OMR::LabelSymbolConnector
-   {
+class OMR_EXTENSIBLE LabelSymbol : public OMR::LabelSymbolConnector {
+ protected:
+  LabelSymbol() : OMR::LabelSymbolConnector() {}
 
-protected:
+  LabelSymbol(TR::CodeGenerator* codeGen)
+      : OMR::LabelSymbolConnector(codeGen) {}
 
-   LabelSymbol() :
-      OMR::LabelSymbolConnector() { }
+  LabelSymbol(TR::CodeGenerator* codeGen, TR::Block* labb)
+      : OMR::LabelSymbolConnector(codeGen, labb) {}
 
-   LabelSymbol(TR::CodeGenerator *codeGen) :
-      OMR::LabelSymbolConnector(codeGen) { }
+ private:
+  // When adding another class to the heirarchy, add it as a friend here
+  friend class OMR::LabelSymbol;
+};
 
-   LabelSymbol(TR::CodeGenerator *codeGen, TR::Block *labb):
-      OMR::LabelSymbolConnector(codeGen, labb) { }
-
-private:
-
-   // When adding another class to the heirarchy, add it as a friend here
-   friend class OMR::LabelSymbol;
-
-   };
-
-}
+}  // namespace TR
 
 #endif

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stddef.h>
@@ -27,8 +28,6 @@
 //
 // e.g., use align(ptr, 31) NOT align(ptr, 32) for 32-byte alignment
 //
-uint8_t *
-align(uint8_t *ptr, uint32_t alignmentMask)
-   {
-   return (uint8_t*)((size_t)(ptr + alignmentMask) & (~(size_t)alignmentMask));
-   }
+uint8_t* align(uint8_t* ptr, uint32_t alignmentMask) {
+  return (uint8_t*)((size_t)(ptr + alignmentMask) & (~(size_t)alignmentMask));
+}

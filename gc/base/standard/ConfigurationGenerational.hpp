@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -38,33 +39,44 @@ class MM_EnvironmentBase;
 class MM_MemorySubSpaceSemiSpace;
 class MM_Scavenger;
 
-class MM_ConfigurationGenerational : public MM_ConfigurationStandard
-{
-/* Data members / Types */
-public:
-protected:
-private:
+class MM_ConfigurationGenerational : public MM_ConfigurationStandard {
+  /* Data members / Types */
+ public:
+ protected:
+ private:
+  /* Methods */
+ public:
+  static MM_Configuration* newInstance(MM_EnvironmentBase* env);
 
-/* Methods */
-public:
-	static MM_Configuration *newInstance(MM_EnvironmentBase *env);
+  virtual MM_MemorySpace* createDefaultMemorySpace(
+      MM_EnvironmentBase* env,
+      MM_Heap* heap,
+      MM_InitializationParameters* parameters);
+  virtual MM_Heap* createHeapWithManager(MM_EnvironmentBase* env,
+                                         UDATA heapBytesRequested,
+                                         MM_HeapRegionManager* regionManager);
 
-	virtual MM_MemorySpace *createDefaultMemorySpace(MM_EnvironmentBase *env, MM_Heap *heap, MM_InitializationParameters *parameters);
-	virtual MM_Heap *createHeapWithManager(MM_EnvironmentBase *env, UDATA heapBytesRequested, MM_HeapRegionManager *regionManager);
+  virtual void defaultMemorySpaceAllocated(MM_GCExtensionsBase* extensions,
+                                           void* defaultMemorySpace);
 
-	virtual void defaultMemorySpaceAllocated(MM_GCExtensionsBase *extensions, void* defaultMemorySpace);
-	
-	MM_ConfigurationGenerational(MM_EnvironmentBase *env)
-		: MM_ConfigurationStandard(env, gc_policy_gencon, calculateDefaultRegionSize(env))
-	{
-		_typeId = __FUNCTION__;
-	};
-	
-protected:
-	MM_MemorySubSpaceSemiSpace *createSemiSpace(MM_EnvironmentBase *envBase, MM_Heap *heap, MM_Scavenger *scavenger, MM_InitializationParameters *parameters, UDATA numaNode = UDATA_MAX);
-	virtual void tearDown(MM_EnvironmentBase* env);
-private:
-	uintptr_t calculateDefaultRegionSize(MM_EnvironmentBase *env);
+  MM_ConfigurationGenerational(MM_EnvironmentBase* env)
+      : MM_ConfigurationStandard(env,
+                                 gc_policy_gencon,
+                                 calculateDefaultRegionSize(env)) {
+    _typeId = __FUNCTION__;
+  };
+
+ protected:
+  MM_MemorySubSpaceSemiSpace* createSemiSpace(
+      MM_EnvironmentBase* envBase,
+      MM_Heap* heap,
+      MM_Scavenger* scavenger,
+      MM_InitializationParameters* parameters,
+      UDATA numaNode = UDATA_MAX);
+  virtual void tearDown(MM_EnvironmentBase* env);
+
+ private:
+  uintptr_t calculateDefaultRegionSize(MM_EnvironmentBase* env);
 };
 
 #endif /* defined(OMR_GC_MODRON_SCAVENGER) */

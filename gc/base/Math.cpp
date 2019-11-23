@@ -17,33 +17,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "Math.hpp"
 
 /**
- * Subtract subtrahend from minuend if the result will be positive. Zero otherwise.
+ * Subtract subtrahend from minuend if the result will be positive. Zero
+ * otherwise.
  * @param minuend - the larger value
  * @param subtrahend - the smaller value
- * @return the difference between minuend and subtrahend, or zero if minuend is not larger than subtrahend
+ * @return the difference between minuend and subtrahend, or zero if minuend is
+ * not larger than subtrahend
  */
-uintptr_t
-MM_Math::saturatingSubtract(uintptr_t minuend, uintptr_t subtrahend) 
-{
-	uintptr_t result = 0;
-	if (minuend > subtrahend) {
-		result = minuend - subtrahend;
-	}
-	return result;
+uintptr_t MM_Math::saturatingSubtract(uintptr_t minuend, uintptr_t subtrahend) {
+  uintptr_t result = 0;
+  if (minuend > subtrahend) {
+    result = minuend - subtrahend;
+  }
+  return result;
 }
 
 /**
- * Return the weighted average through combining the new value to the current value.
+ * Return the weighted average through combining the new value to the current
+ * value.
  * @return the weighted average of the combined parameters.
  */
-float
-MM_Math::weightedAverage(float currentAverage, float newValue, float weight) 
-{
-	return ((currentAverage) * weight) + ((newValue) * ((float)1.0 - weight));
+float MM_Math::weightedAverage(float currentAverage,
+                               float newValue,
+                               float weight) {
+  return ((currentAverage)*weight) + ((newValue) * ((float)1.0 - weight));
 }

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMR_BASE_HPP_)
@@ -29,21 +30,16 @@
 
 #include "omrcomp.h"
 
-class OMR_Base
-{
-private:
-protected:
-public:
-	void *operator new(size_t size, void *memoryPtr)
-	{
-		return memoryPtr;
-	}
+class OMR_Base {
+ private:
+ protected:
+ public:
+  void* operator new(size_t size, void* memoryPtr) { return memoryPtr; }
 
-	/**
-	 * Create OMR_Base object.
-	 */
-	OMR_Base() {}
-
+  /**
+   * Create OMR_Base object.
+   */
+  OMR_Base() {}
 };
 
 #endif /* OMR_BASE_HPP_ */

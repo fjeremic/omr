@@ -17,9 +17,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #include "omrcfg.h"
 
@@ -29,24 +29,21 @@
 
 #include "OMRVMThreadInterface.hpp"
 
-void
-GC_OMRVMThreadInterface::flushCachesForWalk(MM_EnvironmentBase *env)
-{
-	env->_objectAllocationInterface->flushCache(env);
-	/* If we are in a middle of a concurrent GC, we want to flush GC caches, typically for mutator threads doing GC work.
-	 * (GC threads are  smart enough to do it themselves, before they let the walk occur) */
-	env->flushGCCaches();
+void GC_OMRVMThreadInterface::flushCachesForWalk(MM_EnvironmentBase* env) {
+  env->_objectAllocationInterface->flushCache(env);
+  /* If we are in a middle of a concurrent GC, we want to flush GC caches,
+   * typically for mutator threads doing GC work.
+   * (GC threads are  smart enough to do it themselves, before they let the walk
+   * occur) */
+  env->flushGCCaches();
 }
 
-void
-GC_OMRVMThreadInterface::flushNonAllocationCaches(MM_EnvironmentBase *env)
-{
-	env->flushNonAllocationCaches();
+void GC_OMRVMThreadInterface::flushNonAllocationCaches(
+    MM_EnvironmentBase* env) {
+  env->flushNonAllocationCaches();
 }
 
-void
-GC_OMRVMThreadInterface::flushCachesForGC(MM_EnvironmentBase *env)
-{
-	flushCachesForWalk(env);
-	flushNonAllocationCaches(env);
+void GC_OMRVMThreadInterface::flushCachesForGC(MM_EnvironmentBase* env) {
+  flushCachesForWalk(env);
+  flushNonAllocationCaches(env);
 }

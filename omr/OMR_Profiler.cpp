@@ -17,26 +17,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrprofiler.h"
 #include "ut_omrti.h"
 
-void
-omr_ras_sampleStackTraceStart(OMR_VMThread *omrVMThread, const void *methodKey)
-{
-	Trc_OMRPROF_MethodSampleStart(omrVMThread, methodKey);
+void omr_ras_sampleStackTraceStart(OMR_VMThread* omrVMThread,
+                                   const void* methodKey) {
+  Trc_OMRPROF_MethodSampleStart(omrVMThread, methodKey);
 }
 
-void
-omr_ras_sampleStackTraceContinue(OMR_VMThread *omrVMThread, const void *methodKey)
-{
-	Trc_OMRPROF_MethodSampleContinue(omrVMThread, methodKey);
+void omr_ras_sampleStackTraceContinue(OMR_VMThread* omrVMThread,
+                                      const void* methodKey) {
+  Trc_OMRPROF_MethodSampleContinue(omrVMThread, methodKey);
 }
 
 BOOLEAN
-omr_ras_sampleStackEnabled(void)
-{
-	return (TrcEnabled_Trc_OMRPROF_MethodSampleStart || TrcEnabled_Trc_OMRPROF_MethodSampleContinue);
+omr_ras_sampleStackEnabled(void) {
+  return (TrcEnabled_Trc_OMRPROF_MethodSampleStart ||
+          TrcEnabled_Trc_OMRPROF_MethodSampleContinue);
 }

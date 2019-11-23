@@ -17,25 +17,24 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ClassUnloadStats.hpp"
 
-void
-MM_ClassUnloadStats::clear()
-{
-	_classLoaderUnloadedCount = 0;
-	_classLoaderCandidates = 0;
-	_classesUnloadedCount = 0;
-	_anonymousClassesUnloadedCount = 0;
-	_startTime = 0;
-	_endTime = 0;
-	_startSetupTime = 0;
-	_endSetupTime = 0;
-	_startScanTime = 0;
-	_endScanTime = 0;
-	_startPostTime = 0;
-	_endPostTime = 0;
-	_classUnloadMutexQuiesceTime = 0;
+void MM_ClassUnloadStats::clear() {
+  _classLoaderUnloadedCount = 0;
+  _classLoaderCandidates = 0;
+  _classesUnloadedCount = 0;
+  _anonymousClassesUnloadedCount = 0;
+  _startTime = 0;
+  _endTime = 0;
+  _startSetupTime = 0;
+  _endSetupTime = 0;
+  _startScanTime = 0;
+  _endScanTime = 0;
+  _startPostTime = 0;
+  _endPostTime = 0;
+  _classUnloadMutexQuiesceTime = 0;
 };

@@ -17,51 +17,55 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(VERBOSEWRITERSTREAMOUTPUT_HPP_)
 #define VERBOSEWRITERSTREAMOUTPUT_HPP_
- 
+
 #include "omrcfg.h"
 
 #include "VerboseWriter.hpp"
 
 class MM_EnvironmentBase;
 
-class MM_VerboseWriterStreamOutput : public MM_VerboseWriter
-{
-public:
-protected:
-private:
-	typedef enum {
-		STDERR = 1,
-		STDOUT
-	} StreamID;
+class MM_VerboseWriterStreamOutput : public MM_VerboseWriter {
+ public:
+ protected:
+ private:
+  typedef enum { STDERR = 1, STDOUT } StreamID;
 
-	StreamID _currentStream;
+  StreamID _currentStream;
 
-public:
-	static MM_VerboseWriterStreamOutput *newInstance(MM_EnvironmentBase *env, const char *filename);
+ public:
+  static MM_VerboseWriterStreamOutput* newInstance(MM_EnvironmentBase* env,
+                                                   const char* filename);
 
-	virtual bool reconfigure(MM_EnvironmentBase *env, const char *filename, uintptr_t fileCount, uintptr_t iterations);
+  virtual bool reconfigure(MM_EnvironmentBase* env,
+                           const char* filename,
+                           uintptr_t fileCount,
+                           uintptr_t iterations);
 
-	virtual void endOfCycle(MM_EnvironmentBase *env);
-	
-	void closeStream(MM_EnvironmentBase *env);
-	
-	virtual void outputString(MM_EnvironmentBase *env, const char* string);
+  virtual void endOfCycle(MM_EnvironmentBase* env);
 
-protected:
-	MM_VerboseWriterStreamOutput(MM_EnvironmentBase *env);
+  void closeStream(MM_EnvironmentBase* env);
 
-private:
-	bool initialize(MM_EnvironmentBase *env, const char *filename);
-	virtual void tearDown(MM_EnvironmentBase *env);
+  virtual void outputString(MM_EnvironmentBase* env, const char* string);
 
-	MM_VerboseWriterStreamOutput::StreamID getStreamID(MM_EnvironmentBase *env, const char *string);
+ protected:
+  MM_VerboseWriterStreamOutput(MM_EnvironmentBase* env);
 
-	MMINLINE void setStream(MM_VerboseWriterStreamOutput::StreamID stream) { _currentStream = stream; }
+ private:
+  bool initialize(MM_EnvironmentBase* env, const char* filename);
+  virtual void tearDown(MM_EnvironmentBase* env);
+
+  MM_VerboseWriterStreamOutput::StreamID getStreamID(MM_EnvironmentBase* env,
+                                                     const char* string);
+
+  MMINLINE void setStream(MM_VerboseWriterStreamOutput::StreamID stream) {
+    _currentStream = stream;
+  }
 };
 
 #endif /* VERBOSEWRITERSTREAMOUTPUT_HPP_ */

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "SweepPoolManagerAddressOrderedList.hpp"
@@ -26,19 +27,21 @@
  * Allocate and initialize a new instance of the receiver.
  * @return a new instance of the receiver, or NULL on failure.
  */
-MM_SweepPoolManagerAddressOrderedList *
-MM_SweepPoolManagerAddressOrderedList::newInstance(MM_EnvironmentBase *env)
-{
-	MM_SweepPoolManagerAddressOrderedList *sweepPoolManager;
+MM_SweepPoolManagerAddressOrderedList*
+MM_SweepPoolManagerAddressOrderedList::newInstance(MM_EnvironmentBase* env) {
+  MM_SweepPoolManagerAddressOrderedList* sweepPoolManager;
 
-	sweepPoolManager = (MM_SweepPoolManagerAddressOrderedList *)env->getForge()->allocate(sizeof(MM_SweepPoolManagerAddressOrderedList), OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
-	if (sweepPoolManager) {
-		new(sweepPoolManager) MM_SweepPoolManagerAddressOrderedList(env);
-		if (!sweepPoolManager->initialize(env)) {
-			sweepPoolManager->kill(env);
-			sweepPoolManager = NULL;
-		}
-	}
+  sweepPoolManager =
+      (MM_SweepPoolManagerAddressOrderedList*)env->getForge()->allocate(
+          sizeof(MM_SweepPoolManagerAddressOrderedList),
+          OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
+  if (sweepPoolManager) {
+    new (sweepPoolManager) MM_SweepPoolManagerAddressOrderedList(env);
+    if (!sweepPoolManager->initialize(env)) {
+      sweepPoolManager->kill(env);
+      sweepPoolManager = NULL;
+    }
+  }
 
-	return sweepPoolManager;
+  return sweepPoolManager;
 }

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef CENTEREXIT_HPP_INCLUDED
@@ -27,15 +28,14 @@
 /*
  * Thread that acquires and holds a monitor for a time.
  */
-class CEnterExit: public CThread
-{
-public:
-	CEnterExit(CMonitor& monitor, int sleep);
+class CEnterExit : public CThread {
+ public:
+  CEnterExit(CMonitor& monitor, int sleep);
 
-protected:
-	virtual intptr_t Run(void);
-	CMonitor& m_monitor;
-	int m_sleep;
+ protected:
+  virtual intptr_t Run(void);
+  CMonitor& m_monitor;
+  int m_sleep;
 };
 
 #endif /* CENTEREXIT_HPP_INCLUDE */

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMR_BASEVIRTUAL_HPP_)
@@ -29,33 +30,31 @@
 
 #include "OMR_Base.hpp"
 
-class OMR_BaseVirtual : public OMR_Base
-{
-private:
-protected:
-	/* Used by DDR to figure out runtime types, this is opt-in
-	 * and has to be done by the constructor of each subclass.
-	 * e.g. _typeId = __FUNCTION__;
-	 */
-	const char *_typeId;
+class OMR_BaseVirtual : public OMR_Base {
+ private:
+ protected:
+  /* Used by DDR to figure out runtime types, this is opt-in
+   * and has to be done by the constructor of each subclass.
+   * e.g. _typeId = __FUNCTION__;
+   */
+  const char* _typeId;
 
-public:
-	/**
-	 * Create a Base Virtual object.
-	 */
-	OMR_BaseVirtual()
-	{
-		_typeId = NULL; // If NULL DDR will print the static (compile-time) type.
-	};
+ public:
+  /**
+   * Create a Base Virtual object.
+   */
+  OMR_BaseVirtual() {
+    _typeId = NULL;  // If NULL DDR will print the static (compile-time) type.
+  };
 
-	/*
-	 * Required to force OMR_BaseVirtual to have a vtable, otherwise
-	 * field offsets are wrong in DDR (due to addition of the vpointer
-	 * in derived classes). Using a virtual destructor causes linking
-	 * issues because we never use -lstdc++ (outside tests) and the
-	 * delete implementation will be missing (e.g. needed by stack allocation)
-	 */
-	virtual void emptyMethod() { /* No implementation */ };
+  /*
+   * Required to force OMR_BaseVirtual to have a vtable, otherwise
+   * field offsets are wrong in DDR (due to addition of the vpointer
+   * in derived classes). Using a virtual destructor causes linking
+   * issues because we never use -lstdc++ (outside tests) and the
+   * delete implementation will be missing (e.g. needed by stack allocation)
+   */
+  virtual void emptyMethod(){/* No implementation */};
 };
 
 #endif /* OMR_BASEVIRTUAL_HPP_ */

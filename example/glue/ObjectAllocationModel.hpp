@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OBJECTALLOCATIONMODEL_HPP_)
@@ -28,50 +29,51 @@
 /**
  * Class definition for the Java object allocation model.
  */
-class MM_ObjectAllocationModel : public MM_AllocateInitialization
-{
-	/*
-	 * Member data and types
-	 */
-public:
-	/**
-	 * Define object allocation categories. These are represented in MM_AllocateInitialization
-	 * objects and are used in GC_ObjectModel::initializeAllocation() to determine how to
-	 * initialize the header of a newly allocated object.
-	 */
-	enum {
-		allocation_category_example
-	};
+class MM_ObjectAllocationModel : public MM_AllocateInitialization {
+  /*
+   * Member data and types
+   */
+ public:
+  /**
+   * Define object allocation categories. These are represented in
+   * MM_AllocateInitialization objects and are used in
+   * GC_ObjectModel::initializeAllocation() to determine how to initialize the
+   * header of a newly allocated object.
+   */
+  enum { allocation_category_example };
 
-protected:
-private:
+ protected:
+ private:
+  /*
+   * Member functions
+   */
+ private:
+ protected:
+ public:
+  /**
+   * Initializer.
+   */
+  MMINLINE omrobjectptr_t initializeObject(MM_EnvironmentBase* env,
+                                           void* allocatedBytes) {
+    omrobjectptr_t objectPtr = (omrobjectptr_t)allocatedBytes;
 
-	/*
-	 * Member functions
-	 */
-private:
-protected:
-public:
-	/**
-	 * Initializer.
-	 */
-	MMINLINE omrobjectptr_t
-	initializeObject(MM_EnvironmentBase *env, void *allocatedBytes)
-	{
-		omrobjectptr_t objectPtr = (omrobjectptr_t)allocatedBytes;
+    if (NULL != objectPtr) {
+      objectPtr->header.sizeInBytes(
+          (ObjectSize)getAllocateDescription()->getBytesRequested());
+    }
 
-		if (NULL != objectPtr) {
-			objectPtr->header.sizeInBytes((ObjectSize)getAllocateDescription()->getBytesRequested());
-		}
+    return objectPtr;
+  }
 
-		return objectPtr;
-	}
-
-	/**
-	 * Constructor.
-	 */
-	MM_ObjectAllocationModel(MM_EnvironmentBase *env,  uintptr_t requiredSizeInBytes, uintptr_t allocateObjectFlags = 0)
-		: MM_AllocateInitialization(env, allocation_category_example, requiredSizeInBytes, allocateObjectFlags)
-	{}
+  /**
+   * Constructor.
+   */
+  MM_ObjectAllocationModel(MM_EnvironmentBase* env,
+                           uintptr_t requiredSizeInBytes,
+                           uintptr_t allocateObjectFlags = 0)
+      : MM_AllocateInitialization(env,
+                                  allocation_category_example,
+                                  requiredSizeInBytes,
+                                  allocateObjectFlags) {}
 };
 #endif /* OBJECTALLOCATIONMODEL_HPP_ */

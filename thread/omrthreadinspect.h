@@ -17,18 +17,17 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #ifndef root_omrthread_inspect_h
 #define root_omrthread_inspect_h
 
-/** This header is included from outside the thread library directory and needs to
-	forward to the generated types header.  We should revisit why upstream code is
-	reaching and move the declarations/prototypes into thread_api.h.
+/** This header is included from outside the thread library directory and needs
+   to forward to the generated types header.  We should revisit why upstream
+   code is reaching and move the declarations/prototypes into thread_api.h.
  */
 
 #include "common/omrthreadinspect.h"
 
-#endif     /* root_omrthread_inspect_h */
-
-
+#endif /* root_omrthread_inspect_h */

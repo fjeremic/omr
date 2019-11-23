@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_BINARYOPILINJECTOR_INCL
@@ -24,23 +25,24 @@
 
 #include "tests/injectors/OpIlInjector.hpp"
 
-namespace TR { class TypeDictionary; }
+namespace TR {
+class TypeDictionary;
+}
 
-namespace TestCompiler
-{
-class BinaryOpIlInjector : public OpIlInjector
-   {
-   public:
-   BinaryOpIlInjector(TR::TypeDictionary *types, TestDriver *test, TR::ILOpCodes opCode)
-      : OpIlInjector(types, test, opCode)
-      {
-      initOptArgs(2);
-      }
-   TR_ALLOC(TR_Memory::IlGenerator)
+namespace TestCompiler {
+class BinaryOpIlInjector : public OpIlInjector {
+ public:
+  BinaryOpIlInjector(TR::TypeDictionary* types,
+                     TestDriver* test,
+                     TR::ILOpCodes opCode)
+      : OpIlInjector(types, test, opCode) {
+    initOptArgs(2);
+  }
+  TR_ALLOC(TR_Memory::IlGenerator)
 
-   bool injectIL();
-   };
+  bool injectIL();
+};
 
-} // namespace TestCompiler
+}  // namespace TestCompiler
 
-#endif // !defined(TEST_BINARYOPILINJECTOR_INCL)
+#endif  // !defined(TEST_BINARYOPILINJECTOR_INCL)

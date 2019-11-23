@@ -17,24 +17,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef avl_api_h
 #define avl_api_h
 
 /**
-* @file avl_api.h
-* @brief Public API for the AVL module.
-*
-* This file contains public function prototypes and
-* type definitions for the AVL module.
-*
-*/
+ * @file avl_api.h
+ * @brief Public API for the AVL module.
+ *
+ * This file contains public function prototypes and
+ * type definitions for the AVL module.
+ *
+ */
 
-#include "omrport.h"
-#include "omravldefines.h"
 #include "omravl.h"
+#include "omravldefines.h"
+#include "omrport.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,34 +44,28 @@ extern "C" {
 /* ---------------- avlsup.c ---------------- */
 
 /**
-* @brief
-* @param *tree
-* @param *nodeToDelete
-* @return J9AVLTreeNode *
-*/
-J9AVLTreeNode *
-avl_delete(J9AVLTree *tree, J9AVLTreeNode *nodeToDelete);
-
+ * @brief
+ * @param *tree
+ * @param *nodeToDelete
+ * @return J9AVLTreeNode *
+ */
+J9AVLTreeNode* avl_delete(J9AVLTree* tree, J9AVLTreeNode* nodeToDelete);
 
 /**
-* @brief
-* @param *tree
-* @param *nodeToInsert
-* @return J9AVLTreeNode *
-*/
-J9AVLTreeNode *
-avl_insert(J9AVLTree *tree, J9AVLTreeNode *nodeToInsert);
-
+ * @brief
+ * @param *tree
+ * @param *nodeToInsert
+ * @return J9AVLTreeNode *
+ */
+J9AVLTreeNode* avl_insert(J9AVLTree* tree, J9AVLTreeNode* nodeToInsert);
 
 /**
-* @brief
-* @param *tree
-* @param searchValue
-* @return J9AVLTreeNode *
-*/
-J9AVLTreeNode *
-avl_search(J9AVLTree *tree, uintptr_t searchValue);
-
+ * @brief
+ * @param *tree
+ * @param searchValue
+ * @return J9AVLTreeNode *
+ */
+J9AVLTreeNode* avl_search(J9AVLTree* tree, uintptr_t searchValue);
 
 #ifdef __cplusplus
 }

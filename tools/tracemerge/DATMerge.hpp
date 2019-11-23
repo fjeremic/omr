@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DATMERGE_HPP_
@@ -25,37 +26,39 @@
 
 #include "TDFTypes.hpp"
 
-RCType startTraceMerge(int argc, char *argv[]);
+RCType startTraceMerge(int argc, char* argv[]);
 
-class DATMerge
-{
-	/*
-	 * Data members
-	 */
-private:
-protected:
-public:
+class DATMerge {
+  /*
+   * Data members
+   */
+ private:
+ protected:
+ public:
+  /*
+   * Function members
+   */
+ private:
+  /**
+   * Merge partial DAT file into the target DAT
+   * @param options command-line options
+   * @param fromFileName Name of the partial DAT file
+   * @return RC_OK on success.
+   */
+  RCType merge(J9TDFOptions* options, const char* fromFileName);
 
-	/*
-	 * Function members
-	 */
-private:
-	/**
-	 * Merge partial DAT file into the target DAT
-	 * @param options command-line options
-	 * @param fromFileName Name of the partial DAT file
-	 * @return RC_OK on success.
-	 */
-	RCType merge(J9TDFOptions *options, const char *fromFileName);
-protected:
-public:
-	/**
-	 * Start merging process, visit all subdirectories and merge all partial DAT files.
-	 * @return RC_OK on success
-	 */
-	RCType start(J9TDFOptions *options);
+ protected:
+ public:
+  /**
+   * Start merging process, visit all subdirectories and merge all partial DAT
+   * files.
+   * @return RC_OK on success
+   */
+  RCType start(J9TDFOptions* options);
 
-	static RCType mergeCallback(void *targetObject, J9TDFOptions *options, const char *fromFileName);
+  static RCType mergeCallback(void* targetObject,
+                              J9TDFOptions* options,
+                              const char* fromFileName);
 };
 
 #endif /* DATMERGE_HPP_ */

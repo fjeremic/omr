@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_SEGMENT_ALLOCATOR_HPP
@@ -28,28 +29,22 @@
 
 namespace TR {
 
-class SegmentAllocator : public SegmentProvider
-   {
-public:
-   virtual size_t regionBytesAllocated() const throw() = 0;
-   virtual size_t systemBytesAllocated() const throw() = 0;
-   virtual size_t allocationLimit() const throw() = 0;
-   virtual void setAllocationLimit(size_t) = 0;
+class SegmentAllocator : public SegmentProvider {
+ public:
+  virtual size_t regionBytesAllocated() const throw() = 0;
+  virtual size_t systemBytesAllocated() const throw() = 0;
+  virtual size_t allocationLimit() const throw() = 0;
+  virtual void setAllocationLimit(size_t) = 0;
 
-protected:
-   explicit SegmentAllocator(size_t defaultSegmentSize) :
-      SegmentProvider(defaultSegmentSize)
-      {
-      }
+ protected:
+  explicit SegmentAllocator(size_t defaultSegmentSize)
+      : SegmentProvider(defaultSegmentSize) {}
 
-   SegmentAllocator(const SegmentAllocator &other) :
-      SegmentProvider(other)
-      {
-      }
+  SegmentAllocator(const SegmentAllocator& other) : SegmentProvider(other) {}
 
-   virtual ~SegmentAllocator() throw();
-   };
+  virtual ~SegmentAllocator() throw();
+};
 
-}
+}  // namespace TR
 
-#endif // OMR_SEGMENT_ALLOCATOR_HPP
+#endif  // OMR_SEGMENT_ALLOCATOR_HPP

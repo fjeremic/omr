@@ -16,30 +16,30 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_REGISTER_PAIR_INCL
 #define TR_REGISTER_PAIR_INCL
 
-#include "codegen/RegisterConstants.hpp"
 #include "codegen/OMRRegisterPair.hpp"
+#include "codegen/RegisterConstants.hpp"
 
-namespace TR { class Register; }
-
-namespace TR
-{
-
-class OMR_EXTENSIBLE RegisterPair: public OMR::RegisterPairConnector
-   {
-   public:
-
-   RegisterPair() {}
-   RegisterPair(TR_RegisterKinds rk) : OMR::RegisterPairConnector(rk) {}
-   RegisterPair(TR::Register *lo, TR::Register *ho) : OMR::RegisterPairConnector(lo, ho) {}
-
-   };
-
+namespace TR {
+class Register;
 }
+
+namespace TR {
+
+class OMR_EXTENSIBLE RegisterPair : public OMR::RegisterPairConnector {
+ public:
+  RegisterPair() {}
+  RegisterPair(TR_RegisterKinds rk) : OMR::RegisterPairConnector(rk) {}
+  RegisterPair(TR::Register* lo, TR::Register* ho)
+      : OMR::RegisterPairConnector(lo, ho) {}
+};
+
+}  // namespace TR
 
 #endif

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -25,24 +26,25 @@
  * @ingroup Port
  * @brief shared library
  */
+#include "omrgetjobid.h"
 #include <string.h>
 #include "omrport.h"
-#include "omrgetjobid.h"
 
 #define JOBID_STRING "%jobid"
 #define JOBID_STRING_LENGTH sizeof(JOBID_STRING)
 
 /* Generic version of omrgetjobid() */
-uintptr_t
-omrget_jobid(struct OMRPortLibrary *portLibrary, char *jobid, uintptr_t length)
-{
-	/* Check that caller provided enough space for the string */
-	if ((NULL == jobid) || (length < JOBID_STRING_LENGTH)) {
-		return JOBID_STRING_LENGTH;
-	}
+uintptr_t omrget_jobid(struct OMRPortLibrary* portLibrary,
+                       char* jobid,
+                       uintptr_t length) {
+  /* Check that caller provided enough space for the string */
+  if ((NULL == jobid) || (length < JOBID_STRING_LENGTH)) {
+    return JOBID_STRING_LENGTH;
+  }
 
-	/* Default behaviour for platforms other than zOS, simply return the job ID string token */
-	strcpy(jobid, JOBID_STRING);
+  /* Default behaviour for platforms other than zOS, simply return the job ID
+   * string token */
+  strcpy(jobid, JOBID_STRING);
 
-	return 0;
+  return 0;
 }

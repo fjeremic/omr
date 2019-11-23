@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -25,18 +26,20 @@
  * @ingroup Thread
  */
 
-#include <windows.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "omrcfg.h"
 #include "omrcomp.h"
 #include "omrmutex.h"
 #include "thrdsup.h"
-#include "thrtypes.h"
 #include "thread_internal.h"
+#include "thrtypes.h"
 
 extern J9ThreadLibrary default_library;
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved);
+BOOL APIENTRY DllMain(HANDLE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved);
 
 /**
  * Initialize OS-specific threading helpers.
@@ -46,24 +49,25 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
  * @param lpReserved reserved
  * @return TRUE on success, FALSE on failure.
  */
-BOOL APIENTRY
-DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
-{
-	omrthread_library_t lib = NULL;
+BOOL APIENTRY DllMain(HANDLE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved) {
+  omrthread_library_t lib = NULL;
 
-	switch (ul_reason_for_call) {
-	case DLL_PROCESS_ATTACH:
-		/* Disable DLL_THREAD_ATTACH and DLL_THREAD_DETACH notifications for WIN32. */
-		DisableThreadLibraryCalls(hModule);
-		lib = GLOBAL_DATA(default_library);
-		omrthread_init(lib);
-		return lib->initStatus == 1;
-	case DLL_PROCESS_DETACH:
-		omrthread_shutdown_library();
-		break;
-	default:
-		break;
-	}
+  switch (ul_reason_for_call) {
+    case DLL_PROCESS_ATTACH:
+      /* Disable DLL_THREAD_ATTACH and DLL_THREAD_DETACH notifications for
+       * WIN32. */
+      DisableThreadLibraryCalls(hModule);
+      lib = GLOBAL_DATA(default_library);
+      omrthread_init(lib);
+      return lib->initStatus == 1;
+    case DLL_PROCESS_DETACH:
+      omrthread_shutdown_library();
+      break;
+    default:
+      break;
+  }
 
-	return TRUE;
+  return TRUE;
 }

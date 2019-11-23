@@ -16,42 +16,32 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ddr/ir/UnionUDT.hpp"
 
 UnionUDT::UnionUDT(size_t size, unsigned int lineNumber)
-	: ClassType(size, lineNumber)
-{
-}
+    : ClassType(size, lineNumber) {}
 
-UnionUDT::~UnionUDT()
-{
-}
+UnionUDT::~UnionUDT() {}
 
 DDR_RC
-UnionUDT::acceptVisitor(const TypeVisitor &visitor)
-{
-	return visitor.visitUnion(this);
+UnionUDT::acceptVisitor(const TypeVisitor& visitor) {
+  return visitor.visitUnion(this);
 }
 
-const string &
-UnionUDT::getSymbolKindName() const
-{
-	static const string unionKind("union");
+const string& UnionUDT::getSymbolKindName() const {
+  static const string unionKind("union");
 
-	return unionKind;
+  return unionKind;
 }
 
-bool
-UnionUDT::operator==(const Type & rhs) const
-{
-	return rhs.compareToUnion(*this);
+bool UnionUDT::operator==(const Type& rhs) const {
+  return rhs.compareToUnion(*this);
 }
 
-bool
-UnionUDT::compareToUnion(const UnionUDT &other) const
-{
-	return compareToClasstype(other);
+bool UnionUDT::compareToUnion(const UnionUDT& other) const {
+  return compareToClasstype(other);
 }

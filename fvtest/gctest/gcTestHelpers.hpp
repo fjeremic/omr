@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(GCTESTHELPERS_HPP_INCLUDED)
@@ -26,53 +27,52 @@
 #include "omrport.h"
 
 /* OMR Imports */
+#include <vector>
+#include "StartupManagerImpl.hpp"
 #include "omr.h"
 #include "omrExampleVM.hpp"
 #include "omrgcstartup.hpp"
 #include "omrvm.h"
-#include "StartupManagerImpl.hpp"
 #include "testEnvironment.hpp"
-#include <vector>
 
-class GCTestEnvironment: public BaseEnvironment
-{
-	/*
-	 * Data members
-	 */
-public:
-	OMR_VM_Example exampleVM;
-	std::vector<const char *> params;
-	bool keepLog;
+class GCTestEnvironment : public BaseEnvironment {
+  /*
+   * Data members
+   */
+ public:
+  OMR_VM_Example exampleVM;
+  std::vector<const char*> params;
+  bool keepLog;
 
-	/*
-	 * Function members
-	 */
-private:
-	void initParams();
-	void clearParams();
+  /*
+   * Function members
+   */
+ private:
+  void initParams();
+  void clearParams();
 
-public:
-	/*
-	 * Initialization/Finalization for gctest can be performed only once per process, even with --gtest_repeat on.
-	 */
-	void GCTestSetUp();
-	void GCTestTearDown();
+ public:
+  /*
+   * Initialization/Finalization for gctest can be performed only once per
+   * process, even with --gtest_repeat on.
+   */
+  void GCTestSetUp();
+  void GCTestTearDown();
 
-public:
-	GCTestEnvironment(int argc, char **argv)
-	: BaseEnvironment(argc, argv), keepLog(false)
-	{
-	}
+ public:
+  GCTestEnvironment(int argc, char** argv)
+      : BaseEnvironment(argc, argv), keepLog(false) {}
 };
 
 /**
- * To help detect memory leaks, print out the amount of physical memory and virtual memory consumed by the test process.
+ * To help detect memory leaks, print out the amount of physical memory and
+ * virtual memory consumed by the test process.
  *
  * @param[in] The caller place
  * @param[in] portLib The port library
  */
-void printMemUsed(const char *where, OMRPortLibrary *portLib);
+void printMemUsed(const char* where, OMRPortLibrary* portLib);
 
-extern GCTestEnvironment *gcTestEnv;
+extern GCTestEnvironment* gcTestEnv;
 
 #endif /* GCTESTHELPERS_HPP_INCLUDED */

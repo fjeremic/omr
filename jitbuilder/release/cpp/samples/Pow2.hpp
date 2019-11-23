@@ -17,22 +17,21 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #ifndef POW2_INCL
 #define POW2_INCL
 
 #include "JitBuilder.hpp"
 
-typedef int64_t (Pow2FunctionType)(int64_t);
+typedef int64_t(Pow2FunctionType)(int64_t);
 
-class Pow2Method : public OMR::JitBuilder::MethodBuilder
-   {
-   public:
-   Pow2Method(OMR::JitBuilder::TypeDictionary *types);
-   virtual bool buildIL();
-   };
+class Pow2Method : public OMR::JitBuilder::MethodBuilder {
+ public:
+  Pow2Method(OMR::JitBuilder::TypeDictionary* types);
+  virtual bool buildIL();
+};
 
-#endif // !defined(POW2_INCL)
+#endif  // !defined(POW2_INCL)

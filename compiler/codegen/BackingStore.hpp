@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef BACKINGSTORE_INCL
@@ -28,69 +29,66 @@
 #include "il/SymbolReference.hpp"
 #include "infra/Flags.hpp"
 
-namespace TR { class Symbol; }
-namespace TR { class SymbolReferenceTable; }
+namespace TR {
+class Symbol;
+}
+namespace TR {
+class SymbolReferenceTable;
+}
 
-class TR_BackingStore
-   {
+class TR_BackingStore {
+ public:
+  TR_ALLOC(TR_Memory::BackingStore)
 
-public:
+  TR_BackingStore(TR::SymbolReferenceTable* symRefTab)
+      : _flags(0), _maxSpillDepth(-1) {
+    _symRef = new (TR::comp()->trHeapMemory()) TR::SymbolReference(symRefTab);
+  }
+  TR_BackingStore(TR::SymbolReferenceTable* symRefTab, TR::Symbol* s, int32_t o)
+      : _flags(0), _maxSpillDepth(-1) {
+    _symRef =
+        new (TR::comp()->trHeapMemory()) TR::SymbolReference(symRefTab, s, o);
+  }
+  TR_BackingStore(TR::SymbolReference* symRef)
+      : _symRef(symRef), _flags(0), _maxSpillDepth(-1) {}
 
-   TR_ALLOC(TR_Memory::BackingStore)
+  TR::SymbolReference* getSymbolReference() { return _symRef; }
 
-   TR_BackingStore(TR::SymbolReferenceTable *symRefTab) :
-      _flags(0),
-      _maxSpillDepth(-1)
-       {
-       _symRef = new (TR::comp()->trHeapMemory()) TR::SymbolReference(symRefTab);
-       }
-   TR_BackingStore(TR::SymbolReferenceTable *symRefTab, TR::Symbol *s, int32_t o) :
-      _flags(0),
-      _maxSpillDepth(-1)
-       {
-       _symRef = new (TR::comp()->trHeapMemory()) TR::SymbolReference(symRefTab,s,o);
-       }
-   TR_BackingStore(TR::SymbolReference *symRef) :
-      _symRef(symRef),
-      _flags(0),
-      _maxSpillDepth(-1) {}
+  bool isEmpty() { return _flags.testValue(OccupiedMask, 0); }
+  void setIsEmpty() { _flags.setValue(OccupiedMask, 0); }
+  bool isOccupied() { return _flags.testAny(OccupiedMask); }
+  void setIsOccupied() { _flags.set(OccupiedMask); }
 
-   TR::SymbolReference *getSymbolReference() { return _symRef; }
+  bool firstHalfIsOccupied() { return _flags.testAny(FirstHalfIsOccupied); }
+  void setFirstHalfIsOccupied() { _flags.set(FirstHalfIsOccupied); }
+  void setFirstHalfIsEmpty() { _flags.reset(FirstHalfIsOccupied); }
+  bool secondHalfIsOccupied() { return _flags.testAny(SecondHalfIsOccupied); }
+  void setSecondHalfIsOccupied() { _flags.set(SecondHalfIsOccupied); }
+  void setSecondHalfIsEmpty() { _flags.reset(SecondHalfIsOccupied); }
 
-   bool isEmpty()       { return _flags.testValue(OccupiedMask, 0); }
-   void setIsEmpty()    { _flags.setValue(OccupiedMask, 0); }
-   bool isOccupied()    { return _flags.testAny(OccupiedMask); }
-   void setIsOccupied() { _flags.set(OccupiedMask); }
+  bool containsCollectedReference() {
+    return _flags.testAny(ContainsCollectedReference);
+  }
+  void setContainsCollectedReference(bool b) {
+    _flags.set(ContainsCollectedReference, b);
+  }
 
-   bool firstHalfIsOccupied()     { return _flags.testAny(FirstHalfIsOccupied); }
-   void setFirstHalfIsOccupied()  { _flags.set(FirstHalfIsOccupied); }
-   void setFirstHalfIsEmpty()     { _flags.reset(FirstHalfIsOccupied); }
-   bool secondHalfIsOccupied()    { return _flags.testAny(SecondHalfIsOccupied); }
-   void setSecondHalfIsOccupied() { _flags.set(SecondHalfIsOccupied); }
-   void setSecondHalfIsEmpty()    { _flags.reset(SecondHalfIsOccupied); }
+  int32_t setMaxSpillDepth(int32_t d) { return _maxSpillDepth = d; }
+  int32_t getMaxSpillDepth() { return _maxSpillDepth; }
 
-   bool containsCollectedReference()          { return _flags.testAny(ContainsCollectedReference); }
-   void setContainsCollectedReference(bool b) { _flags.set(ContainsCollectedReference, b); }
+ private:
+  enum {
+    OccupiedMask = 0x03,
+    FirstHalfIsOccupied = 0x01,
+    SecondHalfIsOccupied = 0x02,
 
-   int32_t setMaxSpillDepth(int32_t d)    { return _maxSpillDepth = d; }
-   int32_t getMaxSpillDepth()             { return _maxSpillDepth; }
+    ContainsCollectedReference = 0x04,
+  };
 
-private:
+  TR::SymbolReference* _symRef;
 
-   enum
-      {
-      OccupiedMask               = 0x03,
-      FirstHalfIsOccupied        = 0x01,
-      SecondHalfIsOccupied       = 0x02,
-
-      ContainsCollectedReference = 0x04,
-      };
-
-   TR::SymbolReference *_symRef;
-
-   int32_t  _maxSpillDepth;
-   flags8_t _flags;
-
-   };
+  int32_t _maxSpillDepth;
+  flags8_t _flags;
+};
 
 #endif

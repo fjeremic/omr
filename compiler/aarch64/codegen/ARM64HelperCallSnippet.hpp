@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARM64HELPERCALLSNIPPET_INCL
@@ -27,74 +28,80 @@
 #include <stdint.h>
 #include "il/SymbolReference.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
-namespace TR { class Node; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class Node;
+}
 
 namespace TR {
 
-class ARM64HelperCallSnippet : public TR::Snippet
-   {
-   TR::SymbolReference      *_destination;
-   TR::LabelSymbol          *_restartLabel;
+class ARM64HelperCallSnippet : public TR::Snippet {
+  TR::SymbolReference* _destination;
+  TR::LabelSymbol* _restartLabel;
 
-   public:
-
-   /**
-    * @brief Constructor
-    */
-   ARM64HelperCallSnippet(TR::CodeGenerator    *cg,
-                          TR::Node             *node,
-                          TR::LabelSymbol      *snippetlab,
-                          TR::SymbolReference  *helper,
-                          TR::LabelSymbol      *restartLabel=NULL)
+ public:
+  /**
+   * @brief Constructor
+   */
+  ARM64HelperCallSnippet(TR::CodeGenerator* cg,
+                         TR::Node* node,
+                         TR::LabelSymbol* snippetlab,
+                         TR::SymbolReference* helper,
+                         TR::LabelSymbol* restartLabel = NULL)
       : TR::Snippet(cg, node, snippetlab, helper->canCauseGC()),
         _destination(helper),
-        _restartLabel(restartLabel)
-      {
-      }
+        _restartLabel(restartLabel) {}
 
-   /**
-    * @brief Answers the Snippet kind
-    * @return Snippet kind
-    */
-   virtual Kind getKind() { return IsHelperCall; }
+  /**
+   * @brief Answers the Snippet kind
+   * @return Snippet kind
+   */
+  virtual Kind getKind() { return IsHelperCall; }
 
-   /**
-    * @brief Answers the destination
-    * @return destination
-    */
-   TR::SymbolReference *getDestination() { return _destination; }
-   /**
-    * @brief Sets the destination
-    * @return destination
-    */
-   TR::SymbolReference *setDestination(TR::SymbolReference *s) { return (_destination = s); }
+  /**
+   * @brief Answers the destination
+   * @return destination
+   */
+  TR::SymbolReference* getDestination() { return _destination; }
+  /**
+   * @brief Sets the destination
+   * @return destination
+   */
+  TR::SymbolReference* setDestination(TR::SymbolReference* s) {
+    return (_destination = s);
+  }
 
-   /**
-    * @brief Answers the restart label
-    * @return restart label
-    */
-   TR::LabelSymbol *getRestartLabel() { return _restartLabel; }
-   /**
-    * @brief Sets the restart label
-    * @return restart label
-    */
-   TR::LabelSymbol *setRestartLabel(TR::LabelSymbol *l) { return (_restartLabel=l); }
+  /**
+   * @brief Answers the restart label
+   * @return restart label
+   */
+  TR::LabelSymbol* getRestartLabel() { return _restartLabel; }
+  /**
+   * @brief Sets the restart label
+   * @return restart label
+   */
+  TR::LabelSymbol* setRestartLabel(TR::LabelSymbol* l) {
+    return (_restartLabel = l);
+  }
 
-   /**
-    * @brief Emits the Snippet body
-    * @return instruction cursor
-    */
-   virtual uint8_t *emitSnippetBody();
+  /**
+   * @brief Emits the Snippet body
+   * @return instruction cursor
+   */
+  virtual uint8_t* emitSnippetBody();
 
-   /**
-    * @brief Answers the Snippet length
-    * @return Snippet length
-    */
-   virtual uint32_t getLength(int32_t estimatedSnippetStart);
-   };
+  /**
+   * @brief Answers the Snippet length
+   * @return Snippet length
+   */
+  virtual uint32_t getLength(int32_t estimatedSnippetStart);
+};
 
-}
+}  // namespace TR
 
 #endif

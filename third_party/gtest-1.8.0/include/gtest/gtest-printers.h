@@ -100,11 +100,11 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "gtest/internal/gtest-port.h"
 #include "gtest/internal/gtest-internal.h"
+#include "gtest/internal/gtest-port.h"
 
 #if GTEST_HAS_STD_TUPLE_
-# include <tuple>
+#include <tuple>
 #endif
 
 namespace testing {
@@ -153,8 +153,9 @@ class TypeWithoutFormatter<T, kProtobuf> {
   static void PrintValue(const T& value, ::std::ostream* os) {
     const ::testing::internal::string short_str = value.ShortDebugString();
     const ::testing::internal::string pretty_str =
-        short_str.length() <= kProtobufOneLinerMaxLength ?
-        short_str : ("\n" + value.DebugString());
+        short_str.length() <= kProtobufOneLinerMaxLength
+            ? short_str
+            : ("\n" + value.DebugString());
     *os << ("<" + pretty_str + ">");
   }
 };
@@ -201,11 +202,14 @@ class TypeWithoutFormatter<T, kConvertibleToInteger> {
 // specific.
 template <typename Char, typename CharTraits, typename T>
 ::std::basic_ostream<Char, CharTraits>& operator<<(
-    ::std::basic_ostream<Char, CharTraits>& os, const T& x) {
-  TypeWithoutFormatter<T,
-      (internal::IsAProtocolMessage<T>::value ? kProtobuf :
-       internal::ImplicitlyConvertible<const T&, internal::BiggestInt>::value ?
-       kConvertibleToInteger : kOtherType)>::PrintValue(x, &os);
+    ::std::basic_ostream<Char, CharTraits>& os,
+    const T& x) {
+  TypeWithoutFormatter<T, (internal::IsAProtocolMessage<T>::value
+                               ? kProtobuf
+                               : internal::ImplicitlyConvertible<
+                                     const T&, internal::BiggestInt>::value
+                                     ? kConvertibleToInteger
+                                     : kOtherType)>::PrintValue(x, &os);
   return os;
 }
 
@@ -309,12 +313,12 @@ GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const wchar_t);
 // to point to a NUL-terminated string, and thus can print it as a string.
 
 #define GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(CharType, OtherStringType) \
-  template <>                                                           \
-  class FormatForComparison<CharType*, OtherStringType> {               \
-   public:                                                              \
-    static ::std::string Format(CharType* value) {                      \
-      return ::testing::PrintToString(value);                           \
-    }                                                                   \
+  template <>                                                            \
+  class FormatForComparison<CharType*, OtherStringType> {                \
+   public:                                                               \
+    static ::std::string Format(CharType* value) {                       \
+      return ::testing::PrintToString(value);                            \
+    }                                                                    \
   }
 
 GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char, ::std::string);
@@ -346,8 +350,8 @@ GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const wchar_t, ::std::wstring);
 //
 // INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
 template <typename T1, typename T2>
-std::string FormatForComparisonFailureMessage(
-    const T1& value, const T2& /* other_operand */) {
+std::string FormatForComparisonFailureMessage(const T1& value,
+                                              const T2& /* other_operand */) {
   return FormatForComparison<T1, T2>::Format(value);
 }
 
@@ -369,12 +373,13 @@ void UniversalPrint(const T& value, ::std::ostream* os);
 template <typename C>
 void DefaultPrintTo(IsContainer /* dummy */,
                     false_type /* is not a pointer */,
-                    const C& container, ::std::ostream* os) {
+                    const C& container,
+                    ::std::ostream* os) {
   const size_t kMaxCount = 32;  // The maximum number of elements to print.
   *os << '{';
   size_t count = 0;
-  for (typename C::const_iterator it = container.begin();
-       it != container.end(); ++it, ++count) {
+  for (typename C::const_iterator it = container.begin(); it != container.end();
+       ++it, ++count) {
     if (count > 0) {
       *os << ',';
       if (count == kMaxCount) {  // Enough has been printed.
@@ -403,7 +408,8 @@ void DefaultPrintTo(IsContainer /* dummy */,
 template <typename T>
 void DefaultPrintTo(IsNotContainer /* dummy */,
                     true_type /* is a pointer */,
-                    T* p, ::std::ostream* os) {
+                    T* p,
+                    ::std::ostream* os) {
   if (p == NULL) {
     *os << "NULL";
   } else {
@@ -435,7 +441,8 @@ void DefaultPrintTo(IsNotContainer /* dummy */,
 template <typename T>
 void DefaultPrintTo(IsNotContainer /* dummy */,
                     false_type /* is not a pointer */,
-                    const T& value, ::std::ostream* os) {
+                    const T& value,
+                    ::std::ostream* os) {
   ::testing_internal::DefaultPrintNonContainerTo(value, os);
 }
 
@@ -555,27 +562,27 @@ void PrintRawArrayTo(const T a[], size_t count, ::std::ostream* os) {
 
 // Overloads for ::string and ::std::string.
 #if GTEST_HAS_GLOBAL_STRING
-GTEST_API_ void PrintStringTo(const ::string&s, ::std::ostream* os);
+GTEST_API_ void PrintStringTo(const ::string& s, ::std::ostream* os);
 inline void PrintTo(const ::string& s, ::std::ostream* os) {
   PrintStringTo(s, os);
 }
 #endif  // GTEST_HAS_GLOBAL_STRING
 
-GTEST_API_ void PrintStringTo(const ::std::string&s, ::std::ostream* os);
+GTEST_API_ void PrintStringTo(const ::std::string& s, ::std::ostream* os);
 inline void PrintTo(const ::std::string& s, ::std::ostream* os) {
   PrintStringTo(s, os);
 }
 
 // Overloads for ::wstring and ::std::wstring.
 #if GTEST_HAS_GLOBAL_WSTRING
-GTEST_API_ void PrintWideStringTo(const ::wstring&s, ::std::ostream* os);
+GTEST_API_ void PrintWideStringTo(const ::wstring& s, ::std::ostream* os);
 inline void PrintTo(const ::wstring& s, ::std::ostream* os) {
   PrintWideStringTo(s, os);
 }
 #endif  // GTEST_HAS_GLOBAL_WSTRING
 
 #if GTEST_HAS_STD_WSTRING
-GTEST_API_ void PrintWideStringTo(const ::std::wstring&s, ::std::ostream* os);
+GTEST_API_ void PrintWideStringTo(const ::std::wstring& s, ::std::ostream* os);
 inline void PrintTo(const ::std::wstring& s, ::std::ostream* os) {
   PrintWideStringTo(s, os);
 }
@@ -627,36 +634,66 @@ void PrintTo(const ::std::tr1::tuple<T1, T2, T3, T4, T5>& t,
   PrintTupleTo(t, os);
 }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5,
+template <typename T1,
+          typename T2,
+          typename T3,
+          typename T4,
+          typename T5,
           typename T6>
 void PrintTo(const ::std::tr1::tuple<T1, T2, T3, T4, T5, T6>& t,
              ::std::ostream* os) {
   PrintTupleTo(t, os);
 }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5,
-          typename T6, typename T7>
+template <typename T1,
+          typename T2,
+          typename T3,
+          typename T4,
+          typename T5,
+          typename T6,
+          typename T7>
 void PrintTo(const ::std::tr1::tuple<T1, T2, T3, T4, T5, T6, T7>& t,
              ::std::ostream* os) {
   PrintTupleTo(t, os);
 }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5,
-          typename T6, typename T7, typename T8>
+template <typename T1,
+          typename T2,
+          typename T3,
+          typename T4,
+          typename T5,
+          typename T6,
+          typename T7,
+          typename T8>
 void PrintTo(const ::std::tr1::tuple<T1, T2, T3, T4, T5, T6, T7, T8>& t,
              ::std::ostream* os) {
   PrintTupleTo(t, os);
 }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5,
-          typename T6, typename T7, typename T8, typename T9>
+template <typename T1,
+          typename T2,
+          typename T3,
+          typename T4,
+          typename T5,
+          typename T6,
+          typename T7,
+          typename T8,
+          typename T9>
 void PrintTo(const ::std::tr1::tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>& t,
              ::std::ostream* os) {
   PrintTupleTo(t, os);
 }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5,
-          typename T6, typename T7, typename T8, typename T9, typename T10>
+template <typename T1,
+          typename T2,
+          typename T3,
+          typename T4,
+          typename T5,
+          typename T6,
+          typename T7,
+          typename T8,
+          typename T9,
+          typename T10>
 void PrintTo(
     const ::std::tr1::tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t,
     ::std::ostream* os) {
@@ -735,12 +772,14 @@ void UniversalPrintArray(const T* begin, size_t len, ::std::ostream* os) {
   }
 }
 // This overload prints a (const) char array compactly.
-GTEST_API_ void UniversalPrintArray(
-    const char* begin, size_t len, ::std::ostream* os);
+GTEST_API_ void UniversalPrintArray(const char* begin,
+                                    size_t len,
+                                    ::std::ostream* os);
 
 // This overload prints a (const) wchar_t array compactly.
-GTEST_API_ void UniversalPrintArray(
-    const wchar_t* begin, size_t len, ::std::ostream* os);
+GTEST_API_ void UniversalPrintArray(const wchar_t* begin,
+                                    size_t len,
+                                    ::std::ostream* os);
 
 // Implements printing an array type T[N].
 template <typename T, size_t N>
@@ -879,8 +918,8 @@ struct TuplePolicy {
 
   template <size_t I>
   static typename AddReference<
-      const typename ::std::tr1::tuple_element<I, Tuple>::type>::type get(
-      const Tuple& tuple) {
+      const typename ::std::tr1::tuple_element<I, Tuple>::type>::type
+  get(const Tuple& tuple) {
     return ::std::tr1::get<I>(tuple);
   }
 };
@@ -924,12 +963,11 @@ struct TuplePrefixPrinter {
     TuplePrefixPrinter<N - 1>::PrintPrefixTo(t, os);
     GTEST_INTENTIONAL_CONST_COND_PUSH_()
     if (N > 1) {
-    GTEST_INTENTIONAL_CONST_COND_POP_()
+      GTEST_INTENTIONAL_CONST_COND_POP_()
       *os << ", ";
     }
-    UniversalPrinter<
-        typename TuplePolicy<Tuple>::template tuple_element<N - 1>::type>
-        ::Print(TuplePolicy<Tuple>::template get<N - 1>(t), os);
+    UniversalPrinter<typename TuplePolicy<Tuple>::template tuple_element<
+        N - 1>::type>::Print(TuplePolicy<Tuple>::template get<N - 1>(t), os);
   }
 
   // Tersely prints the first N fields of a tuple to a string vector,
@@ -968,8 +1006,8 @@ void PrintTupleTo(const Tuple& t, ::std::ostream* os) {
 template <typename Tuple>
 Strings UniversalTersePrintTupleFieldsToStrings(const Tuple& value) {
   Strings result;
-  TuplePrefixPrinter<TuplePolicy<Tuple>::tuple_size>::
-      TersePrintPrefixToStrings(value, &result);
+  TuplePrefixPrinter<TuplePolicy<Tuple>::tuple_size>::TersePrintPrefixToStrings(
+      value, &result);
   return result;
 }
 #endif  // GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_

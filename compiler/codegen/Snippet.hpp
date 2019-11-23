@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_SNIPPET_INCL
@@ -24,24 +25,30 @@
 
 #include "codegen/OMRSnippet.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
-namespace TR { class Node; }
-
-namespace TR
-{
-
-class OMR_EXTENSIBLE Snippet : public OMR::SnippetConnector
-   {
-   public:
-
-   Snippet(TR::CodeGenerator *cg, TR::Node *node, TR::LabelSymbol *label, bool isGCSafePoint) :
-      OMR::SnippetConnector(cg, node, label, isGCSafePoint) {}
-
-   Snippet(TR::CodeGenerator *cg, TR::Node *node, TR::LabelSymbol *label) :
-      OMR::SnippetConnector(cg, node, label) {}
-   };
-
+namespace TR {
+class CodeGenerator;
 }
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class Node;
+}
+
+namespace TR {
+
+class OMR_EXTENSIBLE Snippet : public OMR::SnippetConnector {
+ public:
+  Snippet(TR::CodeGenerator* cg,
+          TR::Node* node,
+          TR::LabelSymbol* label,
+          bool isGCSafePoint)
+      : OMR::SnippetConnector(cg, node, label, isGCSafePoint) {}
+
+  Snippet(TR::CodeGenerator* cg, TR::Node* node, TR::LabelSymbol* label)
+      : OMR::SnippetConnector(cg, node, label) {}
+};
+
+}  // namespace TR
 
 #endif

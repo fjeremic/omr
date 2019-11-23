@@ -16,83 +16,88 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_JITBUILDERRECORDER_INCL
 #define OMR_JITBUILDERRECORDER_INCL
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <map>
 #include "ilgen/StatementNames.hpp"
 
-namespace TR { class IlBuilder; }
-namespace TR { class MethodBuilder; }
-namespace TR { class IlType; }
-namespace TR { class IlValue; }
+namespace TR {
+class IlBuilder;
+}
+namespace TR {
+class MethodBuilder;
+}
+namespace TR {
+class IlType;
+}
+namespace TR {
+class IlValue;
+}
 
-namespace OMR
-{
+namespace OMR {
 
-class JitBuilderRecorder
-   {
-   public:
+class JitBuilderRecorder {
+ public:
+  typedef uint32_t TypeID;
+  typedef std::map<const void*, TypeID> TypeMapID;
 
-   typedef uint32_t                      TypeID;
-   typedef std::map<const void *,TypeID> TypeMapID;
+  JitBuilderRecorder(const TR::MethodBuilder* mb, const char* fileName);
+  virtual ~JitBuilderRecorder();
 
-   JitBuilderRecorder(const TR::MethodBuilder *mb, const char *fileName);
-   virtual ~JitBuilderRecorder();
+  void setMethodBuilderRecorder(TR::MethodBuilder* mb) { _mb = mb; }
 
-   void setMethodBuilderRecorder(TR::MethodBuilder *mb) {_mb = mb;}
+  /**
+   * @brief Subclasses override these functions to record to different output
+   * formats
+   */
+  virtual void Close();
+  virtual void String(const char* const string) {}
+  virtual void Number(int8_t num) {}
+  virtual void Number(int16_t num) {}
+  virtual void Number(int32_t num) {}
+  virtual void Number(int64_t num) {}
+  virtual void Number(float num) {}
+  virtual void Number(double num) {}
+  virtual void ID(TypeID id) {}
+  virtual void Statement(const char* s) {}
+  virtual void Type(const TR::IlType* type) {}
+  virtual void Value(const TR::IlValue* v) {}
+  virtual void Builder(const TR::MethodBuilder* b) {}
+  virtual void Builder() {}
+  virtual void Location(const void* location) {}
 
-   /**
-    * @brief Subclasses override these functions to record to different output formats
-    */
-   virtual void Close();
-   virtual void String(const char * const string)             { }
-   virtual void Number(int8_t num)                            { }
-   virtual void Number(int16_t num)                           { }
-   virtual void Number(int32_t num)                           { }
-   virtual void Number(int64_t num)                           { }
-   virtual void Number(float num)                             { }
-   virtual void Number(double num)                            { }
-   virtual void ID(TypeID id)                                 { }
-   virtual void Statement(const char *s)                      { }
-   virtual void Type(const TR::IlType *type)                  { }
-   virtual void Value(const TR::IlValue *v)                   { }
-   virtual void Builder(const TR::MethodBuilder *b)           { }
-   virtual void Builder()                                     { }
-   virtual void Location(const void * location)               { }
+  virtual void BeginStatement(const TR::MethodBuilder* b, const char* s);
+  virtual void BeginStatement(const char* s);
+  virtual void EndStatement() {}
 
-   virtual void BeginStatement(const TR::MethodBuilder *b, const char *s);
-   virtual void BeginStatement(const char *s);
-   virtual void EndStatement()                                { }
+  void StoreID(const void* ptr);
+  bool EnsureAvailableID(const void* ptr);
 
-   void StoreID(const void *ptr);
-   bool EnsureAvailableID(const void *ptr);
+ protected:
+  void start();
+  bool knownID(const void* ptr);
+  TypeID lookupID(const void* ptr);
+  void ensureStatementDefined(const char* s);
+  void end();
 
-   protected:
+  TypeID getNewID();
+  TypeID myID();
 
-   void start();
-   bool knownID(const void *ptr);
-   TypeID lookupID(const void *ptr);
-   void ensureStatementDefined(const char *s);
-   void end();
+  const TR::MethodBuilder* _mb;
+  TypeID _nextID;
+  TypeMapID _idMap;
+  uint8_t _idSize;
 
-   TypeID getNewID();
-   TypeID myID();
+  std::fstream _file;
+};
 
-   const TR::MethodBuilder * _mb;
-   TypeID                            _nextID;
-   TypeMapID                         _idMap;
-   uint8_t                           _idSize;
+}  // namespace OMR
 
-   std::fstream _file;
-   
-   };
-
-} // namespace OMR
-
-#endif // !defined(OMR_JITBUILDERRECORDER_INCL)
+#endif  // !defined(OMR_JITBUILDERRECORDER_INCL)

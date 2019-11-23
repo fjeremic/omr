@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "codegen/RegisterPair.hpp"
@@ -29,74 +30,56 @@
 #include "codegen/RegisterPair.hpp"
 #include "infra/List.hpp"
 
-void OMR::RegisterPair::block()
-   {
-   _lowOrder->block();
-   _highOrder->block();
-   }
+void OMR::RegisterPair::block() {
+  _lowOrder->block();
+  _highOrder->block();
+}
 
-void OMR::RegisterPair::unblock()
-   {
-   _lowOrder->unblock();
-   _highOrder->unblock();
-   }
+void OMR::RegisterPair::unblock() {
+  _lowOrder->unblock();
+  _highOrder->unblock();
+}
 
-bool OMR::RegisterPair::usesRegister(TR::Register* reg)
-   {
-   if (self() == reg || _lowOrder == reg || _highOrder == reg )
-      {
-      return true;
-      }
-   else
-      {
-      return false;
-      }
-   }
+bool OMR::RegisterPair::usesRegister(TR::Register* reg) {
+  if (self() == reg || _lowOrder == reg || _highOrder == reg) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-TR::Register *
-OMR::RegisterPair::getLowOrder()
-   {
-   return _lowOrder;
-   }
+TR::Register* OMR::RegisterPair::getLowOrder() {
+  return _lowOrder;
+}
 
-TR::Register *
-OMR::RegisterPair::setLowOrder(TR::Register *lo, TR::CodeGenerator *codeGen)
-   {
-   if (!lo->isLive() && codeGen->getLiveRegisters(lo->getKind())!=NULL)
-      codeGen->getLiveRegisters(lo->getKind())->addRegister(lo);
+TR::Register* OMR::RegisterPair::setLowOrder(TR::Register* lo,
+                                             TR::CodeGenerator* codeGen) {
+  if (!lo->isLive() && codeGen->getLiveRegisters(lo->getKind()) != NULL)
+    codeGen->getLiveRegisters(lo->getKind())->addRegister(lo);
 
-   return (_lowOrder = lo);
-   }
+  return (_lowOrder = lo);
+}
 
-TR::Register *
-OMR::RegisterPair::getHighOrder()
-   {
-   return _highOrder;
-   }
+TR::Register* OMR::RegisterPair::getHighOrder() {
+  return _highOrder;
+}
 
-TR::Register *
-OMR::RegisterPair::setHighOrder(TR::Register *ho, TR::CodeGenerator *codeGen)
-   {
-   if (!ho->isLive() && codeGen->getLiveRegisters(ho->getKind())!=NULL)
-      codeGen->getLiveRegisters(ho->getKind())->addRegister(ho);
+TR::Register* OMR::RegisterPair::setHighOrder(TR::Register* ho,
+                                              TR::CodeGenerator* codeGen) {
+  if (!ho->isLive() && codeGen->getLiveRegisters(ho->getKind()) != NULL)
+    codeGen->getLiveRegisters(ho->getKind())->addRegister(ho);
 
-   return (_highOrder = ho);
-   }
+  return (_highOrder = ho);
+}
 
-TR::Register *
-OMR::RegisterPair::getRegister()
-   {
-   return NULL;
-   }
+TR::Register* OMR::RegisterPair::getRegister() {
+  return NULL;
+}
 
-TR::RegisterPair *
-OMR::RegisterPair::getRegisterPair()
-   {
-   return self();
-   }
+TR::RegisterPair* OMR::RegisterPair::getRegisterPair() {
+  return self();
+}
 
-TR::RegisterPair *
-OMR::RegisterPair::self()
-   {
-   return static_cast<TR::RegisterPair*>(this);
-   }
+TR::RegisterPair* OMR::RegisterPair::self() {
+  return static_cast<TR::RegisterPair*>(this);
+}

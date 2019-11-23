@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef PPCCRBACKINGSTORE_INCL
@@ -31,30 +32,28 @@ class TR_PPCCRBackingStore;
 
 // Pseudo-safe downcast function, used exclusively for cr spill/restore
 //
-inline TR_PPCCRBackingStore *toPPCCRBackingStore(TR_BackingStore *r)
-   {
-   return (TR_PPCCRBackingStore *)r;
-   }
+inline TR_PPCCRBackingStore* toPPCCRBackingStore(TR_BackingStore* r) {
+  return (TR_PPCCRBackingStore*)r;
+}
 
-class TR_PPCCRBackingStore: public TR_BackingStore
-   {
-   private:
+class TR_PPCCRBackingStore : public TR_BackingStore {
+ private:
+  TR_BackingStore* original;
+  uint8_t ccrFieldIndex;
 
-   TR_BackingStore *original;
-   uint8_t ccrFieldIndex;
+ public:
+  TR_PPCCRBackingStore();
 
-   public:
+  TR_PPCCRBackingStore(TR::Compilation* comp, TR_BackingStore* orig)
+      : TR_BackingStore(comp->getSymRefTab(),
+                        orig->getSymbolReference()->getSymbol(),
+                        orig->getSymbolReference()->getOffset()),
+        original(orig) {}
 
-   TR_PPCCRBackingStore();
-
-   TR_PPCCRBackingStore(TR::Compilation * comp, TR_BackingStore *orig)
-     : TR_BackingStore(comp->getSymRefTab(), orig->getSymbolReference()->getSymbol(), orig->getSymbolReference()->getOffset()), original(orig)
-      {}
-
-   uint8_t getCcrFieldIndex() {return ccrFieldIndex;}
-   uint8_t setCcrFieldIndex(uint8_t cfi) {return (ccrFieldIndex=cfi);}
-   TR_BackingStore *getOriginal() {return original;}
-   TR_BackingStore *setOriginal(TR_BackingStore *o) {return (original = o);}
-   };
+  uint8_t getCcrFieldIndex() { return ccrFieldIndex; }
+  uint8_t setCcrFieldIndex(uint8_t cfi) { return (ccrFieldIndex = cfi); }
+  TR_BackingStore* getOriginal() { return original; }
+  TR_BackingStore* setOriginal(TR_BackingStore* o) { return (original = o); }
+};
 
 #endif

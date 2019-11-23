@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(HEAPMEMORYSUBSPACEITERATOR_HPP_)
@@ -32,30 +33,25 @@ class MM_MemorySubSpace;
 /**
  * Iterate through all visible memory subspaces in the system.
  * Provides a preordered walk of all memory subspaces for a MM_Heap.
- * 
+ *
  * @ingroup GC_Base
- */	
-class MM_HeapMemorySubSpaceIterator
-{
-private:
-	MM_MemorySpace *_memorySpace;
-	MM_MemorySubSpace *_memorySubSpace;
-	uintptr_t _state;
+ */
+class MM_HeapMemorySubSpaceIterator {
+ private:
+  MM_MemorySpace* _memorySpace;
+  MM_MemorySubSpace* _memorySubSpace;
+  uintptr_t _state;
 
-	void reset(MM_Heap *heap);
+  void reset(MM_Heap* heap);
 
-protected:
-public:
-	MM_MemorySubSpace *nextSubSpace();
+ protected:
+ public:
+  MM_MemorySubSpace* nextSubSpace();
 
-	MM_HeapMemorySubSpaceIterator(MM_Heap *heap) :
-		_memorySpace(NULL),
-		_memorySubSpace(NULL),
-		_state(0)
-	{
-		reset(heap);
-	}
-		
+  MM_HeapMemorySubSpaceIterator(MM_Heap* heap)
+      : _memorySpace(NULL), _memorySubSpace(NULL), _state(0) {
+    reset(heap);
+  }
 };
 
 #endif /* HEAPMEMORYSUBSPACEITERATOR_HPP_ */

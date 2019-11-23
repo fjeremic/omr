@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_REGISTER_ITERATOR_INCL
@@ -24,11 +25,14 @@
 
 #include "env/TRMemory.hpp"
 
-namespace TR { class Machine; }
-namespace TR { class Register; }
+namespace TR {
+class Machine;
+}
+namespace TR {
+class Register;
+}
 
-namespace TR
-{
+namespace TR {
 
 /**
  * \brief
@@ -36,49 +40,51 @@ namespace TR
  * to traverse the platform-specific list of a certain kind of registers (GPR,
  * FPR, VRF, etc.)
  */
-class RegisterIterator
-   {
-   public:
-   TR_ALLOC(TR_Memory::RegisterIterator)
+class RegisterIterator {
+ public:
+  TR_ALLOC(TR_Memory::RegisterIterator)
 
-   /**
-    * @brief
-    * Constructor of the register iterator. The iterator traverses registers
-    * from \p firstRegIndex till \p lastRegIndex.
-    *
-    * @param[in] machine : an instance of the target machine representation
-    * @param[in] firstRegIndex : the index of the first available register
-    * @param[in] lastRegIndex : the index of the last available register
-    */
-   RegisterIterator(TR::Machine *machine, int32_t firstRegIndex, int32_t lastRegIndex):
-      _machine(machine),
-      _firstRegIndex(firstRegIndex),
-      _lastRegIndex(lastRegIndex),
-      _cursor(firstRegIndex)
-      {};
+  /**
+   * @brief
+   * Constructor of the register iterator. The iterator traverses registers
+   * from \p firstRegIndex till \p lastRegIndex.
+   *
+   * @param[in] machine : an instance of the target machine representation
+   * @param[in] firstRegIndex : the index of the first available register
+   * @param[in] lastRegIndex : the index of the last available register
+   */
+  RegisterIterator(TR::Machine* machine,
+                   int32_t firstRegIndex,
+                   int32_t lastRegIndex)
+      : _machine(machine),
+        _firstRegIndex(firstRegIndex),
+        _lastRegIndex(lastRegIndex),
+        _cursor(firstRegIndex){};
 
-   /**
-    * @return the pointer to the first available register
-    */
-   TR::Register *getFirst();
+  /**
+   * @return the pointer to the first available register
+   */
+  TR::Register* getFirst();
 
-   /**
-    * @return the pointer to the current (from the iterator's point of view) register
-    */
-   TR::Register *getCurrent();
+  /**
+   * @return the pointer to the current (from the iterator's point of view)
+   * register
+   */
+  TR::Register* getCurrent();
 
-   /**
-    * @return the pointer to the next (from the iterator's point of view) register
-    */
-   TR::Register *getNext();
+  /**
+   * @return the pointer to the next (from the iterator's point of view)
+   * register
+   */
+  TR::Register* getNext();
 
-   private:
-   TR::Machine *_machine;
-   int32_t _firstRegIndex;
-   int32_t _lastRegIndex;
-   int32_t _cursor;
-   };
+ private:
+  TR::Machine* _machine;
+  int32_t _firstRegIndex;
+  int32_t _lastRegIndex;
+  int32_t _cursor;
+};
 
-}
+}  // namespace TR
 
 #endif

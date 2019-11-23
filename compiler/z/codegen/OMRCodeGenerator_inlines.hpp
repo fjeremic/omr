@@ -16,19 +16,24 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_Z_CODEGENERATOR_INLINES_INCL
 #define OMR_Z_CODEGENERATOR_INLINES_INCL
 
-#include "compiler/codegen/OMRCodeGenerator_inlines.hpp"
 #include "codegen/OMRCodeGenerator.hpp"
+#include "compiler/codegen/OMRCodeGenerator_inlines.hpp"
 
 template <class TR_AliasSetInterface>
-bool OMR::Z::CodeGenerator::loadAndStoreMayOverlap(::TR::Node *store, size_t storeSize, ::TR::Node *load, size_t loadSize, TR_AliasSetInterface &storeAliases)
-   {
-   return storeAliases.contains(load->getSymbolReference(), self()->comp());
-   }
+bool OMR::Z::CodeGenerator::loadAndStoreMayOverlap(
+    ::TR::Node* store,
+    size_t storeSize,
+    ::TR::Node* load,
+    size_t loadSize,
+    TR_AliasSetInterface& storeAliases) {
+  return storeAliases.contains(load->getSymbolReference(), self()->comp());
+}
 
-#endif // OMR_Z_CODEGENERATOR_INLINES_INCL
+#endif  // OMR_Z_CODEGENERATOR_INLINES_INCL

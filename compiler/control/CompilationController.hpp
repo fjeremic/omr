@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef COMPILATIONCONTROLLER_INCL
@@ -26,20 +27,21 @@
 #include "env/TRMemory.hpp"
 
 class TR_MethodEvent;
-namespace TR { class Recompilation; }
+namespace TR {
+class Recompilation;
+}
 
-namespace TR
-{
+namespace TR {
 
-class DefaultCompilationStrategy : public TR::CompilationStrategy
-   {
-   public:
-   TR_PERSISTENT_ALLOC(TR_Memory::PersistentInfo);
-   DefaultCompilationStrategy() {}
-   TR_OptimizationPlan *processEvent(TR_MethodEvent *event, bool *newPlanCreated);
-   void shutdown() {}
-   virtual bool enableSwitchToProfiling() { return true; }
-   };
+class DefaultCompilationStrategy : public TR::CompilationStrategy {
+ public:
+  TR_PERSISTENT_ALLOC(TR_Memory::PersistentInfo);
+  DefaultCompilationStrategy() {}
+  TR_OptimizationPlan* processEvent(TR_MethodEvent* event,
+                                    bool* newPlanCreated);
+  void shutdown() {}
+  virtual bool enableSwitchToProfiling() { return true; }
+};
 
-} // namesapce TR
+}  // namespace TR
 #endif

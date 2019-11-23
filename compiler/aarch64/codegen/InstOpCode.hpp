@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_ARM64_INSTOPCODE_INCL
@@ -24,23 +25,20 @@
 
 #include "codegen/OMRInstOpCode.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class InstOpCode: public OMR::InstOpCodeConnector
-   {
-   public:
+class InstOpCode : public OMR::InstOpCodeConnector {
+ public:
+  /**
+   * @brief Constructor
+   */
+  InstOpCode() : OMR::InstOpCodeConnector(bad) {}
+  /**
+   * @brief Constructor
+   * @param[in] m : mnemonic
+   */
+  InstOpCode(TR::InstOpCode::Mnemonic m) : OMR::InstOpCodeConnector(m) {}
+};
 
-   /**
-    * @brief Constructor
-    */
-   InstOpCode() : OMR::InstOpCodeConnector(bad) {}
-   /**
-    * @brief Constructor
-    * @param[in] m : mnemonic
-    */
-   InstOpCode(TR::InstOpCode::Mnemonic m) : OMR::InstOpCodeConnector(m) {}
-   };
-
-}
+}  // namespace TR
 #endif

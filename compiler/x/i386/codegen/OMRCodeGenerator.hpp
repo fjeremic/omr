@@ -16,19 +16,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_I386_CODEGENERATOR_INCL
 #define OMR_I386_CODEGENERATOR_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_CODEGENERATOR_CONNECTOR
 #define OMR_CODEGENERATOR_CONNECTOR
-namespace OMR { namespace X86 { namespace I386 { class CodeGenerator; } } }
-namespace OMR { typedef OMR::X86::I386::CodeGenerator CodeGeneratorConnector; }
+namespace OMR {
+namespace X86 {
+namespace I386 {
+class CodeGenerator;
+}
+}  // namespace X86
+}  // namespace OMR
+namespace OMR {
+typedef OMR::X86::I386::CodeGenerator CodeGeneratorConnector;
+}
 #else
 #error OMR::X86::I386::CodeGenerator expected to be a primary connector, but a OMR connector is already defined
 #endif
@@ -38,44 +48,47 @@ namespace OMR { typedef OMR::X86::I386::CodeGenerator CodeGeneratorConnector; }
 #include "codegen/RegisterConstants.hpp"
 
 class TR_RegisterCandidate;
-namespace TR { class Block; }
-namespace TR { class Node; }
-template <class T> class TR_LinkHead;
+namespace TR {
+class Block;
+}
+namespace TR {
+class Node;
+}
+template <class T>
+class TR_LinkHead;
 
-namespace OMR
-{
+namespace OMR {
 
-namespace X86
-{
+namespace X86 {
 
-namespace I386
-{
+namespace I386 {
 
-class OMR_EXTENSIBLE CodeGenerator : public OMR::X86::CodeGenerator
-   {
+class OMR_EXTENSIBLE CodeGenerator : public OMR::X86::CodeGenerator {
+ public:
+  CodeGenerator();
 
-   public:
+  virtual TR::Register* longClobberEvaluate(TR::Node* node);
 
-   CodeGenerator();
+  TR_GlobalRegisterNumber pickRegister(
+      TR_RegisterCandidate*,
+      TR::Block**,
+      TR_BitVector&,
+      TR_GlobalRegisterNumber&,
+      TR_LinkHead<TR_RegisterCandidate>* candidates);
 
-   virtual TR::Register *longClobberEvaluate(TR::Node *node);
+  using OMR::X86::CodeGenerator::getMaximumNumberOfGPRsAllowedAcrossEdge;
+  int32_t getMaximumNumberOfGPRsAllowedAcrossEdge(TR::Node*);
 
-   TR_GlobalRegisterNumber pickRegister(TR_RegisterCandidate *, TR::Block * *, TR_BitVector &, TR_GlobalRegisterNumber &, TR_LinkHead<TR_RegisterCandidate> *candidates);
+  bool internalPointerSupportImplemented() { return true; }
+  uint32_t getRegisterMapInfoBitsMask() { return 0x00ff0000; }
 
-   using OMR::X86::CodeGenerator::getMaximumNumberOfGPRsAllowedAcrossEdge;
-   int32_t getMaximumNumberOfGPRsAllowedAcrossEdge(TR::Node *);
+  bool codegenMulDecomposition(int64_t multiplier);
+};
 
-   bool internalPointerSupportImplemented() {return true;}
-   uint32_t getRegisterMapInfoBitsMask() {return 0x00ff0000;}
+}  // namespace I386
 
-   bool codegenMulDecomposition(int64_t multiplier);
+}  // namespace X86
 
-   };
-
-} // namespace I386
-
-} // namespace X86
-
-} // namespace OMR
+}  // namespace OMR
 
 #endif

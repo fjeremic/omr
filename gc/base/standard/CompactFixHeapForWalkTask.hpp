@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -41,25 +42,25 @@ class MM_EnvironmentBase;
  * @todo Provide class documentation
  * @ingroup GC_Modron_Standard
  */
-class MM_CompactFixHeapForWalkTask : public MM_ParallelTask
-{
-private:
-	MM_CompactScheme *_compactScheme;
+class MM_CompactFixHeapForWalkTask : public MM_ParallelTask {
+ private:
+  MM_CompactScheme* _compactScheme;
 
-public:
-	virtual uintptr_t getVMStateID() { return OMRVMSTATE_GC_COMPACT_FIX_HEAP_FOR_WALK; };
-	
-	virtual void run(MM_EnvironmentBase *env);
+ public:
+  virtual uintptr_t getVMStateID() {
+    return OMRVMSTATE_GC_COMPACT_FIX_HEAP_FOR_WALK;
+  };
 
-	MM_CompactFixHeapForWalkTask(MM_EnvironmentBase *env, MM_Dispatcher *dispatcher, MM_CompactScheme *compactScheme) :
-		MM_ParallelTask(env, dispatcher),
-		_compactScheme(compactScheme)
-	{
-		_typeId = __FUNCTION__;
-	}
+  virtual void run(MM_EnvironmentBase* env);
+
+  MM_CompactFixHeapForWalkTask(MM_EnvironmentBase* env,
+                               MM_Dispatcher* dispatcher,
+                               MM_CompactScheme* compactScheme)
+      : MM_ParallelTask(env, dispatcher), _compactScheme(compactScheme) {
+    _typeId = __FUNCTION__;
+  }
 };
 
 #endif /* OMR_GC_MODRON_COMPACTION */
 
 #endif /* COMPACTFIXHEAPFORWALKTASK_HPP_ */
-

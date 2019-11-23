@@ -17,12 +17,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
- * Define the constants and structures used by the generated trace code to create
- * trace points for each module.
+ * Define the constants and structures used by the generated trace code to
+ * create trace points for each module.
  */
 #ifndef _IBM_UTE_MODULE_H
 #define _IBM_UTE_MODULE_H
@@ -31,7 +32,7 @@
  * @ddr_namespace: map_to_type=UteModuleConstants
  */
 
-#define UTE_VERSION_1_1                0x7E000101
+#define UTE_VERSION_1_1 0x7E000101
 
 #include <stdio.h>
 
@@ -41,12 +42,11 @@
 
 #include "omrcomp.h"
 
-
 #if defined(OMR_RAS_TDF_TRACE)
 #define UT_TRACE_ENABLED_IN_BUILD
 #endif /* defined(OMR_RAS_TDF_TRACE) */
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -64,13 +64,13 @@ extern "C" {
  * =============================================================================
  */
 
-struct  UtServerInterface;
+struct UtServerInterface;
 typedef struct UtServerInterface UtServerInterface;
 
-struct  UtClientInterface;
-typedef struct  UtClientInterface UtClientInterface;
+struct UtClientInterface;
+typedef struct UtClientInterface UtClientInterface;
 
-struct  UtModuleInterface;
+struct UtModuleInterface;
 typedef struct UtModuleInterface UtModuleInterface;
 
 /*
@@ -80,24 +80,25 @@ typedef struct UtModuleInterface UtModuleInterface;
  */
 
 /*
- * UtClientInterface is obsolete. It is included only to maintain binary compatibility
- * with existing binaries that access UtInterface.module (e.g. class library).
+ * UtClientInterface is obsolete. It is included only to maintain binary
+ * compatibility with existing binaries that access UtInterface.module (e.g.
+ * class library).
  */
-typedef struct  UtInterface {
-	UtServerInterface *server;
-	UtClientInterface *client_unused;
-	UtModuleInterface *module;
+typedef struct UtInterface {
+  UtServerInterface* server;
+  UtClientInterface* client_unused;
+  UtModuleInterface* module;
 } UtInterface;
 
 typedef struct UtGroupDetails {
-	char                  *groupName;
-	int32_t                 count;
-	int32_t                *tpids;
-	struct UtGroupDetails *next;
+  char* groupName;
+  int32_t count;
+  int32_t* tpids;
+  struct UtGroupDetails* next;
 } UtGroupDetails;
 
 typedef struct UtTraceVersionInfo {
-	int32_t								 		traceVersion;
+  int32_t traceVersion;
 } UtTraceVersionInfo;
 
 /*
@@ -107,28 +108,30 @@ typedef struct UtTraceVersionInfo {
  */
 
 typedef struct UtModuleInfo {
-	char              	*name;
-	int32_t             	namelength;
-	int32_t             	count;
-	int32_t             	moduleId;
-	unsigned char     	*active;
-	UtModuleInterface 	*intf;
-	char              	*properties;
-	UtTraceVersionInfo	*traceVersionInfo;
-	char              	*formatStringsFileName;
-	unsigned char     	*levels;
-	UtGroupDetails    	*groupDetails;
-	struct UtModuleInfo	*next;
-	struct UtModuleInfo	*containerModule;
-	uint32_t				referenceCount;
-	/* Fields added at version 8. Legacy binaries may use the interface
-	 * so we must check the traceVersionInfo structure before
-	 */
-	int32_t				isAuxiliary;
+  char* name;
+  int32_t namelength;
+  int32_t count;
+  int32_t moduleId;
+  unsigned char* active;
+  UtModuleInterface* intf;
+  char* properties;
+  UtTraceVersionInfo* traceVersionInfo;
+  char* formatStringsFileName;
+  unsigned char* levels;
+  UtGroupDetails* groupDetails;
+  struct UtModuleInfo* next;
+  struct UtModuleInfo* containerModule;
+  uint32_t referenceCount;
+  /* Fields added at version 8. Legacy binaries may use the interface
+   * so we must check the traceVersionInfo structure before
+   */
+  int32_t isAuxiliary;
 } UtModuleInfo;
 
 #define TRACE_VERSION_WITH_AUXILIARY 8
-#define MODULE_IS_AUXILIARY(x) ( x->traceVersionInfo->traceVersion >= TRACE_VERSION_WITH_AUXILIARY && x->isAuxiliary )
+#define MODULE_IS_AUXILIARY(x)                                          \
+  (x->traceVersionInfo->traceVersion >= TRACE_VERSION_WITH_AUXILIARY && \
+   x->isAuxiliary)
 
 /*
  * =============================================================================
@@ -136,15 +139,27 @@ typedef struct UtModuleInfo {
  * =============================================================================
  */
 
-struct  UtModuleInterface {
-	void (*Trace)(void *env, UtModuleInfo *modInfo, uint32_t traceId, const char *spec, ...);
-	void (*TraceMem)(void *env, UtModuleInfo *modInfo, uint32_t traceId, uintptr_t length, void *mem);
-	void (*TraceState)(void *env, UtModuleInfo *modInfo, uint32_t traceId, const char *, ...);
-	void (*TraceInit)(void *env, UtModuleInfo *mod);
-	void (*TraceTerm)(void *env, UtModuleInfo *mod);
+struct UtModuleInterface {
+  void (*Trace)(void* env,
+                UtModuleInfo* modInfo,
+                uint32_t traceId,
+                const char* spec,
+                ...);
+  void (*TraceMem)(void* env,
+                   UtModuleInfo* modInfo,
+                   uint32_t traceId,
+                   uintptr_t length,
+                   void* mem);
+  void (*TraceState)(void* env,
+                     UtModuleInfo* modInfo,
+                     uint32_t traceId,
+                     const char*,
+                     ...);
+  void (*TraceInit)(void* env, UtModuleInfo* mod);
+  void (*TraceTerm)(void* env, UtModuleInfo* mod);
 };
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

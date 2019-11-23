@@ -17,12 +17,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(VERBOSEWRITTERHOOK_HPP_)
 #define VERBOSEWRITTERHOOK_HPP_
- 
+
 #include "omrcfg.h"
 
 #include "VerboseWriter.hpp"
@@ -30,25 +31,28 @@
 /**
  * Ouptut agent which directs verbosegc output to a tracepoint.
  */
-class MM_VerboseWriterHook : public MM_VerboseWriter
-{
-private:
+class MM_VerboseWriterHook : public MM_VerboseWriter {
+ private:
+ protected:
+  MM_VerboseWriterHook(MM_EnvironmentBase* env);
 
-protected:
-	MM_VerboseWriterHook(MM_EnvironmentBase *env);
+  virtual bool initialize(MM_EnvironmentBase* env);
 
-	virtual bool initialize(MM_EnvironmentBase *env);
-	
-public:
-	static MM_VerboseWriterHook *newInstance(MM_EnvironmentBase *env);
+ public:
+  static MM_VerboseWriterHook* newInstance(MM_EnvironmentBase* env);
 
-	virtual bool reconfigure(MM_EnvironmentBase *env, const char *filename, uintptr_t fileCount, uintptr_t iterations) { return true; };
-	
-	virtual void endOfCycle(MM_EnvironmentBase *env);
-	
-	virtual void closeStream(MM_EnvironmentBase *env);
-	
-	virtual void outputString(MM_EnvironmentBase *env, const char* string);
+  virtual bool reconfigure(MM_EnvironmentBase* env,
+                           const char* filename,
+                           uintptr_t fileCount,
+                           uintptr_t iterations) {
+    return true;
+  };
+
+  virtual void endOfCycle(MM_EnvironmentBase* env);
+
+  virtual void closeStream(MM_EnvironmentBase* env);
+
+  virtual void outputString(MM_EnvironmentBase* env, const char* string);
 };
 
 #endif /* VERBOSEWRITTERHOOK_HPP_ */

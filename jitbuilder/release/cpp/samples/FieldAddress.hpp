@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef FIELDADDRESS_INCL
@@ -25,39 +26,35 @@
 
 #include "JitBuilder.hpp"
 
-struct Struct
-   {
-   uint16_t f1;
-   uint8_t f2;
-   };
+struct Struct {
+  uint16_t f1;
+  uint8_t f2;
+};
 
-union Union
-   {
-   uint16_t f1;
-   uint8_t f2;
-   };
+union Union {
+  uint16_t f1;
+  uint8_t f2;
+};
 
-typedef uint8_t* (GetStructFieldAddressFunction)(Struct*);
-typedef uint8_t* (GetUnionFieldAddressFunction)(Union*);
+typedef uint8_t*(GetStructFieldAddressFunction)(Struct*);
+typedef uint8_t*(GetUnionFieldAddressFunction)(Union*);
 
-class GetStructFieldAddressBuilder : public OMR::JitBuilder::MethodBuilder
-   {
-   private:
-   OMR::JitBuilder::IlType *pStructType;
+class GetStructFieldAddressBuilder : public OMR::JitBuilder::MethodBuilder {
+ private:
+  OMR::JitBuilder::IlType* pStructType;
 
-   public:
-   GetStructFieldAddressBuilder(OMR::JitBuilder::TypeDictionary *);
-   virtual bool buildIL();
-   };
+ public:
+  GetStructFieldAddressBuilder(OMR::JitBuilder::TypeDictionary*);
+  virtual bool buildIL();
+};
 
-class GetUnionFieldAddressBuilder : public OMR::JitBuilder::MethodBuilder
-   {
-   private:
-   OMR::JitBuilder::IlType *pUnionType;
+class GetUnionFieldAddressBuilder : public OMR::JitBuilder::MethodBuilder {
+ private:
+  OMR::JitBuilder::IlType* pUnionType;
 
-   public:
-   GetUnionFieldAddressBuilder(OMR::JitBuilder::TypeDictionary *);
-   virtual bool buildIL();
-   };
+ public:
+  GetUnionFieldAddressBuilder(OMR::JitBuilder::TypeDictionary*);
+  virtual bool buildIL();
+};
 
-#endif // FIELDADDRESS_INCL
+#endif  // FIELDADDRESS_INCL

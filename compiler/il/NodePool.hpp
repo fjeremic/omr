@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef NODEPOOL_INCL
@@ -26,38 +27,41 @@
 #include "il/Node.hpp"
 #include "il/NodeUtils.hpp"
 
-namespace TR { class SymbolReference; }
-namespace TR { class Compilation; }
-template <class T> class TR_Array;
+namespace TR {
+class SymbolReference;
+}
+namespace TR {
+class Compilation;
+}
+template <class T>
+class TR_Array;
 
 namespace TR {
 
-class NodePool
-   {
-   public:
+class NodePool {
+ public:
+  TR_ALLOC(TR_Memory::Compilation)
+  NodePool(TR::Compilation* comp, const TR::Allocator& allocator);
 
-   TR_ALLOC(TR_Memory::Compilation)
-   NodePool(TR::Compilation * comp, const TR::Allocator &allocator);
+  TR::Node* allocate();
+  bool deallocate(TR::Node* node);
+  bool removeDeadNodes();
+  void enableNodeGC() { _disableGC = false; }
+  void disableNodeGC() { _disableGC = true; }
+  ncount_t getLastGlobalIndex() { return _globalIndex; }
+  ncount_t getMaxIndex() { return _globalIndex; }
+  TR::Compilation* comp() { return _comp; }
 
-   TR::Node * allocate();
-   bool      deallocate(TR::Node * node);
-   bool      removeDeadNodes();
-   void      enableNodeGC()  { _disableGC = false; }
-   void      disableNodeGC() { _disableGC = true; }
-   ncount_t  getLastGlobalIndex()     { return _globalIndex; }
-   ncount_t  getMaxIndex()           { return _globalIndex; }
-   TR::Compilation * comp() { return _comp; }
+  void cleanUp();
 
-   void cleanUp();
+ private:
+  TR::Compilation* _comp;
+  bool _disableGC;
+  ncount_t _globalIndex;
 
-   private:
-   TR::Compilation *     _comp;
-   bool                  _disableGC;
-   ncount_t              _globalIndex;
+  TR::Region _nodeRegion;
+};
 
-   TR::Region            _nodeRegion;
-   };
-
-}
+}  // namespace TR
 
 #endif

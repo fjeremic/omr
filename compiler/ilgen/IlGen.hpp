@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef IlGen_hpp
@@ -24,21 +25,24 @@
 
 #include <stdint.h>
 
-namespace TR { class Block; }
-namespace TR { class ResolvedMethodSymbol;  } 
+namespace TR {
+class Block;
+}
+namespace TR {
+class ResolvedMethodSymbol;
+}
 
-class TR_IlGenerator
-   {
-   public:
-   virtual bool genIL() = 0; 
-   virtual int32_t currentByteCodeIndex() = 0;
-   virtual TR::Block *getCurrentBlock() = 0;
-   virtual int32_t currentCallSiteIndex() { return -1; }
-   virtual void setCallerMethod(TR::ResolvedMethodSymbol * caller) {}
-   virtual TR::ResolvedMethodSymbol *methodSymbol() const = 0;
+class TR_IlGenerator {
+ public:
+  virtual bool genIL() = 0;
+  virtual int32_t currentByteCodeIndex() = 0;
+  virtual TR::Block* getCurrentBlock() = 0;
+  virtual int32_t currentCallSiteIndex() { return -1; }
+  virtual void setCallerMethod(TR::ResolvedMethodSymbol* caller) {}
+  virtual TR::ResolvedMethodSymbol* methodSymbol() const = 0;
 
-   // contributes to eliminate warnings in JitBuilder builds
-   virtual ~TR_IlGenerator() { }
-   };
+  // contributes to eliminate warnings in JitBuilder builds
+  virtual ~TR_IlGenerator() {}
+};
 
 #endif

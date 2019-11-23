@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef COLLECTORLANGUAGEINTERFACE_HPP_
@@ -39,30 +40,19 @@ class MM_MarkMap;
 class MM_MemorySubSpaceSemiSpace;
 
 /**
- * Class representing a collector language interface. This defines the API between the OMR
- * functionality and the language being implemented.
+ * Class representing a collector language interface. This defines the API
+ * between the OMR functionality and the language being implemented.
  */
 class MM_CollectorLanguageInterface : public MM_BaseVirtual {
+ private:
+ protected:
+ public:
+ private:
+ protected:
+ public:
+  virtual void kill(MM_EnvironmentBase* env) = 0;
 
-private:
-
-protected:
-
-public:
-
-private:
-
-protected:
-
-public:
-
-	virtual void kill(MM_EnvironmentBase *env) = 0;
-
-	MM_CollectorLanguageInterface()
-		: MM_BaseVirtual()
-	{
-		_typeId = __FUNCTION__;
-	}
+  MM_CollectorLanguageInterface() : MM_BaseVirtual() { _typeId = __FUNCTION__; }
 };
 
 #endif /* COLLECTORLANGUAGEINTERFACE_HPP_ */

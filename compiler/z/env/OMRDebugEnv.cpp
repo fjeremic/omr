@@ -16,28 +16,24 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#pragma csect(CODE,"OMRZDebugEnv#C")
-#pragma csect(STATIC,"OMRZDebugEnv#S")
-#pragma csect(TEST,"OMRZDebugEnv#T")
-
+#pragma csect(CODE, "OMRZDebugEnv#C")
+#pragma csect(STATIC, "OMRZDebugEnv#S")
+#pragma csect(TEST, "OMRZDebugEnv#T")
 
 #include "env/DebugEnv.hpp"
 
-OMR::Z::DebugEnv::DebugEnv() :
-      OMR::DebugEnv()
-   {
-
+OMR::Z::DebugEnv::DebugEnv() : OMR::DebugEnv() {
 #ifdef TR_TARGET_64BIT
-   _hexAddressWidthInChars = 16;
-   _hexAddressFieldWidthInChars = 18;
-   _codeByteColumnWidth = 28;
+  _hexAddressWidthInChars = 16;
+  _hexAddressFieldWidthInChars = 18;
+  _codeByteColumnWidth = 28;
 #else
-   _hexAddressWidthInChars = 8;
-   _hexAddressFieldWidthInChars = 10;
-   _codeByteColumnWidth = 28;
+  _hexAddressWidthInChars = 8;
+  _hexAddressFieldWidthInChars = 10;
+  _codeByteColumnWidth = 28;
 #endif
-
-   }
+}

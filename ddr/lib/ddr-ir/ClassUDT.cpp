@@ -16,44 +16,33 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ddr/ir/ClassUDT.hpp"
 
 ClassUDT::ClassUDT(size_t size, bool isClass, unsigned int lineNumber)
-	: ClassType(size, lineNumber), _superClass(NULL), _isClass(isClass)
-{
-}
+    : ClassType(size, lineNumber), _superClass(NULL), _isClass(isClass) {}
 
-ClassUDT::~ClassUDT()
-{
-}
+ClassUDT::~ClassUDT() {}
 
-const string &
-ClassUDT::getSymbolKindName() const
-{
-	static const string classKind("class");
-	static const string structKind("struct");
+const string& ClassUDT::getSymbolKindName() const {
+  static const string classKind("class");
+  static const string structKind("struct");
 
-	return _isClass ? classKind : structKind;
+  return _isClass ? classKind : structKind;
 }
 
 DDR_RC
-ClassUDT::acceptVisitor(const TypeVisitor &visitor)
-{
-	return visitor.visitClass(this);
+ClassUDT::acceptVisitor(const TypeVisitor& visitor) {
+  return visitor.visitClass(this);
 }
 
-bool
-ClassUDT::operator==(const Type & rhs) const
-{
-	return rhs.compareToClass(*this);
+bool ClassUDT::operator==(const Type& rhs) const {
+  return rhs.compareToClass(*this);
 }
 
-bool
-ClassUDT::compareToClass(const ClassUDT &other) const
-{
-	return compareToClasstype(other)
-		&& (*_superClass == *other._superClass);
+bool ClassUDT::compareToClass(const ClassUDT& other) const {
+  return compareToClasstype(other) && (*_superClass == *other._superClass);
 }

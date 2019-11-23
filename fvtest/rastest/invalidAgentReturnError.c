@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omragent.h"
@@ -25,14 +26,14 @@
  * Invalid Agent - return error
  */
 
-omr_error_t
-OMRAgent_OnLoad(OMR_TI const *ti, OMR_VM *vm, char const *options, OMR_AgentCallbacks *agentCallbacks, ...)
-{
-	return OMR_ERROR_OUT_OF_NATIVE_MEMORY;
+omr_error_t OMRAgent_OnLoad(OMR_TI const* ti,
+                            OMR_VM* vm,
+                            char const* options,
+                            OMR_AgentCallbacks* agentCallbacks,
+                            ...) {
+  return OMR_ERROR_OUT_OF_NATIVE_MEMORY;
 }
 
-omr_error_t
-OMRAgent_OnUnload(OMR_TI const *ti, OMR_VM *vm)
-{
-	return OMR_ERROR_ILLEGAL_ARGUMENT;
+omr_error_t OMRAgent_OnUnload(OMR_TI const* ti, OMR_VM* vm) {
+  return OMR_ERROR_ILLEGAL_ARGUMENT;
 }

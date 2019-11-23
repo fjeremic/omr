@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(WORKPACKETSSEGREGATED_HPP_)
@@ -33,40 +34,34 @@ class MM_EnvironmentBase;
  * @todo Provide class documentation
  * @ingroup GC_Modron_Standard
  */
-class MM_WorkPacketsSegregated : public MM_WorkPackets
-{
-/*
- * Data members
- */
-private:
+class MM_WorkPacketsSegregated : public MM_WorkPackets {
+  /*
+   * Data members
+   */
+ private:
+ protected:
+ public:
+  /*
+   * Function members
+   */
+ private:
+ protected:
+  virtual MM_WorkPacketOverflow* createOverflowHandler(
+      MM_EnvironmentBase* env,
+      MM_WorkPackets* workPackets);
 
-protected:
+ public:
+  static MM_WorkPacketsSegregated* newInstance(MM_EnvironmentBase* env);
 
-public:
-
-/*
- * Function members
- */
-private:
-
-protected:
-	virtual MM_WorkPacketOverflow *createOverflowHandler(MM_EnvironmentBase *env, MM_WorkPackets *workPackets);
-
-public:
-	static MM_WorkPacketsSegregated  *newInstance(MM_EnvironmentBase *env);
-
-	/**
-	 * Create a WorkPackets object.
-	 * @ingroup GC_Modron_Standard methodGroup
-	 */
-	MM_WorkPacketsSegregated(MM_EnvironmentBase *env) :
-		MM_WorkPackets(env)
-	{
-		_typeId = __FUNCTION__;
-	};
+  /**
+   * Create a WorkPackets object.
+   * @ingroup GC_Modron_Standard methodGroup
+   */
+  MM_WorkPacketsSegregated(MM_EnvironmentBase* env) : MM_WorkPackets(env) {
+    _typeId = __FUNCTION__;
+  };
 };
 
 #endif /* OMR_GC_SEGREGATED_HEAP */
 
 #endif /* WORKPACKETSSEGREGATED_HPP_ */
-

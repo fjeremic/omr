@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ConcurrentSafepointCallback.hpp"
@@ -25,24 +26,23 @@
 #include "EnvironmentStandard.hpp"
 #include "ModronAssertions.h"
 
-#if defined (OMR_GC_MODRON_CONCURRENT_MARK)
+#if defined(OMR_GC_MODRON_CONCURRENT_MARK)
 
-MM_ConcurrentSafepointCallback *
-MM_ConcurrentSafepointCallback::newInstance(MM_EnvironmentBase *env)
-{
-	MM_ConcurrentSafepointCallback *callback;
+MM_ConcurrentSafepointCallback* MM_ConcurrentSafepointCallback::newInstance(
+    MM_EnvironmentBase* env) {
+  MM_ConcurrentSafepointCallback* callback;
 
-	callback = (MM_ConcurrentSafepointCallback *)env->getForge()->allocate(sizeof(MM_ConcurrentSafepointCallback), OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
-	if (NULL != callback) {
-		new(callback) MM_ConcurrentSafepointCallback(env);
-	}
-	return callback;
+  callback = (MM_ConcurrentSafepointCallback*)env->getForge()->allocate(
+      sizeof(MM_ConcurrentSafepointCallback),
+      OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
+  if (NULL != callback) {
+    new (callback) MM_ConcurrentSafepointCallback(env);
+  }
+  return callback;
 }
 
-void
-MM_ConcurrentSafepointCallback::kill(MM_EnvironmentBase *env)
-{
-	env->getForge()->free(this);
+void MM_ConcurrentSafepointCallback::kill(MM_EnvironmentBase* env) {
+  env->getForge()->free(this);
 }
 
 void
@@ -52,26 +52,22 @@ MM_ConcurrentSafepointCallback::registerCallback(MM_EnvironmentBase *env, Safepo
 MM_ConcurrentSafepointCallback::registerCallback(MM_EnvironmentBase *env, SafepointCallbackHandler handler, void *userData)
 #endif /* defined(AIXPPC) || defined(LINUXPPC) */
 {
-	/* To facilitate simple Card Table logic treat registerCallback as a no-op */
+  /* To facilitate simple Card Table logic treat registerCallback as a no-op */
 }
 
-void
-MM_ConcurrentSafepointCallback::requestCallback(MM_EnvironmentBase *env)
-{
-	/* In uncomplicated cases that always call the concurrent write barrier
-	 * (MM_CollectorLanguageInterface::writeBarrierStore/Update()) this can
-	 * be a no-op.
-	 *
-	 * To optimize card table maintenance, language can implement this and
-	 * call MM_CollectorLanguageInterface::signalThreadsToActivateWriteBarrier() here.
-	 */
+void MM_ConcurrentSafepointCallback::requestCallback(MM_EnvironmentBase* env) {
+  /* In uncomplicated cases that always call the concurrent write barrier
+   * (MM_CollectorLanguageInterface::writeBarrierStore/Update()) this can
+   * be a no-op.
+   *
+   * To optimize card table maintenance, language can implement this and
+   * call MM_CollectorLanguageInterface::signalThreadsToActivateWriteBarrier()
+   * here.
+   */
 }
 
-
-void
-MM_ConcurrentSafepointCallback::cancelCallback(MM_EnvironmentBase *env)
-{
-	/* To facilitate simple Card Table logic treat cancelCallback as a no-op */
+void MM_ConcurrentSafepointCallback::cancelCallback(MM_EnvironmentBase* env) {
+  /* To facilitate simple Card Table logic treat cancelCallback as a no-op */
 }
 
 #endif /* OMR_GC_MODRON_CONCURRENT_MARK */

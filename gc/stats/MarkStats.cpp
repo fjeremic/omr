@@ -17,44 +17,41 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "omrcfg.h"
 #include "modronopt.h"
+#include "omrcfg.h"
 
 #if defined(OMR_GC_MODRON_STANDARD) || defined(OMR_GC_REALTIME)
 
 #include "MarkStats.hpp"
 
-void
-MM_MarkStats::clear()
-{
-	_scanTime = 0;
-	
-	_objectsMarked = 0;
-	_objectsScanned = 0;
-	_bytesScanned = 0;
+void MM_MarkStats::clear() {
+  _scanTime = 0;
+
+  _objectsMarked = 0;
+  _objectsScanned = 0;
+  _bytesScanned = 0;
 
 #if defined(J9MODRON_TGC_PARALLEL_STATISTICS)
-	_syncStallCount = 0;
-	_syncStallTime = 0;
+  _syncStallCount = 0;
+  _syncStallTime = 0;
 #endif /* J9MODRON_TGC_PARALLEL_STATISTICS */
 }
 
-void
-MM_MarkStats::merge(MM_MarkStats *statsToMerge)
-{
-	_scanTime += statsToMerge->_scanTime;
+void MM_MarkStats::merge(MM_MarkStats* statsToMerge) {
+  _scanTime += statsToMerge->_scanTime;
 
-	_objectsMarked += statsToMerge->_objectsMarked;
-	_objectsScanned += statsToMerge->_objectsScanned;
-	_bytesScanned += statsToMerge->_bytesScanned;
+  _objectsMarked += statsToMerge->_objectsMarked;
+  _objectsScanned += statsToMerge->_objectsScanned;
+  _bytesScanned += statsToMerge->_bytesScanned;
 
 #if defined(J9MODRON_TGC_PARALLEL_STATISTICS)
-	/* It may not ever be useful to merge these stats, but do it anyways */
-	_syncStallCount += statsToMerge->_syncStallCount;
-	_syncStallTime += statsToMerge->_syncStallTime;
+  /* It may not ever be useful to merge these stats, but do it anyways */
+  _syncStallCount += statsToMerge->_syncStallCount;
+  _syncStallTime += statsToMerge->_syncStallTime;
 #endif /* J9MODRON_TGC_PARALLEL_STATISTICS */
 }
 

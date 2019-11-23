@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMRELFRELOCATIONRESOLVER_HPP
@@ -29,8 +30,16 @@
 #ifndef OMR_ELF_RELOCATION_RESOLVER_CONNECTOR
 #define OMR_ELF_RELOCATION_RESOLVER_CONNECTOR
 
-namespace OMR { namespace X86 { namespace AMD64 { class ELFRelocationResolver; } } }
-namespace OMR { typedef ::OMR::X86::AMD64::ELFRelocationResolver ELFRelocationResolverConnector; }
+namespace OMR {
+namespace X86 {
+namespace AMD64 {
+class ELFRelocationResolver;
+}
+}  // namespace X86
+}  // namespace OMR
+namespace OMR {
+typedef ::OMR::X86::AMD64::ELFRelocationResolver ELFRelocationResolverConnector;
+}
 
 #endif /* OMR_ELF_RELOCATION_RESOLVER_CONNECTOR */
 
@@ -41,26 +50,28 @@ namespace X86 {
 namespace AMD64 {
 
 /**
- * @brief The ELFRelocationResolver class translates between a TR::StaticRelocation and the ELF relocation type required for the platform.
+ * @brief The ELFRelocationResolver class translates between a
+ * TR::StaticRelocation and the ELF relocation type required for the platform.
  */
-class OMR_EXTENSIBLE ELFRelocationResolver : public ::OMR::ELFRelocationResolver
-   {
-public:
+class OMR_EXTENSIBLE ELFRelocationResolver
+    : public ::OMR::ELFRelocationResolver {
+ public:
+  /**
+   * @brief resolveRelocationType translates between a TR::StaticRelocation and
+   * the ELF relocation type required for the platform.
+   * @param relocation The relocation object containing the information that
+   * requires translation.
+   * @return The ELF relocation type appropriate for the platform
+   */
+  uint32_t resolveRelocationType(const TR::StaticRelocation& relocation);
 
-   /**
-    * @brief resolveRelocationType translates between a TR::StaticRelocation and the ELF relocation type required for the platform.
-    * @param relocation The relocation object containing the information that requires translation.
-    * @return The ELF relocation type appropriate for the platform
-    */
-   uint32_t resolveRelocationType(const TR::StaticRelocation &relocation);
+ private:
+};
 
-private:
-   };
-
-}
-}
-}
+}  // namespace AMD64
+}  // namespace X86
+}  // namespace OMR
 
 #endif /* defined(LINUX) */
 
-#endif // OMRELFRELOCATIONRESOLVER_HPP
+#endif  // OMRELFRELOCATIONRESOLVER_HPP

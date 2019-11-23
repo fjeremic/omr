@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_DEBUG_SEGMENT_PROVIDER
@@ -26,10 +27,10 @@
 
 #include <stddef.h>
 #include <set>
+#include "env/RawAllocator.hpp"
+#include "env/SegmentAllocator.hpp"
 #include "env/TypedAllocator.hpp"
 #include "infra/ReferenceWrapper.hpp"
-#include "env/SegmentAllocator.hpp"
-#include "env/RawAllocator.hpp"
 
 namespace TR {
 
@@ -37,45 +38,40 @@ namespace TR {
  *  @brief The DebugSegmentProvider class provides a facility for verifying the
  *  correctness of compiler scratch memory use.
  *
- *  Using the native facilities available on each platform, a DebugSegmentProvider
- *  provides an alternative allocation mechanism for the TR::MemorySegments used
- *  by the compiler's scratch memory regions.  Instead of releasing virtual address
- *  segments back to the operating system, this implementation instead either
- *  remaps the segment, freeing the underlying physical pages, and changing the
- *  memory protection to trap on any access [preferred], or, if such facilities
- *  are not available, paints the memory segment with a value that should cause
- *  pointer dereferences to be unaligned, and resolve to the high-half of the
- *  virtual address space often reserved for kernel / supervisor use.
+ *  Using the native facilities available on each platform, a
+ *DebugSegmentProvider provides an alternative allocation mechanism for the
+ *TR::MemorySegments used by the compiler's scratch memory regions.  Instead of
+ *releasing virtual address segments back to the operating system, this
+ *implementation instead either remaps the segment, freeing the underlying
+ *physical pages, and changing the memory protection to trap on any access
+ *[preferred], or, if such facilities are not available, paints the memory
+ *segment with a value that should cause pointer dereferences to be unaligned,
+ *and resolve to the high-half of the virtual address space often reserved for
+ *kernel / supervisor use.
  **/
-class DebugSegmentProvider : public TR::SegmentAllocator
-   {
-public:
-   DebugSegmentProvider(size_t defaultSegmentSize, TR::RawAllocator rawAllocator);
-   ~DebugSegmentProvider() throw();
-   virtual TR::MemorySegment &request(size_t requiredSize);
-   virtual void release(TR::MemorySegment &segment) throw();
-   virtual size_t bytesAllocated() const throw();
-   virtual size_t regionBytesAllocated() const throw();
-   virtual size_t systemBytesAllocated() const throw();
-   virtual size_t allocationLimit() const throw();
-   virtual void setAllocationLimit(size_t);
+class DebugSegmentProvider : public TR::SegmentAllocator {
+ public:
+  DebugSegmentProvider(size_t defaultSegmentSize,
+                       TR::RawAllocator rawAllocator);
+  ~DebugSegmentProvider() throw();
+  virtual TR::MemorySegment& request(size_t requiredSize);
+  virtual void release(TR::MemorySegment& segment) throw();
+  virtual size_t bytesAllocated() const throw();
+  virtual size_t regionBytesAllocated() const throw();
+  virtual size_t systemBytesAllocated() const throw();
+  virtual size_t allocationLimit() const throw();
+  virtual void setAllocationLimit(size_t);
 
-private:
-   TR::RawAllocator _rawAllocator;
-   size_t _bytesAllocated;
-   typedef TR::typed_allocator<
-      TR::MemorySegment,
-      TR::RawAllocator
-      > SegmentSetAllocator;
+ private:
+  TR::RawAllocator _rawAllocator;
+  size_t _bytesAllocated;
+  typedef TR::typed_allocator<TR::MemorySegment, TR::RawAllocator>
+      SegmentSetAllocator;
 
-   std::set<
-      TR::MemorySegment,
-      std::less< TR::MemorySegment >,
-      SegmentSetAllocator
-      > _segments;
+  std::set<TR::MemorySegment, std::less<TR::MemorySegment>, SegmentSetAllocator>
+      _segments;
+};
 
-   };
+}  // namespace TR
 
-} // namespace TR
-
-#endif // OMR_DEBUG_SEGMENT_PROVIDER
+#endif  // OMR_DEBUG_SEGMENT_PROVIDER

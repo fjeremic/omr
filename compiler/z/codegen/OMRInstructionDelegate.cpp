@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 // On zOS, the XLC linker can't handle files with the same name at link
@@ -24,8 +25,8 @@
 // a different name to the codesection (csect) for this file so that it
 // doesn't conflict with another file with the same name.
 //
-#pragma csect(CODE,"OMRZInstDel#C")
-#pragma csect(STATIC,"OMRZInstDel#S")
-#pragma csect(TEST,"OMRZInstDel#T")
+#pragma csect(CODE, "OMRZInstDel#C")
+#pragma csect(STATIC, "OMRZInstDel#S")
+#pragma csect(TEST, "OMRZInstDel#T")
 
 #include "codegen/InstructionDelegate.hpp"

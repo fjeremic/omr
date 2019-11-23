@@ -17,19 +17,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_OPTIMIZER_INCL
 #define JITBUILDER_OPTIMIZER_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef JITBUILDER_OPTIMIZER_CONNECTOR
 #define JITBUILDER_OPTIMIZER_CONNECTOR
-namespace JitBuilder { class Optimizer; }
-namespace JitBuilder { typedef JitBuilder::Optimizer OptimizerConnector; }
+namespace JitBuilder {
+class Optimizer;
+}
+namespace JitBuilder {
+typedef JitBuilder::Optimizer OptimizerConnector;
+}
 #endif
 
 #define TR_OVERRIDE_OPTIMIZATION_INITIALIZATION 1
@@ -39,25 +45,31 @@ namespace JitBuilder { typedef JitBuilder::Optimizer OptimizerConnector; }
 #include <stddef.h>
 #include <stdint.h>
 
-namespace TR { class Compilation; }
-namespace TR { class Optimizer; }
-namespace TR { class ResolvedMethodSymbol; }
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class Optimizer;
+}
+namespace TR {
+class ResolvedMethodSymbol;
+}
 struct OptimizationStrategy;
 
-namespace JitBuilder
-{
+namespace JitBuilder {
 
-class Optimizer : public OMR::OptimizerConnector
-   {
-   public:
+class Optimizer : public OMR::OptimizerConnector {
+ public:
+  Optimizer(TR::Compilation* comp,
+            TR::ResolvedMethodSymbol* methodSymbol,
+            bool isIlGen,
+            const OptimizationStrategy* strategy = NULL,
+            uint16_t VNType = 0);
 
-   Optimizer(TR::Compilation *comp, TR::ResolvedMethodSymbol *methodSymbol, bool isIlGen,
-         const OptimizationStrategy *strategy = NULL, uint16_t VNType = 0);
+ private:
+  TR::Optimizer* self();
+};
 
-   private:
-   TR::Optimizer *self();
-   };
-
-}
+}  // namespace JitBuilder
 
 #endif

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "SweepPoolManagerSplitAddressOrderedList.hpp"
@@ -26,27 +27,30 @@
  * Allocate and initialize a new instance of the receiver.
  * @return a new instance of the receiver, or NULL on failure.
  */
-MM_SweepPoolManagerSplitAddressOrderedList *
-MM_SweepPoolManagerSplitAddressOrderedList::newInstance(MM_EnvironmentBase *env)
-{
-	MM_SweepPoolManagerSplitAddressOrderedList *sweepPoolManager;
-	
-	sweepPoolManager = (MM_SweepPoolManagerSplitAddressOrderedList *)env->getForge()->allocate(sizeof(MM_SweepPoolManagerSplitAddressOrderedList), OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
-	if (sweepPoolManager) {
-		new(sweepPoolManager) MM_SweepPoolManagerSplitAddressOrderedList(env);
-		if (!sweepPoolManager->initialize(env)) { 
-			sweepPoolManager->kill(env);        
-			sweepPoolManager = NULL;            
-		}                                       
-	}
+MM_SweepPoolManagerSplitAddressOrderedList*
+MM_SweepPoolManagerSplitAddressOrderedList::newInstance(
+    MM_EnvironmentBase* env) {
+  MM_SweepPoolManagerSplitAddressOrderedList* sweepPoolManager;
 
-	return sweepPoolManager;
+  sweepPoolManager =
+      (MM_SweepPoolManagerSplitAddressOrderedList*)env->getForge()->allocate(
+          sizeof(MM_SweepPoolManagerSplitAddressOrderedList),
+          OMR::GC::AllocationCategory::FIXED, OMR_GET_CALLSITE());
+  if (sweepPoolManager) {
+    new (sweepPoolManager) MM_SweepPoolManagerSplitAddressOrderedList(env);
+    if (!sweepPoolManager->initialize(env)) {
+      sweepPoolManager->kill(env);
+      sweepPoolManager = NULL;
+    }
+  }
+
+  return sweepPoolManager;
 }
 
-void
-MM_SweepPoolManagerSplitAddressOrderedList::poolPostProcess(MM_EnvironmentBase *envModron, MM_MemoryPool *memoryPool)
-{
-	memoryPool->postProcess(envModron, MM_MemoryPool::forSweep);
+void MM_SweepPoolManagerSplitAddressOrderedList::poolPostProcess(
+    MM_EnvironmentBase* envModron,
+    MM_MemoryPool* memoryPool) {
+  memoryPool->postProcess(envModron, MM_MemoryPool::forSweep);
 }
 
 #endif /* defined(OMR_GC_MODRON_STANDARD) */

@@ -17,9 +17,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #include "PhysicalArena.hpp"
 
@@ -28,43 +28,37 @@
 #include "Heap.hpp"
 
 /**
- * Determine whether the child sub arena is allowed to expand according to the description given.
- * 
+ * Determine whether the child sub arena is allowed to expand according to the
+ * description given.
+ *
  * @return true if the expansion is allowed, false otherwise.
  */
-bool
-MM_PhysicalArena::canExpand(MM_EnvironmentBase *env, MM_PhysicalSubArena *expandArena)
-{
-	return true;
+bool MM_PhysicalArena::canExpand(MM_EnvironmentBase* env,
+                                 MM_PhysicalSubArena* expandArena) {
+  return true;
 }
 
 /**
  * Destroy and delete the instance.
  */
-void
-MM_PhysicalArena::kill(MM_EnvironmentBase *env)
-{
-	tearDown(env);
-	env->getForge()->free(this);
+void MM_PhysicalArena::kill(MM_EnvironmentBase* env) {
+  tearDown(env);
+  env->getForge()->free(this);
 }
 
 /**
  * Initialize the receivers internal structures.
  * @return true on success, false otherwise.
  */
-bool
-MM_PhysicalArena::initialize(MM_EnvironmentBase *env)
-{
-	return true;
+bool MM_PhysicalArena::initialize(MM_EnvironmentBase* env) {
+  return true;
 }
 
 /**
  * Cleanup internal structures of the receiver.
  */
-void
-MM_PhysicalArena::tearDown(MM_EnvironmentBase *env)
-{
-	if(_attached) {
-		_heap->detachArena(env, this);
-	}
+void MM_PhysicalArena::tearDown(MM_EnvironmentBase* env) {
+  if (_attached) {
+    _heap->detachArena(env, this);
+  }
 }

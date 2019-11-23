@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_PARAMETERSYMBOL_INCL
@@ -27,27 +28,21 @@
 #include "il/DataTypes.hpp"
 #include "il/OMRParameterSymbol.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE ParameterSymbol : public OMR::ParameterSymbolConnector
-   {
+class OMR_EXTENSIBLE ParameterSymbol : public OMR::ParameterSymbolConnector {
+ protected:
+  ParameterSymbol(TR::DataType d, int32_t slot)
+      : OMR::ParameterSymbolConnector(d, slot) {}
 
-protected:
+  ParameterSymbol(TR::DataType d, int32_t slot, size_t size)
+      : OMR::ParameterSymbolConnector(d, slot, size) {}
 
-   ParameterSymbol(TR::DataType d, int32_t slot) :
-      OMR::ParameterSymbolConnector(d, slot) { }
+ private:
+  // When adding another class to the heirarchy, add it as a friend here
+  friend class OMR::ParameterSymbol;
+};
 
-   ParameterSymbol(TR::DataType d, int32_t slot, size_t size) :
-      OMR::ParameterSymbolConnector(d, slot, size) { }
-
-private:
-
-   // When adding another class to the heirarchy, add it as a friend here
-   friend class OMR::ParameterSymbol;
-
-   };
-
-}
+}  // namespace TR
 
 #endif

@@ -16,33 +16,32 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/IndirectLoadIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "compile/SymbolReferenceTable.hpp"
 #include "env/FrontEnd.hpp"
-#include "ilgen/TypeDictionary.hpp"
-#include "tests/OpCodesTest.hpp"
-#include "tests/injectors/IndirectLoadIlInjector.hpp"
 #include "il/Node.hpp"
 #include "il/Node_inlines.hpp"
+#include "ilgen/TypeDictionary.hpp"
+#include "tests/OpCodesTest.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
-bool
-IndirectLoadIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
+bool IndirectLoadIlInjector::injectIL() {
+  if (!isOpCodeSupported())
+    return false;
 
-   OpCodesTest *test = static_cast<OpCodesTest *>(_test);
-   createBlocks(1);
-   TR::SymbolReference *loadSymRef = symRefTab()->findOrCreateArrayShadowSymbolRef(_dataType, parm(1));
-   returnValue(TR::Node::createWithSymRef(_opCode, 1, 1, parm(1), loadSymRef));
+  OpCodesTest* test = static_cast<OpCodesTest*>(_test);
+  createBlocks(1);
+  TR::SymbolReference* loadSymRef =
+      symRefTab()->findOrCreateArrayShadowSymbolRef(_dataType, parm(1));
+  returnValue(TR::Node::createWithSymRef(_opCode, 1, 1, parm(1), loadSymRef));
 
-   return true;
-   }
+  return true;
+}
 
-} // namespace TestCompiler
+}  // namespace TestCompiler

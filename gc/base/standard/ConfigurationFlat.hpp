@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -35,22 +36,27 @@
 #if defined(OMR_GC_MODRON_STANDARD)
 
 class MM_ConfigurationFlat : public MM_ConfigurationStandard {
-public:
-protected:
-private:
-public:
-	static MM_Configuration* newInstance(MM_EnvironmentBase* env);
+ public:
+ protected:
+ private:
+ public:
+  static MM_Configuration* newInstance(MM_EnvironmentBase* env);
 
-	virtual MM_MemorySpace* createDefaultMemorySpace(MM_EnvironmentBase* env, MM_Heap* heap, MM_InitializationParameters* parameters);
+  virtual MM_MemorySpace* createDefaultMemorySpace(
+      MM_EnvironmentBase* env,
+      MM_Heap* heap,
+      MM_InitializationParameters* parameters);
 
-	MM_ConfigurationFlat(MM_EnvironmentBase* env)
-		: MM_ConfigurationStandard(env, env->getExtensions()->configurationOptions._gcPolicy, STANDARD_REGION_SIZE_BYTES)
-	{
-		_typeId = __FUNCTION__;
-	};
-	
-protected:
-private:
+  MM_ConfigurationFlat(MM_EnvironmentBase* env)
+      : MM_ConfigurationStandard(
+            env,
+            env->getExtensions()->configurationOptions._gcPolicy,
+            STANDARD_REGION_SIZE_BYTES) {
+    _typeId = __FUNCTION__;
+  };
+
+ protected:
+ private:
 };
 
 #endif /* defined(OMR_GC_MODRON_STANDARD) */

@@ -17,38 +17,59 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrsignal_context_ceehdlr_h
 #define omrsignal_context_ceehdlr_h
 
-#include "omrport.h"
-#include "omr__le_api.h"
 #include "leconditionhandler.h"
+#include "omr__le_api.h"
+#include "omrport.h"
 
 #define MAX_NAME 256
 
 typedef struct OMRLEConditionInfo {
-	_FEEDBACK *fc;
-	_CEECIB *cib;
-	uint16_t messageNumber;
-	char *facilityID;
+  _FEEDBACK* fc;
+  _CEECIB* cib;
+  uint16_t messageNumber;
+  char* facilityID;
 #if !defined(J9ZOS39064)
-	char program_unit_name[MAX_NAME];
-	_INT4 program_unit_address;
-	char entry_name[MAX_NAME];
-	_INT4 entry_address;
+  char program_unit_name[MAX_NAME];
+  _INT4 program_unit_address;
+  char entry_name[MAX_NAME];
+  _INT4 entry_address;
 #endif
-	uint32_t portLibrarySignalType;
-	void *handlerAddress;
-	void *handlerAddress2;
+  uint32_t portLibrarySignalType;
+  void* handlerAddress;
+  void* handlerAddress2;
 } OMRLEConditionInfo;
 
-uint32_t infoForFPR_ceehdlr(struct OMRPortLibrary *portLibrary, OMRLEConditionInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForGPR_ceehdlr(struct OMRPortLibrary *portLibrary, OMRLEConditionInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForVR_ceehdlr(struct OMRPortLibrary *portLibrary, OMRLEConditionInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForControl_ceehdlr(struct OMRPortLibrary *portLibrary, OMRLEConditionInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForModule_ceehdlr(struct OMRPortLibrary *portLibrary, OMRLEConditionInfo *info, int32_t index, const char **name, void **value);
+uint32_t infoForFPR_ceehdlr(struct OMRPortLibrary* portLibrary,
+                            OMRLEConditionInfo* info,
+                            int32_t index,
+                            const char** name,
+                            void** value);
+uint32_t infoForGPR_ceehdlr(struct OMRPortLibrary* portLibrary,
+                            OMRLEConditionInfo* info,
+                            int32_t index,
+                            const char** name,
+                            void** value);
+uint32_t infoForVR_ceehdlr(struct OMRPortLibrary* portLibrary,
+                           OMRLEConditionInfo* info,
+                           int32_t index,
+                           const char** name,
+                           void** value);
+uint32_t infoForControl_ceehdlr(struct OMRPortLibrary* portLibrary,
+                                OMRLEConditionInfo* info,
+                                int32_t index,
+                                const char** name,
+                                void** value);
+uint32_t infoForModule_ceehdlr(struct OMRPortLibrary* portLibrary,
+                               OMRLEConditionInfo* info,
+                               int32_t index,
+                               const char** name,
+                               void** value);
 
 #endif /* omrsignal_context_ceehdlr_h */

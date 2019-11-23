@@ -17,11 +17,11 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrport.h"
-
 
 #define MAX_UNIX_SIGNAL_TYPES NSIG
 
@@ -30,21 +30,43 @@
 #undef __USE_GNU
 
 typedef struct OMRPlatformSignalInfo {
-	ucontext_t *context;
-	Dl_info dl_info;
+  ucontext_t* context;
+  Dl_info dl_info;
 } OMRPlatformSignalInfo;
 
 typedef struct OMRUnixSignalInfo {
-	struct OMRPlatformSignalInfo platformSignalInfo;
-	uint32_t portLibrarySignalType;
-	void *handlerAddress;
-	void *handlerAddress2;
-	siginfo_t *sigInfo;
+  struct OMRPlatformSignalInfo platformSignalInfo;
+  uint32_t portLibrarySignalType;
+  void* handlerAddress;
+  void* handlerAddress2;
+  siginfo_t* sigInfo;
 } OMRUnixSignalInfo;
 
-uint32_t infoForFPR(struct OMRPortLibrary *portLibrary, struct OMRUnixSignalInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForGPR(struct OMRPortLibrary *portLibrary, struct OMRUnixSignalInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForModule(struct OMRPortLibrary *portLibrary, struct OMRUnixSignalInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForControl(struct OMRPortLibrary *portLibrary, struct OMRUnixSignalInfo *info, int32_t index, const char **name, void **value);
-uint32_t infoForSignal(struct OMRPortLibrary *portLibrary, struct OMRUnixSignalInfo *info, int32_t index, const char **name, void **value);
-void fillInUnixSignalInfo(struct OMRPortLibrary *portLibrary, void *contextInfo, struct OMRUnixSignalInfo *signalInfo);
+uint32_t infoForFPR(struct OMRPortLibrary* portLibrary,
+                    struct OMRUnixSignalInfo* info,
+                    int32_t index,
+                    const char** name,
+                    void** value);
+uint32_t infoForGPR(struct OMRPortLibrary* portLibrary,
+                    struct OMRUnixSignalInfo* info,
+                    int32_t index,
+                    const char** name,
+                    void** value);
+uint32_t infoForModule(struct OMRPortLibrary* portLibrary,
+                       struct OMRUnixSignalInfo* info,
+                       int32_t index,
+                       const char** name,
+                       void** value);
+uint32_t infoForControl(struct OMRPortLibrary* portLibrary,
+                        struct OMRUnixSignalInfo* info,
+                        int32_t index,
+                        const char** name,
+                        void** value);
+uint32_t infoForSignal(struct OMRPortLibrary* portLibrary,
+                       struct OMRUnixSignalInfo* info,
+                       int32_t index,
+                       const char** name,
+                       void** value);
+void fillInUnixSignalInfo(struct OMRPortLibrary* portLibrary,
+                          void* contextInfo,
+                          struct OMRUnixSignalInfo* signalInfo);

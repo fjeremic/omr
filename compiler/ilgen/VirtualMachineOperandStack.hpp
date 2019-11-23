@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_VIRTUALMACHINEOPERANDSTACK_INCL
@@ -24,26 +25,26 @@
 
 #include "ilgen/OMRVirtualMachineOperandStack.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class VirtualMachineOperandStack : public OMR::VirtualMachineOperandStack
-   {
-   public:
-   VirtualMachineOperandStack(TR::MethodBuilder *mb,
-                              int32_t sizeHint,
-                              TR::IlType *elementType,
-                              TR::VirtualMachineRegister *stackTop,
-                              bool growsUp = true,
-                              int32_t stackInitialOffset = -1) :
-      OMR::VirtualMachineOperandStack(mb, sizeHint, elementType, stackTop, growsUp, stackInitialOffset)
-      { }
+class VirtualMachineOperandStack : public OMR::VirtualMachineOperandStack {
+ public:
+  VirtualMachineOperandStack(TR::MethodBuilder* mb,
+                             int32_t sizeHint,
+                             TR::IlType* elementType,
+                             TR::VirtualMachineRegister* stackTop,
+                             bool growsUp = true,
+                             int32_t stackInitialOffset = -1)
+      : OMR::VirtualMachineOperandStack(mb,
+                                        sizeHint,
+                                        elementType,
+                                        stackTop,
+                                        growsUp,
+                                        stackInitialOffset) {}
 
-   VirtualMachineOperandStack(TR::VirtualMachineOperandStack *other) :
-      OMR::VirtualMachineOperandStack(other)
-      { }
+  VirtualMachineOperandStack(TR::VirtualMachineOperandStack* other)
+      : OMR::VirtualMachineOperandStack(other) {}
+};
+}  // namespace TR
 
-   };
-}
-
-#endif // !defined(TR_VIRTUALMACHINEOPERANDSTACK_INCL)
+#endif  // !defined(TR_VIRTUALMACHINEOPERANDSTACK_INCL)

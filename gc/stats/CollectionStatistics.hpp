@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(COLLECTIONSTATISTICS_HPP_)
@@ -32,35 +33,34 @@
  * A collection of interesting statistics for the Heap.
  * @ingroup GC_Stats
  */
-class MM_CollectionStatistics : public MM_Base
-{
-private:
-protected:
-public:
-	uintptr_t _totalHeapSize; /**< Total active heap size */
-	uintptr_t _totalFreeHeapSize; /**< Total free active heap */
+class MM_CollectionStatistics : public MM_Base {
+ private:
+ protected:
+ public:
+  uintptr_t _totalHeapSize;     /**< Total active heap size */
+  uintptr_t _totalFreeHeapSize; /**< Total free active heap */
 
-	uint64_t  _startTime;		/**< Collection start time */
-	uint64_t  _endTime;			/**< Collection end time */
+  uint64_t _startTime; /**< Collection start time */
+  uint64_t _endTime;   /**< Collection end time */
 
-	omrthread_process_time_t _startProcessTimes; /**< Process (Kernel and User) start time(s) */
-	omrthread_process_time_t _endProcessTimes;   /**< Process (Kernel and User) end time(s) */
-private:
-protected:
-public:
-
-	/**
-	 * Create a HeapStats object.
-	 */
-	MM_CollectionStatistics() :
-		MM_Base()
-		,_totalHeapSize(0)
-		,_totalFreeHeapSize(0)
-		,_startTime(0)
-		,_endTime(0)
-		,_startProcessTimes()
-		,_endProcessTimes()
-	{};
+  omrthread_process_time_t
+      _startProcessTimes; /**< Process (Kernel and User) start time(s) */
+  omrthread_process_time_t
+      _endProcessTimes; /**< Process (Kernel and User) end time(s) */
+ private:
+ protected:
+ public:
+  /**
+   * Create a HeapStats object.
+   */
+  MM_CollectionStatistics()
+      : MM_Base(),
+        _totalHeapSize(0),
+        _totalFreeHeapSize(0),
+        _startTime(0),
+        _endTime(0),
+        _startProcessTimes(),
+        _endProcessTimes(){};
 };
 
 #endif /* COLLECTIONSTATISTICS_HPP_ */

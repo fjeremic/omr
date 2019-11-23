@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_Z_S390SNIPPETS_INCL
@@ -24,39 +25,45 @@
 
 #include "codegen/Snippet.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
-namespace TR { class Node; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class Node;
+}
 
 namespace TR {
 
-class S390RestoreGPR7Snippet : public TR::Snippet
-   {
-   TR::LabelSymbol * _targetLabel;
+class S390RestoreGPR7Snippet : public TR::Snippet {
+  TR::LabelSymbol* _targetLabel;
 
-public:
-   S390RestoreGPR7Snippet(TR::CodeGenerator* cg, TR::Node *c, TR::LabelSymbol *lab, TR::LabelSymbol *targetLabel)
-      : TR::Snippet(cg, c, lab, false), _targetLabel(targetLabel)
-      {
-      }
+ public:
+  S390RestoreGPR7Snippet(TR::CodeGenerator* cg,
+                         TR::Node* c,
+                         TR::LabelSymbol* lab,
+                         TR::LabelSymbol* targetLabel)
+      : TR::Snippet(cg, c, lab, false), _targetLabel(targetLabel) {}
 
-   S390RestoreGPR7Snippet(TR::CodeGenerator* cg, TR::Node *c, TR::LabelSymbol *lab, TR::Snippet *targetSnippet)
-      : TR::Snippet(cg, c, lab, false), _targetLabel(targetSnippet->getSnippetLabel())
-      {
-      }
+  S390RestoreGPR7Snippet(TR::CodeGenerator* cg,
+                         TR::Node* c,
+                         TR::LabelSymbol* lab,
+                         TR::Snippet* targetSnippet)
+      : TR::Snippet(cg, c, lab, false),
+        _targetLabel(targetSnippet->getSnippetLabel()) {}
 
-   TR::LabelSymbol *getTargetLabel() { return _targetLabel; }
-   TR::LabelSymbol *setTargetLabel ( TR::LabelSymbol * targetLabel)
-      {
-      return _targetLabel = targetLabel;
-      }
+  TR::LabelSymbol* getTargetLabel() { return _targetLabel; }
+  TR::LabelSymbol* setTargetLabel(TR::LabelSymbol* targetLabel) {
+    return _targetLabel = targetLabel;
+  }
 
-   virtual uint32_t getLength(int32_t estimatedSnippetStart);
-   virtual uint8_t *emitSnippetBody();
-   virtual Kind getKind() { return IsRestoreGPR7; }
+  virtual uint32_t getLength(int32_t estimatedSnippetStart);
+  virtual uint8_t* emitSnippetBody();
+  virtual Kind getKind() { return IsRestoreGPR7; }
+};
 
-   };
-
-}
+}  // namespace TR
 
 #endif

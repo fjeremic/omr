@@ -17,27 +17,26 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #ifndef SWITCH_INCL
 #define SWITCH_INCL
 
 #include "JitBuilder.hpp"
 
-typedef void (SwitchFunctionType)(int32_t);
+typedef void(SwitchFunctionType)(int32_t);
 
-class SwitchMethod : public OMR::JitBuilder::MethodBuilder
-   {
-   private:
-   void PrintString(OMR::JitBuilder::IlBuilder *bldr, const char *s);
+class SwitchMethod : public OMR::JitBuilder::MethodBuilder {
+ private:
+  void PrintString(OMR::JitBuilder::IlBuilder* bldr, const char* s);
 
-   public:
-   SwitchMethod(OMR::JitBuilder::TypeDictionary *);
-   virtual bool buildIL();
+ public:
+  SwitchMethod(OMR::JitBuilder::TypeDictionary*);
+  virtual bool buildIL();
 
-   virtual bool RequestFunction(const char *name);
-   };
+  virtual bool RequestFunction(const char* name);
+};
 
-#endif // !defined(SWITCH_INCL)
+#endif  // !defined(SWITCH_INCL)

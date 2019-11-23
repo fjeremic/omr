@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DWARFSCANNER_HPP
@@ -24,8 +25,8 @@
 
 #include "ddr/config.hpp"
 
-#include "ddr/std/unordered_map.hpp"
 #include <map>
+#include "ddr/std/unordered_map.hpp"
 
 #if defined(OSX) || defined(AIXPPC)
 #include "ddr/scanner/dwarf/DwarfFunctions.hpp"
@@ -51,9 +52,9 @@
 
 #include "ddr/ir/ClassUDT.hpp"
 #include "ddr/ir/EnumUDT.hpp"
-#include "ddr/scanner/Scanner.hpp"
 #include "ddr/ir/Symbol_IR.hpp"
 #include "ddr/ir/TypedefUDT.hpp"
+#include "ddr/scanner/Scanner.hpp"
 
 using std::make_pair;
 using std::map;
@@ -65,42 +66,62 @@ using std::tr1::hash;
 using std::hash;
 #endif
 
-class DwarfScanner : public Scanner
-{
-public:
-	DwarfScanner();
-	~DwarfScanner();
+class DwarfScanner : public Scanner {
+ public:
+  DwarfScanner();
+  ~DwarfScanner();
 
-	virtual DDR_RC startScan(OMRPortLibrary *portLibrary, Symbol_IR *ir,
-			vector<string> *debugFiles, const char *blacklistPath);
+  virtual DDR_RC startScan(OMRPortLibrary* portLibrary,
+                           Symbol_IR* ir,
+                           vector<string>* debugFiles,
+                           const char* blacklistPath);
 
-private:
-	Dwarf_Signed _fileNameCount;
-	char **_fileNamesTable;
-	unordered_map<string, int> _anonymousEnumNames;
-	unordered_map<Dwarf_Off, Type *> _typeOffsetMap;
-	Symbol_IR *_ir;
-	Dwarf_Debug _debug;
+ private:
+  Dwarf_Signed _fileNameCount;
+  char** _fileNamesTable;
+  unordered_map<string, int> _anonymousEnumNames;
+  unordered_map<Dwarf_Off, Type*> _typeOffsetMap;
+  Symbol_IR* _ir;
+  Dwarf_Debug _debug;
 
-	DDR_RC scanFile(OMRPortLibrary *portLibrary, Symbol_IR *ir, const char *filepath);
-	DDR_RC traverse_cu_in_debug_section(Symbol_IR *ir);
-	DDR_RC addDieToIR(Dwarf_Die die, Dwarf_Half tag, NamespaceUDT *outerUDT, Type **type);
-	DDR_RC getOrCreateNewType(Dwarf_Die die, Dwarf_Half tag, Type **newUDT, NamespaceUDT *outerUDT, bool *isNewType);
-	DDR_RC createNewType(Dwarf_Die die, Dwarf_Half tag, const char *dieName, Type **newUDT);
-	DDR_RC scanClassChildren(NamespaceUDT *newClass, Dwarf_Die die);
-	DDR_RC addEnumMember(Dwarf_Die die, NamespaceUDT *outerUDT, EnumUDT *udt);
-	DDR_RC addClassField(Dwarf_Die die, ClassType *newClass, const string &fieldName);
-	DDR_RC getSuperUDT(Dwarf_Die die, ClassUDT *udt);
-	DDR_RC getTypeInfo(Dwarf_Die die, Dwarf_Die *dieout, string *typeName, Modifiers *modifiers, size_t *typeSize, size_t *bitField);
-	DDR_RC getTypeSize(Dwarf_Die die, size_t *typeSize);
-	DDR_RC getTypeTag(Dwarf_Die die, Dwarf_Die *typedie, Dwarf_Half *tag);
-	DDR_RC getSourcelist(Dwarf_Die die);
-	DDR_RC blackListedDie(Dwarf_Die die, bool *dieBlackListed);
-	DDR_RC getName(Dwarf_Die die, string *name, Dwarf_Off *dieOffset = NULL);
-	DDR_RC getNextSibling(Dwarf_Die *die);
-	DDR_RC getBitField(Dwarf_Die die, size_t *bitField);
+  DDR_RC scanFile(OMRPortLibrary* portLibrary,
+                  Symbol_IR* ir,
+                  const char* filepath);
+  DDR_RC traverse_cu_in_debug_section(Symbol_IR* ir);
+  DDR_RC addDieToIR(Dwarf_Die die,
+                    Dwarf_Half tag,
+                    NamespaceUDT* outerUDT,
+                    Type** type);
+  DDR_RC getOrCreateNewType(Dwarf_Die die,
+                            Dwarf_Half tag,
+                            Type** newUDT,
+                            NamespaceUDT* outerUDT,
+                            bool* isNewType);
+  DDR_RC createNewType(Dwarf_Die die,
+                       Dwarf_Half tag,
+                       const char* dieName,
+                       Type** newUDT);
+  DDR_RC scanClassChildren(NamespaceUDT* newClass, Dwarf_Die die);
+  DDR_RC addEnumMember(Dwarf_Die die, NamespaceUDT* outerUDT, EnumUDT* udt);
+  DDR_RC addClassField(Dwarf_Die die,
+                       ClassType* newClass,
+                       const string& fieldName);
+  DDR_RC getSuperUDT(Dwarf_Die die, ClassUDT* udt);
+  DDR_RC getTypeInfo(Dwarf_Die die,
+                     Dwarf_Die* dieout,
+                     string* typeName,
+                     Modifiers* modifiers,
+                     size_t* typeSize,
+                     size_t* bitField);
+  DDR_RC getTypeSize(Dwarf_Die die, size_t* typeSize);
+  DDR_RC getTypeTag(Dwarf_Die die, Dwarf_Die* typedie, Dwarf_Half* tag);
+  DDR_RC getSourcelist(Dwarf_Die die);
+  DDR_RC blackListedDie(Dwarf_Die die, bool* dieBlackListed);
+  DDR_RC getName(Dwarf_Die die, string* name, Dwarf_Off* dieOffset = NULL);
+  DDR_RC getNextSibling(Dwarf_Die* die);
+  DDR_RC getBitField(Dwarf_Die die, size_t* bitField);
 
-	friend class DwarfVisitor;
+  friend class DwarfVisitor;
 };
 
 #endif /* DWARFSCANNER_HPP */

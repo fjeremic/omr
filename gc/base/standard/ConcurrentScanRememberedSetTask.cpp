@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrcfg.h"
@@ -30,36 +31,31 @@
 
 #include "ConcurrentScanRememberedSetTask.hpp"
 
-void
-MM_ConcurrentScanRememberedSetTask::run(MM_EnvironmentBase *envBase)
-{
-	MM_EnvironmentStandard *env = MM_EnvironmentStandard::getEnvironment(envBase);
-	_collector->scanRememberedSet(env);
+void MM_ConcurrentScanRememberedSetTask::run(MM_EnvironmentBase* envBase) {
+  MM_EnvironmentStandard* env = MM_EnvironmentStandard::getEnvironment(envBase);
+  _collector->scanRememberedSet(env);
 }
 
-void
-MM_ConcurrentScanRememberedSetTask::setup(MM_EnvironmentBase *env)
-{
-	if (env->isMasterThread()) {
-		Assert_MM_true(_cycleState == env->_cycleState);
-	} else {
-		Assert_MM_true(NULL == env->_cycleState);
-		env->_cycleState = _cycleState;
-	}
-	env->_workPacketStats.clear();
+void MM_ConcurrentScanRememberedSetTask::setup(MM_EnvironmentBase* env) {
+  if (env->isMasterThread()) {
+    Assert_MM_true(_cycleState == env->_cycleState);
+  } else {
+    Assert_MM_true(NULL == env->_cycleState);
+    env->_cycleState = _cycleState;
+  }
+  env->_workPacketStats.clear();
 }
 
-void
-MM_ConcurrentScanRememberedSetTask::cleanup(MM_EnvironmentBase *env)
-{
-	if (env->isMasterThread()) {
-		Assert_MM_true(_cycleState == env->_cycleState);
-	} else {
-		env->_cycleState = NULL;
-	}
-	/* take a snapshot of WorkPacket stats, since it will be overwritten with subsequent phases. The stats will be needed later (TGC parallel for example) */
-	env->_workPacketStatsRSScan = env->_workPacketStats;
+void MM_ConcurrentScanRememberedSetTask::cleanup(MM_EnvironmentBase* env) {
+  if (env->isMasterThread()) {
+    Assert_MM_true(_cycleState == env->_cycleState);
+  } else {
+    env->_cycleState = NULL;
+  }
+  /* take a snapshot of WorkPacket stats, since it will be overwritten with
+   * subsequent phases. The stats will be needed later (TGC parallel for
+   * example) */
+  env->_workPacketStatsRSScan = env->_workPacketStats;
 }
 #endif /* OMR_GC_MODRON_SCAVENGER */
 #endif /* OMR_GC_MODRON_CONCURRENT_MARK */
- 
