@@ -16,21 +16,23 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMRSIGTESTHELPERS_H_INCLUDED)
 #define OMRSIGTESTHELPERS_H_INCLUDED
 
-#include "omrsig.h"
 #include "omrTest.h"
+#include "omrsig.h"
 
 #include "testEnvironment.hpp"
 
 extern PortEnvironment *omrTestEnv;
 
-void createThread(omrthread_t *newThread, uintptr_t suspend, omrthread_detachstate_t detachstate,
-				  omrthread_entrypoint_t entryProc, void *entryArg);
+void createThread(omrthread_t *newThread, uintptr_t suspend,
+                  omrthread_detachstate_t detachstate,
+                  omrthread_entrypoint_t entryProc, void *entryArg);
 intptr_t joinThread(omrthread_t threadToJoin);
 bool handlerIsFunction(sighandler_t handler);
 #if !defined(OMR_OS_WINDOWS)

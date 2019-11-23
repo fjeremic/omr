@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -31,15 +32,12 @@
 
 /* TODO: move out struct to omrosdump_helpers.c to complete refactoring */
 typedef struct MarkAllPagesWritableHeader {
-	uint32_t eyeCatcher;
-	uint32_t checksum;
-	uintptr_t size;
-	uintptr_t maxSize;
+  uint32_t eyeCatcher;
+  uint32_t checksum;
+  uintptr_t size;
+  uintptr_t maxSize;
 } MarkAllPagesWritableHeader;
 
-uintptr_t renameDump(struct OMRPortLibrary *portLibrary, char *filename, pid_t pid, int signalNumber);
+uintptr_t renameDump(struct OMRPortLibrary *portLibrary, char *filename,
+                     pid_t pid, int signalNumber);
 char *markAllPagesWritable(struct OMRPortLibrary *portLibrary);
-
-
-
-

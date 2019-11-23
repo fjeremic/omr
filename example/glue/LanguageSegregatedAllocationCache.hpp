@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef LANGUAGESEGREGATEDALLOCATIONCACHE_HPP_
@@ -27,22 +28,21 @@
 #if defined(OMR_GC_SEGREGATED_HEAP)
 
 typedef struct LanguageSegregatedAllocationCacheEntryStruct {
-	uintptr_t* current;
-	uintptr_t* top;
+  uintptr_t* current;
+  uintptr_t* top;
 } LanguageSegregatedAllocationCacheEntryStruct;
 
-typedef LanguageSegregatedAllocationCacheEntryStruct LanguageSegregatedAllocationCache[OMR_SIZECLASSES_NUM_SMALL + 1];
+typedef LanguageSegregatedAllocationCacheEntryStruct
+    LanguageSegregatedAllocationCache[OMR_SIZECLASSES_NUM_SMALL + 1];
 
 class MM_LanguageSegregatedAllocationCache {
+  LanguageSegregatedAllocationCache _languageSegregatedAllocationCache;
 
-	LanguageSegregatedAllocationCache _languageSegregatedAllocationCache;
-
-public:
-	MMINLINE LanguageSegregatedAllocationCacheEntryStruct *
-	getLanguageSegregatedAllocationCacheStruct(MM_EnvironmentBase *env)
-	{
-		return _languageSegregatedAllocationCache;
-	}
+ public:
+  MMINLINE LanguageSegregatedAllocationCacheEntryStruct*
+  getLanguageSegregatedAllocationCacheStruct(MM_EnvironmentBase* env) {
+    return _languageSegregatedAllocationCache;
+  }
 };
 
 #endif /* OMR_GC_SEGREGATED_HEAP */

@@ -17,28 +17,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(GCSPINLOCK_HPP_)
 #define GCSPINLOCK_HPP_
 
+#include "omr.h"
 #include "omrcomp.h"
 #include "omrthread.h"
-#include "omr.h"
 
 typedef struct J9GCSpinlock {
-    intptr_t target;
-    j9sem_t osSemaphore;
-    uintptr_t spinCount1;
-    uintptr_t spinCount2;
-    uintptr_t spinCount3;
+  intptr_t target;
+  j9sem_t osSemaphore;
+  uintptr_t spinCount1;
+  uintptr_t spinCount2;
+  uintptr_t spinCount3;
 } J9GCSpinlock;
-
 
 intptr_t omrgc_spinlock_destroy(J9GCSpinlock *spinlock);
 intptr_t omrgc_spinlock_init(J9GCSpinlock *spinlock);
 intptr_t omrgc_spinlock_release(J9GCSpinlock *spinlock);
-intptr_t omrgc_spinlock_acquire(J9GCSpinlock *spinlock, J9ThreadMonitorTracing*  lockTracing);
+intptr_t omrgc_spinlock_acquire(J9GCSpinlock *spinlock,
+                                J9ThreadMonitorTracing *lockTracing);
 
 #endif /* GCSPINLOCK_HPP_ */

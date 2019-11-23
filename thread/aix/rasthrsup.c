@@ -17,23 +17,23 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #include <pthread.h>
 #include "omrthread.h"
 
-uintptr_t
-omrthread_get_ras_tid(void)
-{
-	struct __pthrdsinfo buf;
-	pthread_t myThread = pthread_self();
-	int retval;
-	int regSize = 0;
+uintptr_t omrthread_get_ras_tid(void) {
+  struct __pthrdsinfo buf;
+  pthread_t myThread = pthread_self();
+  int retval;
+  int regSize = 0;
 
-	retval = pthread_getthrds_np(&myThread, PTHRDSINFO_QUERY_TID, &buf, sizeof(buf), NULL, &regSize);
-	if (!retval) {
-		return buf.__pi_tid;
-	} else {
-		return 0;
-	}
+  retval = pthread_getthrds_np(&myThread, PTHRDSINFO_QUERY_TID, &buf,
+                               sizeof(buf), NULL, &regSize);
+  if (!retval) {
+    return buf.__pi_tid;
+  } else {
+    return 0;
+  }
 }

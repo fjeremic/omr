@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(MEMORYSUBSPACEITERATORSTANDARD_HPP_)
@@ -28,33 +29,31 @@
 #include "HeapRegionDescriptorStandard.hpp"
 #include "MemorySubSpaceRegionIterator.hpp"
 
-class GC_MemorySubSpaceRegionIteratorStandard : public GC_MemorySubSpaceRegionIterator {
+class GC_MemorySubSpaceRegionIteratorStandard
+    : public GC_MemorySubSpaceRegionIterator {
+ public:
+ protected:
+ private:
+ public:
+  /**
+   * Construct a MemorySubSpaceRegionIterator for the regions which belong to
+   * the specified subspace.
+   *
+   * @param subspace the memory subspace whose regions should be walked
+   */
+  GC_MemorySubSpaceRegionIteratorStandard(MM_MemorySubSpace* subspace)
+      : GC_MemorySubSpaceRegionIterator(subspace) {}
 
-public:
-protected:
-private:
-	
-public:
+  /**
+   * @return the next region in the heap, or NULL if there are no more regions
+   */
+  MM_HeapRegionDescriptorStandard* nextRegion() {
+    return (MM_HeapRegionDescriptorStandard*)
+        GC_MemorySubSpaceRegionIterator::nextRegion();
+  }
 
-	/**
-	 * Construct a MemorySubSpaceRegionIterator for the regions which belong to the specified subspace.
-	 * 
-	 * @param subspace the memory subspace whose regions should be walked
-	 */
-	GC_MemorySubSpaceRegionIteratorStandard(MM_MemorySubSpace* subspace)
-		: GC_MemorySubSpaceRegionIterator(subspace)
-		{ }
-	
-	/**
-	 * @return the next region in the heap, or NULL if there are no more regions
-	 */
-	MM_HeapRegionDescriptorStandard *nextRegion() 
-	{
-		return (MM_HeapRegionDescriptorStandard*)GC_MemorySubSpaceRegionIterator::nextRegion();
-	}
-protected:
-private:
+ protected:
+ private:
 };
-
 
 #endif /* MEMORYSUBSPACEITERATORSTANDARD_HPP_ */

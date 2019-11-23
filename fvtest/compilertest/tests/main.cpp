@@ -16,15 +16,16 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <limits.h>
-#include <stdio.h>
 #include <stdint.h>
-#include "il/DataTypes.hpp"
-#include "gtest/gtest.h"
+#include <stdio.h>
 #include "OMRTestEnv.hpp"
+#include "gtest/gtest.h"
+#include "il/DataTypes.hpp"
 
 #if defined(OMR_OS_WINDOWS)
 #undef BYTE
@@ -34,28 +35,26 @@
 #include <dlfcn.h>
 #endif /* defined(OMR_OS_WINDOWS) */
 
-int main(int argc, char **argv)
-   {
-   bool useOMRTestEnv = true;
+int main(int argc, char **argv) {
+  bool useOMRTestEnv = true;
 
-   /* Disable OMRTestEnv on some tests. This is needed when the test
-    * wants to initialize the JIT with special options which cannot be
-    * easily cleaned up.
-    */
-   const char *exitAssertFlag="--gtest_internal_run_death_test=";
-   for(int i = 0; i < argc; ++i)
-      {
-      if(!strncmp(argv[i], exitAssertFlag, strlen(exitAssertFlag)))
-         if(strstr(argv[i], "LimitFileTest.cpp") || strstr(argv[i], "LogFileTest.cpp"))
-            {
-            useOMRTestEnv = false;
-            }
+  /* Disable OMRTestEnv on some tests. This is needed when the test
+   * wants to initialize the JIT with special options which cannot be
+   * easily cleaned up.
+   */
+  const char *exitAssertFlag = "--gtest_internal_run_death_test=";
+  for (int i = 0; i < argc; ++i) {
+    if (!strncmp(argv[i], exitAssertFlag, strlen(exitAssertFlag)))
+      if (strstr(argv[i], "LimitFileTest.cpp") ||
+          strstr(argv[i], "LogFileTest.cpp")) {
+        useOMRTestEnv = false;
       }
+  }
 
-   ::testing::InitGoogleTest(&argc, argv);
+  ::testing::InitGoogleTest(&argc, argv);
 
-   if(useOMRTestEnv)
-      ::testing::AddGlobalTestEnvironment(new TestCompiler::OMRTestEnv);
+  if (useOMRTestEnv)
+    ::testing::AddGlobalTestEnvironment(new TestCompiler::OMRTestEnv);
 
-   return RUN_ALL_TESTS();
-   }
+  return RUN_ALL_TESTS();
+}

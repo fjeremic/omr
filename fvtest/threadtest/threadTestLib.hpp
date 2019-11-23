@@ -16,29 +16,30 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef THREADTESTLIB_HPP_INCLUDED
 #define THREADTESTLIB_HPP_INCLUDED
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
+#include "common/threaddef.h"
 #include "omrcfg.h"
 #include "omrthread.h"
 #include "thrtypes.h"
-#include "common/threaddef.h"
 
 class CThread;
 class CMonitor;
 class CRWMutex;
 
-#include "CThread.hpp"
-#include "CMonitor.hpp"
 #include "CEnterExit.hpp"
 #include "CEnterExitLooper.hpp"
+#include "CMonitor.hpp"
 #include "CNotifier.hpp"
+#include "CThread.hpp"
 #include "CWaitNotifyLooper.hpp"
 #include "CWaiter.hpp"
 

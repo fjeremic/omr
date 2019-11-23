@@ -16,10 +16,11 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-/** 
+/**
  * Declares utility functions to be used with STL containers.
  */
 
@@ -32,7 +33,8 @@
  *        STL containers.
  * @param s1 pointer to the first operand string
  * @param s2 pointer to the second operand string
- * @returns true if the string pointed to by s1 is 'less than' the one pointed to by s2
+ * @returns true if the string pointed to by s1 is 'less than' the one pointed
+ * to by s2
  */
 bool str_comparator(const char *s1, const char *s2);
 

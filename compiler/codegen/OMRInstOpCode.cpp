@@ -16,47 +16,30 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "compiler/codegen/InstOpCode.hpp"
 
-uint8_t
-OMR::InstOpCode::length(Mnemonic m)
-   {
-   return 0;
-   }
+uint8_t OMR::InstOpCode::length(Mnemonic m) { return 0; }
 
-uint8_t *
-OMR::InstOpCode::copyBinaryToBuffer(
-      Mnemonic m,
-      uint8_t *cursor)
-   {
-   return cursor;
-   }
+uint8_t *OMR::InstOpCode::copyBinaryToBuffer(Mnemonic m, uint8_t *cursor) {
+  return cursor;
+}
 
-const char *
-OMR::InstOpCode::getOpCodeName(Mnemonic m)
-   {
-   if (IS_OMR_MNEMONIC(m))
-      {
-      return "OMROpCode";
-      }
-   else
-      {
-      return "Unknown";
-      }
-   }
+const char *OMR::InstOpCode::getOpCodeName(Mnemonic m) {
+  if (IS_OMR_MNEMONIC(m)) {
+    return "OMROpCode";
+  } else {
+    return "Unknown";
+  }
+}
 
-const char *
-OMR::InstOpCode::getMnemonicName(Mnemonic m)
-   {
-   if (IS_OMR_MNEMONIC(m))
-      {
-      return "OMROpCode";
-      }
-   else
-      {
-      return "Unknown";
-      }
-   }
+const char *OMR::InstOpCode::getMnemonicName(Mnemonic m) {
+  if (IS_OMR_MNEMONIC(m)) {
+    return "OMROpCode";
+  } else {
+    return "Unknown";
+  }
+}

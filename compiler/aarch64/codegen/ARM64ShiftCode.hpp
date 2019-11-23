@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARM64SHIFTCODE_INCL
@@ -27,36 +28,27 @@ namespace TR {
 /*
  * Shift codes used in "shifted register" instructions
  */
-typedef enum {
-   SH_LSL = 0,
-   SH_LSR,
-   SH_ASR,
-   SH_Reserved
-} ARM64ShiftCode;
+typedef enum { SH_LSL = 0, SH_LSR, SH_ASR, SH_Reserved } ARM64ShiftCode;
 
 /*
  * Extend codes used in "extended register" instructions
  */
 typedef enum {
-   EXT_UXTB = 0,
-   EXT_UXTH,
-   EXT_UXTW,
-   EXT_UXTX,
-   EXT_SXTB,
-   EXT_SXTH,
-   EXT_SXTW,
-   EXT_SXTX,
+  EXT_UXTB = 0,
+  EXT_UXTH,
+  EXT_UXTW,
+  EXT_UXTX,
+  EXT_SXTB,
+  EXT_SXTH,
+  EXT_SXTW,
+  EXT_SXTX,
 } ARM64ExtendCode;
 
 /*
  * Shift codes used in "mov (wide immediate)" instructions
  */
-enum {
-   MOV_LSL16 = 0x10000,
-   MOV_LSL32 = 0x20000,
-   MOV_LSL48 = 0x30000
-};
+enum { MOV_LSL16 = 0x10000, MOV_LSL32 = 0x20000, MOV_LSL48 = 0x30000 };
 
-} // TR
+}  // namespace TR
 
 #endif

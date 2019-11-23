@@ -16,29 +16,28 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "TestDriver.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 class Qux2IlInjector;
-typedef int32_t (testMethodType)(int32_t);
+typedef int32_t(testMethodType)(int32_t);
 
-class Qux2Test : public TestDriver
-   {
-   protected:
-   virtual void compileTestMethods();
-   virtual void invokeTests();
+class Qux2Test : public TestDriver {
+ protected:
+  virtual void compileTestMethods();
+  virtual void invokeTests();
 
-   private:
+ private:
+  static testMethodType *_qux2;
 
-   static testMethodType *_qux2;
+  // straight C(++) implementations of foo and bar for initial test validation
+  // purposes
 
-   // straight C(++) implementations of foo and bar for initial test validation purposes
+  static int32_t qux2(int32_t);
+};
 
-   static int32_t qux2(int32_t);
-   };
-
-} // namespace TestCompiler
+}  // namespace TestCompiler

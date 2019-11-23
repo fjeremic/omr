@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #define J9_EXTERNAL_TO_VM
@@ -30,78 +31,71 @@
 #include "Scavenger.hpp"
 #endif
 
-MM_EnvironmentStandard *
-MM_EnvironmentStandard::newInstance(MM_GCExtensionsBase *extensions, OMR_VMThread *omrVMThread)
-{
-	void *envPtr;
-	MM_EnvironmentStandard *env = NULL;
-	
-	envPtr = (void *)pool_newElement(extensions->environments);
-	if (envPtr) {
-		env = new(envPtr) MM_EnvironmentStandard(omrVMThread);
-		if (!env->initialize(extensions)) {
-			env->kill();
-			env = NULL;	
-		}
-	}	
+MM_EnvironmentStandard *MM_EnvironmentStandard::newInstance(
+    MM_GCExtensionsBase *extensions, OMR_VMThread *omrVMThread) {
+  void *envPtr;
+  MM_EnvironmentStandard *env = NULL;
 
-	return env;
+  envPtr = (void *)pool_newElement(extensions->environments);
+  if (envPtr) {
+    env = new (envPtr) MM_EnvironmentStandard(omrVMThread);
+    if (!env->initialize(extensions)) {
+      env->kill();
+      env = NULL;
+    }
+  }
+
+  return env;
 }
 
-bool
-MM_EnvironmentStandard::initialize(MM_GCExtensionsBase *extensions)
-{
+bool MM_EnvironmentStandard::initialize(MM_GCExtensionsBase *extensions) {
 #if defined(OMR_GC_MODRON_SCAVENGER)
-	_scavengerRememberedSet.count = 0;
-	_scavengerRememberedSet.fragmentCurrent = NULL;
-	_scavengerRememberedSet.fragmentTop = NULL;
-	_scavengerRememberedSet.fragmentSize = (uintptr_t)OMR_SCV_REMSET_FRAGMENT_SIZE;
-	_scavengerRememberedSet.parentList = &extensions->rememberedSet;
+  _scavengerRememberedSet.count = 0;
+  _scavengerRememberedSet.fragmentCurrent = NULL;
+  _scavengerRememberedSet.fragmentTop = NULL;
+  _scavengerRememberedSet.fragmentSize =
+      (uintptr_t)OMR_SCV_REMSET_FRAGMENT_SIZE;
+  _scavengerRememberedSet.parentList = &extensions->rememberedSet;
 #endif
 
 #if defined(OMR_GC_CONCURRENT_SCAVENGER)
-	if (extensions->concurrentScavenger) {
-		extensions->scavenger->mutatorSetupForGC(this);
-	}
+  if (extensions->concurrentScavenger) {
+    extensions->scavenger->mutatorSetupForGC(this);
+  }
 #endif
 
-	/* initialize base class */
-	return MM_EnvironmentBase::initialize(extensions);
+  /* initialize base class */
+  return MM_EnvironmentBase::initialize(extensions);
 }
 
-void
-MM_EnvironmentStandard::tearDown(MM_GCExtensionsBase *extensions)
-{
-	/* If we are in a middle of a concurrent GC, we may want to flush GC caches (if thread happens to do GC work) */
-	flushGCCaches();
-	/* tearDown base class */
-	MM_EnvironmentBase::tearDown(extensions);
+void MM_EnvironmentStandard::tearDown(MM_GCExtensionsBase *extensions) {
+  /* If we are in a middle of a concurrent GC, we may want to flush GC caches
+   * (if thread happens to do GC work) */
+  flushGCCaches();
+  /* tearDown base class */
+  MM_EnvironmentBase::tearDown(extensions);
 }
 
-void
-MM_EnvironmentStandard::flushNonAllocationCaches()
-{
-	MM_EnvironmentBase::flushNonAllocationCaches();
+void MM_EnvironmentStandard::flushNonAllocationCaches() {
+  MM_EnvironmentBase::flushNonAllocationCaches();
 
 #if defined(OMR_GC_MODRON_SCAVENGER)
-	if (getExtensions()->scavengerEnabled) {
-		if (MUTATOR_THREAD == getThreadType()) {
-			flushRememberedSet();
-		}
-	}
+  if (getExtensions()->scavengerEnabled) {
+    if (MUTATOR_THREAD == getThreadType()) {
+      flushRememberedSet();
+    }
+  }
 #endif /* OMR_GC_MODRON_SCAVENGER */
 }
 
-void
-MM_EnvironmentStandard::flushGCCaches()
-{
+void MM_EnvironmentStandard::flushGCCaches() {
 #if defined(OMR_GC_CONCURRENT_SCAVENGER)
-	if (getExtensions()->concurrentScavenger) {
-		if (MUTATOR_THREAD == getThreadType()) {
-			if (NULL != getExtensions()->scavenger) {
-				getExtensions()->scavenger->threadReleaseCaches(this, true);
-			}
-		}
-	}
+  if (getExtensions()->concurrentScavenger) {
+    if (MUTATOR_THREAD == getThreadType()) {
+      if (NULL != getExtensions()->scavenger) {
+        getExtensions()->scavenger->threadReleaseCaches(this, true);
+      }
+    }
+  }
 #endif /* OMR_GC_CONCURRENT_SCAVENGER */
 }

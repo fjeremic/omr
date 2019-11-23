@@ -17,24 +17,22 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
  * @file
  * @ingroup GC_Modron_Standard
  */
- 
+
 #include "CompactFixHeapForWalkTask.hpp"
 #include "CompactScheme.hpp"
 
 #if defined(OMR_GC_MODRON_COMPACTION)
 
-void 
-MM_CompactFixHeapForWalkTask::run(MM_EnvironmentBase *env)
-{
-	_compactScheme->parallelFixHeapForWalk(env);
+void MM_CompactFixHeapForWalkTask::run(MM_EnvironmentBase *env) {
+  _compactScheme->parallelFixHeapForWalk(env);
 }
- 
-#endif /* OMR_GC_MODRON_COMPACTION */
 
+#endif /* OMR_GC_MODRON_COMPACTION */

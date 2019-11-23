@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_REGISTER_DEPENDENCY_INCL
@@ -24,50 +25,55 @@
 
 #include "codegen/OMRRegisterDependency.hpp"
 
-namespace TR
-{
+namespace TR {
 
+class RegisterDependencyConditions
+    : public OMR::RegisterDependencyConditionsConnector {
+ public:
+  RegisterDependencyConditions()
+      : OMR::RegisterDependencyConditionsConnector() {}
 
-class RegisterDependencyConditions : public OMR::RegisterDependencyConditionsConnector
-   {
-   public:
+  RegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node,
+                               uint32_t extranum, TR::Instruction **cursorPtr)
+      : OMR::RegisterDependencyConditionsConnector(cg, node, extranum,
+                                                   cursorPtr) {}
 
-   RegisterDependencyConditions() : OMR::RegisterDependencyConditionsConnector() {}
+  RegisterDependencyConditions(RegisterDependencyConditions *iConds,
+                               uint16_t numNewPreConds,
+                               uint16_t numNewPostConds, TR::CodeGenerator *cg)
+      : OMR::RegisterDependencyConditionsConnector(iConds, numNewPreConds,
+                                                   numNewPostConds, cg) {}
 
-   RegisterDependencyConditions(TR::CodeGenerator *cg,
-        TR::Node *node,
-        uint32_t extranum,
-        TR::Instruction **cursorPtr) :
-        OMR::RegisterDependencyConditionsConnector(cg, node,extranum, cursorPtr) {}
+  RegisterDependencyConditions(RegisterDependencyConditions *conds_1,
+                               RegisterDependencyConditions *conds_2,
+                               TR::CodeGenerator *cg)
+      : OMR::RegisterDependencyConditionsConnector(conds_1, conds_2, cg) {}
 
-   RegisterDependencyConditions(RegisterDependencyConditions* iConds, uint16_t numNewPreConds, uint16_t numNewPostConds, TR::CodeGenerator *cg) :
-      OMR::RegisterDependencyConditionsConnector(iConds, numNewPreConds, numNewPostConds, cg) {}
+  RegisterDependencyConditions(TR_S390RegisterDependencyGroup *_preConditions,
+                               TR_S390RegisterDependencyGroup *_postConditions,
+                               uint16_t numPreConds, uint16_t numPostConds,
+                               TR::CodeGenerator *cg)
+      : OMR::RegisterDependencyConditionsConnector(
+            _preConditions, _postConditions, numPreConds, numPostConds, cg) {}
 
-   RegisterDependencyConditions(RegisterDependencyConditions * conds_1, RegisterDependencyConditions * conds_2, TR::CodeGenerator *cg) :
-      OMR::RegisterDependencyConditionsConnector(conds_1, conds_2, cg) {}
+  RegisterDependencyConditions(uint16_t numPreConds, uint16_t numPostConds,
+                               TR::CodeGenerator *cg)
+      : OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds,
+                                                   cg) {}
+};
+}  // namespace TR
 
-   RegisterDependencyConditions(TR_S390RegisterDependencyGroup *_preConditions,
-         TR_S390RegisterDependencyGroup *_postConditions,
-            uint16_t numPreConds, uint16_t numPostConds,
-            TR::CodeGenerator *cg) :
-            OMR::RegisterDependencyConditionsConnector(_preConditions, _postConditions, numPreConds, numPostConds, cg) {}
-
-   RegisterDependencyConditions(uint16_t numPreConds, uint16_t numPostConds, TR::CodeGenerator *cg) :
-      OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds, cg) {}
-
-   };
+inline TR::RegisterDependencyConditions *generateRegisterDependencyConditions(
+    uint16_t numPreConds, uint16_t numPostConds, TR::CodeGenerator *cg) {
+  return new (cg->trHeapMemory())
+      TR::RegisterDependencyConditions(numPreConds, numPostConds, cg);
 }
 
-inline TR::RegisterDependencyConditions *
-generateRegisterDependencyConditions(uint16_t numPreConds, uint16_t numPostConds, TR::CodeGenerator *cg)
-   {
-   return new (cg->trHeapMemory()) TR::RegisterDependencyConditions(numPreConds, numPostConds, cg);
-   }
-
-inline TR::RegisterDependencyConditions *
-generateRegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node, uint32_t extranum, TR::Instruction **cursorPtr=NULL)
-   {
-   return new (cg->trHeapMemory()) TR::RegisterDependencyConditions(cg, node, extranum, cursorPtr);
-   }
+inline TR::RegisterDependencyConditions *generateRegisterDependencyConditions(
+    TR::CodeGenerator *cg, TR::Node *node, uint32_t extranum,
+    TR::Instruction **cursorPtr = NULL) {
+  return new (cg->trHeapMemory())
+      TR::RegisterDependencyConditions(cg, node, extranum, cursorPtr);
+}
 
 #endif

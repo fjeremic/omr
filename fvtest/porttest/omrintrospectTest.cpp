@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -38,45 +39,55 @@
  * Verify setting of suspend signal
  * @Note this assumes we use SIGRTMIN...SIGRTMAX
  */
-TEST(PortIntrospectTest, introspect_test_set_signal_offset)
-{
-	OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
-	const char *testName = "introspect_test_set_signal_offset";
-	int32_t status = 0;
-	portTestEnv->changeIndent(1);
+TEST(PortIntrospectTest, introspect_test_set_signal_offset) {
+  OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
+  const char *testName = "introspect_test_set_signal_offset";
+  int32_t status = 0;
+  portTestEnv->changeIndent(1);
 
-	reportTestEntry(OMRPORTLIB, testName);
+  reportTestEntry(OMRPORTLIB, testName);
 #if defined(OMR_CONFIGURABLE_SUSPEND_SIGNAL)
-	portTestEnv->log("test legal offsets\n");
-	for (int32_t i = 0; i <= SIGRTMAX-SIGRTMIN; ++i) {
+  portTestEnv->log("test legal offsets\n");
+  for (int32_t i = 0; i <= SIGRTMAX - SIGRTMIN; ++i) {
 #if defined(SIG_RI_INTERRUPT_INDEX)
-		if (SIG_RI_INTERRUPT_INDEX == signalOffset) {
-			continue;
-		}
-#endif  /* defined(SIG_RI_INTERRUPT_INDEX) */
-		status = omrintrospect_set_suspend_signal_offset(i);
-		if (0 != status) {
-			outputErrorMessage(PORTTEST_ERROR_ARGS, "omrintrospect_set_suspend_signal_offset failed unexpectedly");
-		}
-	}
-	portTestEnv->log("test negative offset\n");
-	status = omrintrospect_set_suspend_signal_offset(-1);
-	if (0 == status) {
-		outputErrorMessage(PORTTEST_ERROR_ARGS, "omrintrospect_set_suspend_signal_offset with negative offset succeeded unexpectedly");
-	}
+    if (SIG_RI_INTERRUPT_INDEX == signalOffset) {
+      continue;
+    }
+#endif /* defined(SIG_RI_INTERRUPT_INDEX) */
+    status = omrintrospect_set_suspend_signal_offset(i);
+    if (0 != status) {
+      outputErrorMessage(
+          PORTTEST_ERROR_ARGS,
+          "omrintrospect_set_suspend_signal_offset failed unexpectedly");
+    }
+  }
+  portTestEnv->log("test negative offset\n");
+  status = omrintrospect_set_suspend_signal_offset(-1);
+  if (0 == status) {
+    outputErrorMessage(PORTTEST_ERROR_ARGS,
+                       "omrintrospect_set_suspend_signal_offset with negative "
+                       "offset succeeded unexpectedly");
+  }
 
-	portTestEnv->log("test excessive offset\n");
-	status = omrintrospect_set_suspend_signal_offset(SIGRTMAX);
-	if (0 == status) {
-		outputErrorMessage(PORTTEST_ERROR_ARGS, "omrintrospect_set_suspend_signal_offset out of range offset succeeded unexpectedly");
-	}
-#else /* defined(OMR_CONFIGURABLE_SUSPEND_SIGNAL) */
-	portTestEnv->log("verify that omrintrospect_set_suspend_signal_offset returns failure on unsupported platforms\n");
-	status = omrintrospect_set_suspend_signal_offset(0);
-	portTestEnv->log("omrintrospect_set_suspend_signal_offset returns %d \n", status);
-	if (0 == status) {
-		outputErrorMessage(PORTTEST_ERROR_ARGS, "omrintrospect_set_suspend_signal_offset succeeded unexpectedly");
-	}
+  portTestEnv->log("test excessive offset\n");
+  status = omrintrospect_set_suspend_signal_offset(SIGRTMAX);
+  if (0 == status) {
+    outputErrorMessage(PORTTEST_ERROR_ARGS,
+                       "omrintrospect_set_suspend_signal_offset out of range "
+                       "offset succeeded unexpectedly");
+  }
+#else  /* defined(OMR_CONFIGURABLE_SUSPEND_SIGNAL) */
+  portTestEnv->log(
+      "verify that omrintrospect_set_suspend_signal_offset returns failure on "
+      "unsupported platforms\n");
+  status = omrintrospect_set_suspend_signal_offset(0);
+  portTestEnv->log("omrintrospect_set_suspend_signal_offset returns %d \n",
+                   status);
+  if (0 == status) {
+    outputErrorMessage(
+        PORTTEST_ERROR_ARGS,
+        "omrintrospect_set_suspend_signal_offset succeeded unexpectedly");
+  }
 #endif /* defined(OMR_CONFIGURABLE_SUSPEND_SIGNAL) */
-	portTestEnv->changeIndent(-1);
+  portTestEnv->changeIndent(-1);
 }

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef THREADEXTENDEDTESTHELPERS_HPP_INCLUDED
@@ -24,31 +25,29 @@
 
 #include <string.h>
 
-#include "omrport.h"
 #include "omrTest.h"
 #include "omrTestHelpers.h"
+#include "omrport.h"
 #include "testEnvironment.hpp"
 
-class ThreadExtendedTestEnvironment: public BaseEnvironment
-{
-/*
- * Data members
- */
-private:
-protected:
-public:
-
-/*
-* Function members
-*/
-private:
-protected:
-public:
-	ThreadExtendedTestEnvironment(int argc, char **argv, OMRPortLibrary *portLibrary) :
-		BaseEnvironment(argc, argv)
-	{
-		portLib = portLibrary;
-	}
+class ThreadExtendedTestEnvironment : public BaseEnvironment {
+  /*
+   * Data members
+   */
+ private:
+ protected:
+ public:
+  /*
+   * Function members
+   */
+ private:
+ protected:
+ public:
+  ThreadExtendedTestEnvironment(int argc, char **argv,
+                                OMRPortLibrary *portLibrary)
+      : BaseEnvironment(argc, argv) {
+    portLib = portLibrary;
+  }
 };
 
 /**

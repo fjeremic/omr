@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMR_VM_HPP_)
@@ -27,9 +28,9 @@
  * @ddr_namespace: default
  */
 
-#include "omr.h"
 #include "OMR_BaseNonVirtual.hpp"
 #include "OMR_VMConfiguration.hpp"
+#include "omr.h"
 
 extern "C" {
 
@@ -37,8 +38,8 @@ extern "C" {
  * Internal: Attach a vmthread to the VM.
  *
  * @param[in] vm The VM
- * @param[in] vmthread The vmthread to attach. NOTE: Need NOT be the current thread!
- *                     vmthread->_os_thread must be initialized.
+ * @param[in] vmthread The vmthread to attach. NOTE: Need NOT be the current
+ * thread! vmthread->_os_thread must be initialized.
  *
  * @return an OMR error code
  */
@@ -48,12 +49,12 @@ omr_error_t attachThread(OMR_VM *vm, OMR_VMThread *vmthread);
  * Internal: Detach a vmthread from the VM.
  *
  * @param[in] vm The VM
- * @param[in] vmthread The vmthread to detach. NOTE: Need NOT be the current thread!
+ * @param[in] vmthread The vmthread to detach. NOTE: Need NOT be the current
+ * thread!
  *
  * @return an OMR error code
  */
 omr_error_t detachThread(OMR_VM *vm, OMR_VMThread *vmthread);
-
 }
 
 #endif /* OMR_VM_HPP_ */

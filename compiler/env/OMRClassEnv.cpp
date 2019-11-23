@@ -16,46 +16,42 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include "compile/Compilation.hpp"
 #include "env/CompilerEnv.hpp"
 #include "env/jittypes.h"
 #include "infra/Assert.hpp"
-#include "compile/Compilation.hpp"
 
-TR::ClassEnv *
-OMR::ClassEnv::self()
-   {
-   return static_cast<TR::ClassEnv *>(this);
-   }
+TR::ClassEnv *OMR::ClassEnv::self() {
+  return static_cast<TR::ClassEnv *>(this);
+}
 
-char *
-OMR::ClassEnv::classNameChars(TR::Compilation *comp, TR::SymbolReference *symRef, int32_t & len)
-   {
-   char *name = "<no class name>";
-   len = strlen(name);
-   return name;
-   }
+char *OMR::ClassEnv::classNameChars(TR::Compilation *comp,
+                                    TR::SymbolReference *symRef, int32_t &len) {
+  char *name = "<no class name>";
+  len = strlen(name);
+  return name;
+}
 
-uintptrj_t
-OMR::ClassEnv::getArrayElementWidthInBytes(TR::Compilation *comp, TR_OpaqueClassBlock* arrayClass)
-   {
-   TR_UNIMPLEMENTED();
-   return 0;
-   }
+uintptrj_t OMR::ClassEnv::getArrayElementWidthInBytes(
+    TR::Compilation *comp, TR_OpaqueClassBlock *arrayClass) {
+  TR_UNIMPLEMENTED();
+  return 0;
+}
 
-intptrj_t
-OMR::ClassEnv::getVFTEntry(TR::Compilation *comp, TR_OpaqueClassBlock* clazz, int32_t offset)
-   {
-   return *(intptrj_t*) (((uint8_t *)clazz) + offset);
-   }
+intptrj_t OMR::ClassEnv::getVFTEntry(TR::Compilation *comp,
+                                     TR_OpaqueClassBlock *clazz,
+                                     int32_t offset) {
+  return *(intptrj_t *)(((uint8_t *)clazz) + offset);
+}
 
-bool
-OMR::ClassEnv::classUnloadAssumptionNeedsRelocation(TR::Compilation *comp)
-   {
-   return comp->compileRelocatableCode();
-   }
+bool OMR::ClassEnv::classUnloadAssumptionNeedsRelocation(
+    TR::Compilation *comp) {
+  return comp->compileRelocatableCode();
+}

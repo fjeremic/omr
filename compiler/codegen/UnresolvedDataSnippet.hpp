@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_UNRESOLVEDDATASNIPPET_INCL
@@ -24,22 +25,27 @@
 
 #include "codegen/OMRUnresolvedDataSnippet.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class SymbolReference; }
-
-namespace TR
-{
-
-class UnresolvedDataSnippet : public OMR::UnresolvedDataSnippetConnector
-   {
-
-public:
-
-   UnresolvedDataSnippet(TR::CodeGenerator *cg, TR::Node *node, TR::SymbolReference *symRef, bool isStore, bool isGCSafePoint) :
-      OMR::UnresolvedDataSnippetConnector(cg, node, symRef, isStore, isGCSafePoint) { }
-   };
-
+namespace TR {
+class CodeGenerator;
 }
+namespace TR {
+class Node;
+}
+namespace TR {
+class SymbolReference;
+}
+
+namespace TR {
+
+class UnresolvedDataSnippet : public OMR::UnresolvedDataSnippetConnector {
+ public:
+  UnresolvedDataSnippet(TR::CodeGenerator *cg, TR::Node *node,
+                        TR::SymbolReference *symRef, bool isStore,
+                        bool isGCSafePoint)
+      : OMR::UnresolvedDataSnippetConnector(cg, node, symRef, isStore,
+                                            isGCSafePoint) {}
+};
+
+}  // namespace TR
 
 #endif

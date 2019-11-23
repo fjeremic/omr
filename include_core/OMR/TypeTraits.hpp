@@ -17,14 +17,14 @@
  *  [1] https://www.gnu.org/software/classpath/license.html
  *  [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- *  SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ *  SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMR_TYPETRAITS_HPP_)
 #define OMR_TYPETRAITS_HPP_
 
-namespace OMR
-{
+namespace OMR {
 
 ///
 /// Basic constants
@@ -32,13 +32,12 @@ namespace OMR
 
 /// Define an integral constant.
 template <typename T, T value>
-struct IntegralConstant
-{
-	typedef T ValueType;
+struct IntegralConstant {
+  typedef T ValueType;
 
-	static const ValueType VALUE = value;
+  static const ValueType VALUE = value;
 
-	ValueType operator()() const { return VALUE; }
+  ValueType operator()() const { return VALUE; }
 };
 
 template <typename T, T value>
@@ -52,9 +51,8 @@ struct FalseConstant : BoolConstant<false> {};
 struct TrueConstant : BoolConstant<true> {};
 
 template <typename T>
-struct TypeAlias
-{
-	typedef T Type;
+struct TypeAlias {
+  typedef T Type;
 };
 
 ///
@@ -138,7 +136,8 @@ struct IsNonCvPointer : FalseConstant {};
 template <typename T>
 struct IsNonCvPointer<T*> : TrueConstant {};
 
-/// IsPointer<T>::VALUE is true if T is a (possibly cv qualified) primitive pointer type.
+/// IsPointer<T>::VALUE is true if T is a (possibly cv qualified) primitive
+/// pointer type.
 template <typename T>
 struct IsPointer : IsNonCvPointer<typename RemoveCv<T>::Type> {};
 
@@ -146,61 +145,82 @@ struct IsPointer : IsNonCvPointer<typename RemoveCv<T>::Type> {};
 template <typename T>
 struct IsVoid : IsSame<typename RemoveCv<T>::Type, void> {};
 
-/// IsNonCvIntegral<T>::VALUE is true if T is a non-cv-qualified primitive integral type
+/// IsNonCvIntegral<T>::VALUE is true if T is a non-cv-qualified primitive
+/// integral type
 ///
-/// Note: Unlike `std::is_integral`, any compiler-defined extended integer types are not
-/// supported by IsNonCvIntegral.
+/// Note: Unlike `std::is_integral`, any compiler-defined extended integer types
+/// are not supported by IsNonCvIntegral.
 template <typename T>
 struct IsNonCvIntegral : FalseConstant {};
 
-template <> struct IsNonCvIntegral<bool> : TrueConstant {};
-template <> struct IsNonCvIntegral<char> : TrueConstant {};
-template <> struct IsNonCvIntegral<signed char> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned char> : TrueConstant {};
-template <> struct IsNonCvIntegral<short> : TrueConstant {};
-template <> struct IsNonCvIntegral<int> : TrueConstant {};
-template <> struct IsNonCvIntegral<long> : TrueConstant {};
-template <> struct IsNonCvIntegral<long long> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned short> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned int> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned long> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned long long> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<bool> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<char> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<signed char> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<unsigned char> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<short> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<int> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<long> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<long long> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<unsigned short> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<unsigned int> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<unsigned long> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<unsigned long long> : TrueConstant {};
 
-/// IsIntegral<T>::VALUE is true if T is a (possibly cv-qualified) primitive integral type.
+/// IsIntegral<T>::VALUE is true if T is a (possibly cv-qualified) primitive
+/// integral type.
 ///
 /// (see note for IsNonCvIntegral)
 template <typename T>
 struct IsIntegral : IsNonCvIntegral<typename RemoveCv<T>::Type> {};
 
-/// IsNonCvFloatingPoint<T>::VALUE is true if T is a non-cv-qualified floating point type
+/// IsNonCvFloatingPoint<T>::VALUE is true if T is a non-cv-qualified floating
+/// point type
 template <typename T>
 struct IsNonCvFloatingPoint : FalseConstant {};
 
-template <> struct IsNonCvFloatingPoint<float> : TrueConstant {};
-template <> struct IsNonCvFloatingPoint<double> : TrueConstant {};
-template <> struct IsNonCvFloatingPoint<long double> : TrueConstant {};
+template <>
+struct IsNonCvFloatingPoint<float> : TrueConstant {};
+template <>
+struct IsNonCvFloatingPoint<double> : TrueConstant {};
+template <>
+struct IsNonCvFloatingPoint<long double> : TrueConstant {};
 
-/// IsFloatingPoint<T>::VALUE is tue if T is a (possibly cv-qualified) floating point type
+/// IsFloatingPoint<T>::VALUE is tue if T is a (possibly cv-qualified) floating
+/// point type
 template <typename T>
 struct IsFloatingPoint : IsNonCvFloatingPoint<typename RemoveCv<T>::Type> {};
 
-/// IsArithmetic<T>::VALUE is true if T is a (possibly cv-qualified) primtive integral or floating point type
+/// IsArithmetic<T>::VALUE is true if T is a (possibly cv-qualified) primtive
+/// integral or floating point type
 template <typename T>
-struct IsArithmetic : BoolConstant<IsIntegral<T>::VALUE || IsFloatingPoint<T>::VALUE> {};
+struct IsArithmetic
+    : BoolConstant<IsIntegral<T>::VALUE || IsFloatingPoint<T>::VALUE> {};
 
 ///
 /// Miscellaneous transformations
 ///
 
-/// EnableIf<B, T>::Type will exist if-and-only-if B is true (a basic SFINAE construct)
+/// EnableIf<B, T>::Type will exist if-and-only-if B is true (a basic SFINAE
+/// construct)
 template <bool B, typename T = void>
 struct EnableIf {};
 
 template <typename T>
-struct EnableIf<true, T>
-{
-	typedef T Type;
+struct EnableIf<true, T> {
+  typedef T Type;
 };
 }  // namespace OMR
 
-#endif // OMR_TYPETRAITS_HPP_
+#endif  // OMR_TYPETRAITS_HPP_

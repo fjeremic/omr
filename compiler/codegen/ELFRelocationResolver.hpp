@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_ELFRELOCATIONRESOLVER_INCL
@@ -31,13 +32,13 @@
 namespace TR {
 
 /**
- * @brief The ELFRelocationResolver class translates between a TR::StaticRelocation and the ELF relocation type required for the platform.
+ * @brief The ELFRelocationResolver class translates between a
+ * TR::StaticRelocation and the ELF relocation type required for the platform.
  */
-class OMR_EXTENSIBLE ELFRelocationResolver : public ::OMR::ELFRelocationResolverConnector
-   {
-   };
+class OMR_EXTENSIBLE ELFRelocationResolver
+    : public ::OMR::ELFRelocationResolverConnector {};
 
-}
+}  // namespace TR
 
 #endif /* defined(LINUX) */
 

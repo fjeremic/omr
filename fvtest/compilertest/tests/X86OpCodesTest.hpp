@@ -16,45 +16,44 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "OpCodesTest.hpp"
 
-namespace TestCompiler
-{
-class X86OpCodesTest : public OpCodesTest
-   {
-   public:
-   virtual void compileIntegerArithmeticTestMethods();
-   virtual void compileFloatArithmeticTestMethods();
-   virtual void compileMemoryOperationTestMethods();
-   virtual void compileUnaryTestMethods();
-   virtual void compileBitwiseTestMethods();
-   virtual void compileDirectCallTestMethods();
-   virtual void compileCompareTestMethods();
-   virtual void compileTernaryTestMethods();
-   virtual void compileAddressTestMethods();
+namespace TestCompiler {
+class X86OpCodesTest : public OpCodesTest {
+ public:
+  virtual void compileIntegerArithmeticTestMethods();
+  virtual void compileFloatArithmeticTestMethods();
+  virtual void compileMemoryOperationTestMethods();
+  virtual void compileUnaryTestMethods();
+  virtual void compileBitwiseTestMethods();
+  virtual void compileDirectCallTestMethods();
+  virtual void compileCompareTestMethods();
+  virtual void compileTernaryTestMethods();
+  virtual void compileAddressTestMethods();
 
-   virtual void invokeIntegerArithmeticTests();
-   virtual void invokeFloatArithmeticTests();
-   virtual void invokeMemoryOperationTests();
-   virtual void invokeUnaryTests();
-   virtual void invokeBitwiseTests();
-   virtual void invokeDirectCallTests();
-   virtual void invokeCompareTests();
-   virtual void invokeTernaryTests();
-   virtual void invokeAddressTests();
-   virtual void UnsupportedOpCodesTests();
+  virtual void invokeIntegerArithmeticTests();
+  virtual void invokeFloatArithmeticTests();
+  virtual void invokeMemoryOperationTests();
+  virtual void invokeUnaryTests();
+  virtual void invokeBitwiseTests();
+  virtual void invokeDirectCallTests();
+  virtual void invokeCompareTests();
+  virtual void invokeTernaryTests();
+  virtual void invokeAddressTests();
+  virtual void UnsupportedOpCodesTests();
 
-   virtual void compileDisabledIntegerArithmeticTestMethods();
-   virtual void invokeDisabledIntegerArithmeticTests();
-   virtual void compileDisabledConvertOpCodesTest();
-   virtual void invokeDisabledConvertOpCodesTest();
-   virtual void compileDisabledMemoryOpCodesTest();
-   virtual void invokeDisabledMemoryOpCodesTest();
+  virtual void compileDisabledIntegerArithmeticTestMethods();
+  virtual void invokeDisabledIntegerArithmeticTests();
+  virtual void compileDisabledConvertOpCodesTest();
+  virtual void invokeDisabledConvertOpCodesTest();
+  virtual void compileDisabledMemoryOpCodesTest();
+  virtual void invokeDisabledMemoryOpCodesTest();
 
-   virtual void invokeNoHelperUnaryTests();
-   };
+  virtual void invokeNoHelperUnaryTests();
+};
 
-} // namespace TestCompiler
+}  // namespace TestCompiler

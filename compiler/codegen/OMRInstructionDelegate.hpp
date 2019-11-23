@@ -16,34 +16,36 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_INSTRUCTIONDELEGATE_INCL
 #define OMR_INSTRUCTIONDELEGATE_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_INSTRUCTIONDELEGATE_CONNECTOR
 #define OMR_INSTRUCTIONDELEGATE_CONNECTOR
-namespace OMR { class InstructionDelegate; }
-namespace OMR { typedef OMR::InstructionDelegate InstructionDelegateConnector; }
+namespace OMR {
+class InstructionDelegate;
+}
+namespace OMR {
+typedef OMR::InstructionDelegate InstructionDelegateConnector;
+}
 #endif
 
 #include "infra/Annotations.hpp"
 
-namespace OMR
-{
+namespace OMR {
 
-class OMR_EXTENSIBLE InstructionDelegate
-   {
-protected:
+class OMR_EXTENSIBLE InstructionDelegate {
+ protected:
+  InstructionDelegate() {}
+};
 
-   InstructionDelegate() {}
-
-   };
-
-}
+}  // namespace OMR
 
 #endif

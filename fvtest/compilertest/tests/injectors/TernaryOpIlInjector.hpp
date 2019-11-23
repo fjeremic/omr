@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_TERNARYOPILINJECTOR_INCL
@@ -24,24 +25,24 @@
 
 #include "tests/injectors/OpIlInjector.hpp"
 
-namespace TR { class TypeDictionary; }
+namespace TR {
+class TypeDictionary;
+}
 
-namespace TestCompiler
-{
-class TernaryOpIlInjector : public OpIlInjector
-   {
-   public:
-   TernaryOpIlInjector(TR::TypeDictionary *types, TestDriver *test, TR::ILOpCodes opCode)
-      : OpIlInjector(types, test, opCode)
-      {
-      initOptArgs(3);
-      _conditionalDataType = TR::Int32;
-      }
-   TR_ALLOC(TR_Memory::IlGenerator)
+namespace TestCompiler {
+class TernaryOpIlInjector : public OpIlInjector {
+ public:
+  TernaryOpIlInjector(TR::TypeDictionary *types, TestDriver *test,
+                      TR::ILOpCodes opCode)
+      : OpIlInjector(types, test, opCode) {
+    initOptArgs(3);
+    _conditionalDataType = TR::Int32;
+  }
+  TR_ALLOC(TR_Memory::IlGenerator)
 
-   bool injectIL();
-   };
+  bool injectIL();
+};
 
 } /* namespace TestCompiler */
 
-#endif // !define (TEST_TERNARYOPILINJECTOR_INCL)
+#endif  // !define (TEST_TERNARYOPILINJECTOR_INCL)

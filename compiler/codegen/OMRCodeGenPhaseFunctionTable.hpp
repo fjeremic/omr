@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -24,22 +25,29 @@
  * Only valid static methods within CodeGenPhase class should be included.
  */
 
- // The entries in this file must be kept in sync with compiler/codegen/OMRCodeGenPhaseEnum.hpp
-   TR::CodeGenPhase::performReserveCodeCachePhase,                                           //ReserveCodeCachePhase
-   TR::CodeGenPhase::performLowerTreesPhase,                                                 //LowerTreesPhase
-   TR::CodeGenPhase::performUncommonCallConstNodesPhase,                                     //UncommonCallConstNodesPhase
-   TR::CodeGenPhase::performSetupForInstructionSelectionPhase,                               //SetupForInstructionSelectionPhase
-   TR::CodeGenPhase::performInstructionSelectionPhase,                                       //InstructionSelectionPhase
-   TR::CodeGenPhase::performCreateStackAtlasPhase,                                           //CreateStackAtlasPhase
-   TR::CodeGenPhase::performRegisterAssigningPhase,                                          //RegisterAssigningPhase
-   TR::CodeGenPhase::performMapStackPhase,                                                   //MapStackPhase
-   TR::CodeGenPhase::performPeepholePhase,                                                   //PeepholePhase
-   TR::CodeGenPhase::performBinaryEncodingPhase,                                             //BinaryEncodingPhase
-   TR::CodeGenPhase::performEmitSnippetsPhase,                                               //EmitSnippetsPhase
-   TR::CodeGenPhase::performProcessRelocationsPhase,                                         //ProcessRelocationsPhase
-   TR::CodeGenPhase::performFindAndFixCommonedReferencesPhase,                               //FindAndFixCommonedReferencesPhase
-   TR::CodeGenPhase::performRemoveUnusedLocalsPhase,                                         //RemoveUnusedLocalsPhase
-   TR::CodeGenPhase::performInliningReportPhase,                                             //InliningReportPhase
-   TR::CodeGenPhase::performInsertDebugCountersPhase,
-   TR::CodeGenPhase::performCleanUpFlagsPhase,
-   TR::CodeGenPhase::performExpandInstructionsPhase,
+// The entries in this file must be kept in sync with
+// compiler/codegen/OMRCodeGenPhaseEnum.hpp
+TR::CodeGenPhase::performReserveCodeCachePhase,  // ReserveCodeCachePhase
+    TR::CodeGenPhase::performLowerTreesPhase,    // LowerTreesPhase
+    TR::CodeGenPhase::
+        performUncommonCallConstNodesPhase,  // UncommonCallConstNodesPhase
+    TR::CodeGenPhase::
+        performSetupForInstructionSelectionPhase,  // SetupForInstructionSelectionPhase
+    TR::CodeGenPhase::
+        performInstructionSelectionPhase,  // InstructionSelectionPhase
+    TR::CodeGenPhase::performCreateStackAtlasPhase,   // CreateStackAtlasPhase
+    TR::CodeGenPhase::performRegisterAssigningPhase,  // RegisterAssigningPhase
+    TR::CodeGenPhase::performMapStackPhase,           // MapStackPhase
+    TR::CodeGenPhase::performPeepholePhase,           // PeepholePhase
+    TR::CodeGenPhase::performBinaryEncodingPhase,     // BinaryEncodingPhase
+    TR::CodeGenPhase::performEmitSnippetsPhase,       // EmitSnippetsPhase
+    TR::CodeGenPhase::
+        performProcessRelocationsPhase,  // ProcessRelocationsPhase
+    TR::CodeGenPhase::
+        performFindAndFixCommonedReferencesPhase,  // FindAndFixCommonedReferencesPhase
+    TR::CodeGenPhase::
+        performRemoveUnusedLocalsPhase,            // RemoveUnusedLocalsPhase
+    TR::CodeGenPhase::performInliningReportPhase,  // InliningReportPhase
+    TR::CodeGenPhase::performInsertDebugCountersPhase,
+    TR::CodeGenPhase::performCleanUpFlagsPhase,
+    TR::CodeGenPhase::performExpandInstructionsPhase,

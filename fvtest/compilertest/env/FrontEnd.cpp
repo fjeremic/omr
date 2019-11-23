@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "env/FrontEnd.hpp"
@@ -26,8 +27,8 @@
 #include "codegen/CodeGenerator.hpp"
 #include "codegen/GCStackAtlas.hpp"
 #include "codegen/GCStackMap.hpp"
-#include "compile/ResolvedMethod.hpp"
 #include "compile/Compilation.hpp"
+#include "compile/ResolvedMethod.hpp"
 #include "env/FEBase_t.hpp"
 #include "env/Processors.hpp"
 #include "env/jittypes.h"
@@ -38,46 +39,37 @@
 
 //#include "util_api.h"
 
-#define RANGE_NEEDS_FOUR_BYTE_OFFSET(r) (((r) >= (USHRT_MAX   )) ? 1 : 0)
+#define RANGE_NEEDS_FOUR_BYTE_OFFSET(r) (((r) >= (USHRT_MAX)) ? 1 : 0)
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 FrontEnd *FrontEnd::_instance = 0;
 
-FrontEnd::FrontEnd()
-   : TR::FEBase<FrontEnd>()
-   {
-   TR_ASSERT(!_instance, "FrontEnd must be initialized only once");
-   _instance = this;
-   }
+FrontEnd::FrontEnd() : TR::FEBase<FrontEnd>() {
+  TR_ASSERT(!_instance, "FrontEnd must be initialized only once");
+  _instance = this;
+}
 
-void
-FrontEnd::reserveTrampolineIfNecessary(TR::Compilation *comp, TR::SymbolReference *symRef, bool inBinaryEncoding)
-   {
-   // Do we handle trampoline reservations? return here for now.
-   return;
-   }
+void FrontEnd::reserveTrampolineIfNecessary(TR::Compilation *comp,
+                                            TR::SymbolReference *symRef,
+                                            bool inBinaryEncoding) {
+  // Do we handle trampoline reservations? return here for now.
+  return;
+}
 
-TR_ResolvedMethod *
-FrontEnd::createResolvedMethod(TR_Memory * trMemory, TR_OpaqueMethodBlock * aMethod,
-                                  TR_ResolvedMethod * owningMethod, TR_OpaqueClassBlock *classForNewInstance)
-   {
-   return new (trMemory->trHeapMemory()) ResolvedMethod(aMethod);
-   }
+TR_ResolvedMethod *FrontEnd::createResolvedMethod(
+    TR_Memory *trMemory, TR_OpaqueMethodBlock *aMethod,
+    TR_ResolvedMethod *owningMethod, TR_OpaqueClassBlock *classForNewInstance) {
+  return new (trMemory->trHeapMemory()) ResolvedMethod(aMethod);
+}
 
-intptrj_t
-FrontEnd::methodTrampolineLookup(TR::Compilation *comp, TR::SymbolReference *symRef, void *callSite)
-   {
-   TR_UNIMPLEMENTED();
-   return 0;
-   }
-
+intptrj_t FrontEnd::methodTrampolineLookup(TR::Compilation *comp,
+                                           TR::SymbolReference *symRef,
+                                           void *callSite) {
+  TR_UNIMPLEMENTED();
+  return 0;
+}
 
 // -----------------------------------------------------------------------------
 
-
-
-
-
-} //namespace TestCompiler
+}  // namespace TestCompiler

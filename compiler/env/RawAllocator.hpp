@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_RAW_ALLOCATOR_HPP
@@ -26,8 +27,12 @@
 
 #ifndef TR_RAW_ALLOCATOR
 #define TR_RAW_ALLOCATOR
-namespace OMR { class RawAllocator; }
-namespace TR { typedef OMR::RawAllocator RawAllocator; }
+namespace OMR {
+class RawAllocator;
+}
+namespace TR {
+typedef OMR::RawAllocator RawAllocator;
+}
 #endif
 
 #include <stddef.h>
@@ -37,87 +42,67 @@ namespace TR { typedef OMR::RawAllocator RawAllocator; }
 
 namespace OMR {
 
-class RawAllocator
-   {
-public:
-   RawAllocator()
-      {
-      }
+class RawAllocator {
+ public:
+  RawAllocator() {}
 
-   RawAllocator(const RawAllocator &other)
-      {
-      }
+  RawAllocator(const RawAllocator &other) {}
 
-   void *allocate(size_t size, const std::nothrow_t tag, void * hint = 0) throw()
-      {
-      return malloc(size);
-      }
+  void *allocate(size_t size, const std::nothrow_t tag,
+                 void *hint = 0) throw() {
+    return malloc(size);
+  }
 
-   void * allocate(size_t size, void * hint = 0)
-      {
-      void * const alloc = allocate(size, std::nothrow, hint);
-      if (!alloc) throw std::bad_alloc();
-      return alloc;
-      }
+  void *allocate(size_t size, void *hint = 0) {
+    void *const alloc = allocate(size, std::nothrow, hint);
+    if (!alloc) throw std::bad_alloc();
+    return alloc;
+  }
 
-   void deallocate(void * p) throw()
-      {
-      free(p);
-      }
+  void deallocate(void *p) throw() { free(p); }
 
-   void deallocate(void * p, const size_t size) throw()
-      {
-      free(p);
-      }
+  void deallocate(void *p, const size_t size) throw() { free(p); }
 
-   friend bool operator ==(const RawAllocator &left, const RawAllocator &right)
-      {
-      return true;
-      }
+  friend bool operator==(const RawAllocator &left, const RawAllocator &right) {
+    return true;
+  }
 
-   friend bool operator !=(const RawAllocator &left, const RawAllocator &right)
-      {
-      return !operator ==(left, right);
-      }
+  friend bool operator!=(const RawAllocator &left, const RawAllocator &right) {
+    return !operator==(left, right);
+  }
 
-   template <typename T>
-   operator TR::typed_allocator< T, RawAllocator >() throw()
-      {
-      return TR::typed_allocator< T, RawAllocator >(*this);
-      }
+  template <typename T>
+  operator TR::typed_allocator<T, RawAllocator>() throw() {
+    return TR::typed_allocator<T, RawAllocator>(*this);
+  }
+};
 
-   };
+}  // namespace OMR
 
+inline void *operator new(size_t size, OMR::RawAllocator allocator) {
+  return allocator.allocate(size);
 }
 
-inline void * operator new(size_t size, OMR::RawAllocator allocator)
-   {
-   return allocator.allocate(size);
-   }
+inline void operator delete(void *ptr, OMR::RawAllocator allocator) throw() {
+  allocator.deallocate(ptr);
+}
 
-inline void operator delete(void *ptr, OMR::RawAllocator allocator) throw()
-   {
-   allocator.deallocate(ptr);
-   }
+inline void *operator new[](size_t size, OMR::RawAllocator allocator) {
+  return allocator.allocate(size);
+}
 
-inline void * operator new[](size_t size, OMR::RawAllocator allocator)
-   {
-   return allocator.allocate(size);
-   }
+inline void operator delete[](void *ptr, OMR::RawAllocator allocator) throw() {
+  allocator.deallocate(ptr);
+}
 
-inline void operator delete[](void *ptr, OMR::RawAllocator allocator) throw()
-   {
-   allocator.deallocate(ptr);
-   }
+inline void *operator new(size_t size, OMR::RawAllocator allocator,
+                          const std::nothrow_t &tag) throw() {
+  return allocator.allocate(size, tag);
+}
 
-inline void * operator new(size_t size, OMR::RawAllocator allocator, const std::nothrow_t& tag) throw()
-   {
-   return allocator.allocate(size, tag);
-   }
+inline void *operator new[](size_t size, OMR::RawAllocator allocator,
+                            const std::nothrow_t &tag) throw() {
+  return allocator.allocate(size, tag);
+}
 
-inline void * operator new[](size_t size, OMR::RawAllocator allocator, const std::nothrow_t& tag) throw()
-   {
-   return allocator.allocate(size, tag);
-   }
-
-#endif // OMR_RAW_ALLOCATOR_HPP
+#endif  // OMR_RAW_ALLOCATOR_HPP

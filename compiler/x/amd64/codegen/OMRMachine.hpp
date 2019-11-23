@@ -16,19 +16,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_AMD64_MACHINE_INCL
 #define OMR_AMD64_MACHINE_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_MACHINE_CONNECTOR
 #define OMR_MACHINE_CONNECTOR
-namespace OMR { namespace X86 { namespace AMD64 { class Machine; } } }
-namespace OMR { typedef OMR::X86::AMD64::Machine MachineConnector; }
+namespace OMR {
+namespace X86 {
+namespace AMD64 {
+class Machine;
+}
+}  // namespace X86
+}  // namespace OMR
+namespace OMR {
+typedef OMR::X86::AMD64::Machine MachineConnector;
+}
 #else
 #error OMR::X86::AMD64::Machine expected to be a primary connector, but an OMR connector is already defined
 #endif
@@ -36,65 +46,63 @@ namespace OMR { typedef OMR::X86::AMD64::Machine MachineConnector; }
 #include "x/codegen/OMRMachine.hpp"
 
 #include <stdint.h>
-namespace TR { class CodeGenerator; }
-namespace TR { class RealRegister; }
-namespace TR { class Register; }
-namespace TR { class Machine; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class RealRegister;
+}
+namespace TR {
+class Register;
+}
+namespace TR {
+class Machine;
+}
 
-namespace OMR
-{
+namespace OMR {
 
-namespace X86
-{
+namespace X86 {
 
-namespace AMD64
-{
+namespace AMD64 {
 
-class OMR_EXTENSIBLE Machine : public OMR::X86::Machine
-   {
+class OMR_EXTENSIBLE Machine : public OMR::X86::Machine {
+  enum {
+    AMD64_NUM_GPR = 16,
+    AMD64_NUM_FPR = 8,  // x87 registers
+    AMD64_NUM_XMMR = 16,
+    AMD64_MAX_GLOBAL_GPRS = 14,
+    AMD64_MAX_8BIT_GLOBAL_GPRS = AMD64_MAX_GLOBAL_GPRS,
+    AMD64_MAX_GLOBAL_FPRS = 16,
+  };
 
-   enum
-      {
-      AMD64_NUM_GPR              = 16,
-      AMD64_NUM_FPR              = 8,  // x87 registers
-      AMD64_NUM_XMMR             = 16,
-      AMD64_MAX_GLOBAL_GPRS      = 14,
-      AMD64_MAX_8BIT_GLOBAL_GPRS = AMD64_MAX_GLOBAL_GPRS,
-      AMD64_MAX_GLOBAL_FPRS      = 16,
-      };
+  TR::Register *_registerAssociationsStorage[TR::RealRegister::NumRegisters];
+  TR::Register *_xmmGlobalRegisterStorage[AMD64_NUM_XMMR];
+  uint32_t _globalRegisterNumberToRealRegisterMapStorage[AMD64_MAX_GLOBAL_GPRS +
+                                                         AMD64_MAX_GLOBAL_FPRS];
 
-   TR::Register         *_registerAssociationsStorage[TR::RealRegister::NumRegisters];
-   TR::Register         *_xmmGlobalRegisterStorage[AMD64_NUM_XMMR];
-   uint32_t _globalRegisterNumberToRealRegisterMapStorage[AMD64_MAX_GLOBAL_GPRS + AMD64_MAX_GLOBAL_FPRS];
+ public:
+  Machine(TR::CodeGenerator *cg);
 
-   public:
+  static uint8_t numGPRRegsWithheld(TR::CodeGenerator *cg);
+  static uint8_t numRegsWithheld(TR::CodeGenerator *cg);
 
-   Machine(TR::CodeGenerator *cg);
+  static bool disableNewPickRegister() {
+    if (!_dnprIsInitialized) {
+      _dnprIsInitialized = true;
+    }
+    return _disableNewPickRegister;
+  }
 
-   static uint8_t numGPRRegsWithheld(TR::CodeGenerator *cg);
-   static uint8_t numRegsWithheld(TR::CodeGenerator *cg);
+  static bool enableNewPickRegister();
 
-   static bool disableNewPickRegister()
-      {
-      if (!_dnprIsInitialized)
-         {
-         _dnprIsInitialized = true;
-         }
-      return _disableNewPickRegister;
-      }
+ private:
+  static bool _disableNewPickRegister, _dnprIsInitialized;
+};
 
-   static bool enableNewPickRegister();
+}  // namespace AMD64
 
-   private:
+}  // namespace X86
 
-   static bool _disableNewPickRegister, _dnprIsInitialized;
-
-   };
-
-} // namespace AMD64
-
-} // namespace X86
-
-} // namespace OMR
+}  // namespace OMR
 
 #endif

@@ -16,18 +16,19 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef THREADTESTHELP_H_INCLUDED
 #define THREADTESTHELP_H_INCLUDED
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "omrTest.h"
-#include "thread_api.h"
 #include "testHelper.hpp"
+#include "thread_api.h"
 
 extern ThreadTestEnvironment *omrTestEnv;
 
@@ -35,16 +36,18 @@ extern ThreadTestEnvironment *omrTestEnv;
 extern "C" {
 #endif /* defined(__cplusplus) */
 
-#define VERBOSE_JOIN(_threadToJoin, _expectedRc) \
-	do { \
-		intptr_t _rc = 0; \
-		EXPECT_EQ((_expectedRc), _rc = omrthread_join(_threadToJoin)); \
-		if (_rc & J9THREAD_ERR_OS_ERRNO_SET) { \
-			omrTestEnv->log(LEVEL_ERROR, "omrthread_join() returned os_errno=%d\n", (int)omrthread_get_os_errno()); \
-		} \
-	} while(0)
+#define VERBOSE_JOIN(_threadToJoin, _expectedRc)                              \
+  do {                                                                        \
+    intptr_t _rc = 0;                                                         \
+    EXPECT_EQ((_expectedRc), _rc = omrthread_join(_threadToJoin));            \
+    if (_rc & J9THREAD_ERR_OS_ERRNO_SET) {                                    \
+      omrTestEnv->log(LEVEL_ERROR, "omrthread_join() returned os_errno=%d\n", \
+                      (int)omrthread_get_os_errno());                         \
+    }                                                                         \
+  } while (0)
 
-void createJoinableThread(omrthread_t *newThread, omrthread_entrypoint_t entryProc, void *entryArg);
+void createJoinableThread(omrthread_t *newThread,
+                          omrthread_entrypoint_t entryProc, void *entryArg);
 
 #if defined(__cplusplus)
 }

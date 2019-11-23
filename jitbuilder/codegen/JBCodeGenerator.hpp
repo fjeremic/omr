@@ -17,37 +17,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_CODEGENERATORBASE_INCL
 #define JITBUILDER_CODEGENERATORBASE_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef JITBUILDER_CODEGENERATORBASE_CONNECTOR
 #define JITBUILDER_CODEGENERATORBASE_CONNECTOR
-namespace JitBuilder { class CodeGenerator; }
-namespace JitBuilder { typedef CodeGenerator CodeGeneratorConnector; }
+namespace JitBuilder {
+class CodeGenerator;
+}
+namespace JitBuilder {
+typedef CodeGenerator CodeGeneratorConnector;
+}
 #endif
-
 
 #include "codegen/OMRCodeGenerator.hpp"
 
-namespace JitBuilder
-{
+namespace JitBuilder {
 
-class OMR_EXTENSIBLE CodeGenerator : public OMR::CodeGeneratorConnector
-   {
-   public:
+class OMR_EXTENSIBLE CodeGenerator : public OMR::CodeGeneratorConnector {
+ public:
+  CodeGenerator() : OMR::CodeGeneratorConnector() {}
+};
 
-   CodeGenerator() :
-      OMR::CodeGeneratorConnector() {}
-
-   };
-
-}
-#endif // !defined(JITBUILDER_CODEGENERATORBASE_INCL)
-
-
+}  // namespace JitBuilder
+#endif  // !defined(JITBUILDER_CODEGENERATORBASE_INCL)

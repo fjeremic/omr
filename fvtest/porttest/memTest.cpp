@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <limits.h>
@@ -29,31 +30,30 @@
  *
  * Ensure the port library is properly setup to run string operations.
  */
-TEST(PortMemTest, Initialization)
-{
-	OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
-	/* Verify that the memory management function pointers are non NULL */
+TEST(PortMemTest, Initialization) {
+  OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
+  /* Verify that the memory management function pointers are non NULL */
 
-	/* Not tested, implementation dependent.  No known functionality.
-	 * Startup is private to the portlibary, it is not re-entrant safe
-	 */
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_startup);
+  /* Not tested, implementation dependent.  No known functionality.
+   * Startup is private to the portlibary, it is not re-entrant safe
+   */
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_startup);
 
-	/*  Not tested, implementation dependent.  No known functionality */
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_shutdown);
+  /*  Not tested, implementation dependent.  No known functionality */
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_shutdown);
 
-	/* omrmem_test2 */
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_allocate_memory);
+  /* omrmem_test2 */
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_allocate_memory);
 
-	/* omrmem_test1 */
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_free_memory);
+  /* omrmem_test1 */
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_free_memory);
 
-	/* omrmem_test4 */
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_reallocate_memory);
+  /* omrmem_test4 */
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_reallocate_memory);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_allocate_memory32);
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_allocate_memory32);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_free_memory32);
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_free_memory32);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_walk_categories);
+  OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->mem_walk_categories);
 }

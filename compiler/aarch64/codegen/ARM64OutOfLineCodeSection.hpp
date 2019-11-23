@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARM64OUTOFLINECODESECTION_INCL
@@ -25,53 +26,60 @@
 #include "codegen/InstOpCode.hpp"
 #include "codegen/OutOfLineCodeSection.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
 
-class TR_ARM64OutOfLineCodeSection : public TR_OutOfLineCodeSection
-   {
+class TR_ARM64OutOfLineCodeSection : public TR_OutOfLineCodeSection {
+ public:
+  /**
+   * @brief Constructor
+   * @param[in] entryLabel : entry label
+   * @param[in] cg : code generator
+   */
+  TR_ARM64OutOfLineCodeSection(TR::LabelSymbol *entryLabel,
+                               TR::CodeGenerator *cg)
+      : TR_OutOfLineCodeSection(entryLabel, cg) {}
 
-public:
-   /**
-    * @brief Constructor
-    * @param[in] entryLabel : entry label
-    * @param[in] cg : code generator
-    */
-   TR_ARM64OutOfLineCodeSection(TR::LabelSymbol *entryLabel, TR::CodeGenerator *cg)
-      : TR_OutOfLineCodeSection(entryLabel, cg)
-      {}
+  /**
+   * @brief Constructor
+   * @param[in] entryLabel : entry label
+   * @param[in] restartLabel : restart label
+   * @param[in] cg : code generator
+   */
+  TR_ARM64OutOfLineCodeSection(TR::LabelSymbol *entryLabel,
+                               TR::LabelSymbol *restartLabel,
+                               TR::CodeGenerator *cg)
+      : TR_OutOfLineCodeSection(entryLabel, restartLabel, cg) {}
 
-   /**
-    * @brief Constructor
-    * @param[in] entryLabel : entry label
-    * @param[in] restartLabel : restart label
-    * @param[in] cg : code generator
-    */
-   TR_ARM64OutOfLineCodeSection(TR::LabelSymbol *entryLabel, TR::LabelSymbol *restartLabel, TR::CodeGenerator *cg)
-      : TR_OutOfLineCodeSection(entryLabel, restartLabel, cg)
-      {}
+  // For calls
 
-   // For calls
+  /**
+   * @brief Constructor
+   * @param[in] callNode : call node
+   * @param[in] callOp : call opcode
+   * @param[in] targetReg : target register
+   * @param[in] entryLabel : entry label
+   * @param[in] restartLabel : restart label
+   * @param[in] cg : code generator
+   */
+  TR_ARM64OutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp,
+                               TR::Register *targetReg,
+                               TR::LabelSymbol *entryLabel,
+                               TR::LabelSymbol *restartLabel,
+                               TR::CodeGenerator *cg);
 
-   /**
-    * @brief Constructor
-    * @param[in] callNode : call node
-    * @param[in] callOp : call opcode
-    * @param[in] targetReg : target register
-    * @param[in] entryLabel : entry label
-    * @param[in] restartLabel : restart label
-    * @param[in] cg : code generator
-    */
-   TR_ARM64OutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp, TR::Register *targetReg, TR::LabelSymbol *entryLabel, TR::LabelSymbol *restartLabel, TR::CodeGenerator *cg);
-
-   /**
-    * @brief Assigns registers
-    * @param[in] kindsToBeAssigned : kind of registers
-    */
-   void assignRegisters(TR_RegisterKinds kindsToBeAssigned);
-   /**
-    * @brief Generates out-of-line code section dispatch
-    */
-   void generateARM64OutOfLineCodeSectionDispatch();
-   };
+  /**
+   * @brief Assigns registers
+   * @param[in] kindsToBeAssigned : kind of registers
+   */
+  void assignRegisters(TR_RegisterKinds kindsToBeAssigned);
+  /**
+   * @brief Generates out-of-line code section dispatch
+   */
+  void generateARM64OutOfLineCodeSectionDispatch();
+};
 #endif

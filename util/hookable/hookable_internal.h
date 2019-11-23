@@ -17,20 +17,21 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef hookable_internal_h
 #define hookable_internal_h
 
 /**
-* @file hookable_internal.h
-* @brief Internal prototypes used within the HOOKABLE module.
-*
-* This file contains implementation-private function prototypes and
-* type definitions for the HOOKABLE module.
-*
-*/
+ * @file hookable_internal.h
+ * @brief Internal prototypes used within the HOOKABLE module.
+ *
+ * This file contains implementation-private function prototypes and
+ * type definitions for the HOOKABLE module.
+ *
+ */
 
 #include "hookable_api.h"
 
@@ -38,10 +39,8 @@
 extern "C" {
 #endif
 
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* hookable_internal_h */
-

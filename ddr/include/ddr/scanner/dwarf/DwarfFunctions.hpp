@@ -16,30 +16,31 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ddr/config.hpp"
 
-#include <iostream>
-#include <stdexcept>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ddr/std/sstream.hpp"
+#include <iostream>
+#include <stdexcept>
 #include <tuple>
-#include "ddr/std/unordered_map.hpp"
 #include <vector>
-#include <errno.h>
+#include "ddr/std/sstream.hpp"
+#include "ddr/std/unordered_map.hpp"
 
 #if defined(OSX)
 #include <sys/fcntl.h>
 #endif /* OSX */
 
 #if defined(AIXPPC)
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/errno.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif /* AIXPPC */
 
 using std::make_pair;
@@ -52,7 +53,7 @@ using std::vector;
 using std::tr1::get;
 using std::tr1::make_tuple;
 using std::tr1::tuple;
-#else /* OMR_HAVE_TR1 */
+#else  /* OMR_HAVE_TR1 */
 using std::get;
 using std::make_tuple;
 using std::runtime_error;
@@ -77,10 +78,9 @@ typedef unsigned short Dwarf_Half;
 typedef signed long long Dwarf_Signed;
 typedef unsigned long long Dwarf_Addr;
 
-struct Dwarf_Block
-{
-	Dwarf_Small *bl_data;
-	Dwarf_Unsigned bl_len;
+struct Dwarf_Block {
+  Dwarf_Small *bl_data;
+  Dwarf_Unsigned bl_len;
 };
 
 typedef void *Dwarf_Ptr;
@@ -88,16 +88,16 @@ typedef void (*Dwarf_Handler)(Dwarf_Error error, Dwarf_Ptr errarg);
 
 typedef vector<string> str_vect;
 
-#define DW_DLE_NE             0x00 /* No error */
-#define DW_DLE_ATTR_FORM_BAD  0x01 /* Wrong form for attribute */
-#define DW_DLE_BADOFF         0x02 /* Invalid offset */
-#define DW_DLE_DIE_NULL       0x03 /* Die NULL */
-#define DW_DLE_FNO            0x04 /* File not open */
-#define DW_DLE_IA             0x05 /* Invalid argument */
-#define DW_DLE_IOF            0x06 /* I/O failure */
-#define DW_DLE_MAF            0x07 /* Memory allocation failure */
-#define DW_DLE_NOB            0x08 /* Not an object file */
-#define DW_DLE_VMM            0x09 /* Dwarf format/library version mismatch */
+#define DW_DLE_NE 0x00            /* No error */
+#define DW_DLE_ATTR_FORM_BAD 0x01 /* Wrong form for attribute */
+#define DW_DLE_BADOFF 0x02        /* Invalid offset */
+#define DW_DLE_DIE_NULL 0x03      /* Die NULL */
+#define DW_DLE_FNO 0x04           /* File not open */
+#define DW_DLE_IA 0x05            /* Invalid argument */
+#define DW_DLE_IOF 0x06           /* I/O failure */
+#define DW_DLE_MAF 0x07           /* Memory allocation failure */
+#define DW_DLE_NOB 0x08           /* Not an object file */
+#define DW_DLE_VMM 0x09           /* Dwarf format/library version mismatch */
 
 #define DW_DLC_READ 0x01
 
@@ -199,125 +199,117 @@ typedef vector<string> str_vect;
 #define DW_TAG_volatile_type 0x16
 #define DW_TAG_unspecified_type 0x17
 
-struct Dwarf_Error_s
-{
-	Dwarf_Half _errno;
+struct Dwarf_Error_s {
+  Dwarf_Half _errno;
 };
 
-struct Dwarf_CU_Context
-{
-	Dwarf_Die_s *_die;
-	Dwarf_Unsigned _CUheaderLength;
-	Dwarf_Half _versionStamp;
-	Dwarf_Off _abbrevOffset;
-	Dwarf_Half _addressSize;
-	Dwarf_Unsigned _nextCUheaderOffset;
-	Dwarf_CU_Context *_nextCU;
+struct Dwarf_CU_Context {
+  Dwarf_Die_s *_die;
+  Dwarf_Unsigned _CUheaderLength;
+  Dwarf_Half _versionStamp;
+  Dwarf_Off _abbrevOffset;
+  Dwarf_Half _addressSize;
+  Dwarf_Unsigned _nextCUheaderOffset;
+  Dwarf_CU_Context *_nextCU;
 
-	static vector<string> _fileList;
-	static Dwarf_CU_Context *_firstCU;
-	static Dwarf_CU_Context *_currentCU;
+  static vector<string> _fileList;
+  static Dwarf_CU_Context *_firstCU;
+  static Dwarf_CU_Context *_currentCU;
 };
 
-struct Dwarf_Die_s
-{
-	Dwarf_Half _tag;
-	Dwarf_Die_s *_parent;
-	Dwarf_Die_s *_sibling;
+struct Dwarf_Die_s {
+  Dwarf_Half _tag;
+  Dwarf_Die_s *_parent;
+  Dwarf_Die_s *_sibling;
 #if defined(AIXPPC)
-	Dwarf_Die_s *_previous;
+  Dwarf_Die_s *_previous;
 #endif /* defined (AIXPPC) */
-	Dwarf_Die_s *_child;
-	Dwarf_CU_Context *_context;
-	Dwarf_Attribute_s *_attribute;
+  Dwarf_Die_s *_child;
+  Dwarf_CU_Context *_context;
+  Dwarf_Attribute_s *_attribute;
 
-	static unordered_map<Dwarf_Off, Dwarf_Die> refMap;
+  static unordered_map<Dwarf_Off, Dwarf_Die> refMap;
 };
 
-struct Dwarf_Attribute_s
-{
-	Dwarf_Half _type;
-	Dwarf_Attribute_s *_nextAttr;
-	Dwarf_Half _form;
-	Dwarf_Bool _flag;
-	Dwarf_Signed _sdata;
-	Dwarf_Unsigned _udata;
-	char *_stringdata;
-	Dwarf_Off _refdata;
-	Dwarf_Die_s *_ref;
+struct Dwarf_Attribute_s {
+  Dwarf_Half _type;
+  Dwarf_Attribute_s *_nextAttr;
+  Dwarf_Half _form;
+  Dwarf_Bool _flag;
+  Dwarf_Signed _sdata;
+  Dwarf_Unsigned _udata;
+  char *_stringdata;
+  Dwarf_Off _refdata;
+  Dwarf_Die_s *_ref;
 
-	Dwarf_Attribute_s()
-		: _type(DW_AT_unknown)
-		, _nextAttr(NULL)
-		, _form(DW_FORM_unknown)
-		, _flag(false)
-		, _sdata(0)
-		, _udata(0)
-		, _stringdata(NULL)
-		, _refdata(0)
-		, _ref(NULL)
-	{
-	}
+  Dwarf_Attribute_s()
+      : _type(DW_AT_unknown),
+        _nextAttr(NULL),
+        _form(DW_FORM_unknown),
+        _flag(false),
+        _sdata(0),
+        _udata(0),
+        _stringdata(NULL),
+        _refdata(0),
+        _ref(NULL) {}
 };
 
-int dwarf_srcfiles(Dwarf_Die die, char ***srcfiles, Dwarf_Signed *filecount, Dwarf_Error *error);
+int dwarf_srcfiles(Dwarf_Die die, char ***srcfiles, Dwarf_Signed *filecount,
+                   Dwarf_Error *error);
 
-int dwarf_attr(
-	Dwarf_Die die,
-	Dwarf_Half attr,
-	Dwarf_Attribute *return_attr,
-	Dwarf_Error *error);
+int dwarf_attr(Dwarf_Die die, Dwarf_Half attr, Dwarf_Attribute *return_attr,
+               Dwarf_Error *error);
 
-char* dwarf_errmsg(Dwarf_Error error);
+char *dwarf_errmsg(Dwarf_Error error);
 
-int dwarf_formstring(Dwarf_Attribute attr, char **returned_string, Dwarf_Error *error);
+int dwarf_formstring(Dwarf_Attribute attr, char **returned_string,
+                     Dwarf_Error *error);
 
 void dwarf_dealloc(Dwarf_Debug dbg, void *space, Dwarf_Unsigned type);
 
-int dwarf_hasattr(Dwarf_Die die, Dwarf_Half attr, Dwarf_Bool *returned_bool, Dwarf_Error *error);
+int dwarf_hasattr(Dwarf_Die die, Dwarf_Half attr, Dwarf_Bool *returned_bool,
+                  Dwarf_Error *error);
 
-int dwarf_formblock(Dwarf_Attribute attr, Dwarf_Block **returned_block, Dwarf_Error *error);
+int dwarf_formblock(Dwarf_Attribute attr, Dwarf_Block **returned_block,
+                    Dwarf_Error *error);
 
-int dwarf_formflag(Dwarf_Attribute attr, Dwarf_Bool *returned_flag, Dwarf_Error *error);
+int dwarf_formflag(Dwarf_Attribute attr, Dwarf_Bool *returned_flag,
+                   Dwarf_Error *error);
 
-int dwarf_formudata(Dwarf_Attribute attr, Dwarf_Unsigned *returned_val, Dwarf_Error *error);
+int dwarf_formudata(Dwarf_Attribute attr, Dwarf_Unsigned *returned_val,
+                    Dwarf_Error *error);
 
 int dwarf_diename(Dwarf_Die die, char **diename, Dwarf_Error *error);
 
-int dwarf_global_formref(Dwarf_Attribute attr, Dwarf_Off *return_offset, Dwarf_Error *error);
+int dwarf_global_formref(Dwarf_Attribute attr, Dwarf_Off *return_offset,
+                         Dwarf_Error *error);
 
-int dwarf_offdie_b(Dwarf_Debug dbg,
-	Dwarf_Off offset,
-	Dwarf_Bool is_info,
-	Dwarf_Die *return_die,
-	Dwarf_Error *error);
+int dwarf_offdie_b(Dwarf_Debug dbg, Dwarf_Off offset, Dwarf_Bool is_info,
+                   Dwarf_Die *return_die, Dwarf_Error *error);
 
 int dwarf_child(Dwarf_Die die, Dwarf_Die *return_childdie, Dwarf_Error *error);
 
-int dwarf_whatform(Dwarf_Attribute attr, Dwarf_Half *returned_final_form, Dwarf_Error *error);
+int dwarf_whatform(Dwarf_Attribute attr, Dwarf_Half *returned_final_form,
+                   Dwarf_Error *error);
 
 int dwarf_tag(Dwarf_Die die, Dwarf_Half *return_tag, Dwarf_Error *error);
 
-int dwarf_formsdata(Dwarf_Attribute attr, Dwarf_Signed *returned_val, Dwarf_Error *error);
+int dwarf_formsdata(Dwarf_Attribute attr, Dwarf_Signed *returned_val,
+                    Dwarf_Error *error);
 
-int dwarf_next_cu_header(Dwarf_Debug dbg,
-	Dwarf_Unsigned *cu_header_length,
-	Dwarf_Half *version_stamp,
-	Dwarf_Off *abbrev_offset,
-	Dwarf_Half *address_size,
-	Dwarf_Unsigned *next_cu_header_offset,
-	Dwarf_Error *error);
+int dwarf_next_cu_header(Dwarf_Debug dbg, Dwarf_Unsigned *cu_header_length,
+                         Dwarf_Half *version_stamp, Dwarf_Off *abbrev_offset,
+                         Dwarf_Half *address_size,
+                         Dwarf_Unsigned *next_cu_header_offset,
+                         Dwarf_Error *error);
 
-int dwarf_siblingof(Dwarf_Debug dbg, Dwarf_Die die, Dwarf_Die *dieOut, Dwarf_Error *error);
+int dwarf_siblingof(Dwarf_Debug dbg, Dwarf_Die die, Dwarf_Die *dieOut,
+                    Dwarf_Error *error);
 
 int dwarf_finish(Dwarf_Debug dbg, Dwarf_Error *error);
 
-int dwarf_init(int fd,
-	Dwarf_Unsigned access,
-	Dwarf_Handler errhand,
-	Dwarf_Ptr errarg,
-	Dwarf_Debug *dbg,
-	Dwarf_Error *error);
+int dwarf_init(int fd, Dwarf_Unsigned access, Dwarf_Handler errhand,
+               Dwarf_Ptr errarg, Dwarf_Debug *dbg, Dwarf_Error *error);
 
 int dwarf_dieoffset(Dwarf_Die die, Dwarf_Off *dieOffset, Dwarf_Error *error);
 

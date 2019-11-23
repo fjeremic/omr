@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_OPTIMIZATIONMANAGER_INCL
@@ -26,21 +27,22 @@
 #include "optimizer/OMROptimizationManager.hpp"
 #include "optimizer/Optimizations.hpp"
 
-
-namespace TR { class Optimizer; }
+namespace TR {
+class Optimizer;
+}
 struct OptimizationStrategy;
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE OptimizationManager : public OMR::OptimizationManagerConnector
-   {
-   public:
+class OMR_EXTENSIBLE OptimizationManager
+    : public OMR::OptimizationManagerConnector {
+ public:
+  OptimizationManager(TR::Optimizer *o, OptimizationFactory factory,
+                      OMR::Optimizations optNum,
+                      const OptimizationStrategy *groupOfOpts = NULL)
+      : OMR::OptimizationManagerConnector(o, factory, optNum, groupOfOpts) {}
+};
 
-   OptimizationManager(TR::Optimizer *o, OptimizationFactory factory, OMR::Optimizations optNum, const OptimizationStrategy *groupOfOpts = NULL) :
-      OMR::OptimizationManagerConnector(o, factory, optNum, groupOfOpts) {}
-   };
-
-}
+}  // namespace TR
 
 #endif

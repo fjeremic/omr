@@ -16,19 +16,27 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_Z_REGISTER_DEPENDENCY_STRUCT_INCL
 #define OMR_Z_REGISTER_DEPENDENCY_STRUCT_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_REGISTER_DEPENDENCY_STRUCT_CONNECTOR
 #define OMR_REGISTER_DEPENDENCY_STRUCT_CONNECTOR
-namespace OMR { namespace Z { struct RegisterDependencyExt; } }
-namespace OMR { typedef OMR::Z::RegisterDependencyExt RegisterDependency; }
+namespace OMR {
+namespace Z {
+struct RegisterDependencyExt;
+}
+}  // namespace OMR
+namespace OMR {
+typedef OMR::Z::RegisterDependencyExt RegisterDependency;
+}
 #else
 #error OMR::Z::RegisterDependencyExt expected to be a primary connector, but a OMR connector is already defined
 #endif
@@ -42,18 +50,17 @@ namespace OMR { typedef OMR::Z::RegisterDependencyExt RegisterDependency; }
 #include "infra/Array.hpp"
 #include "infra/Assert.hpp"
 
-namespace OMR
-{
-namespace Z
-{
-struct RegisterDependencyExt : OMR::RegisterDependencyExt
-   {
-   TR::RealRegister::RegNum  _realRegister;
+namespace OMR {
+namespace Z {
+struct RegisterDependencyExt : OMR::RegisterDependencyExt {
+  TR::RealRegister::RegNum _realRegister;
 
-   TR::RealRegister::RegNum getRealRegister() {return _realRegister;}
-   TR::RealRegister::RegNum setRealRegister(TR::RealRegister::RegNum r) { return (_realRegister = r); }
-   };
-}
-}
+  TR::RealRegister::RegNum getRealRegister() { return _realRegister; }
+  TR::RealRegister::RegNum setRealRegister(TR::RealRegister::RegNum r) {
+    return (_realRegister = r);
+  }
+};
+}  // namespace Z
+}  // namespace OMR
 
 #endif

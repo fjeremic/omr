@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_JITBUILDERRECORDER_BINARYFILE_INCL
@@ -24,18 +25,15 @@
 
 #include "ilgen/OMRJitBuilderRecorderBinaryFile.hpp"
 
-namespace TR
-{
-   class JitBuilderRecorderBinaryFile : public OMR::JitBuilderRecorderBinaryFile
-      {
-      public:
-         JitBuilderRecorderBinaryFile(const TR::MethodBuilder *mb, const char *fileName)
-            : OMR::JitBuilderRecorderBinaryFile(mb, fileName)
-            { }
-         virtual ~JitBuilderRecorderBinaryFile()
-            { }
-      };
+namespace TR {
+class JitBuilderRecorderBinaryFile : public OMR::JitBuilderRecorderBinaryFile {
+ public:
+  JitBuilderRecorderBinaryFile(const TR::MethodBuilder *mb,
+                               const char *fileName)
+      : OMR::JitBuilderRecorderBinaryFile(mb, fileName) {}
+  virtual ~JitBuilderRecorderBinaryFile() {}
+};
 
-} // namespace TR
+}  // namespace TR
 
-#endif // !defined(TR_JITBUILDERRECORDER_BINARYFILE_INCL)
+#endif  // !defined(TR_JITBUILDERRECORDER_BINARYFILE_INCL)

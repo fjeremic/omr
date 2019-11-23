@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #include "omrport.h"
 
@@ -25,16 +26,16 @@
  * Write a message to the system log.
  *
  * @param[in] portLibrary The port library
- * @param[in] flags - to indicate what type of message (e.g. ERROR) is to be output
+ * @param[in] flags - to indicate what type of message (e.g. ERROR) is to be
+ * output
  * @param[in] message - text of the message
  *
  * @return Boolean: true on success, false on failure
  */
-uintptr_t
-omrsyslog_write(struct OMRPortLibrary *portLibrary, uintptr_t flags, const char *message)
-{
-	/* noop */
-	return 0;
+uintptr_t omrsyslog_write(struct OMRPortLibrary *portLibrary, uintptr_t flags,
+                          const char *message) {
+  /* noop */
+  return 0;
 }
 
 /**
@@ -45,11 +46,9 @@ omrsyslog_write(struct OMRPortLibrary *portLibrary, uintptr_t flags, const char 
  *
  * @return Boolean: true on success, false on failure
  */
-uintptr_t
-syslogOpen(struct OMRPortLibrary *portLibrary, uintptr_t flags)
-{
-	/* noop */
-	return 0;
+uintptr_t syslogOpen(struct OMRPortLibrary *portLibrary, uintptr_t flags) {
+  /* noop */
+  return 0;
 }
 
 /**
@@ -59,11 +58,9 @@ syslogOpen(struct OMRPortLibrary *portLibrary, uintptr_t flags)
  *
  * @return Boolean: true on success, false on failure
  */
-uintptr_t
-syslogClose(struct OMRPortLibrary *portLibrary)
-{
-	/* noop */
-	return 0;
+uintptr_t syslogClose(struct OMRPortLibrary *portLibrary) {
+  /* noop */
+  return 0;
 }
 
 /**
@@ -73,11 +70,9 @@ syslogClose(struct OMRPortLibrary *portLibrary)
  *
  * @return uintptr_t: the current logging options
  */
-uintptr_t
-omrsyslog_query(struct OMRPortLibrary *portLibrary)
-{
-	/* noop */
-	return 0;
+uintptr_t omrsyslog_query(struct OMRPortLibrary *portLibrary) {
+  /* noop */
+  return 0;
 }
 
 /**
@@ -88,9 +83,6 @@ omrsyslog_query(struct OMRPortLibrary *portLibrary)
  *
  * @return void
  */
-void
-omrsyslog_set(struct OMRPortLibrary *portLibrary, uintptr_t options)
-{
-	/* noop */
+void omrsyslog_set(struct OMRPortLibrary *portLibrary, uintptr_t options) {
+  /* noop */
 }
-

@@ -17,12 +17,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(VERBOSEWRITERFILELOGGINGSYNCHRONOUS_HPP_)
 #define VERBOSEWRITERFILELOGGINGSYNCHRONOUS_HPP_
- 
+
 #include "omrcfg.h"
 
 #include "VerboseWriterFileLogging.hpp"
@@ -30,34 +31,37 @@
 /**
  * Ouptut agent which directs verbosegc output to file.
  */
-class MM_VerboseWriterFileLoggingSynchronous : public MM_VerboseWriterFileLogging
-{
-	/*
-	 * Data members
-	 */
-public:
-protected:
-private:
-	intptr_t _logFileDescriptor; /**< the file being written to */
+class MM_VerboseWriterFileLoggingSynchronous
+    : public MM_VerboseWriterFileLogging {
+  /*
+   * Data members
+   */
+ public:
+ protected:
+ private:
+  intptr_t _logFileDescriptor; /**< the file being written to */
 
-	/*
-	 * Function members
-	 */
-public:
-	static MM_VerboseWriterFileLoggingSynchronous *newInstance(MM_EnvironmentBase *env, MM_VerboseManager *manager, char* filename, uintptr_t fileCount, uintptr_t iterations);
+  /*
+   * Function members
+   */
+ public:
+  static MM_VerboseWriterFileLoggingSynchronous *newInstance(
+      MM_EnvironmentBase *env, MM_VerboseManager *manager, char *filename,
+      uintptr_t fileCount, uintptr_t iterations);
 
-	virtual void outputString(MM_EnvironmentBase *env, const char* string);
+  virtual void outputString(MM_EnvironmentBase *env, const char *string);
 
-protected:
-	MM_VerboseWriterFileLoggingSynchronous(MM_EnvironmentBase *env, MM_VerboseManager *manager);
-	virtual bool initialize(MM_EnvironmentBase *env, const char *filename, uintptr_t numFiles, uintptr_t numCycles);
+ protected:
+  MM_VerboseWriterFileLoggingSynchronous(MM_EnvironmentBase *env,
+                                         MM_VerboseManager *manager);
+  virtual bool initialize(MM_EnvironmentBase *env, const char *filename,
+                          uintptr_t numFiles, uintptr_t numCycles);
 
-private:
-	virtual void tearDown(MM_EnvironmentBase *env);
+ private:
+  virtual void tearDown(MM_EnvironmentBase *env);
 
-	bool openFile(MM_EnvironmentBase *env);
-	void closeFile(MM_EnvironmentBase *env);
-
+  bool openFile(MM_EnvironmentBase *env);
+  void closeFile(MM_EnvironmentBase *env);
 };
 
 #endif /* VERBOSEWRITERFILELOGGINGSYNCHRONOUS_HPP_ */

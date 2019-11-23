@@ -17,37 +17,38 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_OBJECTMODEL_INCL
 #define JITBUILDER_OBJECTMODEL_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef JITBUILDER_OBJECTMODEL_CONNECTOR
 #define JITBUILDER_OBJECTMODEL_CONNECTOR
-namespace JitBuilder { class ObjectModel; }
-namespace JitBuilder { typedef JitBuilder::ObjectModel ObjectModelConnector; }
+namespace JitBuilder {
+class ObjectModel;
+}
+namespace JitBuilder {
+typedef JitBuilder::ObjectModel ObjectModelConnector;
+}
 #endif
-
 
 #include "env/OMRObjectModel.hpp"
 
-namespace JitBuilder
-{
+namespace JitBuilder {
 
-class ObjectModel : public OMR::ObjectModelConnector
-   {
-   public:
+class ObjectModel : public OMR::ObjectModelConnector {
+ public:
+  ObjectModel() : OMR::ObjectModelConnector() {}
 
-   ObjectModel() :
-      OMR::ObjectModelConnector() {}
+  virtual int32_t sizeofReferenceField() { return sizeof(char *); }
+};
 
-   virtual int32_t sizeofReferenceField() { return sizeof(char *); }
-   };
+}  // namespace JitBuilder
 
-}
-
-#endif // defined(JITBUILDER_OBJECTMODEL_INCL)
+#endif  // defined(JITBUILDER_OBJECTMODEL_INCL)

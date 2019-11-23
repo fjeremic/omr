@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef VIRTUALGUARDHEADMERGER_INCL
@@ -26,24 +27,23 @@
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
 
-namespace TR { class Block; }
+namespace TR {
+class Block;
+}
 
-class TR_VirtualGuardHeadMerger : public TR::Optimization
-   {
-   public:
-   TR_VirtualGuardHeadMerger(TR::OptimizationManager *manager)
-      : TR::Optimization(manager)
-      {}
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_VirtualGuardHeadMerger(manager);
-      }
+class TR_VirtualGuardHeadMerger : public TR::Optimization {
+ public:
+  TR_VirtualGuardHeadMerger(TR::OptimizationManager *manager)
+      : TR::Optimization(manager) {}
+  static TR::Optimization *create(TR::OptimizationManager *manager) {
+    return new (manager->allocator()) TR_VirtualGuardHeadMerger(manager);
+  }
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
+  virtual int32_t perform();
+  virtual const char *optDetailString() const throw();
 
-   private:
-   void tailSplitBlock(TR::Block * block, TR::Block * cold1);
-   };
+ private:
+  void tailSplitBlock(TR::Block *block, TR::Block *cold1);
+};
 
 #endif

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef J9THREADTEST_CWAITNOTIFYLOOPER_HPP_INCLUDED
@@ -24,55 +25,47 @@
 
 #include "threadTestLib.hpp"
 
-class CWaitNotifyLooper: public CThread
-{
-public:
-	CWaitNotifyLooper(CMonitor& monitor, unsigned int* notifyCount, unsigned int* doneRunningCount) :
-			m_monitor(monitor),
-			m_keepRunning(true),
-			m_notifyCount(notifyCount),
-			m_doneRunningCount(doneRunningCount)
-	{
-		assert(m_notifyCount);
-		assert(m_doneRunningCount);
-	}
+class CWaitNotifyLooper : public CThread {
+ public:
+  CWaitNotifyLooper(CMonitor& monitor, unsigned int* notifyCount,
+                    unsigned int* doneRunningCount)
+      : m_monitor(monitor),
+        m_keepRunning(true),
+        m_notifyCount(notifyCount),
+        m_doneRunningCount(doneRunningCount) {
+    assert(m_notifyCount);
+    assert(m_doneRunningCount);
+  }
 
-	void
-	StopRunning(void)
-	{
-		m_keepRunning = false;
-	}
+  void StopRunning(void) { m_keepRunning = false; }
 
-protected:
-	virtual intptr_t
-	Run(void)
-	{
+ protected:
+  virtual intptr_t Run(void) {
+    omrTestEnv->log(LEVEL_VERBOSE, "thread %p (%p) running\n", m_self, this);
+    omrTestEnv->log(LEVEL_VERBOSE, "thread %p entering\n", m_self);
+    m_monitor.Enter();
+    omrTestEnv->log(LEVEL_VERBOSE, "thread %p entered\n", m_self);
+    while (m_keepRunning) {
+      omrTestEnv->log(LEVEL_VERBOSE, "%p N[\n", m_self);
+      m_monitor.Notify();
+      omrTestEnv->log(LEVEL_VERBOSE, "%p N]\n", m_self);
+      *m_notifyCount = *m_notifyCount + 1;
+      omrTestEnv->log(LEVEL_VERBOSE, "%p>W[ ", m_self);
+      m_monitor.Wait();
+      omrTestEnv->log(LEVEL_VERBOSE, "%p>W] ", m_self);
+    }
+    *m_doneRunningCount = *m_doneRunningCount + 1;
+    omrTestEnv->log(LEVEL_VERBOSE, "thread %p exiting monitor\n", m_self);
+    m_monitor.Exit();
 
-		omrTestEnv->log(LEVEL_VERBOSE, "thread %p (%p) running\n", m_self, this);
-		omrTestEnv->log(LEVEL_VERBOSE, "thread %p entering\n", m_self);
-		m_monitor.Enter();
-		omrTestEnv->log(LEVEL_VERBOSE, "thread %p entered\n", m_self);
-		while (m_keepRunning) {
-			omrTestEnv->log(LEVEL_VERBOSE, "%p N[\n", m_self);
-			m_monitor.Notify();
-			omrTestEnv->log(LEVEL_VERBOSE, "%p N]\n", m_self);
-			*m_notifyCount = *m_notifyCount + 1;
-			omrTestEnv->log(LEVEL_VERBOSE, "%p>W[ ", m_self);
-			m_monitor.Wait();
-			omrTestEnv->log(LEVEL_VERBOSE, "%p>W] ", m_self);
-		}
-		*m_doneRunningCount = *m_doneRunningCount + 1;
-		omrTestEnv->log(LEVEL_VERBOSE, "thread %p exiting monitor\n", m_self);
-		m_monitor.Exit();
+    omrTestEnv->log(LEVEL_VERBOSE, "thread %p exiting\n", m_self);
+    return 0;
+  }
 
-		omrTestEnv->log(LEVEL_VERBOSE, "thread %p exiting\n", m_self);
-		return 0;
-	}
-
-	CMonitor& m_monitor;
-	volatile bool m_keepRunning;
-	unsigned int *m_notifyCount;
-	unsigned int *m_doneRunningCount;
+  CMonitor& m_monitor;
+  volatile bool m_keepRunning;
+  unsigned int* m_notifyCount;
+  unsigned int* m_doneRunningCount;
 };
 
 #endif /* J9THREADTEST_CWAITNOTIFYLOOPER_HPP_INCLUDED */

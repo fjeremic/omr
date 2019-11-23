@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef protect_helpers_h
@@ -26,9 +27,12 @@
 /**
  * @internal @file
  * @ingroup Port
- * @brief Helpers for protecting shared memory regions in the virtual address space (used by omrmmap and j9shmem).
+ * @brief Helpers for protecting shared memory regions in the virtual address
+ * space (used by omrmmap and j9shmem).
  */
 
-intptr_t protect_memory(struct OMRPortLibrary *portLibrary, void *address, uintptr_t length, uintptr_t flags);
-uintptr_t protect_region_granularity(struct OMRPortLibrary *portLibrary, void *address);
+intptr_t protect_memory(struct OMRPortLibrary *portLibrary, void *address,
+                        uintptr_t length, uintptr_t flags);
+uintptr_t protect_region_granularity(struct OMRPortLibrary *portLibrary,
+                                     void *address);
 #endif /*  protect_helpers_h */

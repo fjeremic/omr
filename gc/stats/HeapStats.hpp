@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(HEAPSTATS_HPP_)
@@ -31,33 +32,31 @@
  * A collection of interesting statistics for the Heap.
  * @ingroup GC_Stats
  */
-class MM_HeapStats : public MM_Base 
-{
-public:
-	uintptr_t _allocCount;
-	uintptr_t _allocBytes;
-	uintptr_t _allocDiscardedBytes;
-	uintptr_t _allocSearchCount;
-	
-	/* Number of bytes free at end of last GC */
-	uintptr_t _lastFreeBytes;
+class MM_HeapStats : public MM_Base {
+ public:
+  uintptr_t _allocCount;
+  uintptr_t _allocBytes;
+  uintptr_t _allocDiscardedBytes;
+  uintptr_t _allocSearchCount;
 
-	uintptr_t _activeFreeEntryCount;
-	uintptr_t _inactiveFreeEntryCount;
+  /* Number of bytes free at end of last GC */
+  uintptr_t _lastFreeBytes;
 
-	/**
-	 * Create a HeapStats object.
-	 */   
-	MM_HeapStats() :
-		MM_Base(),
-		_allocCount(0),
-		_allocBytes(0),
-		_allocDiscardedBytes(0),
-		_allocSearchCount(0),
-		_lastFreeBytes(0),
-		_activeFreeEntryCount(0),
-		_inactiveFreeEntryCount(0)
-	{};
+  uintptr_t _activeFreeEntryCount;
+  uintptr_t _inactiveFreeEntryCount;
+
+  /**
+   * Create a HeapStats object.
+   */
+  MM_HeapStats()
+      : MM_Base(),
+        _allocCount(0),
+        _allocBytes(0),
+        _allocDiscardedBytes(0),
+        _allocSearchCount(0),
+        _lastFreeBytes(0),
+        _activeFreeEntryCount(0),
+        _inactiveFreeEntryCount(0){};
 };
 
 #endif /* HEAPSTATS_HPP_ */

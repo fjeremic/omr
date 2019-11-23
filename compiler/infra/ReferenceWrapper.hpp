@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef REFERENCE_WRAPPER_HPP
@@ -34,80 +35,65 @@ namespace TR {
 
 template <typename T>
 class reference_wrapper {
-public:
+ public:
   typedef T type;
-  typedef T& reference_type;
+  typedef T &reference_type;
   inline explicit reference_wrapper(reference_type ref) throw();
   inline reference_wrapper(const reference_wrapper &other) throw();
-  inline reference_wrapper &operator =(const reference_wrapper &other) throw();
+  inline reference_wrapper &operator=(const reference_wrapper &other) throw();
   inline reference_type get() throw();
   inline operator reference_type() throw();
 
-private:
-  T * m_ref;
+ private:
+  T *m_ref;
 };
 
 template <typename T>
-reference_wrapper<T>::reference_wrapper(reference_type ref) throw():
-  m_ref(&ref)
-{
-}
+reference_wrapper<T>::reference_wrapper(reference_type ref) throw()
+    : m_ref(&ref) {}
 
 template <typename T>
-reference_wrapper<T>::reference_wrapper(const reference_wrapper &other) throw():
-  m_ref(other.m_ref)
-{
-}
+reference_wrapper<T>::reference_wrapper(const reference_wrapper &other) throw()
+    : m_ref(other.m_ref) {}
 
 template <typename T>
-reference_wrapper<T> &
-reference_wrapper<T>::operator =(const reference_wrapper &other) throw()
-{
+reference_wrapper<T> &reference_wrapper<T>::operator=(
+    const reference_wrapper &other) throw() {
   m_ref = other.m_ref;
   return *this;
 }
 
 template <typename T>
 typename reference_wrapper<T>::reference_type
-reference_wrapper<T>::get() throw()
-{
+reference_wrapper<T>::get() throw() {
   return *m_ref;
 }
 
 template <typename T>
-reference_wrapper<T>::operator reference_type() throw()
-{
+reference_wrapper<T>::operator reference_type() throw() {
   return *m_ref;
 }
 
 template <typename T>
-reference_wrapper<T>
-inline ref(T& reference)
-{
+reference_wrapper<T> inline ref(T &reference) {
   return reference_wrapper<T>(reference);
 }
 
 template <typename T>
-reference_wrapper<T>
-inline ref(reference_wrapper<T> wrapper)
-{
+reference_wrapper<T> inline ref(reference_wrapper<T> wrapper) {
   return wrapper;
 }
 
 template <typename T>
-reference_wrapper<const T>
-inline cref(const T& reference)
-{
+reference_wrapper<const T> inline cref(const T &reference) {
   return reference_wrapper<const T>(reference);
 }
 
 template <typename T>
-reference_wrapper<const T>
-inline cref(reference_wrapper<T> wrapper)
-{
+reference_wrapper<const T> inline cref(reference_wrapper<T> wrapper) {
   return wrapper;
 }
 
-}
+}  // namespace TR
 
-#endif // REFERENCE_WRAPPER_HPP
+#endif  // REFERENCE_WRAPPER_HPP

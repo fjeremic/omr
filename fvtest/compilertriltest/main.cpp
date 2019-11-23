@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "JitTest.hpp"
@@ -32,20 +33,16 @@ omrthread_t TRTest::TestWithPortLib::current_thread = NULL;
 /**
  * @brief Global test environment to initialize and shutdown the port library
  */
-class JitTestEnvironment: public ::testing::Environment {
-   public:
-   virtual void SetUp() {
-      TRTest::TestWithPortLib::initPortLib();
-   }
+class JitTestEnvironment : public ::testing::Environment {
+ public:
+  virtual void SetUp() { TRTest::TestWithPortLib::initPortLib(); }
 
-   virtual void TearDown() {
-      TRTest::TestWithPortLib::shutdownPortLib();
-   }
+  virtual void TearDown() { TRTest::TestWithPortLib::shutdownPortLib(); }
 };
 
 int omr_main_entry(int argc, char **argv, char **envp) {
-   ::testing::InitGoogleTest(&argc, argv);
-   OMREventListener::setDefaultTestListener();
-   ::testing::AddGlobalTestEnvironment(new JitTestEnvironment);
-   return RUN_ALL_TESTS();
+  ::testing::InitGoogleTest(&argc, argv);
+  OMREventListener::setDefaultTestListener();
+  ::testing::AddGlobalTestEnvironment(new JitTestEnvironment);
+  return RUN_ALL_TESTS();
 }

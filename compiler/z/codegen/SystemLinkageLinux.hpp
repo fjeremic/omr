@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_Z_SYSTEMLINKAGELINUX_INCL
@@ -37,45 +38,75 @@
 
 class TR_EntryPoint;
 class TR_zOSGlobalCompilationInfo;
-namespace TR { class S390ConstantDataSnippet; }
-namespace TR { class S390JNICallDataSnippet; }
-namespace TR { class AutomaticSymbol; }
-namespace TR { class CodeGenerator; }
-namespace TR { class Instruction; }
-namespace TR { class LabelSymbol; }
-namespace TR { class Node; }
-namespace TR { class ParameterSymbol; }
-namespace TR { class RegisterDependencyConditions; }
-namespace TR { class ResolvedMethodSymbol; }
-namespace TR { class Symbol; }
-template <class T> class List;
+namespace TR {
+class S390ConstantDataSnippet;
+}
+namespace TR {
+class S390JNICallDataSnippet;
+}
+namespace TR {
+class AutomaticSymbol;
+}
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Instruction;
+}
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class ParameterSymbol;
+}
+namespace TR {
+class RegisterDependencyConditions;
+}
+namespace TR {
+class ResolvedMethodSymbol;
+}
+namespace TR {
+class Symbol;
+}
+template <class T>
+class List;
 
 namespace TR {
 
-class S390zLinuxSystemLinkage : public TR::SystemLinkage
-   {
-   public:
+class S390zLinuxSystemLinkage : public TR::SystemLinkage {
+ public:
+  S390zLinuxSystemLinkage(TR::CodeGenerator* cg);
 
-   S390zLinuxSystemLinkage(TR::CodeGenerator* cg);
+  virtual void createEpilogue(TR::Instruction* cursor);
+  virtual void createPrologue(TR::Instruction* cursor);
 
-   virtual void createEpilogue(TR::Instruction * cursor);
-   virtual void createPrologue(TR::Instruction * cursor);
+  virtual void generateInstructionsForCall(
+      TR::Node* callNode, TR::RegisterDependencyConditions* deps,
+      intptrj_t targetAddress, TR::Register* methodAddressReg,
+      TR::Register* javaLitOffsetReg, TR::LabelSymbol* returnFromJNICallLabel,
+      TR::S390JNICallDataSnippet* jniCallDataSnippet, bool isJNIGCPoint);
+  virtual TR::Register* callNativeFunction(
+      TR::Node* callNode, TR::RegisterDependencyConditions* dependencies,
+      intptrj_t targetAddress, TR::Register* methodAddressReg,
+      TR::Register* javaLitOffsetReg, TR::LabelSymbol* returnFromJNICallLabel,
+      TR::S390JNICallDataSnippet* jniCallDataSnippet, bool isJNIGCPoint = true);
 
-   virtual void generateInstructionsForCall(TR::Node * callNode, TR::RegisterDependencyConditions * deps, intptrj_t targetAddress, TR::Register * methodAddressReg, TR::Register * javaLitOffsetReg, TR::LabelSymbol * returnFromJNICallLabel, TR::S390JNICallDataSnippet * jniCallDataSnippet, bool isJNIGCPoint);
-   virtual TR::Register* callNativeFunction(TR::Node * callNode, TR::RegisterDependencyConditions * dependencies, intptrj_t targetAddress, TR::Register * methodAddressReg, TR::Register * javaLitOffsetReg, TR::LabelSymbol * returnFromJNICallLabel, TR::S390JNICallDataSnippet * jniCallDataSnippet, bool isJNIGCPoint = true);
+  virtual int32_t getRegisterSaveOffset(TR::RealRegister::RegNum);
+  virtual void initParamOffset(TR::ResolvedMethodSymbol* method,
+                               int32_t stackIndex,
+                               List<TR::ParameterSymbol>* parameterList = 0);
 
-   virtual int32_t getRegisterSaveOffset(TR::RealRegister::RegNum);
-   virtual void initParamOffset(TR::ResolvedMethodSymbol * method, int32_t stackIndex, List<TR::ParameterSymbol> *parameterList=0);
+ private:
+  TR::Instruction* fillGPRsInEpilogue(TR::Node* node, TR::Instruction* cursor);
+  TR::Instruction* fillFPRsInEpilogue(TR::Node* node, TR::Instruction* cursor);
 
-   private:
+  TR::Instruction* spillGPRsInPrologue(TR::Node* node, TR::Instruction* cursor);
+  TR::Instruction* spillFPRsInPrologue(TR::Node* node, TR::Instruction* cursor);
+};
 
-   TR::Instruction* fillGPRsInEpilogue(TR::Node* node, TR::Instruction* cursor);
-   TR::Instruction* fillFPRsInEpilogue(TR::Node* node, TR::Instruction* cursor);
-
-   TR::Instruction* spillGPRsInPrologue(TR::Node* node, TR::Instruction* cursor);
-   TR::Instruction* spillFPRsInPrologue(TR::Node* node, TR::Instruction* cursor);
-   };
-
-}
+}  // namespace TR
 
 #endif

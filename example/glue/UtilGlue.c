@@ -16,30 +16,28 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omr.h"
 
-/* This glue function is implemented in a different file from LanguageVMGlue so that
- * it can be used without requiring all the dependencies of LanguageVMGlue.
- * (Since LanguageVMGlue interacts with OMR_VM initialization, it prereqs all GC/RAS/OMR core modules.)
+/* This glue function is implemented in a different file from LanguageVMGlue so
+ * that it can be used without requiring all the dependencies of LanguageVMGlue.
+ * (Since LanguageVMGlue interacts with OMR_VM initialization, it prereqs all
+ * GC/RAS/OMR core modules.)
  */
 #if defined(OMR_OS_WINDOWS)
-omr_error_t
-OMR_Glue_GetVMDirectoryToken(void **token)
-{
-	/* NULL means the runtime will look in the current executable's directory */
-	*token = NULL;
-	return OMR_ERROR_NONE;
+omr_error_t OMR_Glue_GetVMDirectoryToken(void **token) {
+  /* NULL means the runtime will look in the current executable's directory */
+  *token = NULL;
+  return OMR_ERROR_NONE;
 }
 #endif /* defined(OMR_OS_WINDOWS) */
 
 /**
  * Provides the thread name to be used when no name is given.
  */
-char *
-OMR_Glue_GetThreadNameForUnamedThread(OMR_VMThread *vmThread)
-{
-	return "(unnamed thread)";
+char *OMR_Glue_GetThreadNameForUnamedThread(OMR_VMThread *vmThread) {
+  return "(unnamed thread)";
 }

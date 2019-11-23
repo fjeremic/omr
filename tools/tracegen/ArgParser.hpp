@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARGPARSER_HPP_
@@ -26,35 +27,33 @@
 #include "Port.hpp"
 #include "TDFTypes.hpp"
 
-class ArgParser
-{
-	/*
-	 * Data members
-	 */
-private:
-protected:
-public:
+class ArgParser {
+  /*
+   * Data members
+   */
+ private:
+ protected:
+ public:
+  /*
+   * Function members
+   */
+ private:
+ protected:
+ public:
+  /**
+   * Parse command line options, command line arguments are reused from argv.
+   * @param argc Argument count
+   * @param argv array of arguments
+   * @param options Options data-structure to populate
+   * @return RC_OK on success, RC_FAILED on failure
+   */
+  RCType parseOptions(int argc, char *argv[], J9TDFOptions *options);
 
-	/*
-	 * Function members
-	 */
-private:
-protected:
-public:
-	/**
-	 * Parse command line options, command line arguments are reused from argv.
-	 * @param argc Argument count
-	 * @param argv array of arguments
-	 * @param options Options data-structure to populate
-	 * @return RC_OK on success, RC_FAILED on failure
-	 */
-	RCType parseOptions(int argc, char *argv[], J9TDFOptions *options);
-
-	/**
-	 * Free command line options structure
-	 * @param options Options data-structure to free
-	 */
-	RCType freeOptions(J9TDFOptions *options);
+  /**
+   * Free command line options structure
+   * @param options Options data-structure to free
+   */
+  RCType freeOptions(J9TDFOptions *options);
 };
 
 #endif /* ARGPARSER_HPP_ */

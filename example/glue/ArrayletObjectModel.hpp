@@ -16,66 +16,52 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(ARRAYLETOBJECTMODEL_)
 #define ARRAYLETOBJECTMODEL_
 
-#include "omrcfg.h"
 #include "ModronAssertions.h"
-
+#include "omrcfg.h"
 
 class MM_GCExtensionsBase;
 class MM_MemorySubSpace;
 
-class GC_ArrayletObjectModel
-{
-	/*
-	 * Function members
-	 */
-private:
-protected:
-public:
-	bool
-	initialize(MM_GCExtensionsBase *extensions)
-	{
-		return true;
-	}
+class GC_ArrayletObjectModel {
+  /*
+   * Function members
+   */
+ private:
+ protected:
+ public:
+  bool initialize(MM_GCExtensionsBase *extensions) { return true; }
 
-	void tearDown(MM_GCExtensionsBase *extensions) {}
+  void tearDown(MM_GCExtensionsBase *extensions) {}
 
-	MMINLINE fomrobject_t *
-	getArrayoidPointer(omrarrayptr_t arrayPtr)
-	{
-		return (fomrobject_t *) NULL;
-	}
+  MMINLINE fomrobject_t *getArrayoidPointer(omrarrayptr_t arrayPtr) {
+    return (fomrobject_t *)NULL;
+  }
 
-	MMINLINE void
-	expandArrayletSubSpaceRange(MM_MemorySubSpace * subSpace, void * rangeBase, void * rangeTop, uintptr_t largestDesirableArraySpineSize)
-	{
-		/* No-op */
-	}
-	
-	/**
-	 * Returns the size of an indexable object, in bytes, including the header.
-	 * @param arrayPtr Pointer to the indexable object whose size is required
-	 * @return Size of object in bytes including the header
-	 */
-	MMINLINE uintptr_t
-	getSizeInBytesWithHeader(omrarrayptr_t arrayPtr)
-	{
-		Assert_MM_unimplemented();
-		return 0;
-	}
+  MMINLINE void expandArrayletSubSpaceRange(
+      MM_MemorySubSpace *subSpace, void *rangeBase, void *rangeTop,
+      uintptr_t largestDesirableArraySpineSize) {
+    /* No-op */
+  }
+
+  /**
+   * Returns the size of an indexable object, in bytes, including the header.
+   * @param arrayPtr Pointer to the indexable object whose size is required
+   * @return Size of object in bytes including the header
+   */
+  MMINLINE uintptr_t getSizeInBytesWithHeader(omrarrayptr_t arrayPtr) {
+    Assert_MM_unimplemented();
+    return 0;
+  }
 #if defined(OMR_GC_DOUBLE_MAP_ARRAYLETS)
-	MMINLINE bool
-	isDoubleMappingEnabled()
-	{
-		return false;
-	}
+  MMINLINE bool isDoubleMappingEnabled() { return false; }
 #endif /* defined(OMR_GC_DOUBLE_MAP_ARRAYLETS) */
-
 };
 
 #endif /* ARRAYLETOBJECTMODEL_ */

@@ -17,36 +17,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_ILGENERATOR_METHOD_DETAILS_INCL
 #define TR_ILGENERATOR_METHOD_DETAILS_INCL
 
-#include "infra/Annotations.hpp"
 #include "ilgen/JBIlGeneratorMethodDetails.hpp"
+#include "infra/Annotations.hpp"
 
 class TR_ResolvedMethod;
-namespace TR { class ResolvedMethod; }
-
-namespace TR
-{
-
-class OMR_EXTENSIBLE IlGeneratorMethodDetails : public JitBuilder::IlGeneratorMethodDetailsConnector
-   {
-
-public:
-
-   IlGeneratorMethodDetails() :
-      JitBuilder::IlGeneratorMethodDetailsConnector() {}
-
-   IlGeneratorMethodDetails(TR::ResolvedMethod *method) :
-      JitBuilder::IlGeneratorMethodDetailsConnector(method) {}
-
-   IlGeneratorMethodDetails(TR_ResolvedMethod *method) :
-      JitBuilder::IlGeneratorMethodDetailsConnector(method) {}
-
-   };
+namespace TR {
+class ResolvedMethod;
 }
+
+namespace TR {
+
+class OMR_EXTENSIBLE IlGeneratorMethodDetails
+    : public JitBuilder::IlGeneratorMethodDetailsConnector {
+ public:
+  IlGeneratorMethodDetails()
+      : JitBuilder::IlGeneratorMethodDetailsConnector() {}
+
+  IlGeneratorMethodDetails(TR::ResolvedMethod *method)
+      : JitBuilder::IlGeneratorMethodDetailsConnector(method) {}
+
+  IlGeneratorMethodDetails(TR_ResolvedMethod *method)
+      : JitBuilder::IlGeneratorMethodDetailsConnector(method) {}
+};
+}  // namespace TR
 
 #endif

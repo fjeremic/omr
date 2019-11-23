@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef CLASSTYPE_HPP
@@ -28,18 +29,18 @@ class Field;
 
 using std::vector;
 
-class ClassType : public NamespaceUDT
-{
-public:
-	vector<Field *> _fieldMembers;
+class ClassType : public NamespaceUDT {
+ public:
+  vector<Field *> _fieldMembers;
 
-	explicit ClassType(size_t size, unsigned int lineNumber = 0);
-	virtual ~ClassType();
+  explicit ClassType(size_t size, unsigned int lineNumber = 0);
+  virtual ~ClassType();
 
-	virtual void renameFieldsAndMacros(const FieldOverride &fieldOverride, Type *replacementType);
+  virtual void renameFieldsAndMacros(const FieldOverride &fieldOverride,
+                                     Type *replacementType);
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToClasstype(const ClassType &) const;
+  bool operator==(const Type &rhs) const;
+  virtual bool compareToClasstype(const ClassType &) const;
 };
 
 #endif /* CLASSTYPE_HPP */

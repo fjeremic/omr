@@ -16,25 +16,22 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_VIRTUALMACHINESTATE_INCL
 #define TR_VIRTUALMACHINESTATE_INCL
 
-
 #include "ilgen/OMRVirtualMachineState.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class VirtualMachineState : public OMR::VirtualMachineState
-   {
-   public:
-   VirtualMachineState() : OMR::VirtualMachineState()
-      { }
-   };
+class VirtualMachineState : public OMR::VirtualMachineState {
+ public:
+  VirtualMachineState() : OMR::VirtualMachineState() {}
+};
 
-} // namespace TR
+}  // namespace TR
 
-#endif // !defined(TR_VIRTUALMACHINESTATE_INCL)
+#endif  // !defined(TR_VIRTUALMACHINESTATE_INCL)

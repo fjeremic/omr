@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -33,7 +34,8 @@
 #if defined(LINUX)
 /*
  * CMVC 194846.
- * NOTE: When we use pthread_sigmask on other platforms, we can remove this macro.
+ * NOTE: When we use pthread_sigmask on other platforms, we can remove this
+ * macro.
  */
 #define sigprocmask pthread_sigmask
 

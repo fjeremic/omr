@@ -16,14 +16,15 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef AST_H
 #define AST_H
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,9 +48,10 @@ typedef struct ASTNode ASTNode;
  * The following functions are wrappers for the AST struct constructors.
  */
 
-ASTNode* createNode(const char* name, ASTNodeArg* args, ASTNode* children,  ASTNode* next);
+ASTNode* createNode(const char* name, ASTNodeArg* args, ASTNode* children,
+                    ASTNode* next);
 
-ASTNodeArg* createNodeArg(const char* name, ASTValue * value,  ASTNodeArg* next);
+ASTNodeArg* createNodeArg(const char* name, ASTValue* value, ASTNodeArg* next);
 
 ASTValue* createIntegerValue(uint64_t val);
 ASTValue* createFloatingPointValue(double val);
@@ -107,8 +109,8 @@ void printASTValue(FILE* file, const ASTValue* value);
 void printASTArgs(FILE* file, const ASTNodeArg* args);
 void printTrees(FILE* file, const ASTNode* trees, int indent);
 
-/** 
- * Dump trees to stderr by default. 
+/**
+ * Dump trees to stderr by default.
  *
  * Useful for calling in a debugger
  */
@@ -132,4 +134,4 @@ ASTNode* parseString(const char* in);
 }
 #endif
 
-#endif // AST_H
+#endif  // AST_H

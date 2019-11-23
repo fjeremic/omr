@@ -16,19 +16,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_STATICSYMBOL_INCL
 #define OMR_STATICSYMBOL_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_STATICSYMBOL_CONNECTOR
 #define OMR_STATICSYMBOL_CONNECTOR
-namespace OMR { class StaticSymbol; }
-namespace OMR { typedef OMR::StaticSymbol StaticSymbolConnector; }
+namespace OMR {
+class StaticSymbol;
+}
+namespace OMR {
+typedef OMR::StaticSymbol StaticSymbolConnector;
+}
 #endif
 
 #include "il/Symbol.hpp"
@@ -38,88 +44,81 @@ namespace OMR { typedef OMR::StaticSymbol StaticSymbolConnector; }
 #include "infra/Assert.hpp"
 #include "infra/Flags.hpp"
 
-namespace TR { class LabelSymbol; }
-namespace TR { class StaticSymbol; }
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class StaticSymbol;
+}
 
-namespace OMR
-{
+namespace OMR {
 
 /**
  * A symbol with an adress
  */
-class OMR_EXTENSIBLE StaticSymbol : public TR::Symbol
-   {
-protected:
-   TR::StaticSymbol* self();
+class OMR_EXTENSIBLE StaticSymbol : public TR::Symbol {
+ protected:
+  TR::StaticSymbol* self();
 
-public:
+ public:
+  template <typename AllocatorType>
+  static TR::StaticSymbol* create(AllocatorType t, TR::DataType d);
 
-   template <typename AllocatorType>
-   static TR::StaticSymbol * create(AllocatorType t, TR::DataType d);
+  template <typename AllocatorType>
+  static TR::StaticSymbol* createWithAddress(AllocatorType t, TR::DataType d,
+                                             void* address);
 
-   template <typename AllocatorType>
-   static TR::StaticSymbol * createWithAddress(AllocatorType t, TR::DataType d, void * address);
+  template <typename AllocatorType>
+  static TR::StaticSymbol* createWithSize(AllocatorType t, TR::DataType d,
+                                          uint32_t s);
 
-   template <typename AllocatorType>
-   static TR::StaticSymbol * createWithSize(AllocatorType t, TR::DataType d, uint32_t s);
+ protected:
+  StaticSymbol(TR::DataType d)
+      : TR::Symbol(d), _staticAddress(0), _assignedTOCIndex(0) {
+    _flags.setValue(KindMask, IsStatic);
+  }
 
-protected:
+  StaticSymbol(TR::DataType d, void* address)
+      : TR::Symbol(d), _staticAddress(address), _assignedTOCIndex(0) {
+    _flags.setValue(KindMask, IsStatic);
+  }
 
-   StaticSymbol(TR::DataType d) :
-      TR::Symbol(d),
-      _staticAddress(0),
-      _assignedTOCIndex(0)
-      {
-      _flags.setValue(KindMask, IsStatic);
-      }
+  StaticSymbol(TR::DataType d, uint32_t s)
+      : TR::Symbol(d, s), _staticAddress(0), _assignedTOCIndex(0) {
+    _flags.setValue(KindMask, IsStatic);
+  }
 
-   StaticSymbol(TR::DataType d, void * address) :
-      TR::Symbol(d),
-      _staticAddress(address),
-      _assignedTOCIndex(0)
-      {
-      _flags.setValue(KindMask, IsStatic);
-      }
+ public:
+  void* getStaticAddress() { return _staticAddress; }
+  void setStaticAddress(void* a) { _staticAddress = a; }
 
-   StaticSymbol(TR::DataType d, uint32_t s) :
-      TR::Symbol(d, s),
-      _staticAddress(0),
-      _assignedTOCIndex(0)
-      {
-      _flags.setValue(KindMask, IsStatic);
-      }
+  uint32_t getTOCIndex() { return _assignedTOCIndex; }
+  void setTOCIndex(uint32_t idx) { _assignedTOCIndex = idx; }
 
-public:
+ private:
+  void* _staticAddress;
 
-   void * getStaticAddress()                  { return _staticAddress; }
-   void   setStaticAddress(void * a)          { _staticAddress = a; }
+  uint32_t _assignedTOCIndex;
 
-   uint32_t getTOCIndex()                     { return _assignedTOCIndex; }
-   void     setTOCIndex(uint32_t idx)         { _assignedTOCIndex = idx; }
+  /* ------ TR_NamedStaticSymbol --------------- */
+ public:
+  template <typename AllocatorType>
+  static TR::StaticSymbol* createNamed(AllocatorType m, TR::DataType d,
+                                       const char* name);
 
-private:
+  template <typename AllocatorType>
+  static TR::StaticSymbol* createNamed(AllocatorType m, TR::DataType d,
+                                       void* addr, const char* name);
 
-   void * _staticAddress;
+  const char* getName();
 
-   uint32_t _assignedTOCIndex;
+ private:
+  void makeNamed(const char* name) {
+    _name = name;
+    _flags.set(IsNamed);
+  }
+};
 
-   /* ------ TR_NamedStaticSymbol --------------- */
-public:
-
-   template <typename AllocatorType>
-   static TR::StaticSymbol * createNamed(AllocatorType m, TR::DataType d, const char * name);
-
-   template <typename AllocatorType>
-   static TR::StaticSymbol * createNamed(AllocatorType m, TR::DataType d, void * addr, const char * name);
-
-   const char *getName();
-
-private:
-
-   void makeNamed(const char * name) { _name = name;  _flags.set(IsNamed); }
-
-   };
-
-}
+}  // namespace OMR
 
 #endif

@@ -16,27 +16,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_JITCONFIG_HPP
 #define TEST_JITCONFIG_HPP
 
-#include "env/TRMemory.hpp"
 #include "env/FEBase.hpp"
 #include "env/JitConfig.hpp"
+#include "env/TRMemory.hpp"
 
-namespace TestCompiler { class FrontEnd; }
+namespace TestCompiler {
+class FrontEnd;
+}
 
-// Singleton JitConfig. The only instance of this is TestCompiler::FrontEnd::_jitConfig
-namespace TestCompiler
-{
-struct JitConfig : public TR::JitConfig
-   {
-   private:
-   friend class TR::FEBase<FrontEnd>;
-   JitConfig() : TR::JitConfig() {}
-   };
-} // namespace TestCompiler
+// Singleton JitConfig. The only instance of this is
+// TestCompiler::FrontEnd::_jitConfig
+namespace TestCompiler {
+struct JitConfig : public TR::JitConfig {
+ private:
+  friend class TR::FEBase<FrontEnd>;
+  JitConfig() : TR::JitConfig() {}
+};
+}  // namespace TestCompiler
 
 #endif

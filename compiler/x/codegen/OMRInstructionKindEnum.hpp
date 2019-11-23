@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -24,52 +25,13 @@
  * definitions are permitted.
  */
 
-IsNotExtended,
-      IsLabel,
-         IsVirtualGuardNOP,
-      IsFence,
-      IsPadding,
-      IsAlignment,
-      IsBoundaryAvoidance,
-         IsPatchableCodeAlignment,
-      IsImm,
-         IsImmSnippet,
-         IsImmSym,
-      IsImm64,
-         IsImm64Sym,
-      IsVFPSave,
-      IsVFPRestore,
-      IsVFPDedicate,
-      IsVFPRelease,
-      IsVFPCallCleanup,
-      IsReg,
-         IsRegReg,
-            IsRegRegImm,
-            IsRegRegReg,
-            IsFPRegReg,
-               IsFPST0ST1RegReg,
-               IsFPST0STiRegReg,
-               IsFPSTiST0RegReg,
-               IsFPArithmeticRegReg,
-               IsFPCompareRegReg,
-               IsFPRemainderRegReg,
-         IsRegImm,
-            IsRegImmSym,
-         IsRegImm64,
-            IsRegImm64Sym,
-         IsRegMem,
-            IsRegMemImm,
-            IsRegRegMem,
-            IsFPRegMem,
-         IsFPReg,
-      IsMem,
-         IsMemTable,
-         IsCallMem,
-         IsMemImm,
-            IsMemImmSym,
-            IsMemImmSnippet,
-         IsMemReg,
-            IsMemRegImm,
-            IsFPMemReg,
-      IsFPCompareEval,
-      IsFfsdPPSRecord,
+IsNotExtended, IsLabel, IsVirtualGuardNOP, IsFence, IsPadding, IsAlignment,
+    IsBoundaryAvoidance, IsPatchableCodeAlignment, IsImm, IsImmSnippet,
+    IsImmSym, IsImm64, IsImm64Sym, IsVFPSave, IsVFPRestore, IsVFPDedicate,
+    IsVFPRelease, IsVFPCallCleanup, IsReg, IsRegReg, IsRegRegImm, IsRegRegReg,
+    IsFPRegReg, IsFPST0ST1RegReg, IsFPST0STiRegReg, IsFPSTiST0RegReg,
+    IsFPArithmeticRegReg, IsFPCompareRegReg, IsFPRemainderRegReg, IsRegImm,
+    IsRegImmSym, IsRegImm64, IsRegImm64Sym, IsRegMem, IsRegMemImm, IsRegRegMem,
+    IsFPRegMem, IsFPReg, IsMem, IsMemTable, IsCallMem, IsMemImm, IsMemImmSym,
+    IsMemImmSnippet, IsMemReg, IsMemRegImm, IsFPMemReg, IsFPCompareEval,
+    IsFfsdPPSRecord,

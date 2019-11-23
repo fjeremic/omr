@@ -16,34 +16,41 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef PPC_TREE_EVALUATOR_INCL
 #define PPC_TREE_EVALUATOR_INCL
 
-
 #include <stddef.h>
 #include <stdint.h>
 #include "codegen/TreeEvaluator.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class Register; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
 
-
-
-void simplifyANDRegImm(TR::Node *, TR::Register *trgReg, TR::Register *srcReg, int32_t value, TR::CodeGenerator *cg, TR::Node *constNode=NULL);
+void simplifyANDRegImm(TR::Node *, TR::Register *trgReg, TR::Register *srcReg,
+                       int32_t value, TR::CodeGenerator *cg,
+                       TR::Node *constNode = NULL);
 
 #define VOID_BODY
 #define NULL_BODY
 #define BOOL_BODY
 
-class TR_PPCComputeCC : public TR::TreeEvaluator
-   {
-   public:
-   static bool setCarryBorrow(TR::Node *flagNode, bool invertValue, TR::Register **flagReg, TR::CodeGenerator *cg) BOOL_BODY;
-   };
+class TR_PPCComputeCC : public TR::TreeEvaluator {
+ public:
+  static bool setCarryBorrow(TR::Node *flagNode, bool invertValue,
+                             TR::Register **flagReg,
+                             TR::CodeGenerator *cg) BOOL_BODY;
+};
 
 #undef NULL_BODY
 #undef VOID_BODY

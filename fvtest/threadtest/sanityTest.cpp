@@ -16,74 +16,58 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "threadTestLib.hpp"
 #include "sanityTestHelper.hpp"
+#include "threadTestLib.hpp"
 
 #include "omrTest.h"
 #include "testHelper.hpp"
 
 extern ThreadTestEnvironment *omrTestEnv;
 
-class SanityTest: public ::testing::Test
-{
-public:
-	static unsigned int runTime;
-protected:
+class SanityTest : public ::testing::Test {
+ public:
+  static unsigned int runTime;
 
-	static void
-	SetUpTestCase(void)
-	{
-		/* parse the command line options */
-		for (int32_t i = 1; i < omrTestEnv->_argc; i++) {
-			if (0 == strncmp(omrTestEnv->_argv[i], "-runTime=", strlen("-runTime="))) {
-				sscanf(&omrTestEnv->_argv[i][strlen("-runTime=")], "%u", &runTime);
-			}
-		}
-	}
+ protected:
+  static void SetUpTestCase(void) {
+    /* parse the command line options */
+    for (int32_t i = 1; i < omrTestEnv->_argc; i++) {
+      if (0 ==
+          strncmp(omrTestEnv->_argv[i], "-runTime=", strlen("-runTime="))) {
+        sscanf(&omrTestEnv->_argv[i][strlen("-runTime=")], "%u", &runTime);
+      }
+    }
+  }
 };
 unsigned int SanityTest::runTime = 2; /* default test run time of 2 second */
 
-TEST_F(SanityTest, simpleSanity)
-{
-	SimpleSanity();
-	ASSERT_TRUE(SimpleSanity());
+TEST_F(SanityTest, simpleSanity) {
+  SimpleSanity();
+  ASSERT_TRUE(SimpleSanity());
 }
 
-TEST_F(SanityTest, SanityTestSingleThread)
-{
-	SanityTestNThreads(1, runTime);
+TEST_F(SanityTest, SanityTestSingleThread) { SanityTestNThreads(1, runTime); }
+
+TEST_F(SanityTest, SanityTestTwoThreads) { SanityTestNThreads(2, runTime); }
+
+TEST_F(SanityTest, SanityTestFourThreads) { SanityTestNThreads(4, runTime); }
+
+TEST_F(SanityTest, QuickNDirtyPerformanceTest) {
+  QuickNDirtyPerformanceTest(runTime);
 }
 
-TEST_F(SanityTest, SanityTestTwoThreads)
-{
-	SanityTestNThreads(2, runTime);
-}
+TEST_F(SanityTest, TestWaitNotify) { TestWaitNotify(runTime); }
 
-TEST_F(SanityTest, SanityTestFourThreads)
-{
-	SanityTestNThreads(4, runTime);
-}
+TEST_F(SanityTest, TestBlockingQueue) {
+  omrthread_t self;
+  omrthread_attach_ex(&self, J9THREAD_ATTR_DEFAULT);
 
-TEST_F(SanityTest, QuickNDirtyPerformanceTest)
-{
-	QuickNDirtyPerformanceTest(runTime);
-}
-
-TEST_F(SanityTest, TestWaitNotify)
-{
-	TestWaitNotify(runTime);
-}
-
-TEST_F(SanityTest, TestBlockingQueue)
-{
-	omrthread_t self;
-	omrthread_attach_ex(&self, J9THREAD_ATTR_DEFAULT);
-
-	CThread cself(self);
-	EXPECT_TRUE(TestBlockingQueue(cself, 1)) << "1 thread failed";
-	EXPECT_TRUE(TestBlockingQueue(cself, 2)) << "2 threads failed";
-	EXPECT_TRUE(TestBlockingQueue(cself, 3)) << "3 threads failed";
+  CThread cself(self);
+  EXPECT_TRUE(TestBlockingQueue(cself, 1)) << "1 thread failed";
+  EXPECT_TRUE(TestBlockingQueue(cself, 2)) << "2 threads failed";
+  EXPECT_TRUE(TestBlockingQueue(cself, 3)) << "3 threads failed";
 }

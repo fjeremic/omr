@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DATFILEWRITER_HPP_
@@ -26,26 +27,25 @@
 #include "Port.hpp"
 #include "TDFTypes.hpp"
 
-class DATFileWriter
-{
-	/*
-	 * Data members
-	 */
-private:
-protected:
-public:
-	/*
-	 * Function members
-	 */
-private:
-protected:
-public:
-	/**
-	 * Output trace DAT file.
-	 * @param options Command line options
-	 * @param tdf Parsed TDF file
-	 * @return RC_OK on success, RC_FAILED on failure
-	 */
-	RCType writeOutputFiles(J9TDFOptions *options, J9TDFFile *tdf);
+class DATFileWriter {
+  /*
+   * Data members
+   */
+ private:
+ protected:
+ public:
+  /*
+   * Function members
+   */
+ private:
+ protected:
+ public:
+  /**
+   * Output trace DAT file.
+   * @param options Command line options
+   * @param tdf Parsed TDF file
+   * @return RC_OK on success, RC_FAILED on failure
+   */
+  RCType writeOutputFiles(J9TDFOptions *options, J9TDFFile *tdf);
 };
 #endif /* DATFILEWRITER_HPP_ */

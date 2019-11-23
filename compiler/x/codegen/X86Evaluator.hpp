@@ -16,33 +16,41 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef X86_EVALUATOR_INCL
 #define X86_EVALUATOR_INCL
 
-
-
 #include <stddef.h>
 #include <stdint.h>
-#include "x/codegen/X86Ops.hpp"
 #include "codegen/TreeEvaluator.hpp"
+#include "x/codegen/X86Ops.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
-namespace TR { class MemoryReference; }
-namespace TR { class Node; }
-namespace TR { class Register; }
-namespace TR { class RegisterDependencyConditions; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class MemoryReference;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
+namespace TR {
+class RegisterDependencyConditions;
+}
 
-
-class TR_X86ComputeCC : public TR::TreeEvaluator
-   {
-   public:
-
-   static bool setCarryBorrow(TR::Node *flagNode, bool invertValue, TR::CodeGenerator *cg);
-
-   };
+class TR_X86ComputeCC : public TR::TreeEvaluator {
+ public:
+  static bool setCarryBorrow(TR::Node *flagNode, bool invertValue,
+                             TR::CodeGenerator *cg);
+};
 
 #endif

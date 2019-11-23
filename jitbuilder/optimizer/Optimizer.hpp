@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 // NOTE: This file will be deleted once IPATHS are fixed for test
@@ -27,18 +28,17 @@
 
 #include "optimizer/JBOptimizer.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class Optimizer : public JitBuilder::OptimizerConnector
-   {
-   public:
+class Optimizer : public JitBuilder::OptimizerConnector {
+ public:
+  Optimizer(TR::Compilation *comp, TR::ResolvedMethodSymbol *methodSymbol,
+            bool isIlGen, const OptimizationStrategy *strategy = NULL,
+            uint16_t VNType = 0)
+      : JitBuilder::OptimizerConnector(comp, methodSymbol, isIlGen, strategy,
+                                       VNType) {}
+};
 
-   Optimizer(TR::Compilation *comp, TR::ResolvedMethodSymbol *methodSymbol, bool isIlGen,
-         const OptimizationStrategy *strategy = NULL, uint16_t VNType = 0) :
-      JitBuilder::OptimizerConnector(comp, methodSymbol, isIlGen, strategy, VNType) {}
-   };
-
-}
+}  // namespace TR
 
 #endif

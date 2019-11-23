@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_INSTRUCTION_INCL
@@ -24,72 +25,65 @@
 
 #include "codegen/OMRInstruction.hpp"
 
-namespace TR
-{
+namespace TR {
 class Instruction;
 
-class OMR_EXTENSIBLE Instruction : public OMR::InstructionConnector
-   {
-   public:
+class OMR_EXTENSIBLE Instruction : public OMR::InstructionConnector {
+ public:
+  /*
+   * Generic constructors
+   */
+  Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n, TR::CodeGenerator *cg)
+      : OMR::InstructionConnector(cg, op, n) {}
 
-   /*
-    * Generic constructors
-    */
-   Instruction(TR::InstOpCode::Mnemonic    op,
-            TR::Node          *n,
-            TR::CodeGenerator *cg) :
-            OMR::InstructionConnector(cg, op, n) {}
+  Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n,
+              TR::Instruction *precedingInstruction, TR::CodeGenerator *cg)
+      : OMR::InstructionConnector(cg, precedingInstruction, op, n) {}
 
-   Instruction(TR::InstOpCode::Mnemonic    op,
-               TR::Node          *n,
-               TR::Instruction   *precedingInstruction,
-               TR::CodeGenerator *cg):
-               OMR::InstructionConnector(cg, precedingInstruction, op, n) {}
+  /*
+   * Z specific constructors, need to call initializer to perform proper
+   * construction
+   */
+  inline Instruction(TR::Instruction *precedingInstruction,
+                     TR::InstOpCode::Mnemonic op,
+                     TR::RegisterDependencyConditions *cond,
+                     TR::CodeGenerator *cg);
 
-   /*
-    * Z specific constructors, need to call initializer to perform proper construction
-    */
-   inline Instruction(TR::Instruction *precedingInstruction,
-                      TR::InstOpCode::Mnemonic op,
-                      TR::RegisterDependencyConditions *cond,
-                      TR::CodeGenerator *cg);
+  inline Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n,
+                     TR::RegisterDependencyConditions *cond,
+                     TR::CodeGenerator *cg);
 
-   inline Instruction(TR::InstOpCode::Mnemonic    op,
-                      TR::Node          *n,
-                      TR::RegisterDependencyConditions *cond,
-                      TR::CodeGenerator *cg);
+  inline Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n,
+                     TR::RegisterDependencyConditions *cond,
+                     TR::Instruction *precedingInstruction,
+                     TR::CodeGenerator *cg);
+};
 
-
-   inline Instruction(TR::InstOpCode::Mnemonic    op,
-                      TR::Node          *n,
-                      TR::RegisterDependencyConditions * cond,
-                      TR::Instruction   *precedingInstruction,
-                      TR::CodeGenerator *cg);
-
-   };
-
-}
+}  // namespace TR
 
 #include "codegen/OMRInstruction_inlines.hpp"
 
 TR::Instruction::Instruction(TR::Instruction *precedingInstruction,
                              TR::InstOpCode::Mnemonic op,
                              TR::RegisterDependencyConditions *cond,
-                             TR::CodeGenerator                    *cg) :
-                             OMR::InstructionConnector(cg, precedingInstruction, op) { self()->initialize(precedingInstruction, true, cond, false); }
+                             TR::CodeGenerator *cg)
+    : OMR::InstructionConnector(cg, precedingInstruction, op) {
+  self()->initialize(precedingInstruction, true, cond, false);
+}
 
-TR::Instruction::Instruction(TR::InstOpCode::Mnemonic    op,
-                             TR::Node          *n,
+TR::Instruction::Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n,
                              TR::RegisterDependencyConditions *cond,
-                             TR::CodeGenerator *cg) :
-                             OMR::InstructionConnector(cg, op, n) { self()->initialize(NULL, false, cond, true); }
+                             TR::CodeGenerator *cg)
+    : OMR::InstructionConnector(cg, op, n) {
+  self()->initialize(NULL, false, cond, true);
+}
 
-
-TR::Instruction::Instruction(TR::InstOpCode::Mnemonic    op,
-                             TR::Node          *n,
-                             TR::RegisterDependencyConditions * cond,
-                             TR::Instruction   *precedingInstruction,
-                             TR::CodeGenerator *cg) :
-                             OMR::InstructionConnector(cg, precedingInstruction, op, n) { self()->initialize(precedingInstruction, true, cond, true); }
+TR::Instruction::Instruction(TR::InstOpCode::Mnemonic op, TR::Node *n,
+                             TR::RegisterDependencyConditions *cond,
+                             TR::Instruction *precedingInstruction,
+                             TR::CodeGenerator *cg)
+    : OMR::InstructionConnector(cg, precedingInstruction, op, n) {
+  self()->initialize(precedingInstruction, true, cond, true);
+}
 
 #endif /* TR_INSTRUCTION_INCL */

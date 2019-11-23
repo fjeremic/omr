@@ -17,9 +17,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #if !defined(OBJECTHEAPBUFFEREDITERATOR_HPP_)
 #define OBJECTHEAPBUFFEREDITERATOR_HPP_
@@ -38,49 +38,57 @@ class MM_HeapRegionDescriptor;
 class MM_ObjectHeapBufferedIteratorPopulator;
 
 typedef struct GC_ObjectHeapBufferedIteratorState {
-	MM_GCExtensionsBase *extensions; /**< the GC extensions associated with the JVM */
-	bool includeDeadObjects;
-	bool skipFirstObject;
-	uintptr_t data1;
-	uintptr_t data2;
-	uintptr_t data3;
-	uintptr_t data4;
+  MM_GCExtensionsBase
+      *extensions; /**< the GC extensions associated with the JVM */
+  bool includeDeadObjects;
+  bool skipFirstObject;
+  uintptr_t data1;
+  uintptr_t data2;
+  uintptr_t data3;
+  uintptr_t data4;
 } GC_ObjectHeapBufferedIteratorState;
 
-class GC_ObjectHeapBufferedIterator
-{
-/* Data Members */
-private:
-	MM_AddressOrderedListPopulator _addressOrderedListPopulator;
-	MM_BumpAllocatedListPopulator _bumpAllocatedListPopulator;
-	MM_EmptyListPopulator _emptyListPopulator;
-	MM_MarkedObjectPopulator _markedObjectPopulator;
+class GC_ObjectHeapBufferedIterator {
+  /* Data Members */
+ private:
+  MM_AddressOrderedListPopulator _addressOrderedListPopulator;
+  MM_BumpAllocatedListPopulator _bumpAllocatedListPopulator;
+  MM_EmptyListPopulator _emptyListPopulator;
+  MM_MarkedObjectPopulator _markedObjectPopulator;
 #if defined(OMR_GC_SEGREGATED_HEAP)
-	MM_SegregatedListPopulator _segregatedListPopulator;
+  MM_SegregatedListPopulator _segregatedListPopulator;
 #endif /* OMR_GC_SEGREGATED_HEAP */
-protected:
-	enum {
-		CACHE_SIZE = 256
-	};
-	MM_HeapRegionDescriptor *_region;
-	GC_ObjectHeapBufferedIteratorState _state;
-	omrobjectptr_t _cache[CACHE_SIZE];
-	uintptr_t _cacheIndex;
-	uintptr_t _cacheCount;
-	uintptr_t _cacheSizeToUse;
-	const MM_ObjectHeapBufferedIteratorPopulator *_populator;
-public:
+ protected:
+  enum { CACHE_SIZE = 256 };
+  MM_HeapRegionDescriptor *_region;
+  GC_ObjectHeapBufferedIteratorState _state;
+  omrobjectptr_t _cache[CACHE_SIZE];
+  uintptr_t _cacheIndex;
+  uintptr_t _cacheCount;
+  uintptr_t _cacheSizeToUse;
+  const MM_ObjectHeapBufferedIteratorPopulator *_populator;
 
-/* Function Members */
-private:
-	void init(MM_GCExtensionsBase *extensions, MM_HeapRegionDescriptor *region, void *base, void *top, bool includeDeadObjects, uintptr_t maxElementsToCache);
-protected:
-	virtual const MM_ObjectHeapBufferedIteratorPopulator *getPopulator();
-public:
-	GC_ObjectHeapBufferedIterator(MM_GCExtensionsBase *extensions, MM_HeapRegionDescriptor *region, bool includeDeadObjects = false, uintptr_t maxElementsToCache = CACHE_SIZE);
-	GC_ObjectHeapBufferedIterator(MM_GCExtensionsBase *extensions, MM_HeapRegionDescriptor *region, void *base, void *top, bool includeDeadObjects = false, uintptr_t maxElementsToCache = CACHE_SIZE);
-	omrobjectptr_t nextObject();
-	void advance(uintptr_t sizeInBytes);
-	void reset(uintptr_t *base, uintptr_t *top);
+ public:
+  /* Function Members */
+ private:
+  void init(MM_GCExtensionsBase *extensions, MM_HeapRegionDescriptor *region,
+            void *base, void *top, bool includeDeadObjects,
+            uintptr_t maxElementsToCache);
+
+ protected:
+  virtual const MM_ObjectHeapBufferedIteratorPopulator *getPopulator();
+
+ public:
+  GC_ObjectHeapBufferedIterator(MM_GCExtensionsBase *extensions,
+                                MM_HeapRegionDescriptor *region,
+                                bool includeDeadObjects = false,
+                                uintptr_t maxElementsToCache = CACHE_SIZE);
+  GC_ObjectHeapBufferedIterator(MM_GCExtensionsBase *extensions,
+                                MM_HeapRegionDescriptor *region, void *base,
+                                void *top, bool includeDeadObjects = false,
+                                uintptr_t maxElementsToCache = CACHE_SIZE);
+  omrobjectptr_t nextObject();
+  void advance(uintptr_t sizeInBytes);
+  void reset(uintptr_t *base, uintptr_t *top);
 };
 #endif /*OBJECTHEAPBUFFEREDITERATOR_HPP_*/

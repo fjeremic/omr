@@ -17,9 +17,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 /**
  * Description: Calls a non-member static without a namespace.
@@ -27,20 +27,15 @@
 
 #define OMR_EXTENSIBLE __attribute__((annotate("OMR_Extensible")))
 
-
 static void functionCalled() {}  // function to be called
-
 
 namespace OMR {
 
 class OMR_EXTENSIBLE ExtClass {
-   public:
-   void callingFunction();        // function that will make call
+ public:
+  void callingFunction();  // function that will make call
 };
 
-
-} // namespace OMR
-
+}  // namespace OMR
 
 void OMR::ExtClass::callingFunction() { functionCalled(); }
-

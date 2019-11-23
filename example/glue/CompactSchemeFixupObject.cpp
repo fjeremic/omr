@@ -16,27 +16,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "omr.h"
 #include "objectdescription.h"
+#include "omr.h"
 
 #include "CompactSchemeFixupObject.hpp"
 #include "EnvironmentStandard.hpp"
 
 #if defined(OMR_GC_MODRON_COMPACTION)
 
-void
-MM_CompactSchemeFixupObject::fixupObject(MM_EnvironmentStandard *env, omrobjectptr_t objectPtr)
-{
+void MM_CompactSchemeFixupObject::fixupObject(MM_EnvironmentStandard *env,
+                                              omrobjectptr_t objectPtr) {
 #error provide an implementation to fix objects during a compact
 }
 
-
-void
-MM_CompactSchemeFixupObject::verifyForwardingPtr(omrobjectptr_t objectPtr, omrobjectptr_t forwardingPtr)
-{
+void MM_CompactSchemeFixupObject::verifyForwardingPtr(
+    omrobjectptr_t objectPtr, omrobjectptr_t forwardingPtr) {
 #error provide an implementation to verify objects after a compact is complete
 }
 

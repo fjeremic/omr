@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef SCANNER_HPP
@@ -42,19 +43,19 @@ using std::set;
 using std::string;
 using std::vector;
 
-class Scanner
-{
-public:
-	virtual DDR_RC startScan(OMRPortLibrary *portLibrary, Symbol_IR *ir,
-			vector<string> *debugFiles, const char *blacklistPath) = 0;
+class Scanner {
+ public:
+  virtual DDR_RC startScan(OMRPortLibrary *portLibrary, Symbol_IR *ir,
+                           vector<string> *debugFiles,
+                           const char *blacklistPath) = 0;
 
-protected:
-	set<string> _blacklistedFiles;
-	set<string> _blacklistedTypes;
+ protected:
+  set<string> _blacklistedFiles;
+  set<string> _blacklistedTypes;
 
-	bool checkBlacklistedType(const string &name) const;
-	bool checkBlacklistedFile(const string &name) const;
-	DDR_RC loadBlacklist(OMRPortLibrary *portLibrary, const char *file);
+  bool checkBlacklistedType(const string &name) const;
+  bool checkBlacklistedFile(const string &name) const;
+  DDR_RC loadBlacklist(OMRPortLibrary *portLibrary, const char *file);
 };
 
 #endif /* SCANNER_HPP */
