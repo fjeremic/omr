@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(EMPTYLISTPOPULATOR_HPP_)
@@ -28,17 +29,27 @@
 struct GC_ObjectHeapBufferedIteratorState;
 class MM_HeapRegionDescriptor;
 
-class MM_EmptyListPopulator : public MM_ObjectHeapBufferedIteratorPopulator 
+class MM_EmptyListPopulator : public MM_ObjectHeapBufferedIteratorPopulator
 {
 public:
-	MM_EmptyListPopulator() : MM_ObjectHeapBufferedIteratorPopulator()
-	{
-		_typeId = __FUNCTION__;
-	}
-	
-	virtual void initializeObjectHeapBufferedIteratorState(MM_HeapRegionDescriptor* region, GC_ObjectHeapBufferedIteratorState* state) const;
-	virtual uintptr_t populateObjectHeapBufferedIteratorCache(omrobjectptr_t* cache, uintptr_t count, GC_ObjectHeapBufferedIteratorState* state) const;
-	virtual void advance(uintptr_t size, GC_ObjectHeapBufferedIteratorState* state) const;
-	virtual void reset(MM_HeapRegionDescriptor* region, GC_ObjectHeapBufferedIteratorState* state, void* base, void* top) const;
+  MM_EmptyListPopulator()
+    : MM_ObjectHeapBufferedIteratorPopulator()
+  {
+    _typeId = __FUNCTION__;
+  }
+
+  virtual void initializeObjectHeapBufferedIteratorState(
+    MM_HeapRegionDescriptor* region,
+    GC_ObjectHeapBufferedIteratorState* state) const;
+  virtual uintptr_t populateObjectHeapBufferedIteratorCache(
+    omrobjectptr_t* cache,
+    uintptr_t count,
+    GC_ObjectHeapBufferedIteratorState* state) const;
+  virtual void advance(uintptr_t size,
+                       GC_ObjectHeapBufferedIteratorState* state) const;
+  virtual void reset(MM_HeapRegionDescriptor* region,
+                     GC_ObjectHeapBufferedIteratorState* state,
+                     void* base,
+                     void* top) const;
 };
 #endif /*EMPTYLISTPOPULATOR_HPP_*/

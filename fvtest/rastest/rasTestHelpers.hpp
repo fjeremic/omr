@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(RASTESTHELPERS_H_INCLUDED)
@@ -26,36 +27,65 @@
 #include "omrTest.h"
 #include "omrTestHelpers.h"
 #include "omrrasinit.h"
-#include "ute_core.h"
 #include "testEnvironment.hpp"
+#include "ute_core.h"
 
-extern PortEnvironment *rasTestEnv;
+extern PortEnvironment* rasTestEnv;
 
-char *getTraceDatDir(intptr_t argc, const char **argv);
-void reportOMRCommandLineError(OMRPortLibrary *portLibrary, const char *detailStr, va_list args);
+char*
+getTraceDatDir(intptr_t argc, const char** argv);
+void
+reportOMRCommandLineError(OMRPortLibrary* portLibrary,
+                          const char* detailStr,
+                          va_list args);
 
-void createThread(omrthread_t *newThread, uintptr_t suspend, omrthread_detachstate_t detachstate,
-				  omrthread_entrypoint_t entryProc, void *entryArg);
-intptr_t joinThread(omrthread_t threadToJoin);
+void
+createThread(omrthread_t* newThread,
+             uintptr_t suspend,
+             omrthread_detachstate_t detachstate,
+             omrthread_entrypoint_t entryProc,
+             void* entryArg);
+intptr_t
+joinThread(omrthread_t threadToJoin);
 
 /* traceRecordHelpers */
 
-typedef struct PerThreadWrapBuffer {
-	uint8_t *lastRecord; /* cache for wrapped tracepoints */
-	size_t lastRecordBytes; /* size of lastRecord buffer, in bytes */
-	size_t lastRecordPos; /* position in lastRecord after end of existing contents */
+typedef struct PerThreadWrapBuffer
+{
+  uint8_t* lastRecord;    /* cache for wrapped tracepoints */
+  size_t lastRecordBytes; /* size of lastRecord buffer, in bytes */
+  size_t
+    lastRecordPos; /* position in lastRecord after end of existing contents */
 } PerThreadWrapBuffer;
 
-typedef omr_error_t (*TracePointCallback)(void *userData, const char *tpMod, const uint32_t tpModLength, const uint32_t tpId,
-		const UtTraceRecord *record, uint32_t firstParameterOffset, uint32_t parameterDataLength, int32_t isBigEndian);
+typedef omr_error_t (*TracePointCallback)(void* userData,
+                                          const char* tpMod,
+                                          const uint32_t tpModLength,
+                                          const uint32_t tpId,
+                                          const UtTraceRecord* record,
+                                          uint32_t firstParameterOffset,
+                                          uint32_t parameterDataLength,
+                                          int32_t isBigEndian);
 
-void initWrapBuffer(PerThreadWrapBuffer *wrapBuffer);
-void freeWrapBuffer(PerThreadWrapBuffer *wrapBuffer);
+void
+initWrapBuffer(PerThreadWrapBuffer* wrapBuffer);
+void
+freeWrapBuffer(PerThreadWrapBuffer* wrapBuffer);
 
-omr_error_t processTraceRecord(PerThreadWrapBuffer *wrapBuffer, UtSubscription *subscriptionID, TracePointCallback userCallback, void *userData);
-uint8_t getU8FromTraceRecord(const UtTraceRecord *record, uint32_t offset);
-uint32_t getU32FromTraceRecord(const UtTraceRecord *record, uint32_t offset, int32_t isBigEndian);
-uint64_t getU64FromTraceRecord(const UtTraceRecord *record, uint32_t offset, int32_t isBigEndian);
-
+omr_error_t
+processTraceRecord(PerThreadWrapBuffer* wrapBuffer,
+                   UtSubscription* subscriptionID,
+                   TracePointCallback userCallback,
+                   void* userData);
+uint8_t
+getU8FromTraceRecord(const UtTraceRecord* record, uint32_t offset);
+uint32_t
+getU32FromTraceRecord(const UtTraceRecord* record,
+                      uint32_t offset,
+                      int32_t isBigEndian);
+uint64_t
+getU64FromTraceRecord(const UtTraceRecord* record,
+                      uint32_t offset,
+                      int32_t isBigEndian);
 
 #endif /* RASTESTHELPERS_H_INCLUDED */

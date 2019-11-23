@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrmem32struct_h
@@ -25,22 +26,24 @@
 
 #include "omrport.h"
 
-typedef struct J9HeapWrapper {
-	struct J9HeapWrapper *nextHeapWrapper;
-	J9Heap *heap;
-	uintptr_t heapSize;
-	J9PortVmemIdentifier *vmemID;
+typedef struct J9HeapWrapper
+{
+  struct J9HeapWrapper* nextHeapWrapper;
+  J9Heap* heap;
+  uintptr_t heapSize;
+  J9PortVmemIdentifier* vmemID;
 } J9HeapWrapper;
 
-typedef struct J9SubAllocateHeapMem32 {
-	uintptr_t totalSize;
-	J9HeapWrapper *firstHeapWrapper;
-	omrthread_monitor_t monitor;
-	uintptr_t subCommitCommittedMemorySize;
-	BOOLEAN canSubCommitHeapGrow;
-	J9HeapWrapper *subCommitHeapWrapper;
-	uintptr_t suballocator_initialSize;
-	uintptr_t suballocator_commitSize;
+typedef struct J9SubAllocateHeapMem32
+{
+  uintptr_t totalSize;
+  J9HeapWrapper* firstHeapWrapper;
+  omrthread_monitor_t monitor;
+  uintptr_t subCommitCommittedMemorySize;
+  BOOLEAN canSubCommitHeapGrow;
+  J9HeapWrapper* subCommitHeapWrapper;
+  uintptr_t suballocator_initialSize;
+  uintptr_t suballocator_commitSize;
 } J9SubAllocateHeapMem32;
 
-#endif	/* omrmem32struct_h */
+#endif /* omrmem32struct_h */

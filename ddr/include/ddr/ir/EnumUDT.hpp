@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ENUMUDT_HPP
@@ -30,17 +31,17 @@ class EnumMember;
 class EnumUDT : public UDT
 {
 public:
-	std::vector<EnumMember *> _enumMembers;
+  std::vector<EnumMember*> _enumMembers;
 
-	explicit EnumUDT(unsigned int lineNumber = 0);
-	virtual ~EnumUDT();
+  explicit EnumUDT(unsigned int lineNumber = 0);
+  virtual ~EnumUDT();
 
-	virtual const string &getSymbolKindName() const;
+  virtual const string& getSymbolKindName() const;
 
-	virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
+  virtual DDR_RC acceptVisitor(const TypeVisitor& visitor);
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToEnum(const EnumUDT &) const;
+  bool operator==(const Type& rhs) const;
+  virtual bool compareToEnum(const EnumUDT&) const;
 };
 
 #endif /* ENUMUDT_HPP */

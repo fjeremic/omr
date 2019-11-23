@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -24,31 +25,8 @@
  * definitions are permitted.
  */
 
-   IsNotExtended,
-   IsImm,
-      IsSynchronization,
-      IsException,
-   IsImmSym,
-   IsLabel,
-      IsConditionalBranch,
-      IsCompareBranch,
-      IsVirtualGuardNOP,
-   IsRegBranch,
-   IsAdmin,
-   IsTrg1,
-      IsTrg1Cond,
-      IsTrg1Imm,
-         IsTrg1ImmSym,
-      IsTrg1Src1,
-         IsTrg1Src1Imm,
-         IsTrg1Src2,
-            IsCondTrg1Src2,
-            IsTrg1Src2Shifted,
-            IsTrg1Src2Extended,
-            IsTrg1Src3,
-      IsTrg1Mem,
-         IsTrg1MemSrc1,
-   IsMem,
-      IsMemSrc1,
-   IsSrc1,
-      IsSrc2,
+IsNotExtended, IsImm, IsSynchronization, IsException, IsImmSym, IsLabel,
+  IsConditionalBranch, IsCompareBranch, IsVirtualGuardNOP, IsRegBranch, IsAdmin,
+  IsTrg1, IsTrg1Cond, IsTrg1Imm, IsTrg1ImmSym, IsTrg1Src1, IsTrg1Src1Imm,
+  IsTrg1Src2, IsCondTrg1Src2, IsTrg1Src2Shifted, IsTrg1Src2Extended, IsTrg1Src3,
+  IsTrg1Mem, IsTrg1MemSrc1, IsMem, IsMemSrc1, IsSrc1, IsSrc2,

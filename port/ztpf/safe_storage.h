@@ -17,14 +17,15 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef _SAFE_STORAGE_H_INCLUDED
 #define _SAFE_STORAGE_H_INCLUDED
 
-#include <tpf/c_proc.h>
 #include "omrosdump_helpers.h"
+#include <tpf/c_proc.h>
 
 /*
  * The only fields in safeStorage.argv that require setting by
@@ -39,18 +40,20 @@
  * All fields in "safeStorage" are cleared; callers are
  * responsible for completing them, if desired.
  */
-typedef struct _durable_storage {
-	U_8	workbuffer[PATH_MAX];
-	U_8	filename[PATH_MAX];
-	siginfo_t	siginfo;
-	ucontext_t ucontext;
-	struct sigcontext sigcontext;
-	_sigregs _sregs; /* sigcontext struct contains pointer to _sigregs */
-	DIB	*pDIB;
-	struct iproc *pPROC;
-	args argv;
+typedef struct _durable_storage
+{
+  U_8 workbuffer[PATH_MAX];
+  U_8 filename[PATH_MAX];
+  siginfo_t siginfo;
+  ucontext_t ucontext;
+  struct sigcontext sigcontext;
+  _sigregs _sregs; /* sigcontext struct contains pointer to _sigregs */
+  DIB* pDIB;
+  struct iproc* pPROC;
+  args argv;
 } safeStorage;
 
-extern safeStorage *allocateDurableStorage( void );
+extern safeStorage*
+allocateDurableStorage(void);
 
 #endif

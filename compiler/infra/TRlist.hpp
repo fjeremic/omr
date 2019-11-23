@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TRLIST_INCL
@@ -25,28 +26,26 @@
 #undef min
 #include <list>
 #undef round
-#include "env/TypedAllocator.hpp"
 #include "env/TRMemory.hpp"
-namespace TR
-   {
-   template <class T, class Alloc = TR::Allocator> class list : public std::list<T, TR::typed_allocator<T, Alloc> >
-      {
-      public:
-      list(TR::typed_allocator<T, Alloc> ta) :
-         std::list<T, TR::typed_allocator<T, Alloc> > (ta)
-         {
-         }
+#include "env/TypedAllocator.hpp"
+namespace TR {
+template<class T, class Alloc = TR::Allocator>
+class list : public std::list<T, TR::typed_allocator<T, Alloc>>
+{
+public:
+  list(TR::typed_allocator<T, Alloc> ta)
+    : std::list<T, TR::typed_allocator<T, Alloc>>(ta)
+  {}
 
 #if defined(_LIBCPP_VERSION) && _LIBCPP_VERSION < 4000
-      /* A bug in libc++ before 4.0 caused std::list::remove to call the
-       * default constructor of TR::typed_allocator, which is not implemented.
-       */
-      void remove(const T& value)
-         {
-         this->remove_if([value](const T& value2){return value == value2;});
-         }
+  /* A bug in libc++ before 4.0 caused std::list::remove to call the
+   * default constructor of TR::typed_allocator, which is not implemented.
+   */
+  void remove(const T& value)
+  {
+    this->remove_if([value](const T& value2) { return value == value2; });
+  }
 #endif
-
-      };
-   }
+};
+}
 #endif

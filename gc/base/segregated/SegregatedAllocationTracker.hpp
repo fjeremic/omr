@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(SEGREGATEDALLOCATIONTRACKER_HPP_)
@@ -33,36 +34,47 @@ class MM_SegregatedAllocationTracker : public MM_BaseVirtual
 {
 public:
 protected:
-private: 
-	intptr_t _bytesAllocated; /**< A negative amount indicates this tracker has freed more bytes than allocated. */
-	uintptr_t _flushThreshold; /**< If |bytesAllocated| > this threshold, we'll flush the bytes allocated to the pool. */
-	volatile uintptr_t *_globalBytesInUse; /**< The memory pool accumulator to flush bytes to */
+private:
+  intptr_t _bytesAllocated;  /**< A negative amount indicates this tracker has
+                                freed more bytes than allocated. */
+  uintptr_t _flushThreshold; /**< If |bytesAllocated| > this threshold, we'll
+                                flush the bytes allocated to the pool. */
+  volatile uintptr_t*
+    _globalBytesInUse; /**< The memory pool accumulator to flush bytes to */
 
 public:
-	static MM_SegregatedAllocationTracker* newInstance(MM_EnvironmentBase *env, volatile uintptr_t *globalBytesInUse, uintptr_t flushThreshold);
-	virtual void kill(MM_EnvironmentBase *env);
+  static MM_SegregatedAllocationTracker* newInstance(
+    MM_EnvironmentBase* env,
+    volatile uintptr_t* globalBytesInUse,
+    uintptr_t flushThreshold);
+  virtual void kill(MM_EnvironmentBase* env);
 
-	static void updateAllocationTrackerThreshold(MM_EnvironmentBase* env);
-	static void initializeGlobalAllocationTrackerValues(MM_EnvironmentBase* env);
-	
-	void addBytesAllocated(MM_EnvironmentBase* env, uintptr_t bytesAllocated);
-	void addBytesFreed(MM_EnvironmentBase* env, uintptr_t bytesFreed);
-	intptr_t getUnflushedBytesAllocated(MM_EnvironmentBase* env) { return _bytesAllocated; }
-	
+  static void updateAllocationTrackerThreshold(MM_EnvironmentBase* env);
+  static void initializeGlobalAllocationTrackerValues(MM_EnvironmentBase* env);
+
+  void addBytesAllocated(MM_EnvironmentBase* env, uintptr_t bytesAllocated);
+  void addBytesFreed(MM_EnvironmentBase* env, uintptr_t bytesFreed);
+  intptr_t getUnflushedBytesAllocated(MM_EnvironmentBase* env)
+  {
+    return _bytesAllocated;
+  }
+
 protected:
-	virtual bool initialize(MM_EnvironmentBase *env, uintptr_t volatile *globalBytesInUse, uintptr_t flushThreshold);
-	virtual void tearDown(MM_EnvironmentBase *env);
-	
-private:
-	MM_SegregatedAllocationTracker(MM_EnvironmentBase *env) :
-		_bytesAllocated(0)
-		,_flushThreshold(0)
-		,_globalBytesInUse(NULL)
-	{
-		_typeId = __FUNCTION__;
-	};
+  virtual bool initialize(MM_EnvironmentBase* env,
+                          uintptr_t volatile* globalBytesInUse,
+                          uintptr_t flushThreshold);
+  virtual void tearDown(MM_EnvironmentBase* env);
 
-	void flushBytes();
+private:
+  MM_SegregatedAllocationTracker(MM_EnvironmentBase* env)
+    : _bytesAllocated(0)
+    , _flushThreshold(0)
+    , _globalBytesInUse(NULL)
+  {
+    _typeId = __FUNCTION__;
+  };
+
+  void flushBytes();
 };
 
 #endif /* OMR_GC_SEGREGATED_HEAP */

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if defined(OMR_OS_WINDOWS)
@@ -26,33 +27,38 @@
 #else
 #include <dlfcn.h>
 #endif /* defined(OMR_OS_WINDOWS) */
-#include <errno.h>
 #include "OMRTestEnv.hpp"
 #include "runtime/Runtime.hpp"
+#include <errno.h>
 
-extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
-extern "C" void shutdownJit();
+extern "C" bool
+initializeTestJit(TR_RuntimeHelper* helperIDs,
+                  void** helperAddresses,
+                  int32_t numHelpers,
+                  char* options);
+extern "C" void
+shutdownJit();
 
 void
 TestCompiler::OMRTestEnv::SetUp()
-   {
-   initialize("-Xjit");
-   }
+{
+  initialize("-Xjit");
+}
 
 void
 TestCompiler::OMRTestEnv::TearDown()
-   {
-   shutdown();
-   }
+{
+  shutdown();
+}
 
 void
-TestCompiler::OMRTestEnv::initialize(char *options)
-   {
-   initializeTestJit(0, 0, 0, options);
-   }
+TestCompiler::OMRTestEnv::initialize(char* options)
+{
+  initializeTestJit(0, 0, 0, options);
+}
 
 void
 TestCompiler::OMRTestEnv::shutdown()
-   {
-   shutdownJit();
-   }
+{
+  shutdownJit();
+}

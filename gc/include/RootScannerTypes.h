@@ -17,55 +17,58 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(ROOTSCANNERTYPES_H__)
 #define ROOTSCANNERTYPES_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
-typedef enum RootScannerEntity {
-	RootScannerEntity_None = 0,
-	RootScannerEntity_ScavengeRememberedSet,
-	RootScannerEntity_Classes,
-	RootScannerEntity_VMClassSlots,
-	RootScannerEntity_PermanentClasses,
-	RootScannerEntity_ClassLoaders,
-	RootScannerEntity_Threads,
-	RootScannerEntity_FinalizableObjects,
-	RootScannerEntity_UnfinalizedObjects,
-	RootScannerEntity_OwnableSynchronizerObjects,
-	RootScannerEntity_StringTable,
-	RootScannerEntity_JNIGlobalReferences,
-	RootScannerEntity_JNIWeakGlobalReferences,
-	RootScannerEntity_DoubleMappedObjects,
-	RootScannerEntity_DebuggerReferences,
-	RootScannerEntity_DebuggerClassReferences,
-	RootScannerEntity_MonitorReferences,
-	RootScannerEntity_WeakReferenceObjects,
-	RootScannerEntity_SoftReferenceObjects,
-	RootScannerEntity_PhantomReferenceObjects,
-	RootScannerEntity_JVMTIObjectTagTables,
-	RootScannerEntity_NonCollectableObjects,
-	RootScannerEntity_RememberedSet,
-	RootScannerEntity_MemoryAreaObjects,
-	RootScannerEntity_MetronomeRememberedSet,
-	RootScannerEntity_ClassesComplete,
-	RootScannerEntity_WeakReferenceObjectsComplete,
-	RootScannerEntity_SoftReferenceObjectsComplete,
-	RootScannerEntity_PhantomReferenceObjectsComplete,
-	RootScannerEntity_UnfinalizedObjectsComplete,
-	RootScannerEntity_OwnableSynchronizerObjectsComplete,
-	RootScannerEntity_MonitorLookupCaches,
-	RootScannerEntity_MonitorLookupCachesComplete,
-	RootScannerEntity_MonitorReferenceObjectsComplete,
+  typedef enum RootScannerEntity
+  {
+    RootScannerEntity_None = 0,
+    RootScannerEntity_ScavengeRememberedSet,
+    RootScannerEntity_Classes,
+    RootScannerEntity_VMClassSlots,
+    RootScannerEntity_PermanentClasses,
+    RootScannerEntity_ClassLoaders,
+    RootScannerEntity_Threads,
+    RootScannerEntity_FinalizableObjects,
+    RootScannerEntity_UnfinalizedObjects,
+    RootScannerEntity_OwnableSynchronizerObjects,
+    RootScannerEntity_StringTable,
+    RootScannerEntity_JNIGlobalReferences,
+    RootScannerEntity_JNIWeakGlobalReferences,
+    RootScannerEntity_DoubleMappedObjects,
+    RootScannerEntity_DebuggerReferences,
+    RootScannerEntity_DebuggerClassReferences,
+    RootScannerEntity_MonitorReferences,
+    RootScannerEntity_WeakReferenceObjects,
+    RootScannerEntity_SoftReferenceObjects,
+    RootScannerEntity_PhantomReferenceObjects,
+    RootScannerEntity_JVMTIObjectTagTables,
+    RootScannerEntity_NonCollectableObjects,
+    RootScannerEntity_RememberedSet,
+    RootScannerEntity_MemoryAreaObjects,
+    RootScannerEntity_MetronomeRememberedSet,
+    RootScannerEntity_ClassesComplete,
+    RootScannerEntity_WeakReferenceObjectsComplete,
+    RootScannerEntity_SoftReferenceObjectsComplete,
+    RootScannerEntity_PhantomReferenceObjectsComplete,
+    RootScannerEntity_UnfinalizedObjectsComplete,
+    RootScannerEntity_OwnableSynchronizerObjectsComplete,
+    RootScannerEntity_MonitorLookupCaches,
+    RootScannerEntity_MonitorLookupCachesComplete,
+    RootScannerEntity_MonitorReferenceObjectsComplete,
 
-	/* Must be last, do not use this entity! */
-	RootScannerEntity_Count
-} RootScannerEntity;
+    /* Must be last, do not use this entity! */
+    RootScannerEntity_Count
+  } RootScannerEntity;
 
 #ifdef __cplusplus
 } /* extern "C" { */

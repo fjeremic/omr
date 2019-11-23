@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -44,22 +45,27 @@ class MM_EnvironmentBase;
 class MM_ConcurrentClearNewMarkBitsTask : public MM_ParallelTask
 {
 private:
-	MM_ConcurrentGC *_collector;
+  MM_ConcurrentGC* _collector;
 
 public:
-	virtual UDATA getVMStateID() { return OMRVMSTATE_GC_CONCURRENT_MARK_CLEAR_NEW_MARKBITS; };
-	
-	virtual void run(MM_EnvironmentBase *env);
+  virtual UDATA getVMStateID()
+  {
+    return OMRVMSTATE_GC_CONCURRENT_MARK_CLEAR_NEW_MARKBITS;
+  };
 
-	/**
-	 * Create a ConcurrentClearNewMarkBitsTask object
-	 */
-	MM_ConcurrentClearNewMarkBitsTask(MM_EnvironmentBase *env, MM_Dispatcher *dispatcher, MM_ConcurrentGC *collector) :
-		MM_ParallelTask(env, dispatcher),
-		_collector(collector)
-	{
-		_typeId = __FUNCTION__;
-	};
+  virtual void run(MM_EnvironmentBase* env);
+
+  /**
+   * Create a ConcurrentClearNewMarkBitsTask object
+   */
+  MM_ConcurrentClearNewMarkBitsTask(MM_EnvironmentBase* env,
+                                    MM_Dispatcher* dispatcher,
+                                    MM_ConcurrentGC* collector)
+    : MM_ParallelTask(env, dispatcher)
+    , _collector(collector)
+  {
+    _typeId = __FUNCTION__;
+  };
 };
 
 #endif /* CONCURRENTCLEARNEWMARKBITSTASK_HPP_ */

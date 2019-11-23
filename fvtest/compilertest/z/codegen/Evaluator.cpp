@@ -16,73 +16,74 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "codegen/CodeGenerator.hpp"
-#include "env/ConcreteFE.hpp"
-#include "z/codegen/S390GenerateInstructions.hpp"
-#include "z/codegen/SystemLinkage.hpp"
 #include "codegen/S390Snippets.hpp"
+#include "env/ConcreteFE.hpp"
+#include "env/IO.hpp"
 #include "il/Node.hpp"
 #include "il/Node_inlines.hpp"
-#include "env/IO.hpp"
+#include "z/codegen/S390GenerateInstructions.hpp"
+#include "z/codegen/SystemLinkage.hpp"
 
 uint32_t
 TR::S390RestoreGPR7Snippet::getLength(int32_t estimatedSnippetStart)
-   {
-   TR_UNIMPLEMENTED();
-   return 0;
-   }
+{
+  TR_UNIMPLEMENTED();
+  return 0;
+}
 
-uint8_t *
+uint8_t*
 TR::S390RestoreGPR7Snippet::emitSnippetBody()
-   {
-   TR_UNIMPLEMENTED();
-   return NULL;
-   }
+{
+  TR_UNIMPLEMENTED();
+  return NULL;
+}
 
 void
-TR_Debug::print(TR::FILE *pOutFile, TR::S390RestoreGPR7Snippet *snippet)
-   {
-   TR_UNIMPLEMENTED();
-   }
+TR_Debug::print(TR::FILE* pOutFile, TR::S390RestoreGPR7Snippet* snippet)
+{
+  TR_UNIMPLEMENTED();
+}
 
 void
 TestCompiler::FrontEnd::generateBinaryEncodingPrologue(
-      TR_BinaryEncodingData *beData,
-      TR::CodeGenerator *cg)
-   {
-   TR::Compilation* comp = cg->comp();
-   TR_S390BinaryEncodingData *data = (TR_S390BinaryEncodingData *)beData;
+  TR_BinaryEncodingData* beData,
+  TR::CodeGenerator* cg)
+{
+  TR::Compilation* comp = cg->comp();
+  TR_S390BinaryEncodingData* data = (TR_S390BinaryEncodingData*)beData;
 
-   data->cursorInstruction = cg->getFirstInstruction();
-   data->estimate = 0;
-   data->preProcInstruction = data->cursorInstruction;
-   data->jitTojitStart = data->cursorInstruction;
-   data->cursorInstruction = NULL;
+  data->cursorInstruction = cg->getFirstInstruction();
+  data->estimate = 0;
+  data->preProcInstruction = data->cursorInstruction;
+  data->jitTojitStart = data->cursorInstruction;
+  data->cursorInstruction = NULL;
 
-   TR::Instruction * preLoadArgs, * endLoadArgs;
-   preLoadArgs = data->preProcInstruction;
-   endLoadArgs = preLoadArgs;
+  TR::Instruction *preLoadArgs, *endLoadArgs;
+  preLoadArgs = data->preProcInstruction;
+  endLoadArgs = preLoadArgs;
 
-   TR::Instruction * oldFirstInstruction = data->cursorInstruction;
+  TR::Instruction* oldFirstInstruction = data->cursorInstruction;
 
-   data->cursorInstruction = cg->getFirstInstruction();
+  data->cursorInstruction = cg->getFirstInstruction();
 
-   static char *disableAlignJITEP = feGetEnv("TR_DisableAlignJITEP");
+  static char* disableAlignJITEP = feGetEnv("TR_DisableAlignJITEP");
 
-   // Padding for JIT Entry Point
-   if (!disableAlignJITEP)
-      {
-      data->estimate += 256;
-      }
+  // Padding for JIT Entry Point
+  if (!disableAlignJITEP) {
+    data->estimate += 256;
+  }
 
-   while (data->cursorInstruction && data->cursorInstruction->getOpCodeValue() != TR::InstOpCode::PROC)
-      {
-      data->estimate = data->cursorInstruction->estimateBinaryLength(data->estimate);
-      data->cursorInstruction = data->cursorInstruction->getNext();
-      }
+  while (data->cursorInstruction &&
+         data->cursorInstruction->getOpCodeValue() != TR::InstOpCode::PROC) {
+    data->estimate =
+      data->cursorInstruction->estimateBinaryLength(data->estimate);
+    data->cursorInstruction = data->cursorInstruction->getNext();
+  }
 
-   cg->getLinkage()->createPrologue(data->cursorInstruction);
-   }
+  cg->getLinkage()->createPrologue(data->cursorInstruction);
+}

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stdint.h>
@@ -24,13 +25,18 @@
 
 extern int32_t increment(int32_t);
 
-int main(int argc, char *argv[]) {
-	int32_t v;
-	v = 0; printf("increment(%d) == %d\n", v, increment(v));
-	v = 1; printf("increment(%d) == %d\n", v, increment(v));
-	v = 10; printf("increment(%d) == %d\n", v, increment(v));
-	v = -15; printf("increment(%d) == %d\n", v, increment(v));
-	printf("STATIC TEST PASS\n");
-	return 0;
+int
+main(int argc, char* argv[])
+{
+  int32_t v;
+  v = 0;
+  printf("increment(%d) == %d\n", v, increment(v));
+  v = 1;
+  printf("increment(%d) == %d\n", v, increment(v));
+  v = 10;
+  printf("increment(%d) == %d\n", v, increment(v));
+  v = -15;
+  printf("increment(%d) == %d\n", v, increment(v));
+  printf("STATIC TEST PASS\n");
+  return 0;
 }
-

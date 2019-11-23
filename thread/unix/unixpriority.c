@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -38,14 +39,14 @@
 int
 omrthread_get_scheduling_policy(omrthread_prio_t omrthreadPriority)
 {
-	int policy = J9_DEFAULT_SCHED;
+  int policy = J9_DEFAULT_SCHED;
 
-	/* When realtime scheduling is used the upper 8 bits are used
-	 * for the scheduling policy
-	 */
-	if (omrthread_lib_use_realtime_scheduling()) {
-		policy = (priority_map[omrthreadPriority] >> 24);
-	}
+  /* When realtime scheduling is used the upper 8 bits are used
+   * for the scheduling policy
+   */
+  if (omrthread_lib_use_realtime_scheduling()) {
+    policy = (priority_map[omrthreadPriority] >> 24);
+  }
 
-	return policy;
+  return policy;
 }

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_BYTECODEBUILDER_INCL
@@ -24,19 +25,21 @@
 
 #include "ilgen/OMRBytecodeBuilder.hpp"
 
-namespace TR
+namespace TR {
+class BytecodeBuilder : public OMR::BytecodeBuilder
 {
-   class BytecodeBuilder : public OMR::BytecodeBuilder
-      {
-      public:
-         BytecodeBuilder(TR::MethodBuilder *methodBuilder, int32_t bcIndex, char *name=NULL, int32_t bcLength=-1)
-            : OMR::BytecodeBuilder(methodBuilder, bcIndex, name, bcLength)
-            { }
-         void initialize(TR::IlGeneratorMethodDetails * details,
-                           TR::ResolvedMethodSymbol     * methodSymbol,
-                           TR::FrontEnd                 * fe,
-                           TR::SymbolReferenceTable     * symRefTab); 
-      };
+public:
+  BytecodeBuilder(TR::MethodBuilder* methodBuilder,
+                  int32_t bcIndex,
+                  char* name = NULL,
+                  int32_t bcLength = -1)
+    : OMR::BytecodeBuilder(methodBuilder, bcIndex, name, bcLength)
+  {}
+  void initialize(TR::IlGeneratorMethodDetails* details,
+                  TR::ResolvedMethodSymbol* methodSymbol,
+                  TR::FrontEnd* fe,
+                  TR::SymbolReferenceTable* symRefTab);
+};
 
 } // namespace TR
 

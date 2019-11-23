@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -30,13 +31,13 @@
 void
 MM_CardCleaningStats::clear()
 {
-	_cardCleaningTime = 0;
-	_cardsCleaned = 0;
+  _cardCleaningTime = 0;
+  _cardsCleaned = 0;
 }
 
 void
-MM_CardCleaningStats::merge(MM_CardCleaningStats *statsToMerge)
+MM_CardCleaningStats::merge(MM_CardCleaningStats* statsToMerge)
 {
-	_cardCleaningTime += statsToMerge->_cardCleaningTime;
-	_cardsCleaned += statsToMerge->_cardsCleaned;
+  _cardCleaningTime += statsToMerge->_cardCleaningTime;
+  _cardsCleaned += statsToMerge->_cardsCleaned;
 }

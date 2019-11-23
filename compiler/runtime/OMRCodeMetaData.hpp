@@ -16,102 +16,108 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_CODE_METADATA_INCL
 #define OMR_CODE_METADATA_INCL
 
 /*
- * The following #define(s) and typedef(s) must appear before any #includes in this file
+ * The following #define(s) and typedef(s) must appear before any #includes in
+ * this file
  */
 #ifndef OMR_CODE_METADATA_CONNECTOR
 #define OMR_CODE_METADATA_CONNECTOR
-namespace OMR { struct CodeMetaData; }
-namespace OMR { typedef OMR::CodeMetaData CodeMetaDataConnector; }
+namespace OMR {
+struct CodeMetaData;
+}
+namespace OMR {
+typedef OMR::CodeMetaData CodeMetaDataConnector;
+}
 #endif
 
 #include "env/jittypes.h"
 #include "infra/Annotations.hpp"
 
-namespace TR { class CodeMetaData; }
-namespace TR { class Compilation; }
+namespace TR {
+class CodeMetaData;
+}
+namespace TR {
+class Compilation;
+}
 
 /**
  * CodeMetaData contains metadata information about a single method.
  */
 
-namespace OMR
-{
+namespace OMR {
 
 class OMR_EXTENSIBLE CodeMetaData
-   {
-   public:
+{
+public:
+  TR::CodeMetaData* self();
 
-   TR::CodeMetaData *self();
+  /**
+   * @brief Constructor method to create metadata for a method.
+   */
+  CodeMetaData(TR::Compilation* comp);
 
-   /**
-    * @brief Constructor method to create metadata for a method.
-    */
-   CodeMetaData(TR::Compilation *comp);
+  /**
+   * @brief Returns the address of allocated code memory within a code
+   * cache for a method.
+   */
+  uintptrj_t codeAllocStart() { return _codeAllocStart; }
 
-   /**
-    * @brief Returns the address of allocated code memory within a code
-    * cache for a method.
-    */
-   uintptrj_t codeAllocStart() { return _codeAllocStart; }
+  /**
+   * @brief Returns the total size of code memory allocated for a method
+   * within a code cache.
+   */
+  uint32_t codeAllocSize() { return _codeAllocSize; }
 
-   /**
-    * @brief Returns the total size of code memory allocated for a method 
-    * within a code cache.
-    */
-   uint32_t codeAllocSize() { return _codeAllocSize; }
+  /**
+   * @brief Returns the starting address of compiled code for a
+   * method when invoked from an interpreter.
+   *
+   * Interpreter entry PC may preceed compiled entry PC and may point
+   * to code necessary for proper execution of this method if invoked
+   * from an interpreter. For example, it may need to marshall method
+   * arguments from an interpreter linkage to a compiled method linkage.
+   *
+   * By default, the interpreter entry PC and compiled entry PC point
+   * to the same address.
+   */
+  uintptrj_t interpreterEntryPC() { return _interpreterEntryPC; }
 
-   /**
-    * @brief Returns the starting address of compiled code for a
-    * method when invoked from an interpreter.
-    *
-    * Interpreter entry PC may preceed compiled entry PC and may point 
-    * to code necessary for proper execution of this method if invoked 
-    * from an interpreter. For example, it may need to marshall method 
-    * arguments from an interpreter linkage to a compiled method linkage.
-    *
-    * By default, the interpreter entry PC and compiled entry PC point 
-    * to the same address.
-    */
-   uintptrj_t interpreterEntryPC() { return _interpreterEntryPC; }
+  /**
+   * @brief Returns the starting address of compiled code for a
+   * method when invoked from compiled code.
+   *
+   * By default, the interpreter entry PC and compiled entry PC point
+   * to the same address.
+   */
+  uintptrj_t compiledEntryPC() { return _compiledEntryPC; }
 
-   /**
-    * @brief Returns the starting address of compiled code for a
-    * method when invoked from compiled code.
-    * 
-    * By default, the interpreter entry PC and compiled entry PC point 
-    * to the same address.
-    */
-   uintptrj_t compiledEntryPC() { return _compiledEntryPC; }
+  /**
+   * @brief Returns the end address of compiled code for a method.
+   */
+  uintptrj_t compiledEndPC() { return _compiledEndPC; }
 
-   /**
-    * @brief Returns the end address of compiled code for a method.
-    */
-   uintptrj_t compiledEndPC() { return _compiledEndPC; }
+  /**
+   * @brief Returns the compilation hotness level of a compiled method.
+   */
+  TR_Hotness codeHotness() { return _hotness; }
 
-   /**
-    * @brief Returns the compilation hotness level of a compiled method.
-    */
-   TR_Hotness codeHotness() { return _hotness; }
+protected:
+  uintptrj_t _codeAllocStart;
+  uint32_t _codeAllocSize;
 
-   protected:
+  uintptrj_t _interpreterEntryPC;
+  uintptrj_t _compiledEntryPC;
+  uintptrj_t _compiledEndPC;
 
-   uintptrj_t _codeAllocStart;
-   uint32_t _codeAllocSize;
-
-   uintptrj_t _interpreterEntryPC;
-   uintptrj_t _compiledEntryPC;
-   uintptrj_t _compiledEndPC;
-
-   TR_Hotness _hotness;
-   };
-
+  TR_Hotness _hotness;
+};
 }
 
 #endif

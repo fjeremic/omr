@@ -16,58 +16,71 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OPTTESTDRIVER_HPP
 #define OPTTESTDRIVER_HPP
 
+#include "TestDriver.hpp"
+#include "optimizer/OptimizationStrategies.hpp"
+#include "optimizer/Optimizations.hpp"
+#include "gtest/gtest.h"
 #include <stdint.h>
 #include <vector>
-#include "gtest/gtest.h"
-#include "optimizer/Optimizations.hpp"
-#include "optimizer/OptimizationStrategies.hpp"
-#include "TestDriver.hpp"
 
-namespace TestCompiler { class MethodInfo; }
-namespace TR { class IlVerifier; }
+namespace TestCompiler {
+class MethodInfo;
+}
+namespace TR {
+class IlVerifier;
+}
 
-namespace TestCompiler
+namespace TestCompiler {
+
+class OptTestDriver
+  : public TestDriver
+  , public ::testing::Test
 {
+public:
+  ~OptTestDriver();
 
-class OptTestDriver : public TestDriver, public ::testing::Test
-   {
-   public:
-   ~OptTestDriver();
+  void setMethodInfo(TestCompiler::MethodInfo* methodInfo)
+  {
+    _methodInfo = methodInfo;
+  }
+  void setIlVerifier(TR::IlVerifier* ilVer) { _ilVer = ilVer; }
 
-   void setMethodInfo(TestCompiler::MethodInfo *methodInfo) { _methodInfo = methodInfo; }
-   void setIlVerifier(TR::IlVerifier *ilVer) { _ilVer = ilVer; }
+  typedef std::vector<OptimizationStrategy> OptVector;
 
-   typedef std::vector<OptimizationStrategy> OptVector;
+  void addOptimization(OMR::Optimizations opt);
+  void addOptimizations(const OptimizationStrategy* opts);
 
-   void addOptimization(OMR::Optimizations opt);
-   void addOptimizations(const OptimizationStrategy *opts);
+  void Verify();
+  void VerifyAndInvoke();
 
-   void Verify();
-   void VerifyAndInvoke();
+  virtual void compileTestMethods();
 
-   virtual void compileTestMethods();
+  /**
+   * Returns the method most recently compiled, cast to type `T`.
+   */
+  template<typename T>
+  T getCompiledMethod() const
+  {
+    return reinterpret_cast<T>(_compiledMethod);
+  }
 
-   /**
-    * Returns the method most recently compiled, cast to type `T`.
-    */
-   template<typename T> T getCompiledMethod() const { return reinterpret_cast<T>(_compiledMethod); }
+private:
+  void makeOptimizationStrategyArray(OptimizationStrategy* strategy);
+  void SetupStrategy();
 
-   private:
-   void makeOptimizationStrategyArray(OptimizationStrategy *strategy);
-   void SetupStrategy();
+  uint8_t* _compiledMethod;
+  TestCompiler::MethodInfo* _methodInfo;
+  TR::IlVerifier* _ilVer;
+  std::vector<OptimizationStrategy> _optimizations;
+};
 
-   uint8_t *_compiledMethod;
-   TestCompiler::MethodInfo *_methodInfo;
-   TR::IlVerifier  *_ilVer;
-   std::vector<OptimizationStrategy> _optimizations;
-   };
-
-}// namespace TestCompiler
+} // namespace TestCompiler
 
 #endif

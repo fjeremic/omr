@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_OPTIONS_INCL
@@ -24,29 +25,37 @@
 
 #include "control/OMROptions.hpp"
 
-namespace TR
-{
+namespace TR {
 
 class OMR_EXTENSIBLE Options : public OMR::OptionsConnector
 {
 public:
+  Options()
+    : OMR::OptionsConnector()
+  {}
 
-   Options() : OMR::OptionsConnector() {}
+  Options(TR_Memory* m,
+          int32_t index,
+          int32_t lineNumber,
+          TR_ResolvedMethod* compilee,
+          void* oldStartPC,
+          TR_OptimizationPlan* optimizationPlan,
+          bool isAOT = false,
+          int32_t compThreadID = -1)
+    : OMR::OptionsConnector(m,
+                            index,
+                            lineNumber,
+                            compilee,
+                            oldStartPC,
+                            optimizationPlan,
+                            isAOT,
+                            compThreadID)
+  {}
 
-   Options(TR_Memory * m,
-           int32_t index,
-           int32_t lineNumber,
-           TR_ResolvedMethod *compilee,
-           void *oldStartPC,
-           TR_OptimizationPlan *optimizationPlan,
-           bool isAOT=false,
-           int32_t compThreadID=-1)
-      : OMR::OptionsConnector(m,index,lineNumber,compilee,oldStartPC,optimizationPlan,isAOT,compThreadID)
-      {}
-
-   Options(TR::Options &other) : OMR::OptionsConnector(other) {}
+  Options(TR::Options& other)
+    : OMR::OptionsConnector(other)
+  {}
 };
-
 }
 
 #endif

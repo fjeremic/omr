@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_TABLEOFCONSTANTS_INCL
@@ -24,32 +25,29 @@
 
 /*
  * This class is used to manage the mapping/assigning of table of constant (TOC)
- * slots on the platforms which choose to support it.  Each code generator should
- * extend this class to realize exactly how the TOC is managed (e.g., linearly
- * allocated or hashed).
+ * slots on the platforms which choose to support it.  Each code generator
+ * should extend this class to realize exactly how the TOC is managed (e.g.,
+ * linearly allocated or hashed).
  */
 
 #include <stdint.h>
 
-namespace OMR
-{
+namespace OMR {
 
 class TableOfConstants
-   {
+{
 
-   public:
+public:
+  TableOfConstants(uint32_t size)
+    : _sizeInBytes(size)
+  {}
 
-   TableOfConstants(uint32_t size)
-      : _sizeInBytes(size) {}
+  uint32_t getTOCSize() { return _sizeInBytes; }
+  void setTOCSize(uint32_t s) { _sizeInBytes = s; }
 
-   uint32_t getTOCSize() {return _sizeInBytes;}
-   void setTOCSize(uint32_t s) {_sizeInBytes = s;}
-
-   private:
-
-   uint32_t _sizeInBytes;
-   };
-
+private:
+  uint32_t _sizeInBytes;
+};
 }
 
 using OMR::TableOfConstants;

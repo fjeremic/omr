@@ -16,13 +16,18 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-/** 
+/**
  * Defines utility functions to be used with STL containers.
  */
 
 #include <string.h>
 
-bool str_comparator(const char *s1, const char *s2) { return strcmp(s1, s2) < 0; }
+bool
+str_comparator(const char* s1, const char* s2)
+{
+  return strcmp(s1, s2) < 0;
+}

@@ -17,71 +17,81 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TESTFE_INCL
 #define TESTFE_INCL
 
-#include <vector>
 #include "compiler/env/FrontEnd.hpp"
 #include "env/FEBase.hpp"
 #include "env/jittypes.h"
 #include "runtime/JBJitConfig.hpp"
+#include <vector>
 
-namespace TR { class GCStackAtlas; }
-namespace OMR { struct MethodMetaDataPOD; }
+namespace TR {
+class GCStackAtlas;
+}
+namespace OMR {
+struct MethodMetaDataPOD;
+}
 class TR_ResolvedMethod;
 
-namespace TR
+namespace TR {
+
+template<>
+struct FETraits<JitBuilder::FrontEnd>
 {
-
-template <> struct FETraits<JitBuilder::FrontEnd>
-   {
-   typedef JitBuilder::JitConfig      JitConfig;
-   static const size_t  DEFAULT_SEG_SIZE = (128 * 1024); // 128kb
-   };
-
+  typedef JitBuilder::JitConfig JitConfig;
+  static const size_t DEFAULT_SEG_SIZE = (128 * 1024); // 128kb
+};
 }
 
-namespace JitBuilder
-{
+namespace JitBuilder {
 
 class FrontEnd : public TR::FEBase<FrontEnd>
-   {
-   private:
-   static FrontEnd   *_instance; /* singleton */
+{
+private:
+  static FrontEnd* _instance; /* singleton */
 
-   public:
-   FrontEnd();
-   static FrontEnd *instance()  { TR_ASSERT(_instance, "bad singleton"); return _instance; }
+public:
+  FrontEnd();
+  static FrontEnd* instance()
+  {
+    TR_ASSERT(_instance, "bad singleton");
+    return _instance;
+  }
 
-   virtual void reserveTrampolineIfNecessary(TR::Compilation *comp, TR::SymbolReference *symRef, bool inBinaryEncoding);
+  virtual void reserveTrampolineIfNecessary(TR::Compilation* comp,
+                                            TR::SymbolReference* symRef,
+                                            bool inBinaryEncoding);
 
 #if defined(TR_TARGET_S390)
-   virtual void generateBinaryEncodingPrologue(TR_BinaryEncodingData *beData, TR::CodeGenerator *cg);
+  virtual void generateBinaryEncodingPrologue(TR_BinaryEncodingData* beData,
+                                              TR::CodeGenerator* cg);
 #endif
 
-   virtual intptrj_t methodTrampolineLookup(TR::Compilation *comp, TR::SymbolReference *symRef,  void *currentCodeCache);
+  virtual intptrj_t methodTrampolineLookup(TR::Compilation* comp,
+                                           TR::SymbolReference* symRef,
+                                           void* currentCodeCache);
 
-  TR_ResolvedMethod * createResolvedMethod(TR_Memory * trMemory, TR_OpaqueMethodBlock * aMethod,
-                                            TR_ResolvedMethod * owningMethod, TR_OpaqueClassBlock *classForNewInstance);
-
-
-
-   };
+  TR_ResolvedMethod* createResolvedMethod(
+    TR_Memory* trMemory,
+    TR_OpaqueMethodBlock* aMethod,
+    TR_ResolvedMethod* owningMethod,
+    TR_OpaqueClassBlock* classForNewInstance);
+};
 
 } // namespace JitBuilder
 
-namespace TR
-{
+namespace TR {
 class FrontEnd : public JitBuilder::FrontEnd
-   {
-   public:
-   FrontEnd();
-   };
+{
+public:
+  FrontEnd();
+};
 
 } // namespace TR
 
 #endif
-

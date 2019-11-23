@@ -16,19 +16,23 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITTEST_HPP
 #define JITTEST_HPP
 
-#include <gtest/gtest.h>
-#include "ilgen/MethodBuilder.hpp"
 #include "Jit.hpp"
+#include "ilgen/MethodBuilder.hpp"
+#include <gtest/gtest.h>
 
-bool initializeJit();
-int32_t compileMethodBuilder(TR::MethodBuilder * methodBuilder, void ** entryPoint);
-void shutdownJit();
+bool
+initializeJit();
+int32_t
+compileMethodBuilder(TR::MethodBuilder* methodBuilder, void** entryPoint);
+void
+shutdownJit();
 
 namespace Tril {
 namespace Test {
@@ -43,19 +47,15 @@ namespace Test {
  *    class MyTestCase : public JitTest {};
  */
 class JitTest : public ::testing::Test
-   {
-   public:
+{
+public:
+  static void SetUpTestCase()
+  {
+    ASSERT_TRUE(initializeJit()) << "Failed to initialize the JIT.";
+  }
 
-   static void SetUpTestCase()
-      {
-      ASSERT_TRUE(initializeJit()) << "Failed to initialize the JIT.";
-      }
-
-   static void TearDownTestCase()
-      {
-      shutdownJit();
-      }
-   };
+  static void TearDownTestCase() { shutdownJit(); }
+};
 
 } // namespace Test
 } // namespace Tril

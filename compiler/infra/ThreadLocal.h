@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef THREADLOCAL_INCL
@@ -34,45 +35,52 @@
 
 #if defined(SUPPORTS_THREAD_LOCAL)
 
-#if defined(OMR_OS_WINDOWS) || (defined(LINUX) && !defined(OMRZTPF)) || defined(OSX) || defined(AIXPPC)
- #if defined(OMR_OS_WINDOWS)
-  #include "windows.h"
-  #define tlsDeclare(type, variable) extern DWORD variable
-  #define tlsDefine(type, variable) DWORD variable = TLS_OUT_OF_INDEXES
-  #define tlsAlloc(variable) if ((variable) == TLS_OUT_OF_INDEXES) { (variable) = TlsAlloc();}
-  #define tlsFree(variable)  (TlsFree(variable))
-  #define tlsSet(variable, value) TlsSetValue((variable), value)
-  #define tlsGet(variable, type) ((type)TlsGetValue(variable))
- #else /* if defined(LINUX) || defined(AIXPPC) */
-  #define tlsDeclare(type, variable) extern __thread type variable
-  #define tlsDefine(type, variable) __thread type variable = NULL
-  #define tlsAlloc(variable) // not required on win, linux or AIX
-  #define tlsFree(variable)  // not required on win, linux or AIX
-  #define tlsSet(variable, value) variable = value
-  #define tlsGet(variable, type) (variable)
- #endif /* defined(OMR_OS_WINDOWS) */
+#if defined(OMR_OS_WINDOWS) || (defined(LINUX) && !defined(OMRZTPF)) ||        \
+  defined(OSX) || defined(AIXPPC)
+#if defined(OMR_OS_WINDOWS)
+#include "windows.h"
+#define tlsDeclare(type, variable) extern DWORD variable
+#define tlsDefine(type, variable) DWORD variable = TLS_OUT_OF_INDEXES
+#define tlsAlloc(variable)                                                     \
+  if ((variable) == TLS_OUT_OF_INDEXES) {                                      \
+    (variable) = TlsAlloc();                                                   \
+  }
+#define tlsFree(variable) (TlsFree(variable))
+#define tlsSet(variable, value) TlsSetValue((variable), value)
+#define tlsGet(variable, type) ((type)TlsGetValue(variable))
+#else /* if defined(LINUX) || defined(AIXPPC) */
+#define tlsDeclare(type, variable) extern __thread type variable
+#define tlsDefine(type, variable) __thread type variable = NULL
+#define tlsAlloc(variable) // not required on win, linux or AIX
+#define tlsFree(variable)  // not required on win, linux or AIX
+#define tlsSet(variable, value) variable = value
+#define tlsGet(variable, type) (variable)
+#endif /* defined(OMR_OS_WINDOWS) */
 #else /* !(defined(OMR_OS_WINDOWS) || (defined(LINUX) && !defined(OMRZTPF)) || defined(OSX) || defined(AIXPPC)) */  /* Mainly for defined(OMRZTPF) or defined(J9ZOS390) */
- #include <pthread.h>
+#include <pthread.h>
 
- #define tlsDeclare(type, variable) extern pthread_key_t variable
- #define tlsDefine(type, variable) pthread_key_t variable
- #define tlsAlloc(variable) pthread_key_create(&variable, NULL)   // allocates a new key, which will have initial value NULL for all threads
- #define tlsFree(variable) pthread_key_delete(variable)
- #define tlsSet(variable, value) pthread_setspecific(variable, value)
- #if defined(J9ZOS390)
-  #define tlsGet(variable, type) ((type) pthread_getspecific_d8_np(variable))
- #else
-  #define tlsGet(variable, type) ((type) pthread_getspecific(variable))
- #endif
-#endif /* defined(OMR_OS_WINDOWS) || (defined(LINUX) && !defined(OMRZTPF)) || defined(OSX) || defined(AIXPPC) */
+#define tlsDeclare(type, variable) extern pthread_key_t variable
+#define tlsDefine(type, variable) pthread_key_t variable
+#define tlsAlloc(variable)                                                     \
+  pthread_key_create(&variable, NULL) // allocates a new key, which will have
+                                      // initial value NULL for all threads
+#define tlsFree(variable) pthread_key_delete(variable)
+#define tlsSet(variable, value) pthread_setspecific(variable, value)
+#if defined(J9ZOS390)
+#define tlsGet(variable, type) ((type)pthread_getspecific_d8_np(variable))
+#else
+#define tlsGet(variable, type) ((type)pthread_getspecific(variable))
+#endif
+#endif /* defined(OMR_OS_WINDOWS) || (defined(LINUX) && !defined(OMRZTPF)) ||  \
+          defined(OSX) || defined(AIXPPC) */
 
 #else /* !defined(SUPPORTS_THREAD_LOCAL) */
- #define tlsDeclare(type, variable) extern type variable
- #define tlsDefine(type, variable) type variable = NULL
- #define tlsAlloc(variable)
- #define tlsFree(variable)
- #define tlsSet(variable, value) variable = value
- #define tlsGet(variable, type) (variable)
+#define tlsDeclare(type, variable) extern type variable
+#define tlsDefine(type, variable) type variable = NULL
+#define tlsAlloc(variable)
+#define tlsFree(variable)
+#define tlsSet(variable, value) variable = value
+#define tlsGet(variable, type) (variable)
 #endif
 
 #endif /* THREADLOCAL_INCL */

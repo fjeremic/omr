@@ -16,79 +16,78 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "il/NodePool.hpp"
 
-#include <stddef.h>
 #include "compile/Compilation.hpp"
 #include "il/ILOps.hpp"
 #include "il/Node.hpp"
 #include "il/Node_inlines.hpp"
 #include "infra/Assert.hpp"
+#include <stddef.h>
 
 #define OPT_DETAILS_NODEPOOL "O^O NODEPOOL :"
 
-TR::NodePool::NodePool(TR::Compilation * comp, const TR::Allocator &allocator) :
-   _comp(comp),
-   _disableGC(true),
-   _globalIndex(0),
-   _nodeRegion(comp->trMemory()->heapMemoryRegion())
-   {
-   }
+TR::NodePool::NodePool(TR::Compilation* comp, const TR::Allocator& allocator)
+  : _comp(comp)
+  , _disableGC(true)
+  , _globalIndex(0)
+  , _nodeRegion(comp->trMemory()->heapMemoryRegion())
+{}
 
 void
 TR::NodePool::cleanUp()
-   {
-   _nodeRegion.~Region();
-   new (&_nodeRegion) TR::Region(_comp->trMemory()->heapMemoryRegion());
-   }
+{
+  _nodeRegion.~Region();
+  new (&_nodeRegion) TR::Region(_comp->trMemory()->heapMemoryRegion());
+}
 
-TR::Node *
+TR::Node*
 TR::NodePool::allocate()
-   {
-   TR::Node *newNode = static_cast<TR::Node*>(_nodeRegion.allocate(sizeof(TR::Node)));//_pool.ElementAt(poolIndex);
-   memset(newNode, 0, sizeof(TR::Node));
-   newNode->_globalIndex = ++_globalIndex;
-   TR_ASSERT(_globalIndex < MAX_NODE_COUNT, "Reached TR::Node allocation limit");
-   
-   if (debug("traceNodePool"))
-      {
-      diagnostic("%sAllocating Node[%p] with Global Index %d\n", OPT_DETAILS_NODEPOOL, newNode, newNode->getGlobalIndex());
-      }
-   return newNode;
-   }
+{
+  TR::Node* newNode = static_cast<TR::Node*>(
+    _nodeRegion.allocate(sizeof(TR::Node))); //_pool.ElementAt(poolIndex);
+  memset(newNode, 0, sizeof(TR::Node));
+  newNode->_globalIndex = ++_globalIndex;
+  TR_ASSERT(_globalIndex < MAX_NODE_COUNT, "Reached TR::Node allocation limit");
+
+  if (debug("traceNodePool")) {
+    diagnostic("%sAllocating Node[%p] with Global Index %d\n",
+               OPT_DETAILS_NODEPOOL,
+               newNode,
+               newNode->getGlobalIndex());
+  }
+  return newNode;
+}
 
 bool
-TR::NodePool::deallocate(TR::Node * node)
-   {
-   if (_disableGC)
-      {
-      if (debug("traceNodePool"))
-         {
-         diagnostic("%s Node garbage collection disabled", OPT_DETAILS_NODEPOOL);
-         }
-       return false;
-      }
+TR::NodePool::deallocate(TR::Node* node)
+{
+  if (_disableGC) {
+    if (debug("traceNodePool")) {
+      diagnostic("%s Node garbage collection disabled", OPT_DETAILS_NODEPOOL);
+    }
+    return false;
+  }
 
-   node->~Node();
-   return true;
-   }
+  node->~Node();
+  return true;
+}
 
 bool
 TR::NodePool::removeDeadNodes()
-   {
-   if (_disableGC)
-      {
-      if (debug("traceNodePool"))
-         {
-         diagnostic("%s Node garbage collection disabled", OPT_DETAILS_NODEPOOL);
-         }
-       return false;
-      }
+{
+  if (_disableGC) {
+    if (debug("traceNodePool")) {
+      diagnostic("%s Node garbage collection disabled", OPT_DETAILS_NODEPOOL);
+    }
+    return false;
+  }
 
-   TR_ASSERT(false, "Node garbage colleciotn is not currently implemented");
+  TR_ASSERT(false, "Node garbage colleciotn is not currently implemented");
 
-   return false;
-   }
+  return false;
+}

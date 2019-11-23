@@ -43,7 +43,7 @@
 
 #ifdef __BORLANDC__
 // string.h is not guaranteed to provide strcpy on C++ Builder.
-# include <mem.h>
+#include <mem.h>
 #endif
 
 #include <string.h>
@@ -55,8 +55,9 @@ namespace testing {
 namespace internal {
 
 // String - an abstract class holding static string utilities.
-class GTEST_API_ String {
- public:
+class GTEST_API_ String
+{
+public:
   // Static utility methods
 
   // Clones a 0-terminated C string, allocating memory using new.  The
@@ -121,8 +122,7 @@ class GTEST_API_ String {
   // Unlike strcasecmp(), this function can handle NULL argument(s).
   // A NULL C string is considered different to any non-NULL C string,
   // including the empty string.
-  static bool CaseInsensitiveCStringEquals(const char* lhs,
-                                           const char* rhs);
+  static bool CaseInsensitiveCStringEquals(const char* lhs, const char* rhs);
 
   // Compares two wide C strings, ignoring case.  Returns true iff they
   // have the same content.
@@ -141,11 +141,11 @@ class GTEST_API_ String {
 
   // Returns true iff the given string ends with the given suffix, ignoring
   // case. Any string is considered to end with an empty suffix.
-  static bool EndsWithCaseInsensitive(
-      const std::string& str, const std::string& suffix);
+  static bool EndsWithCaseInsensitive(const std::string& str,
+                                      const std::string& suffix);
 
   // Formats an int value as "%02d".
-  static std::string FormatIntWidth2(int value);  // "%02d" for width == 2
+  static std::string FormatIntWidth2(int value); // "%02d" for width == 2
 
   // Formats an int value as "%X".
   static std::string FormatHexInt(int value);
@@ -153,15 +153,16 @@ class GTEST_API_ String {
   // Formats a byte as "%02X".
   static std::string FormatByte(unsigned char value);
 
- private:
-  String();  // Not meant to be instantiated.
-};  // class String
+private:
+  String(); // Not meant to be instantiated.
+};          // class String
 
 // Gets the content of the stringstream's buffer as an std::string.  Each '\0'
 // character in the buffer is replaced with "\\0".
-GTEST_API_ std::string StringStreamToString(::std::stringstream* stream);
+GTEST_API_ std::string
+StringStreamToString(::std::stringstream* stream);
 
-}  // namespace internal
-}  // namespace testing
+} // namespace internal
+} // namespace testing
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_

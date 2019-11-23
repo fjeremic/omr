@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(INITIALIZATIONPARAMETERS_HPP_)
@@ -30,31 +31,32 @@
 /**
  * Wrapper class for passing memoryspace parameters into newInstance() methods
  */
-class MM_InitializationParameters : public MM_BaseNonVirtual {
+class MM_InitializationParameters : public MM_BaseNonVirtual
+{
 public:
-	uintptr_t _minimumSpaceSize;
-	uintptr_t _minimumNewSpaceSize, _initialNewSpaceSize, _maximumNewSpaceSize;
-	uintptr_t _minimumOldSpaceSize, _initialOldSpaceSize, _maximumOldSpaceSize;
-	uintptr_t _maximumSpaceSize;
+  uintptr_t _minimumSpaceSize;
+  uintptr_t _minimumNewSpaceSize, _initialNewSpaceSize, _maximumNewSpaceSize;
+  uintptr_t _minimumOldSpaceSize, _initialOldSpaceSize, _maximumOldSpaceSize;
+  uintptr_t _maximumSpaceSize;
 
-	MMINLINE void clear()
-	{
-		_minimumSpaceSize = 0;
-		_minimumNewSpaceSize = 0;
-		_initialNewSpaceSize = 0;
-		_maximumNewSpaceSize = 0;
-		_minimumOldSpaceSize = 0;
-		_initialOldSpaceSize = 0;
-		_maximumOldSpaceSize = 0;
-		_maximumSpaceSize = 0;
-	}
+  MMINLINE void clear()
+  {
+    _minimumSpaceSize = 0;
+    _minimumNewSpaceSize = 0;
+    _initialNewSpaceSize = 0;
+    _maximumNewSpaceSize = 0;
+    _minimumOldSpaceSize = 0;
+    _initialOldSpaceSize = 0;
+    _maximumOldSpaceSize = 0;
+    _maximumSpaceSize = 0;
+  }
 
-	MM_InitializationParameters()
-		: MM_BaseNonVirtual()
-	{
-		_typeId = __FUNCTION__;
-		clear();
-	}
+  MM_InitializationParameters()
+    : MM_BaseNonVirtual()
+  {
+    _typeId = __FUNCTION__;
+    clear();
+  }
 };
 
 #endif /* INITIALIZATIONPARAMETERS_HPP_ */

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef J9THREADTEST_CMONITOR_HPP_INCLUDED
@@ -27,50 +28,50 @@
 class CMonitor
 {
 private:
-	omrthread_monitor_t m_monitor;
+  omrthread_monitor_t m_monitor;
 
 public:
-	CMonitor(uintptr_t flags, const char *pName);
-	CMonitor(const char *pName);
-	char const *GetName(void) const;
-	intptr_t Enter(void);
-	intptr_t EnterUsingThreadId(CThread& self);
-	intptr_t TryEnter(void);
-	intptr_t TryEnterUsingThreadId(CThread& self);
-	intptr_t Exit(void);
-	intptr_t ExitUsingThreadId(CThread& self);
-	intptr_t Wait(void);
-	intptr_t Wait(int64_t millis);
-	intptr_t Wait(int64_t millis, intptr_t nanos);
-	intptr_t WaitInterruptable(void);
-	intptr_t WaitInterruptable(int64_t millis);
-	intptr_t WaitInterruptable(int64_t millis, intptr_t nanos);
-	void NotifyAll(void);
-	void Notify(void);
-	omrthread_monitor_t GetMonitor(void) const;
-	~CMonitor(void);
+  CMonitor(uintptr_t flags, const char* pName);
+  CMonitor(const char* pName);
+  char const* GetName(void) const;
+  intptr_t Enter(void);
+  intptr_t EnterUsingThreadId(CThread& self);
+  intptr_t TryEnter(void);
+  intptr_t TryEnterUsingThreadId(CThread& self);
+  intptr_t Exit(void);
+  intptr_t ExitUsingThreadId(CThread& self);
+  intptr_t Wait(void);
+  intptr_t Wait(int64_t millis);
+  intptr_t Wait(int64_t millis, intptr_t nanos);
+  intptr_t WaitInterruptable(void);
+  intptr_t WaitInterruptable(int64_t millis);
+  intptr_t WaitInterruptable(int64_t millis, intptr_t nanos);
+  void NotifyAll(void);
+  void Notify(void);
+  omrthread_monitor_t GetMonitor(void) const;
+  ~CMonitor(void);
 #if defined(OMR_THR_THREE_TIER_LOCKING)
-	/*
-	 * These functions inspect the internal state of the monitor.
-	 * They are extremely unsafe unless the test program is careful.
-	 */
-	unsigned int numBlocking(void);
-	bool isThreadBlocking(CThread& thread);
+  /*
+   * These functions inspect the internal state of the monitor.
+   * They are extremely unsafe unless the test program is careful.
+   */
+  unsigned int numBlocking(void);
+  bool isThreadBlocking(CThread& thread);
 #endif /* defined(OMR_THR_THREE_TIER_LOCKING) */
 };
 
 class CRWMutex
 {
 private:
-	omrthread_rwmutex_t m_monitor;
+  omrthread_rwmutex_t m_monitor;
 
 public:
-	CRWMutex(uintptr_t flags, const char *pName);
-	void EnterRead(void);
-	void EnterWrite(void);
-	void ExitRead(void);
-	void ExitWrite(void);
-	~CRWMutex(void);
+  CRWMutex(uintptr_t flags, const char* pName);
+  void EnterRead(void);
+  void EnterWrite(void);
+  void ExitRead(void);
+  void ExitWrite(void);
+  ~CRWMutex(void);
 };
 
 #endif

@@ -16,29 +16,31 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARMCONDITIONCODE_INCL
 #define ARMCONDITIONCODE_INCL
 
-typedef enum {
-   ARMConditionCodeEQ,
-   ARMConditionCodeNE,
-   ARMConditionCodeCS,
-   ARMConditionCodeCC,
-   ARMConditionCodeMI,
-   ARMConditionCodePL,
-   ARMConditionCodeVS,
-   ARMConditionCodeVC,
-   ARMConditionCodeHI,
-   ARMConditionCodeLS,
-   ARMConditionCodeGE,
-   ARMConditionCodeLT,
-   ARMConditionCodeGT,
-   ARMConditionCodeLE,
-   ARMConditionCodeAL,
-   ARMConditionCodeIllegal
+typedef enum
+{
+  ARMConditionCodeEQ,
+  ARMConditionCodeNE,
+  ARMConditionCodeCS,
+  ARMConditionCodeCC,
+  ARMConditionCodeMI,
+  ARMConditionCodePL,
+  ARMConditionCodeVS,
+  ARMConditionCodeVC,
+  ARMConditionCodeHI,
+  ARMConditionCodeLS,
+  ARMConditionCodeGE,
+  ARMConditionCodeLT,
+  ARMConditionCodeGT,
+  ARMConditionCodeLE,
+  ARMConditionCodeAL,
+  ARMConditionCodeIllegal
 } TR_ARMConditionCode;
 
 #endif

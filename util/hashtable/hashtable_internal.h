@@ -17,32 +17,32 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef hashtable_internal_h
 #define hashtable_internal_h
 
 /**
-* @file hashtable_internal.h
-* @brief Internal prototypes used within the HASHTABLE module.
-*
-* This file contains implementation-private function prototypes and
-* type definitions for the HASHTABLE module.
-*
-*/
+ * @file hashtable_internal.h
+ * @brief Internal prototypes used within the HASHTABLE module.
+ *
+ * This file contains implementation-private function prototypes and
+ * type definitions for the HASHTABLE module.
+ *
+ */
 
-#include "omrcomp.h"
 #include "hashtable_api.h"
+#include "omrcomp.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* hashtable_internal_h */
-

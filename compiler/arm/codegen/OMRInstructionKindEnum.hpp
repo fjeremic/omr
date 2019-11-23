@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -24,22 +25,6 @@
  * definitions are permitted.
  */
 
-   IsNotExtended,
-   IsImm,
-      IsImmSym,
-   IsLabel,
-      IsConditionalBranch,
-      IsVirtualGuardNOP,
-   IsAdmin,
-   IsTrg1Src2,
-      IsSrc2,
-      IsTrg1Src1,
-   IsTrg1,
-      IsMem,
-         IsMemSrc1,
-         IsTrg1Mem,
-         IsTrg1MemSrc1,
-   IsTrg2Src1,
-   IsMul,
-   IsControlFlow,
-   IsMultipleMove,
+IsNotExtended, IsImm, IsImmSym, IsLabel, IsConditionalBranch, IsVirtualGuardNOP,
+  IsAdmin, IsTrg1Src2, IsSrc2, IsTrg1Src1, IsTrg1, IsMem, IsMemSrc1, IsTrg1Mem,
+  IsTrg1MemSrc1, IsTrg2Src1, IsMul, IsControlFlow, IsMultipleMove,

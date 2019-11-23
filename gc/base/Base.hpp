@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(BASE_HPP_)
@@ -28,12 +29,13 @@
 #ifdef __cplusplus
 #define NULL (0)
 #else
-#define NULL ((void *)0)
+#define NULL ((void*)0)
 #endif
 #endif
 
 #include <stdlib.h>
-/* We include stddef.h for the PALM, because this is where size_t is defined for that platform. */
+/* We include stddef.h for the PALM, because this is where size_t is defined for
+ * that platform. */
 #include <stddef.h>
 
 /**
@@ -45,13 +47,13 @@ class MM_Base
 private:
 protected:
 public:
-	void *operator new(size_t size, void *memoryPtr) { return memoryPtr; }
-	void operator delete(void *, void *) {}
+  void* operator new(size_t size, void* memoryPtr) { return memoryPtr; }
+  void operator delete(void*, void*) {}
 
-	/**
-	 * Create a Base object.
-	 */
-	MM_Base() {}
+  /**
+   * Create a Base object.
+   */
+  MM_Base() {}
 };
 
 #endif /* BASE_HPP_ */

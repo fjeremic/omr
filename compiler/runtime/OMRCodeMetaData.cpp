@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "runtime/CodeMetaData.hpp"
@@ -24,23 +25,21 @@
 #include "compile/Compilation.hpp"
 #include "compile/ResolvedMethod.hpp"
 
-
-TR::CodeMetaData *
+TR::CodeMetaData*
 OMR::CodeMetaData::self()
-   {
-   return static_cast<TR::CodeMetaData *>(this);
-   }
+{
+  return static_cast<TR::CodeMetaData*>(this);
+}
 
-OMR::CodeMetaData::CodeMetaData(TR::Compilation *comp)
-   {
-   _codeAllocStart = comp->cg()->getBinaryBufferStart();
-   _codeAllocSize = comp->cg()->getEstimatedCodeLength();
+OMR::CodeMetaData::CodeMetaData(TR::Compilation* comp)
+{
+  _codeAllocStart = comp->cg()->getBinaryBufferStart();
+  _codeAllocSize = comp->cg()->getEstimatedCodeLength();
 
-   _interpreterEntryPC = comp->cg()->getCodeStart();
-   
-   _compiledEntryPC = _interpreterEntryPC;
-   _compiledEndPC = comp->cg()->getCodeEnd();
+  _interpreterEntryPC = comp->cg()->getCodeStart();
 
-   _hotness = comp->cg()->getMethodHotness();
-   }
+  _compiledEntryPC = _interpreterEntryPC;
+  _compiledEndPC = comp->cg()->getCodeEnd();
 
+  _hotness = comp->cg()->getMethodHotness();
+}

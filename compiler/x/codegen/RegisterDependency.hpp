@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_REGISTER_DEPENDENCY_INCL
@@ -27,27 +28,45 @@
 #include "codegen/RegisterDependencyStruct.hpp"
 
 class TR_Memory;
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class Register; }
-template <typename ListKind> class List;
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
+template<typename ListKind>
+class List;
 
-namespace TR
+namespace TR {
+
+class RegisterDependencyConditions
+  : public OMR::RegisterDependencyConditionsConnector
 {
+public:
+  RegisterDependencyConditions()
+    : OMR::RegisterDependencyConditionsConnector()
+  {}
 
-class RegisterDependencyConditions : public OMR::RegisterDependencyConditionsConnector
-   {
-   public:
+  RegisterDependencyConditions(TR_X86RegisterDependencyIndex numPreConds,
+                               TR_X86RegisterDependencyIndex numPostConds,
+                               TR_Memory* m)
+    : OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds, m)
+  {}
 
-   RegisterDependencyConditions() : OMR::RegisterDependencyConditionsConnector () {}
-
-   RegisterDependencyConditions(TR_X86RegisterDependencyIndex numPreConds, TR_X86RegisterDependencyIndex numPostConds, TR_Memory * m) :
-      OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds, m) {}
-
-   RegisterDependencyConditions(TR::Node *node, TR::CodeGenerator *cg, TR_X86RegisterDependencyIndex additionalRegDeps = 0, List<TR::Register> *reglist = 0) :
-      OMR::RegisterDependencyConditionsConnector(node, cg, additionalRegDeps, reglist) {}
-
-   };
+  RegisterDependencyConditions(
+    TR::Node* node,
+    TR::CodeGenerator* cg,
+    TR_X86RegisterDependencyIndex additionalRegDeps = 0,
+    List<TR::Register>* reglist = 0)
+    : OMR::RegisterDependencyConditionsConnector(node,
+                                                 cg,
+                                                 additionalRegDeps,
+                                                 reglist)
+  {}
+};
 }
 
 #endif

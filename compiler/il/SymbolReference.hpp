@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_SYMBOLREFERENCE_INCL
@@ -24,86 +25,78 @@
 
 #include "il/OMRSymbolReference.hpp"
 
-#include <stdint.h>
 #include "compile/SymbolReferenceTable.hpp"
 #include "env/KnownObjectTable.hpp"
 #include "env/jittypes.h"
 #include "infra/Annotations.hpp"
+#include <stdint.h>
 
 class mcount_t;
-namespace TR { class Symbol; }
+namespace TR {
+class Symbol;
+}
 
-namespace TR
-{
+namespace TR {
 
 class OMR_EXTENSIBLE SymbolReference : public OMR::SymbolReferenceConnector
-   {
+{
 
 public:
+  SymbolReference(TR::SymbolReferenceTable* symRefTab)
+    : OMR::SymbolReferenceConnector(symRefTab)
+  {}
 
-   SymbolReference(TR::SymbolReferenceTable * symRefTab) :
-      OMR::SymbolReferenceConnector(symRefTab) {}
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  TR::Symbol* symbol,
+                  intptrj_t offset = 0)
+    : OMR::SymbolReferenceConnector(symRefTab, symbol, offset)
+  {}
 
-   SymbolReference(TR::SymbolReferenceTable * symRefTab,
-                   TR::Symbol * symbol,
-                   intptrj_t offset = 0) :
-      OMR::SymbolReferenceConnector(symRefTab,
-                                    symbol,
-                                    offset) {}
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  int32_t refNumber,
+                  TR::Symbol* ps,
+                  intptrj_t offset = 0)
+    : OMR::SymbolReferenceConnector(symRefTab, refNumber, ps, offset)
+  {}
 
-   SymbolReference(TR::SymbolReferenceTable * symRefTab,
-                   int32_t refNumber,
-                   TR::Symbol *ps,
-                   intptrj_t offset = 0) :
-      OMR::SymbolReferenceConnector(symRefTab,
-                                    refNumber,
-                                    ps,
-                                    offset) {}
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  TR::SymbolReferenceTable::CommonNonhelperSymbol number,
+                  TR::Symbol* ps,
+                  intptrj_t offset = 0)
+    : OMR::SymbolReferenceConnector(symRefTab, number, ps, offset)
+  {}
 
-   SymbolReference(TR::SymbolReferenceTable *symRefTab,
-                   TR::SymbolReferenceTable::CommonNonhelperSymbol number,
-                   TR::Symbol *ps,
-                   intptrj_t offset = 0) :
-      OMR::SymbolReferenceConnector(symRefTab,
-                                    number,
-                                    ps,
-                                    offset) {}
-
-   SymbolReference(TR::SymbolReferenceTable *symRefTab,
-                   TR::Symbol *sym,
-                   mcount_t owningMethodIndex,
-                   int32_t cpIndex,
-                   int32_t unresolvedIndex = 0,
-                   TR::KnownObjectTable::Index knownObjectIndex = TR::KnownObjectTable::UNKNOWN) :
-      OMR::SymbolReferenceConnector(symRefTab,
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  TR::Symbol* sym,
+                  mcount_t owningMethodIndex,
+                  int32_t cpIndex,
+                  int32_t unresolvedIndex = 0,
+                  TR::KnownObjectTable::Index knownObjectIndex =
+                    TR::KnownObjectTable::UNKNOWN)
+    : OMR::SymbolReferenceConnector(symRefTab,
                                     sym,
                                     owningMethodIndex,
                                     cpIndex,
                                     unresolvedIndex,
-                                    knownObjectIndex) {}
+                                    knownObjectIndex)
+  {}
 
-   SymbolReference(TR::SymbolReferenceTable *symRefTab,
-                   TR::SymbolReference& sr,
-                   intptrj_t offset,
-                   TR::KnownObjectTable::Index knownObjectIndex = TR::KnownObjectTable::UNKNOWN) :
-      OMR::SymbolReferenceConnector(symRefTab,
-                                    sr,
-                                    offset,
-                                    knownObjectIndex) {}
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  TR::SymbolReference& sr,
+                  intptrj_t offset,
+                  TR::KnownObjectTable::Index knownObjectIndex =
+                    TR::KnownObjectTable::UNKNOWN)
+    : OMR::SymbolReferenceConnector(symRefTab, sr, offset, knownObjectIndex)
+  {}
 
 protected:
-
-   SymbolReference(TR::SymbolReferenceTable * symRefTab,
-                   TR::Symbol *               symbol,
-                   intptrj_t                  offset,
-                   const char *               name) :
-      OMR::SymbolReferenceConnector(symRefTab,
-                                    symbol,
-                                    offset,
-                                    name) {}
-
-   };
-
+  SymbolReference(TR::SymbolReferenceTable* symRefTab,
+                  TR::Symbol* symbol,
+                  intptrj_t offset,
+                  const char* name)
+    : OMR::SymbolReferenceConnector(symRefTab, symbol, offset, name)
+  {}
+};
 }
 
 #endif

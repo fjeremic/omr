@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef MACROTOOL_HPP
@@ -33,11 +34,11 @@ class Symbol_IR;
 class MacroTool
 {
 private:
-	std::vector<MacroInfo> macroList;
+  std::vector<MacroInfo> macroList;
 
 public:
-	DDR_RC getMacros(OMRPortLibrary *portLibrary, const char *filename);
-	DDR_RC addMacrosToIR(Symbol_IR *ir) const;
+  DDR_RC getMacros(OMRPortLibrary* portLibrary, const char* filename);
+  DDR_RC addMacrosToIR(Symbol_IR* ir) const;
 };
 
 #endif /* MACROTOOL_HPP */

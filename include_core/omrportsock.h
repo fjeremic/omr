@@ -17,19 +17,20 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMRPORTSOCK_H_)
 #define OMRPORTSOCK_H_
 
 /* Pointer to OMRAddInfoNode, a struct that contains addrinfo information. */
-typedef struct OMRAddrInfoNode *omrsock_addrinfo_t;
+typedef struct OMRAddrInfoNode* omrsock_addrinfo_t;
 
 /* Pointer to ip address. It has enough space for Ipv4 or IPv6 addresses. */
-typedef struct OMRSockAddrStorage *omrsock_sockaddr_t;
+typedef struct OMRSockAddrStorage* omrsock_sockaddr_t;
 
 /* Pointer to a socket descriptor */
-typedef struct OMRSocket *omrsock_socket_t;
+typedef struct OMRSocket* omrsock_socket_t;
 
 #endif /* !defined(OMRPORTSOCK_H_) */

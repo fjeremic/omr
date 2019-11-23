@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -28,9 +29,9 @@
 #if !defined(SUBLISTITERATOR_HPP_)
 #define SUBLISTITERATOR_HPP_
 
+#include "modronbase.h"
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "modronbase.h"
 
 #include "SublistPool.hpp"
 
@@ -43,17 +44,15 @@ class MM_SublistPuddle;
  */
 class GC_SublistIterator
 {
-	MM_SublistPuddle *_currentPuddle;
-	MM_SublistPool *_sublistPool;
+  MM_SublistPuddle* _currentPuddle;
+  MM_SublistPool* _sublistPool;
 
 public:
-	GC_SublistIterator(MM_SublistPool *sublistPool) :
-		_currentPuddle(NULL),
-		_sublistPool(sublistPool)
-	{};
+  GC_SublistIterator(MM_SublistPool* sublistPool)
+    : _currentPuddle(NULL)
+    , _sublistPool(sublistPool){};
 
-	MM_SublistPuddle *nextList();
+  MM_SublistPuddle* nextList();
 };
 
 #endif /* SUBLISTITERATOR_HPP_ */
-

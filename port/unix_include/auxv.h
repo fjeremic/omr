@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /* If your system is old enough that it doesn't have /proc/self/auxv then you'll
@@ -33,11 +34,12 @@
 /* We aren't going to assume that the system elf.h has the latest information
  * on all AUXV additions.  */
 #ifndef AT_BASE_PLATFORM
-#define AT_BASE_PLATFORM 24		/* String identifying real platforms.*/
+#define AT_BASE_PLATFORM 24 /* String identifying real platforms.*/
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
   /* Function: prefetch_auxv

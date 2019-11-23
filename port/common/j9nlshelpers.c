@@ -17,12 +17,11 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrnlshelpers.h"
-
-
 
 /**
  * @internal
@@ -31,12 +30,12 @@
  * @param[in] portLibrary The port library
  */
 void
-nls_determine_locale(struct OMRPortLibrary *portLibrary)
+nls_determine_locale(struct OMRPortLibrary* portLibrary)
 {
-	J9NLSDataCache *nls = &portLibrary->portGlobals->nls_data;
-	char languageProp[3] = "en";
-	char countryProp[3] = "US";
+  J9NLSDataCache* nls = &portLibrary->portGlobals->nls_data;
+  char languageProp[3] = "en";
+  char countryProp[3] = "US";
 
-	strcpy(nls->language, languageProp);
-	strcpy(nls->region, countryProp);
+  strcpy(nls->language, languageProp);
+  strcpy(nls->region, countryProp);
 }

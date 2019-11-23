@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -29,7 +30,8 @@
 #define MEMORYSPACESAPI_H_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
 /**
@@ -44,7 +46,8 @@ extern "C" {
 #define MEMORY_SPACE_DESCRIPTION_FLAT "Flat MemorySpace Description"
 
 #define MEMORY_SPACE_NAME_GENERATIONAL "Generational"
-#define MEMORY_SPACE_DESCRIPTION_GENERATIONAL "Generational MemorySpace Description"
+#define MEMORY_SPACE_DESCRIPTION_GENERATIONAL                                  \
+  "Generational MemorySpace Description"
 
 #define MEMORY_SPACE_NAME_METRONOME "Metronome"
 #define MEMORY_SPACE_DESCRIPTION_METRONOME "Metronome MemorySpace Description"
@@ -68,14 +71,16 @@ extern "C" {
 #define MEMORY_SUBSPACE_DESCRIPTION_GENERIC "Generic MemorySubSpace Description"
 
 #define MEMORY_SUBSPACE_NAME_SEMISPACE "SemiSpace"
-#define MEMORY_SUBSPACE_DESCRIPTION_SEMISPACE "SemiSpace MemorySubSpace Description"
+#define MEMORY_SUBSPACE_DESCRIPTION_SEMISPACE                                  \
+  "SemiSpace MemorySubSpace Description"
 
 #define MEMORY_SUBSPACE_NAME_GENERATIONAL "Generational"
-#define MEMORY_SUBSPACE_DESCRIPTION_GENERATIONAL "Generational MemorySubSpace Description"
+#define MEMORY_SUBSPACE_DESCRIPTION_GENERATIONAL                               \
+  "Generational MemorySubSpace Description"
 
 #define MEMORY_SUBSPACE_NAME_METRONOME "Metronome"
-#define MEMORY_SUBSPACE_DESCRIPTION_METRONOME "Metronome MemorySubSpace Description"
-
+#define MEMORY_SUBSPACE_DESCRIPTION_METRONOME                                  \
+  "Metronome MemorySubSpace Description"
 
 #ifdef __cplusplus
 } /* extern "C" { */

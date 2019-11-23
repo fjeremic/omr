@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_STACKATLASPOD_INCL
@@ -35,17 +36,15 @@
  * identically named header file earlier in the IPATH.
  */
 
-namespace OMR
-{
+namespace OMR {
 
 struct StackAtlasPOD
-   {
-   uint16_t numberOfMaps;
-   uint16_t bytesPerStackMap;
-   int32_t frameObjectParmOffset;
-   int32_t localBaseOffset;
-   };
-
+{
+  uint16_t numberOfMaps;
+  uint16_t bytesPerStackMap;
+  int32_t frameObjectParmOffset;
+  int32_t localBaseOffset;
+};
 }
 
 #endif // !defined(JITBUILDER_STACKATLASPOD_INCL)

@@ -16,16 +16,19 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DEADSTOR_INCL
 #define DEADSTOR_INCL
 
-#include "optimizer/OptimizationManager.hpp"
 #include "optimizer/IsolatedStoreElimination.hpp"
+#include "optimizer/OptimizationManager.hpp"
 
-namespace TR { class Optimization; }
+namespace TR {
+class Optimization;
+}
 
 // Dead Store Elimination
 //
@@ -36,25 +39,23 @@ namespace TR { class Optimization; }
 //
 // This class is derived from Isolated Store Elimination, which uses the use/def
 // information if it is available and uses a tree walk if it isn't. When entered
-// through this class there will always be use/def information unless it can't be
-// built for size reasons.
+// through this class there will always be use/def information unless it can't
+// be built for size reasons.
 //
 
-
 class TR_DeadStoreElimination : public TR_IsolatedStoreElimination
-   {
-   public:
+{
+public:
+  // Performs dead store elimination using the
+  // use/def values of relevant nodes.
+  //
+  TR_DeadStoreElimination(TR::OptimizationManager* manager);
+  static TR::Optimization* create(TR::OptimizationManager* manager)
+  {
+    return new (manager->allocator()) TR_DeadStoreElimination(manager);
+  }
 
-   // Performs dead store elimination using the
-   // use/def values of relevant nodes.
-   //
-   TR_DeadStoreElimination(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_DeadStoreElimination(manager);
-      }
-
-   virtual const char * optDetailString() const throw();
-   };
+  virtual const char* optDetailString() const throw();
+};
 
 #endif

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -48,47 +49,53 @@ class MM_EnvironmentBase;
 class MM_ParallelScavengeTask : public MM_ParallelTask
 {
 protected:
-	MM_Scavenger *_collector;
-	MM_CycleState *_cycleState;  /**< Collection cycle state active for the task */
+  MM_Scavenger* _collector;
+  MM_CycleState* _cycleState; /**< Collection cycle state active for the task */
 
 public:
-	virtual UDATA getVMStateID() { return OMRVMSTATE_GC_SCAVENGE; };
+  virtual UDATA getVMStateID() { return OMRVMSTATE_GC_SCAVENGE; };
 
-	virtual void run(MM_EnvironmentBase *env);
-	virtual void setup(MM_EnvironmentBase *env);
-	virtual void cleanup(MM_EnvironmentBase *env);
-	virtual void masterSetup(MM_EnvironmentBase *env);
+  virtual void run(MM_EnvironmentBase* env);
+  virtual void setup(MM_EnvironmentBase* env);
+  virtual void cleanup(MM_EnvironmentBase* env);
+  virtual void masterSetup(MM_EnvironmentBase* env);
 
 #if defined(J9MODRON_TGC_PARALLEL_STATISTICS)
-	/**
-	 * Override to collect stall time statistics.
-	 * @see MM_ParallelTask::synchronizeGCThreads
-	 */
-	virtual void synchronizeGCThreads(MM_EnvironmentBase *env, const char *id);
+  /**
+   * Override to collect stall time statistics.
+   * @see MM_ParallelTask::synchronizeGCThreads
+   */
+  virtual void synchronizeGCThreads(MM_EnvironmentBase* env, const char* id);
 
-	/**
-	 * Override to collect stall time statistics.
-	 * @see MM_ParallelTask::synchronizeGCThreadsAndReleaseMaster
-	 */
-	virtual bool synchronizeGCThreadsAndReleaseMaster(MM_EnvironmentBase *env, const char *id);
+  /**
+   * Override to collect stall time statistics.
+   * @see MM_ParallelTask::synchronizeGCThreadsAndReleaseMaster
+   */
+  virtual bool synchronizeGCThreadsAndReleaseMaster(MM_EnvironmentBase* env,
+                                                    const char* id);
 
-	/**
-	 * Override to collect stall time statistics.
-	 * @see MM_ParallelTask::synchronizeGCThreadsAndReleaseSingleThread
-	 */
-	virtual bool synchronizeGCThreadsAndReleaseSingleThread(MM_EnvironmentBase *env, const char *id);
+  /**
+   * Override to collect stall time statistics.
+   * @see MM_ParallelTask::synchronizeGCThreadsAndReleaseSingleThread
+   */
+  virtual bool synchronizeGCThreadsAndReleaseSingleThread(
+    MM_EnvironmentBase* env,
+    const char* id);
 #endif /* J9MODRON_TGC_PARALLEL_STATISTICS */
 
-	/**
-	 * Create a ParallelScavengeTask object.
-	 */
-	MM_ParallelScavengeTask(MM_EnvironmentBase *env, MM_Dispatcher *dispatcher, MM_Scavenger *collector,MM_CycleState *cycleState) :
-		MM_ParallelTask(env, dispatcher)
-		,_collector(collector)
-		,_cycleState(cycleState)
-	{
-		_typeId = __FUNCTION__;
-	};
+  /**
+   * Create a ParallelScavengeTask object.
+   */
+  MM_ParallelScavengeTask(MM_EnvironmentBase* env,
+                          MM_Dispatcher* dispatcher,
+                          MM_Scavenger* collector,
+                          MM_CycleState* cycleState)
+    : MM_ParallelTask(env, dispatcher)
+    , _collector(collector)
+    , _cycleState(cycleState)
+  {
+    _typeId = __FUNCTION__;
+  };
 };
 
 #endif /* defined(OMR_GC_MODRON_SCAVENGER) */

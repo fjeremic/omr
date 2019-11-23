@@ -16,45 +16,47 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_AUTOMATICSYMBOL_INCL
 #define TR_AUTOMATICSYMBOL_INCL
 
-#include <stdint.h>
 #include "il/DataTypes.hpp"
 #include "il/OMRAutomaticSymbol.hpp"
+#include <stdint.h>
 
-namespace TR { class Compilation; }
+namespace TR {
+class Compilation;
+}
 
-namespace TR
-{
+namespace TR {
 
 class OMR_EXTENSIBLE AutomaticSymbol : public OMR::AutomaticSymbolConnector
-   {
+{
 
 protected:
+  AutomaticSymbol(int32_t o = 0)
+    : OMR::AutomaticSymbolConnector()
+  {}
 
-   AutomaticSymbol(int32_t o = 0) :
-      OMR::AutomaticSymbolConnector() { }
+  AutomaticSymbol(TR::DataType d)
+    : OMR::AutomaticSymbolConnector(d)
+  {}
 
-   AutomaticSymbol(TR::DataType d) :
-      OMR::AutomaticSymbolConnector(d) { }
+  AutomaticSymbol(TR::DataType d, uint32_t s)
+    : OMR::AutomaticSymbolConnector(d, s)
+  {}
 
-   AutomaticSymbol(TR::DataType d, uint32_t s) :
-      OMR::AutomaticSymbolConnector(d, s) { }
-
-   AutomaticSymbol(TR::DataType d, uint32_t s, const char * name) :
-      OMR::AutomaticSymbolConnector(d, s, name) { }
+  AutomaticSymbol(TR::DataType d, uint32_t s, const char* name)
+    : OMR::AutomaticSymbolConnector(d, s, name)
+  {}
 
 private:
-
-   // When adding another class to the heirarchy, add it as a friend here
-   friend class OMR::AutomaticSymbol;
-
-   };
-
+  // When adding another class to the heirarchy, add it as a friend here
+  friend class OMR::AutomaticSymbol;
+};
 }
 
 #endif

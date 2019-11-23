@@ -16,18 +16,21 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DEFAULT_COMPILER_HPP
 #define DEFAULT_COMPILER_HPP
 
-/* If you want to support more backends that are 
+/* If you want to support more backends that are
  * incompatible with the SimpleCompiler interface,
- * use #ifdefs to select them in this file. 
+ * use #ifdefs to select them in this file.
  */
 
 #include "simple_compiler.hpp"
-namespace Tril { typedef Tril::SimpleCompiler DefaultCompiler; } 
+namespace Tril {
+typedef Tril::SimpleCompiler DefaultCompiler;
+}
 
 #endif

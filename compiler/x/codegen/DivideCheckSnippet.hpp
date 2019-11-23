@@ -16,63 +16,77 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef DIVIDECHECKSNIPPET_INCL
 #define DIVIDECHECKSNIPPET_INCL
 
-#include <stdint.h>
 #include "codegen/Snippet.hpp"
 #include "il/DataTypes.hpp"
 #include "x/codegen/RestartSnippet.hpp"
 #include "x/codegen/X86Instruction.hpp"
+#include <stdint.h>
 
-namespace TR { class CodeGenerator; }
-namespace TR { class ILOpCode; }
-namespace TR { class LabelSymbol; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class ILOpCode;
+}
+namespace TR {
+class LabelSymbol;
+}
 
 namespace TR {
 
-class X86DivideCheckSnippet  : public TR::X86RestartSnippet
-   {
-   public:
+class X86DivideCheckSnippet : public TR::X86RestartSnippet
+{
+public:
+  X86DivideCheckSnippet(TR::LabelSymbol* restartLabel,
+                        TR::LabelSymbol* snippetLabel,
+                        TR::LabelSymbol* divideLabel,
+                        TR::ILOpCode& divOp,
+                        TR::DataType type,
+                        TR::X86RegRegInstruction* divideInstruction,
+                        TR::CodeGenerator* cg)
+    : TR::X86RestartSnippet(cg,
+                            divideInstruction->getNode(),
+                            restartLabel,
+                            snippetLabel,
+                            true)
+    , _divOp(divOp)
+    , _type(type)
+    , _divideLabel(divideLabel)
+    , _divideInstruction(divideInstruction)
+  {}
 
-   X86DivideCheckSnippet(TR::LabelSymbol           *restartLabel,
-                            TR::LabelSymbol           *snippetLabel,
-                            TR::LabelSymbol           *divideLabel,
-                            TR::ILOpCode               &divOp,
-                            TR::DataType               type,
-                            TR::X86RegRegInstruction  *divideInstruction,
-                            TR::CodeGenerator         *cg)
-      : TR::X86RestartSnippet(cg, divideInstruction->getNode(), restartLabel, snippetLabel, true),
-        _divOp(divOp),
-        _type(type),
-        _divideLabel(divideLabel),
-        _divideInstruction(divideInstruction)
-      {}
+  virtual Kind getKind() { return IsDivideCheck; }
 
-   virtual Kind getKind() { return IsDivideCheck; }
+  TR::ILOpCode& getOpCode() { return _divOp; }
+  TR::DataType getType() { return _type; }
 
-   TR::ILOpCode &getOpCode() {return _divOp;}
-   TR::DataType getType() {return _type;}
+  TR::LabelSymbol* getDivideLabel() { return _divideLabel; }
+  TR::LabelSymbol* setDivideLabel(TR::LabelSymbol* l)
+  {
+    return (_divideLabel = l);
+  }
 
-   TR::LabelSymbol *getDivideLabel()                  {return _divideLabel;}
-   TR::LabelSymbol *setDivideLabel(TR::LabelSymbol *l) {return (_divideLabel = l);}
+  TR::X86RegRegInstruction* getDivideInstruction()
+  {
+    return _divideInstruction;
+  }
 
-   TR::X86RegRegInstruction  *getDivideInstruction() {return _divideInstruction;}
+  virtual uint8_t* emitSnippetBody();
+  virtual uint32_t getLength(int32_t estimatedSnippetStart);
 
-   virtual uint8_t *emitSnippetBody();
-   virtual uint32_t getLength(int32_t estimatedSnippetStart);
-
-   private:
-
-   TR::LabelSymbol          *_divideLabel;
-   TR::X86RegRegInstruction *_divideInstruction;
-   TR::ILOpCode              &_divOp;
-   TR::DataType              _type;
-   };
-
+private:
+  TR::LabelSymbol* _divideLabel;
+  TR::X86RegRegInstruction* _divideInstruction;
+  TR::ILOpCode& _divOp;
+  TR::DataType _type;
+};
 }
 
 #endif

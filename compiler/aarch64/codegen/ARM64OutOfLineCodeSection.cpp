@@ -16,28 +16,38 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "codegen/ARM64OutOfLineCodeSection.hpp"
 
-TR_ARM64OutOfLineCodeSection::TR_ARM64OutOfLineCodeSection(TR::Node *callNode,
-                            TR::ILOpCodes callOp,
-                            TR::Register *targetReg,
-                            TR::LabelSymbol *entryLabel,
-                            TR::LabelSymbol *restartLabel,
-                            TR::CodeGenerator *cg) :
-                            TR_OutOfLineCodeSection(callNode, callOp, targetReg, entryLabel, restartLabel, cg)
-   {
-   generateARM64OutOfLineCodeSectionDispatch();
-   }
+TR_ARM64OutOfLineCodeSection::TR_ARM64OutOfLineCodeSection(
+  TR::Node* callNode,
+  TR::ILOpCodes callOp,
+  TR::Register* targetReg,
+  TR::LabelSymbol* entryLabel,
+  TR::LabelSymbol* restartLabel,
+  TR::CodeGenerator* cg)
+  : TR_OutOfLineCodeSection(callNode,
+                            callOp,
+                            targetReg,
+                            entryLabel,
+                            restartLabel,
+                            cg)
+{
+  generateARM64OutOfLineCodeSectionDispatch();
+}
 
-void TR_ARM64OutOfLineCodeSection::assignRegisters(TR_RegisterKinds kindsToBeAssigned)
-   {
-   TR_UNIMPLEMENTED();
-   }
+void
+TR_ARM64OutOfLineCodeSection::assignRegisters(
+  TR_RegisterKinds kindsToBeAssigned)
+{
+  TR_UNIMPLEMENTED();
+}
 
-void TR_ARM64OutOfLineCodeSection::generateARM64OutOfLineCodeSectionDispatch()
-   {
-   TR_UNIMPLEMENTED();
-   }
+void
+TR_ARM64OutOfLineCodeSection::generateARM64OutOfLineCodeSectionDispatch()
+{
+  TR_UNIMPLEMENTED();
+}

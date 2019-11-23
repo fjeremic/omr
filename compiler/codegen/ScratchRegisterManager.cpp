@@ -16,13 +16,12 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "codegen/ScratchRegisterManager.hpp"
 
-#include <stddef.h>
-#include <stdint.h>
 #include "codegen/CodeGenerator.hpp"
 #include "codegen/Register.hpp"
 #include "codegen/RegisterConstants.hpp"
@@ -31,111 +30,110 @@
 #include "env/TRMemory.hpp"
 #include "infra/Assert.hpp"
 #include "infra/List.hpp"
+#include <stddef.h>
+#include <stdint.h>
 
-TR_ScratchRegisterManager::TR_ScratchRegisterManager(int32_t capacity, TR::CodeGenerator *cg) :
-   _capacity(capacity),
-   _cg(cg),
-   _msrList(cg->comp()->trMemory()),
-   _cursor(0)
-   {}
+TR_ScratchRegisterManager::TR_ScratchRegisterManager(int32_t capacity,
+                                                     TR::CodeGenerator* cg)
+  : _capacity(capacity)
+  , _cg(cg)
+  , _msrList(cg->comp()->trMemory())
+  , _cursor(0)
+{}
 
-bool TR_ScratchRegisterManager::donateScratchRegister(TR::Register *reg)
-   {
-   if (_cursor >= _capacity)
-      return false;
+bool
+TR_ScratchRegisterManager::donateScratchRegister(TR::Register* reg)
+{
+  if (_cursor >= _capacity)
+    return false;
 
-   TR_ManagedScratchRegister *msr = new (_cg->trHeapMemory()) TR_ManagedScratchRegister(reg, msrDonated);
-   _msrList.add(msr);
-   _cursor++;
-   return true;
-   }
+  TR_ManagedScratchRegister* msr =
+    new (_cg->trHeapMemory()) TR_ManagedScratchRegister(reg, msrDonated);
+  _msrList.add(msr);
+  _cursor++;
+  return true;
+}
 
-bool TR_ScratchRegisterManager::reclaimScratchRegister(TR::Register *reg)
-   {
+bool
+TR_ScratchRegisterManager::reclaimScratchRegister(TR::Register* reg)
+{
 
-   if (reg == NULL)
-      {
-      return false;
-      }
+  if (reg == NULL) {
+    return false;
+  }
 
-   ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
-   TR_ManagedScratchRegister *msr = iterator.getFirst();
+  ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
+  TR_ManagedScratchRegister* msr = iterator.getFirst();
 
-   while (msr)
-      {
-      if (msr->_reg == reg)
-         {
-         msr->_state &= ~msrAllocated;
-         return true;
-         }
+  while (msr) {
+    if (msr->_reg == reg) {
+      msr->_state &= ~msrAllocated;
+      return true;
+    }
 
-      msr = iterator.getNext();
-      }
+    msr = iterator.getNext();
+  }
 
-   return false;
-   }
+  return false;
+}
 
+TR::Register*
+TR_ScratchRegisterManager::findOrCreateScratchRegister(TR_RegisterKinds rk)
+{
+  // Check for free registers in the list.  If there are none then create
+  // one if there is enough room.
+  //
+  ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
+  TR_ManagedScratchRegister* msr = iterator.getFirst();
 
-TR::Register *TR_ScratchRegisterManager::findOrCreateScratchRegister(TR_RegisterKinds rk)
-   {
-   // Check for free registers in the list.  If there are none then create
-   // one if there is enough room.
-   //
-   ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
-   TR_ManagedScratchRegister *msr = iterator.getFirst();
+  while (msr) {
+    if (msr->_reg->getKind() == rk && !(msr->_state & msrAllocated)) {
+      msr->_state |= msrAllocated;
+      return msr->_reg;
+    }
 
-   while (msr)
-      {
-      if (msr->_reg->getKind() == rk && !(msr->_state & msrAllocated))
-         {
-         msr->_state |= msrAllocated;
-         return msr->_reg;
-         }
+    msr = iterator.getNext();
+  }
 
-      msr = iterator.getNext();
-      }
+  if (_cursor >= _capacity) {
+    traceMsg(_cg->comp(),
+             "ERROR: cannot allocate any more scratch registers\n");
+    return NULL;
+  }
 
-   if (_cursor >= _capacity)
-      {
-      traceMsg(_cg->comp(), "ERROR: cannot allocate any more scratch registers\n");
-      return NULL;
-      }
+  TR::Register* reg = _cg->allocateRegister(rk);
+  msr = new (_cg->trHeapMemory()) TR_ManagedScratchRegister(reg, msrAllocated);
+  _msrList.add(msr);
+  _cursor++;
+  return reg;
+}
 
-   TR::Register *reg = _cg->allocateRegister(rk);
-   msr = new (_cg->trHeapMemory()) TR_ManagedScratchRegister(reg, msrAllocated);
-   _msrList.add(msr);
-   _cursor++;
-   return reg;
-   }
+void
+TR_ScratchRegisterManager::addScratchRegistersToDependencyList(
+  TR::RegisterDependencyConditions* deps)
+{
+  ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
+  TR_ManagedScratchRegister* msr = iterator.getFirst();
 
-
-void TR_ScratchRegisterManager::addScratchRegistersToDependencyList(
-   TR::RegisterDependencyConditions *deps)
-   {
-   ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
-   TR_ManagedScratchRegister *msr = iterator.getFirst();
-
-   while (msr)
-      {
-      deps->unionNoRegPostCondition(msr->_reg, _cg);
-      msr = iterator.getNext();
-      }
-   }
+  while (msr) {
+    deps->unionNoRegPostCondition(msr->_reg, _cg);
+    msr = iterator.getNext();
+  }
+}
 
 // Terminate the live range of non-donated registers.
 //
-void TR_ScratchRegisterManager::stopUsingRegisters()
-   {
-   ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
-   TR_ManagedScratchRegister *msr = iterator.getFirst();
+void
+TR_ScratchRegisterManager::stopUsingRegisters()
+{
+  ListIterator<TR_ManagedScratchRegister> iterator(&_msrList);
+  TR_ManagedScratchRegister* msr = iterator.getFirst();
 
-   while (msr)
-      {
-      if (!(msr->_state & msrDonated))
-         {
-         _cg->stopUsingRegister(msr->_reg);
-         }
+  while (msr) {
+    if (!(msr->_state & msrDonated)) {
+      _cg->stopUsingRegister(msr->_reg);
+    }
 
-      msr = iterator.getNext();
-      }
-   }
+    msr = iterator.getNext();
+  }
+}

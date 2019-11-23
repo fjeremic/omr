@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef IA32FPTREEEVALUATOR_INCL
@@ -24,19 +25,19 @@
 
 // FPCW values
 //
-#define SINGLE_PRECISION_ROUND_TO_ZERO      0x0c7f
-#define DOUBLE_PRECISION_ROUND_TO_ZERO      0x0e7f
-#define EXTENDED_PRECISION_ROUND_TO_ZERO    0x0f7f
-#define SINGLE_PRECISION_ROUND_TO_NEAREST   0x007f
-#define DOUBLE_PRECISION_ROUND_TO_NEAREST   0x027f
+#define SINGLE_PRECISION_ROUND_TO_ZERO 0x0c7f
+#define DOUBLE_PRECISION_ROUND_TO_ZERO 0x0e7f
+#define EXTENDED_PRECISION_ROUND_TO_ZERO 0x0f7f
+#define SINGLE_PRECISION_ROUND_TO_NEAREST 0x007f
+#define DOUBLE_PRECISION_ROUND_TO_NEAREST 0x027f
 
 // Binary representation of double 1.0
 //
 #if !defined(_LONG_LONG) && !defined(LINUX)
-#define IEEE_DOUBLE_1_0          0x3ff0000000000000L
+#define IEEE_DOUBLE_1_0 0x3ff0000000000000L
 #define IEEE_DOUBLE_NEGATIVE_0_0 0x8000000000000000L
 #else
-#define IEEE_DOUBLE_1_0          0x3ff0000000000000LL
+#define IEEE_DOUBLE_1_0 0x3ff0000000000000LL
 #define IEEE_DOUBLE_NEGATIVE_0_0 0x8000000000000000LL
 #endif
 

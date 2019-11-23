@@ -16,37 +16,41 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TRIVIALDEADBLOCKREMOVER_INCL
 #define TRIVIALDEADBLOCKREMOVER_INCL
 
-namespace TR { class TreeTop; }
-namespace TR { class Block; }
+namespace TR {
+class TreeTop;
+}
+namespace TR {
+class Block;
+}
 
 #include "optimizer/Optimization.hpp"
 
-class TR_TrivialDeadBlockRemover : public TR::Optimization {
+class TR_TrivialDeadBlockRemover : public TR::Optimization
+{
 
-   public:
-      virtual int32_t perform();
-      virtual const char * optDetailString() const throw();
+public:
+  virtual int32_t perform();
+  virtual const char* optDetailString() const throw();
 
+  TR_TrivialDeadBlockRemover(TR::OptimizationManager* manager)
+    : TR::Optimization(manager){};
 
-      TR_TrivialDeadBlockRemover(TR::OptimizationManager *manager):
-         TR::Optimization(manager) {};
+  static TR::Optimization* create(TR::OptimizationManager* manager)
+  {
+    return new (manager->allocator()) TR_TrivialDeadBlockRemover(manager);
+  }
 
-      static TR::Optimization *create(TR::OptimizationManager *manager)
-         {
-         return new (manager->allocator()) TR_TrivialDeadBlockRemover(manager);
-         }
-
-   protected:
-      bool isFoldable(TR::TreeTop* tt);
-      bool foldIf(TR::Block* b);
-      TR_YesNoMaybe  evaluateTakeBranch(TR::Node* n);
-
+protected:
+  bool isFoldable(TR::TreeTop* tt);
+  bool foldIf(TR::Block* b);
+  TR_YesNoMaybe evaluateTakeBranch(TR::Node* n);
 };
 
 #endif

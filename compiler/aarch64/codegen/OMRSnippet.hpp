@@ -16,76 +16,90 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_ARM64_SNIPPET_INCL
 #define OMR_ARM64_SNIPPET_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_SNIPPET_CONNECTOR
 #define OMR_SNIPPET_CONNECTOR
-namespace OMR { namespace ARM64 { class Snippet; } }
-namespace OMR { typedef OMR::ARM64::Snippet SnippetConnector; }
+namespace OMR {
+namespace ARM64 {
+class Snippet;
+}
+}
+namespace OMR {
+typedef OMR::ARM64::Snippet SnippetConnector;
+}
 #else
 #error OMR::ARM64::Snippet expected to be a primary connector, but an OMR connector is already defined
 #endif
 
 #include "compiler/codegen/OMRSnippet.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
-namespace TR { class Node; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
+namespace TR {
+class Node;
+}
 
-namespace OMR
-{
+namespace OMR {
 
-namespace ARM64
-{
+namespace ARM64 {
 
 class OMR_EXTENSIBLE Snippet : public OMR::Snippet
-   {
-   public:
+{
+public:
+  /**
+   * @brief Constructor
+   * @param[in] cg : CodeGenerator
+   * @param[in] node : Node
+   * @param[in] label : LabelSymbol
+   * @param[in] isGCSafePoint : true if GC-safe point
+   */
+  Snippet(TR::CodeGenerator* cg,
+          TR::Node* node,
+          TR::LabelSymbol* label,
+          bool isGCSafePoint);
 
-   /**
-    * @brief Constructor
-    * @param[in] cg : CodeGenerator
-    * @param[in] node : Node
-    * @param[in] label : LabelSymbol
-    * @param[in] isGCSafePoint : true if GC-safe point
-    */
-   Snippet(TR::CodeGenerator *cg, TR::Node *node, TR::LabelSymbol *label, bool isGCSafePoint);
+  /**
+   * @brief Constructor
+   * @param[in] cg : CodeGenerator
+   * @param[in] node : Node
+   * @param[in] label : LabelSymbol
+   */
+  Snippet(TR::CodeGenerator* cg, TR::Node* node, TR::LabelSymbol* label);
 
-   /**
-    * @brief Constructor
-    * @param[in] cg : CodeGenerator
-    * @param[in] node : Node
-    * @param[in] label : LabelSymbol
-    */
-   Snippet(TR::CodeGenerator *cg, TR::Node *node, TR::LabelSymbol *label);
+  enum Kind
+  {
+    IsUnknown,
+    IsCall,
+    IsUnresolvedCall,
+    IsVirtual,
+    IsVirtualUnresolved,
+    IsInterfaceCall,
+    IsHelperCall,
+    IsMonitorEnter,
+    IsMonitorExit,
+    IsRecompilation,
+    IsForceRecompilation,
+    IsStackCheckFailure,
+    IsUnresolvedData,
+    numKinds
+  };
 
-   enum Kind
-      {
-      IsUnknown,
-      IsCall,
-         IsUnresolvedCall,
-      IsVirtual,
-         IsVirtualUnresolved,
-         IsInterfaceCall,
-      IsHelperCall,
-         IsMonitorEnter,
-         IsMonitorExit,
-      IsRecompilation,
-      IsForceRecompilation,
-      IsStackCheckFailure,
-      IsUnresolvedData,
-      numKinds
-      };
-
-   virtual Kind getKind() { return IsUnknown; }
-   };
+  virtual Kind getKind() { return IsUnknown; }
+};
 
 } // ARM64
 } // OMR

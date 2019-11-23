@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef CREATETESTHELPER_H_
@@ -27,12 +28,12 @@
 #if defined(J9ZOS390)
 #include "atoe.h"
 #endif
-#include <stdio.h>
-#include <string.h>
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "omrthread.h"
 #include "omrport.h"
+#include "omrthread.h"
+#include <stdio.h>
+#include <string.h>
 
 #if defined(OMR_OS_WINDOWS)
 #define SPEC_WIN_API
@@ -40,7 +41,8 @@
 
 #if defined(AIXPPC) || defined(LINUX) || defined(J9ZOS390) || defined(OSX)
 #define SPEC_PTHREAD_API
-#endif /* defined(AIXPPC) || defined(LINUX) || defined(J9ZOS390) || defined(OSX) */
+#endif /* defined(AIXPPC) || defined(LINUX) || defined(J9ZOS390) ||            \
+          defined(OSX) */
 
 #ifndef ASSERT
 #define ASSERT(x) assert(x)
@@ -99,18 +101,22 @@
 #define BAD_TEST 0x100000
 
 /* ospriority.c */
-extern void initPrioMap(void);
-extern const char *mapOSPolicy(intptr_t policy);
+extern void
+initPrioMap(void);
+extern const char*
+mapOSPolicy(intptr_t policy);
 #if defined(LINUX) || defined(OSX)
-extern void initRealtimePrioMap(void);
+extern void
+initRealtimePrioMap(void);
 #endif /* defined(LINUX) || defined(OSX) */
 
 #if defined(LINUX) || defined(OSX)
-extern int getRTPolicy(omrthread_prio_t priority);
+extern int
+getRTPolicy(omrthread_prio_t priority);
 #endif /* defined(LINUX) || defined(OSX) */
 
 typedef int osprio_t;
-extern osprio_t getOsPriority(omrthread_prio_t priority);
-
+extern osprio_t
+getOsPriority(omrthread_prio_t priority);
 
 #endif /*CREATETESTHELPER_H_*/

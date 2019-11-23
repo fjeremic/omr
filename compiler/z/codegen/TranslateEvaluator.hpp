@@ -16,22 +16,37 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef S390TRANSLATEEVALUATOR_INCL
 #define S390TRANSLATEEVALUATOR_INCL
 
+#include "codegen/InstOpCode.hpp"
 #include <stddef.h>
 #include <stdint.h>
-#include "codegen/InstOpCode.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class Register; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
 
-TR::InstOpCode::S390BranchCondition getConditionCodeFromCCCompare(uint8_t maskOnIf, uint8_t compVal);
-TR::Register *inlineTrtEvaluator(TR::Node *node, TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic opCode, bool isFoldedIf = false, bool isFoldedLookup = false, TR::Node *parent = NULL);
-TR::Register *inlineTrEvaluator(TR::Node *node, TR::CodeGenerator *cg);
+TR::InstOpCode::S390BranchCondition
+getConditionCodeFromCCCompare(uint8_t maskOnIf, uint8_t compVal);
+TR::Register*
+inlineTrtEvaluator(TR::Node* node,
+                   TR::CodeGenerator* cg,
+                   TR::InstOpCode::Mnemonic opCode,
+                   bool isFoldedIf = false,
+                   bool isFoldedLookup = false,
+                   TR::Node* parent = NULL);
+TR::Register*
+inlineTrEvaluator(TR::Node* node, TR::CodeGenerator* cg);
 
 #endif

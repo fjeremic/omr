@@ -16,31 +16,31 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_TESTS_OMRTESTENV_HPP_
 #define TEST_TESTS_OMRTESTENV_HPP_
 
-#include <limits.h>
-#include <stdio.h>
-#include <stdint.h>
 #include "il/DataTypes.hpp"
 #include "gtest/gtest.h"
+#include <limits.h>
+#include <stdint.h>
+#include <stdio.h>
 
 class TR_Memory;
 
 namespace TestCompiler {
 
 class OMRTestEnv : public testing::Environment
-   {
-   public:
-   virtual void SetUp();
-   virtual void TearDown();
-   static void initialize(char *options);
-   static void shutdown();
+{
+public:
+  virtual void SetUp();
+  virtual void TearDown();
+  static void initialize(char* options);
+  static void shutdown();
 };
-
 }
 
 #endif /* TEST_TESTS_OMRTESTENV_HPP_ */

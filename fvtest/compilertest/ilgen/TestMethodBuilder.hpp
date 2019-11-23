@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_METHODBUILDER_INCL
@@ -26,28 +27,26 @@
 
 class TR_Memory;
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 class TestDriver;
 
 class MethodBuilder : public OMR::MethodBuilder
-   {
+{
 public:
-   TR_ALLOC(TR_Memory::IlGenerator)
+  TR_ALLOC(TR_Memory::IlGenerator)
 
-   MethodBuilder(TR::TypeDictionary *types)
-      : OMR::MethodBuilder(types)
-      {
-      }
+  MethodBuilder(TR::TypeDictionary* types)
+    : OMR::MethodBuilder(types)
+  {}
 
-   MethodBuilder(TR::TypeDictionary *types, TestDriver *test)
-      : OMR::MethodBuilder(types)
-      {
-      // need to explicitly initialize TestCompiler::IlInjector layer
-      setMethodAndTest(NULL, test);
-      }
-   };
+  MethodBuilder(TR::TypeDictionary* types, TestDriver* test)
+    : OMR::MethodBuilder(types)
+  {
+    // need to explicitly initialize TestCompiler::IlInjector layer
+    setMethodAndTest(NULL, test);
+  }
+};
 
 } // namespace TestCompiler
 

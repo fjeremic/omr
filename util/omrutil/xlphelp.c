@@ -17,47 +17,48 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrport.h"
 
 /**
- * Returns a string representing the type of page indicated by the given pageFlags.
- * Useful when printing page type.
+ * Returns a string representing the type of page indicated by the given
+ * pageFlags. Useful when printing page type.
  *
  * @param[in] pageFlags indicates type of the page.
  *
  * @return pointer to string representing the page type.
  */
-const char *
+const char*
 getPageTypeString(uintptr_t pageFlags)
 {
-	if (0 != (OMRPORT_VMEM_PAGE_FLAG_PAGEABLE & pageFlags)) {
-		return "pageable";
-	} else if (0 != (OMRPORT_VMEM_PAGE_FLAG_FIXED & pageFlags)) {
-		return "nonpageable";
-	} else {
-		return "not used";
-	}
+  if (0 != (OMRPORT_VMEM_PAGE_FLAG_PAGEABLE & pageFlags)) {
+    return "pageable";
+  } else if (0 != (OMRPORT_VMEM_PAGE_FLAG_FIXED & pageFlags)) {
+    return "nonpageable";
+  } else {
+    return "not used";
+  }
 }
 
 /**
- * Returns a string representing the type of page indicated by the given pageFlags.
- * Useful when printing page type.
+ * Returns a string representing the type of page indicated by the given
+ * pageFlags. Useful when printing page type.
  *
  * @param[in] pageFlags indicates type of the page.
  *
  * @return pointer to string representing the page type.
  */
-const char *
+const char*
 getPageTypeStringWithLeadingSpace(uintptr_t pageFlags)
 {
-	if (0 != (OMRPORT_VMEM_PAGE_FLAG_PAGEABLE & pageFlags)) {
-		return " pageable";
-	} else if (0 != (OMRPORT_VMEM_PAGE_FLAG_FIXED & pageFlags)) {
-		return " nonpageable";
-	} else {
-		return "";
-	}
+  if (0 != (OMRPORT_VMEM_PAGE_FLAG_PAGEABLE & pageFlags)) {
+    return " pageable";
+  } else if (0 != (OMRPORT_VMEM_PAGE_FLAG_FIXED & pageFlags)) {
+    return " nonpageable";
+  } else {
+    return "";
+  }
 }

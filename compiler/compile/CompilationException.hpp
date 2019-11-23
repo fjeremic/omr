@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef COMPILATIONEXCEPTION_HPP
@@ -40,10 +41,9 @@ namespace TR {
  * define somewhat general subtypes for RAS purposes.
  */
 struct CompilationException : public virtual std::exception
-   {
-   virtual const char* what() const throw() { return "Compilation Exception"; }
-   };
-
+{
+  virtual const char* what() const throw() { return "Compilation Exception"; }
+};
 
 /**
  * IL Validation Failure exception type.
@@ -51,9 +51,9 @@ struct CompilationException : public virtual std::exception
  * Thrown on an IL Validation Failure condition.
  */
 struct ILValidationFailure : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "IL Validation Failure"; }
-   };
+{
+  virtual const char* what() const throw() { return "IL Validation Failure"; }
+};
 
 /**
  * IL Generation Failure exception type.
@@ -61,9 +61,9 @@ struct ILValidationFailure : public virtual CompilationException
  * Thrown on an IL Generation Failure condition.
  */
 struct ILGenFailure : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "IL Gen Failure"; }
-   };
+{
+  virtual const char* what() const throw() { return "IL Gen Failure"; }
+};
 
 /**
  * Recoverable IL Generation Failure exception type.
@@ -73,9 +73,12 @@ struct ILGenFailure : public virtual CompilationException
  * recompilation to occur.
  */
 struct RecoverableILGenException : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Recoverable IL Gen Exception"; }
-   };
+{
+  virtual const char* what() const throw()
+  {
+    return "Recoverable IL Gen Exception";
+  }
+};
 
 /**
  * Excessive Complexity exception type.
@@ -85,9 +88,9 @@ struct RecoverableILGenException : public virtual CompilationException
  * compilation created more TR::Node objects than is supported.
  */
 struct ExcessiveComplexity : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Excessive Complexity"; }
-   };
+{
+  virtual const char* what() const throw() { return "Excessive Complexity"; }
+};
 
 /**
  * Max Caller Index Exceeded exception type.
@@ -96,9 +99,12 @@ struct ExcessiveComplexity : public virtual CompilationException
  * compiled exceeds the compiler's threshold.
  */
 struct MaxCallerIndexExceeded : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Max Caller Index Exceeded"; }
-   };
+{
+  virtual const char* what() const throw()
+  {
+    return "Max Caller Index Exceeded";
+  }
+};
 
 /**
  * Compilation Interrupted exception type.
@@ -107,9 +113,9 @@ struct MaxCallerIndexExceeded : public virtual CompilationException
  * is going into its shutdown phase.
  */
 struct CompilationInterrupted : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Compilation Interrupted"; }
-   };
+{
+  virtual const char* what() const throw() { return "Compilation Interrupted"; }
+};
 
 /**
  * Unimplemented Op Code exception type.
@@ -117,9 +123,9 @@ struct CompilationInterrupted : public virtual CompilationException
  * Thrown when the compiler encounters an unimplemented opt code.
  */
 struct UnimplementedOpCode : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Unimplemented Op Code"; }
-   };
+{
+  virtual const char* what() const throw() { return "Unimplemented Op Code"; }
+};
 
 /**
  * Insufficiently Aggressive Compilation exception type.
@@ -128,9 +134,12 @@ struct UnimplementedOpCode : public virtual CompilationException
  * compilation is not aggressive enough.
  */
 struct InsufficientlyAggressiveCompilation : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "Insufficiently Aggressive Compilation"; }
-   };
+{
+  virtual const char* what() const throw()
+  {
+    return "Insufficiently Aggressive Compilation";
+  }
+};
 
 /**
  * GCR Patch Failure exception type.
@@ -139,10 +148,9 @@ struct InsufficientlyAggressiveCompilation : public virtual CompilationException
  * the GCR Patch Point is not known at Binary Encoding.
  */
 struct GCRPatchFailure : public virtual CompilationException
-   {
-   virtual const char* what() const throw() { return "GCR Patch Failure"; }
-   };
-
+{
+  virtual const char* what() const throw() { return "GCR Patch Failure"; }
+};
 }
 
 #endif // COMPILATIONEXCEPTION_HPP

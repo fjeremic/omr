@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_CODEGENERATOR_INLINE_INCL
@@ -24,19 +25,24 @@
 
 #include "codegen/OMRCodeGenerator.hpp"
 
-inline TR::CodeGenerator* OMR::CodeGenerator::self()
-   {
-   return static_cast<TR::CodeGenerator*>(this);
-   }
+inline TR::CodeGenerator*
+OMR::CodeGenerator::self()
+{
+  return static_cast<TR::CodeGenerator*>(this);
+}
 
-inline bool OMR::CodeGenerator::isIntrinsicMethodSupported(TR::RecognizedMethod m)
-   {
-   return TR::CodeGenerator::isILOpCodeSupported(TR::CodeGenerator::ilOpCodeForIntrinsicMethod(m));
-   }
+inline bool
+OMR::CodeGenerator::isIntrinsicMethodSupported(TR::RecognizedMethod m)
+{
+  return TR::CodeGenerator::isILOpCodeSupported(
+    TR::CodeGenerator::ilOpCodeForIntrinsicMethod(m));
+}
 
-inline bool OMR::CodeGenerator::suppressInliningOfRecognizedMethod(TR::RecognizedMethod method)
-   {
-   return TR::CodeGenerator::isIntrinsicMethodSupported(method);
-   }
+inline bool
+OMR::CodeGenerator::suppressInliningOfRecognizedMethod(
+  TR::RecognizedMethod method)
+{
+  return TR::CodeGenerator::isIntrinsicMethodSupported(method);
+}
 
 #endif

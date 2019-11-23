@@ -16,19 +16,22 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if defined(OMR_OS_WINDOWS)
 
 #ifdef BOOLEAN
-/* There is a collision between J9's definition of BOOLEAN and Windows headers */
+/* There is a collision between J9's definition of BOOLEAN and Windows headers
+ */
 #define BOOLEAN_COLLISION_DETECTED BOOLEAN
 #undef BOOLEAN
 #endif /* defined(OMR_OS_WINDOWS) */
 
 #ifdef boolean
-/* There is a collision between J9's definition of boolean and Windows headers */
+/* There is a collision between J9's definition of boolean and Windows headers
+ */
 #define boolean_COLLISION_DETECTED boolean
 #undef boolean
 #endif

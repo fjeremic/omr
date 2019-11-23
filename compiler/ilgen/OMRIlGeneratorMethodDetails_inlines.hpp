@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_ILGENERATOR_METHOD_DETAILS_INLINES_INCL
@@ -27,22 +28,23 @@
 
 class TR_ResolvedMethod;
 
-TR::IlGeneratorMethodDetails *
+TR::IlGeneratorMethodDetails*
 OMR::IlGeneratorMethodDetails::self()
-   {
-   return static_cast<TR::IlGeneratorMethodDetails *>( this );
-   }
+{
+  return static_cast<TR::IlGeneratorMethodDetails*>(this);
+}
 
-const TR::IlGeneratorMethodDetails *
+const TR::IlGeneratorMethodDetails*
 OMR::IlGeneratorMethodDetails::self() const
-   {
-   return static_cast<const TR::IlGeneratorMethodDetails *>( this );
-   }
+{
+  return static_cast<const TR::IlGeneratorMethodDetails*>(this);
+}
 
-TR::IlGeneratorMethodDetails &
-OMR::IlGeneratorMethodDetails::create(TR::IlGeneratorMethodDetails & target, TR_ResolvedMethod *method)
-   {
-   return * new (&target) TR::IlGeneratorMethodDetails(method);
-   }
+TR::IlGeneratorMethodDetails&
+OMR::IlGeneratorMethodDetails::create(TR::IlGeneratorMethodDetails& target,
+                                      TR_ResolvedMethod* method)
+{
+  return *new (&target) TR::IlGeneratorMethodDetails(method);
+}
 
 #endif

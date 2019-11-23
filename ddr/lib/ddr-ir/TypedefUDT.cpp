@@ -16,74 +16,72 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ddr/ir/TypedefUDT.hpp"
 
 TypedefUDT::TypedefUDT(unsigned int lineNumber)
-	: UDT(0, lineNumber)
-	, _aliasedType(NULL)
-	, _modifiers()
+  : UDT(0, lineNumber)
+  , _aliasedType(NULL)
+  , _modifiers()
 {
-	/* A typedef is opaque only if an overrides file says so. */
-	_opaque = false;
+  /* A typedef is opaque only if an overrides file says so. */
+  _opaque = false;
 }
 
-TypedefUDT::~TypedefUDT()
-{
-}
+TypedefUDT::~TypedefUDT() {}
 
 DDR_RC
-TypedefUDT::acceptVisitor(const TypeVisitor &visitor)
+TypedefUDT::acceptVisitor(const TypeVisitor& visitor)
 {
-	return visitor.visitTypedef(this);
+  return visitor.visitTypedef(this);
 }
 
-const string &
+const string&
 TypedefUDT::getSymbolKindName() const
 {
-	static const string typedefKind("");
+  static const string typedefKind("");
 
-	return typedefKind;
+  return typedefKind;
 }
 
 size_t
 TypedefUDT::getPointerCount()
 {
-	size_t count = _modifiers._pointerCount;
-	if (NULL != _aliasedType) {
-		count += _aliasedType->getPointerCount();
-	}
-	return count;
+  size_t count = _modifiers._pointerCount;
+  if (NULL != _aliasedType) {
+    count += _aliasedType->getPointerCount();
+  }
+  return count;
 }
 
 size_t
 TypedefUDT::getArrayDimensions()
 {
-	size_t count = _modifiers.getArrayDimensions();
-	if (NULL != _aliasedType) {
-		count += _aliasedType->getArrayDimensions();
-	}
-	return count;
+  size_t count = _modifiers.getArrayDimensions();
+  if (NULL != _aliasedType) {
+    count += _aliasedType->getArrayDimensions();
+  }
+  return count;
 }
 
-Type *
+Type*
 TypedefUDT::getBaseType()
 {
-	return _aliasedType;
+  return _aliasedType;
 }
 
 bool
-TypedefUDT::operator==(const Type & rhs) const
+TypedefUDT::operator==(const Type& rhs) const
 {
-	return rhs.compareToTypedef(*this);
+  return rhs.compareToTypedef(*this);
 }
 
 bool
-TypedefUDT::compareToTypedef(const TypedefUDT &other) const
+TypedefUDT::compareToTypedef(const TypedefUDT& other) const
 {
-	return compareToType(other)
-		&& *_aliasedType == *other._aliasedType
-		&& _modifiers == other._modifiers;
+  return compareToType(other) && *_aliasedType == *other._aliasedType &&
+         _modifiers == other._modifiers;
 }

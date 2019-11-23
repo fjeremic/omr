@@ -17,20 +17,23 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #ifndef INLINING_RECURSIVEFIB_INCL
 #define INLINING_RECURSIVEFIB_INCL
 #include "JitBuilder.hpp"
-typedef int32_t (RecursiveFibFunctionType)(int32_t);
+typedef int32_t(RecursiveFibFunctionType)(int32_t);
 class InliningRecursiveFibonacciMethod : public OMR::JitBuilder::MethodBuilder
-   {
-   public:
-   InliningRecursiveFibonacciMethod(OMR::JitBuilder::TypeDictionary *types, int32_t inlineDepth);
-   InliningRecursiveFibonacciMethod(InliningRecursiveFibonacciMethod *callerMB);
-   virtual bool buildIL();
-   private:
-   void defineStuff();
-   int32_t _inlineDepth;
-   };
+{
+public:
+  InliningRecursiveFibonacciMethod(OMR::JitBuilder::TypeDictionary* types,
+                                   int32_t inlineDepth);
+  InliningRecursiveFibonacciMethod(InliningRecursiveFibonacciMethod* callerMB);
+  virtual bool buildIL();
+
+private:
+  void defineStuff();
+  int32_t _inlineDepth;
+};
 #endif // !defined(INLINING_RECURSIVEFIB_INCL)

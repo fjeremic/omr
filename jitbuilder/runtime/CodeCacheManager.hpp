@@ -17,26 +17,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_CODECACHEMANAGER_INCL
 #define TR_CODECACHEMANAGER_INCL
 
-#include "runtime/JBCodeCacheManager.hpp"
 #include "infra/Annotations.hpp"
+#include "runtime/JBCodeCacheManager.hpp"
 
 /*
- * These #ifndef's and classes must appear before including the OMR version of this file
+ * These #ifndef's and classes must appear before including the OMR version of
+ * this file
  */
-namespace TR
-{
+namespace TR {
 
-   class OMR_EXTENSIBLE CodeCacheManager : public JitBuilder::CodeCacheManager
-      {
-      public:
-      CodeCacheManager(TR::RawAllocator rawAllocator) : JitBuilder::CodeCacheManager(rawAllocator) { }
-      };
+class OMR_EXTENSIBLE CodeCacheManager : public JitBuilder::CodeCacheManager
+{
+public:
+  CodeCacheManager(TR::RawAllocator rawAllocator)
+    : JitBuilder::CodeCacheManager(rawAllocator)
+  {}
+};
 
 } // namespace TR
 

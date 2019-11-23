@@ -17,20 +17,32 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrmmap_h
 #define omrmmap_h
 
-void omrmmap_unmap_file(struct OMRPortLibrary *portLibrary, J9MmapHandle *handle);
-J9MmapHandle *omrmmap_map_file(struct OMRPortLibrary *portLibrary, intptr_t file, uint64_t offset, uintptr_t size, const char *mappingName, uint32_t flags);
-int32_t omrmmap_startup(struct OMRPortLibrary *portLibrary);
-int32_t omrmmap_capabilities(struct OMRPortLibrary *portLibrary);
-void omrmmap_shutdown(struct OMRPortLibrary *portLibrary);
-intptr_t omrmmap_msync(struct OMRPortLibrary *portLibrary, void *start, uintptr_t length, uint32_t flags);
+void
+omrmmap_unmap_file(struct OMRPortLibrary* portLibrary, J9MmapHandle* handle);
+J9MmapHandle*
+omrmmap_map_file(struct OMRPortLibrary* portLibrary,
+                 intptr_t file,
+                 uint64_t offset,
+                 uintptr_t size,
+                 const char* mappingName,
+                 uint32_t flags);
+int32_t
+omrmmap_startup(struct OMRPortLibrary* portLibrary);
+int32_t
+omrmmap_capabilities(struct OMRPortLibrary* portLibrary);
+void
+omrmmap_shutdown(struct OMRPortLibrary* portLibrary);
+intptr_t
+omrmmap_msync(struct OMRPortLibrary* portLibrary,
+              void* start,
+              uintptr_t length,
+              uint32_t flags);
 
-
-#endif     /* omrmmap_h */
-
-
+#endif /* omrmmap_h */

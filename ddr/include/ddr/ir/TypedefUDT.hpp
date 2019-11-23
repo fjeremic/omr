@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TYPEDEFUDT_HPP
@@ -28,20 +29,20 @@
 class TypedefUDT : public UDT
 {
 public:
-	Type *_aliasedType;
-	Modifiers _modifiers;
+  Type* _aliasedType;
+  Modifiers _modifiers;
 
-	explicit TypedefUDT(unsigned int lineNumber = 0);
-	virtual ~TypedefUDT();
+  explicit TypedefUDT(unsigned int lineNumber = 0);
+  virtual ~TypedefUDT();
 
-	virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
-	virtual const string &getSymbolKindName() const;
-	virtual size_t getPointerCount();
-	virtual size_t getArrayDimensions();
-	virtual Type *getBaseType();
+  virtual DDR_RC acceptVisitor(const TypeVisitor& visitor);
+  virtual const string& getSymbolKindName() const;
+  virtual size_t getPointerCount();
+  virtual size_t getArrayDimensions();
+  virtual Type* getBaseType();
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToTypedef(const TypedefUDT &) const;
+  bool operator==(const Type& rhs) const;
+  virtual bool compareToTypedef(const TypedefUDT&) const;
 };
 
 #endif /* TYPEDEFUDT_HPP */

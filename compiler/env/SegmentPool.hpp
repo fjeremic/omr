@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_SEGMENT_POOL
@@ -24,12 +25,12 @@
 
 #pragma once
 
-#include <deque>
-#include <stack>
+#include "env/RawAllocator.hpp"
+#include "env/SegmentProvider.hpp"
 #include "env/TypedAllocator.hpp"
 #include "infra/ReferenceWrapper.hpp"
-#include "env/SegmentProvider.hpp"
-#include "env/RawAllocator.hpp"
+#include <deque>
+#include <stack>
 
 namespace TR {
 
@@ -38,38 +39,33 @@ namespace TR {
  */
 
 class SegmentPool : public TR::SegmentProvider
-   {
+{
 public:
-   SegmentPool(TR::SegmentProvider &backingProvider, size_t cacheSize, TR::RawAllocator rawAllocator);
-   ~SegmentPool() throw();
+  SegmentPool(TR::SegmentProvider& backingProvider,
+              size_t cacheSize,
+              TR::RawAllocator rawAllocator);
+  ~SegmentPool() throw();
 
-   virtual TR::MemorySegment &request(size_t requiredSize);
-   virtual void release(TR::MemorySegment &) throw();
+  virtual TR::MemorySegment& request(size_t requiredSize);
+  virtual void release(TR::MemorySegment&) throw();
 
 private:
-   size_t const _poolSize;
-   size_t _storedSegments;
-   TR::SegmentProvider &_backingProvider;
+  size_t const _poolSize;
+  size_t _storedSegments;
+  TR::SegmentProvider& _backingProvider;
 
-   typedef TR::typed_allocator<
-      TR::reference_wrapper<TR::MemorySegment>,
-      TR::RawAllocator
-      > DequeAllocator;
+  typedef TR::typed_allocator<TR::reference_wrapper<TR::MemorySegment>,
+                              TR::RawAllocator>
+    DequeAllocator;
 
-   typedef std::deque<
-      TR::reference_wrapper<TR::MemorySegment>,
-      DequeAllocator
-      > StackContainer;
+  typedef std::deque<TR::reference_wrapper<TR::MemorySegment>, DequeAllocator>
+    StackContainer;
 
-   typedef std::stack<
-      TR::reference_wrapper<TR::MemorySegment>,
-      StackContainer
-      > SegmentStack;
+  typedef std::stack<TR::reference_wrapper<TR::MemorySegment>, StackContainer>
+    SegmentStack;
 
-   SegmentStack _segmentStack;
-
-   };
-
+  SegmentStack _segmentStack;
+};
 }
 
 #endif // TR_SEGMENT_POOL

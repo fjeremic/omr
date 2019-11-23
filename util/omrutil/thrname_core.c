@@ -17,69 +17,75 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <string.h>
-#include "omrutil.h"
-#include "omrport.h"
 #include "omr.h"
+#include "omrport.h"
+#include "omrutil.h"
+#include <string.h>
 
-static char *
-getOMRVMThreadNameNoLock(OMR_VMThread *vmThread)
+static char*
+getOMRVMThreadNameNoLock(OMR_VMThread* vmThread)
 {
-	char *name = NULL;
+  char* name = NULL;
 
-	name = (char *)vmThread->threadName;
+  name = (char*)vmThread->threadName;
 
-	if (name == NULL) {
-		name = OMR_Glue_GetThreadNameForUnamedThread(vmThread);
-	}
-	return name;
+  if (name == NULL) {
+    name = OMR_Glue_GetThreadNameForUnamedThread(vmThread);
+  }
+  return name;
 }
 
-char *
-getOMRVMThreadName(OMR_VMThread *vmThread)
+char*
+getOMRVMThreadName(OMR_VMThread* vmThread)
 {
-	omrthread_monitor_enter(vmThread->threadNameMutex);
-	return getOMRVMThreadNameNoLock(vmThread);
+  omrthread_monitor_enter(vmThread->threadNameMutex);
+  return getOMRVMThreadNameNoLock(vmThread);
 }
 
-char *
-tryGetOMRVMThreadName(OMR_VMThread *vmThread)
+char*
+tryGetOMRVMThreadName(OMR_VMThread* vmThread)
 {
-	if (omrthread_monitor_try_enter(vmThread->threadNameMutex) == 0) {
-		return getOMRVMThreadNameNoLock(vmThread);
-	} else {
-		return NULL;
-	}
-}
-
-void
-releaseOMRVMThreadName(OMR_VMThread *vmThread)
-{
-	omrthread_monitor_exit(vmThread->threadNameMutex);
+  if (omrthread_monitor_try_enter(vmThread->threadNameMutex) == 0) {
+    return getOMRVMThreadNameNoLock(vmThread);
+  } else {
+    return NULL;
+  }
 }
 
 void
-setOMRVMThreadNameWithFlag(OMR_VMThread *currentThread, OMR_VMThread *vmThread, char *name, uint8_t nameIsStatic)
+releaseOMRVMThreadName(OMR_VMThread* vmThread)
 {
-	omrthread_monitor_enter(vmThread->threadNameMutex);
-	setOMRVMThreadNameWithFlagNoLock(vmThread, name, nameIsStatic);
-	omrthread_monitor_exit(vmThread->threadNameMutex);
+  omrthread_monitor_exit(vmThread->threadNameMutex);
 }
 
 void
-setOMRVMThreadNameWithFlagNoLock(OMR_VMThread *vmThread, char *name, uint8_t nameIsStatic)
+setOMRVMThreadNameWithFlag(OMR_VMThread* currentThread,
+                           OMR_VMThread* vmThread,
+                           char* name,
+                           uint8_t nameIsStatic)
 {
-	if (!vmThread->threadNameIsStatic) {
-		char *oldName = (char *)vmThread->threadName;
+  omrthread_monitor_enter(vmThread->threadNameMutex);
+  setOMRVMThreadNameWithFlagNoLock(vmThread, name, nameIsStatic);
+  omrthread_monitor_exit(vmThread->threadNameMutex);
+}
 
-		if (name != oldName) {
-			OMRPORT_ACCESS_FROM_OMRVMTHREAD(vmThread);
-			omrmem_free_memory(oldName);
-		}
-	}
-	vmThread->threadNameIsStatic = nameIsStatic;
-	vmThread->threadName = (uint8_t *)name;
+void
+setOMRVMThreadNameWithFlagNoLock(OMR_VMThread* vmThread,
+                                 char* name,
+                                 uint8_t nameIsStatic)
+{
+  if (!vmThread->threadNameIsStatic) {
+    char* oldName = (char*)vmThread->threadName;
+
+    if (name != oldName) {
+      OMRPORT_ACCESS_FROM_OMRVMTHREAD(vmThread);
+      omrmem_free_memory(oldName);
+    }
+  }
+  vmThread->threadNameIsStatic = nameIsStatic;
+  vmThread->threadName = (uint8_t*)name;
 }

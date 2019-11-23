@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -28,36 +29,36 @@
 #if !defined(SUBLISTSLOTITERATOR_HPP_)
 #define SUBLISTSLOTITERATOR_HPP_
 
+#include "modronbase.h"
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "modronbase.h"
 
 #include "SublistPuddle.hpp"
 
 /**
  * Iterate over the contents of an MM_SublistPuddle.
- * Can be used in conjunction with MM_SublistIterator to iterate over all elements in a sublist.
+ * Can be used in conjunction with MM_SublistIterator to iterate over all
+ * elements in a sublist.
  * @ingroup GC_Structs
  */
 class GC_SublistSlotIterator
 {
-	MM_SublistPuddle *_puddle;
-	uintptr_t *_scanPtr;
-	uintptr_t _removedCount; /**< keep a running count of elements removed from puddle */
-	
-	bool _returnedFilledSlot; /**< if last slot returned was filled or null */
+  MM_SublistPuddle* _puddle;
+  uintptr_t* _scanPtr;
+  uintptr_t
+    _removedCount; /**< keep a running count of elements removed from puddle */
+
+  bool _returnedFilledSlot; /**< if last slot returned was filled or null */
 
 public:
-	GC_SublistSlotIterator(MM_SublistPuddle *sublist) :
-		_puddle(sublist),
-		_scanPtr(sublist->_listBase),
-		_removedCount(0),
-		_returnedFilledSlot(false)
-	{};
+  GC_SublistSlotIterator(MM_SublistPuddle* sublist)
+    : _puddle(sublist)
+    , _scanPtr(sublist->_listBase)
+    , _removedCount(0)
+    , _returnedFilledSlot(false){};
 
-	void *nextSlot();
-	void removeSlot();
+  void* nextSlot();
+  void removeSlot();
 };
 
 #endif /* SUBLISTSLOTITERATOR_HPP_ */
-

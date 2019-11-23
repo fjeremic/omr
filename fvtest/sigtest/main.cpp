@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrTest.h"
@@ -24,21 +25,22 @@
 
 #include "sigTestHelpers.hpp"
 
-extern "C" {
-int omr_main_entry(int argc, char **argv, char **envp);
+extern "C"
+{
+  int omr_main_entry(int argc, char** argv, char** envp);
 }
 
-PortEnvironment *omrTestEnv;
-
+PortEnvironment* omrTestEnv;
 
 int
-omr_main_entry(int argc, char **argv, char **envp)
+omr_main_entry(int argc, char** argv, char** envp)
 {
-	::testing::InitGoogleTest(&argc, argv);
-	OMREventListener::setDefaultTestListener();
-	INITIALIZE_THREADLIBRARY_AND_ATTACH();
-	omrTestEnv = (PortEnvironment *)testing::AddGlobalTestEnvironment(new PortEnvironment(argc, argv));
-	int result = RUN_ALL_TESTS();
-	DETACH_AND_DESTROY_THREADLIBRARY();
-	return result;
+  ::testing::InitGoogleTest(&argc, argv);
+  OMREventListener::setDefaultTestListener();
+  INITIALIZE_THREADLIBRARY_AND_ATTACH();
+  omrTestEnv = (PortEnvironment*)testing::AddGlobalTestEnvironment(
+    new PortEnvironment(argc, argv));
+  int result = RUN_ALL_TESTS();
+  DETACH_AND_DESTROY_THREADLIBRARY();
+  return result;
 }

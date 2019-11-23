@@ -16,20 +16,21 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "testHeader.h"
 #include "map_to_type/map_to_type.hpp"
+#include "testHeader.h"
 
 /*
  * @ddr_namespace: default
  */
 
 /* These should be included: */
-#define dolphin			11
-#define fish ((unsigned int)(4))/* Test comment block. */
-#define whale (7) // Test comment.
+#define dolphin 11
+#define fish ((unsigned int)(4)) /* Test comment block. */
+#define whale (7)                // Test comment.
 #define octopus dolphin
 
 /* These should be not included: */

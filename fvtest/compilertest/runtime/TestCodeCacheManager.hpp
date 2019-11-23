@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_CODECACHEMANAGER_INCL
@@ -24,47 +25,57 @@
 
 #ifndef TEST_CODECACHEMANAGER_COMPOSED
 #define TEST_CODECACHEMANAGER_COMPOSED
-namespace TestCompiler { class CodeCacheManager; }
-namespace TestCompiler { typedef CodeCacheManager CodeCacheManagerConnector; }
+namespace TestCompiler {
+class CodeCacheManager;
+}
+namespace TestCompiler {
+typedef CodeCacheManager CodeCacheManagerConnector;
+}
 #endif
 
+#include "runtime/OMRCodeCacheManager.hpp"
 #include <stddef.h>
 #include <stdint.h>
-#include "runtime/OMRCodeCacheManager.hpp"
 
-namespace TR { class CodeCacheMemorySegment; }
-namespace TR { class CodeCache; }
-namespace TR { class CodeCacheManager; }
+namespace TR {
+class CodeCacheMemorySegment;
+}
+namespace TR {
+class CodeCache;
+}
+namespace TR {
+class CodeCacheManager;
+}
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 class JitConfig;
 class FrontEnd;
 
 class OMR_EXTENSIBLE CodeCacheManager : public OMR::CodeCacheManagerConnector
-   {
-   TR::CodeCacheManager *self();
+{
+  TR::CodeCacheManager* self();
 
 public:
-   CodeCacheManager(TR::RawAllocator rawAllocator);
+  CodeCacheManager(TR::RawAllocator rawAllocator);
 
-   void *operator new(size_t s, TR::CodeCacheManager *m) { return m; }
+  void* operator new(size_t s, TR::CodeCacheManager* m) { return m; }
 
-   static TR::CodeCacheManager *instance()  { return _codeCacheManager; }
+  static TR::CodeCacheManager* instance() { return _codeCacheManager; }
 
-   TR::CodeCacheMemorySegment *allocateCodeCacheSegment(size_t segmentSize,
-                                                        size_t &codeCacheSizeToAllocate,
-                                                        void *preferredStartAddress);
+  TR::CodeCacheMemorySegment* allocateCodeCacheSegment(
+    size_t segmentSize,
+    size_t& codeCacheSizeToAllocate,
+    void* preferredStartAddress);
 
-   /**
-    * @brief Override of OMR::freeCodeCacheSegment that actually frees memory.
-    */
-   void freeCodeCacheSegment(TR::CodeCacheMemorySegment * memSegment);
+  /**
+   * @brief Override of OMR::freeCodeCacheSegment that actually frees memory.
+   */
+  void freeCodeCacheSegment(TR::CodeCacheMemorySegment* memSegment);
 
-private :
-   static TR::CodeCacheManager *_codeCacheManager;
-   };
+private:
+  static TR::CodeCacheManager* _codeCacheManager;
+};
 
 } // namespace TestCompiler
 

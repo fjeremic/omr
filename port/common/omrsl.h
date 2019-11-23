@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrsl_h
@@ -30,24 +31,33 @@
  */
 #include "omrcomp.h"
 
-
+uintptr_t
+omrsl_close_shared_library(struct OMRPortLibrary* portLibrary,
+                           uintptr_t descriptor);
 
 uintptr_t
-omrsl_close_shared_library(struct OMRPortLibrary *portLibrary, uintptr_t descriptor);
+omrsl_lookup_name(struct OMRPortLibrary* portLibrary,
+                  uintptr_t descriptor,
+                  char* name,
+                  uintptr_t* func,
+                  const char* argSignature);
 
 uintptr_t
-omrsl_lookup_name(struct OMRPortLibrary *portLibrary, uintptr_t descriptor, char *name, uintptr_t *func, const char *argSignature);
+omrsl_open_system_library(struct OMRPortLibrary* portLibrary,
+                          char* name,
+                          uintptr_t* descriptor,
+                          uintptr_t flags);
 
 uintptr_t
-omrsl_open_system_library(struct OMRPortLibrary *portLibrary, char *name, uintptr_t *descriptor, uintptr_t flags);
-
-uintptr_t
-omrsl_open_shared_library(struct OMRPortLibrary *portLibrary, char *name, uintptr_t *descriptor, uintptr_t flags);
+omrsl_open_shared_library(struct OMRPortLibrary* portLibrary,
+                          char* name,
+                          uintptr_t* descriptor,
+                          uintptr_t flags);
 
 void
-omrsl_shutdown(struct OMRPortLibrary *portLibrary);
+omrsl_shutdown(struct OMRPortLibrary* portLibrary);
 
 int32_t
-omrsl_startup(struct OMRPortLibrary *portLibrary);
+omrsl_startup(struct OMRPortLibrary* portLibrary);
 
 #endif /* omrsl_h */

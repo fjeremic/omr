@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrstdarg_h
@@ -29,9 +30,9 @@
 #include "omrcomp.h"
 
 #if defined(va_copy)
-#define COPY_VA_LIST(new,old) va_copy(new,  old)
+#define COPY_VA_LIST(new, old) va_copy(new, old)
 #else
-#define COPY_VA_LIST(new,old) memcpy(VA_PTR(new), VA_PTR(old), sizeof(va_list))
+#define COPY_VA_LIST(new, old) memcpy(VA_PTR(new), VA_PTR(old), sizeof(va_list))
 #endif
 
 #if defined(va_copy)
@@ -40,6 +41,4 @@
 #define END_VA_LIST_COPY(args)
 #endif
 
-#endif     /* omrstdarg_h */
-
-
+#endif /* omrstdarg_h */

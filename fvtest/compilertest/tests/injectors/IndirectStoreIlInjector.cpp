@@ -16,29 +16,31 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/IndirectStoreIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "compile/SymbolReferenceTable.hpp"
 #include "env/FrontEnd.hpp"
-#include "tests/injectors/IndirectStoreIlInjector.hpp"
 #include "tests/OpCodesTest.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 bool
 IndirectStoreIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
+{
+  if (!isOpCodeSupported())
+    return false;
 
-   createBlocks(1);
-   TR::SymbolReference *storeSymRef = symRefTab()->findOrCreateArrayShadowSymbolRef(_dataType, parm(1));
-   genTreeTop(TR::Node::createWithSymRef(_opCode, 2, parm(1), parm(2), 0, storeSymRef));
-   returnNoValue();
-   return true;
-   }
+  createBlocks(1);
+  TR::SymbolReference* storeSymRef =
+    symRefTab()->findOrCreateArrayShadowSymbolRef(_dataType, parm(1));
+  genTreeTop(
+    TR::Node::createWithSymRef(_opCode, 2, parm(1), parm(2), 0, storeSymRef));
+  returnNoValue();
+  return true;
+}
 
 } // namespace TestCompiler

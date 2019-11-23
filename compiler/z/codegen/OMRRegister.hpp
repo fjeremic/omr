@@ -16,19 +16,27 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_Z_REGISTER_INCL
 #define OMR_Z_REGISTER_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_REGISTER_CONNECTOR
 #define OMR_REGISTER_CONNECTOR
-namespace OMR { namespace Z { class Register; } }
-namespace OMR { typedef OMR::Z::Register RegisterConnector; }
+namespace OMR {
+namespace Z {
+class Register;
+}
+}
+namespace OMR {
+typedef OMR::Z::Register RegisterConnector;
+}
 #else
 #error OMR::Z::Register expected to be a primary connector, but a OMR connector is already defined
 #endif
@@ -41,100 +49,117 @@ namespace OMR { typedef OMR::Z::Register RegisterConnector; }
 class TR_LiveRegisterInfo;
 class TR_OpaquePseudoRegister;
 class TR_PseudoRegister;
-namespace TR { class MemoryReference; }
-namespace TR { class Register; }
-template <class T> class TR_Queue;
+namespace TR {
+class MemoryReference;
+}
+namespace TR {
+class Register;
+}
+template<class T>
+class TR_Queue;
 
-namespace OMR
+namespace OMR {
+
+namespace Z {
+
+class OMR_EXTENSIBLE Register : public OMR::Register
 {
+protected:
+  Register(uint32_t f = 0);
+  Register(TR_RegisterKinds rk);
+  Register(TR_RegisterKinds rk, uint16_t ar);
 
-namespace Z
-{
+public:
+  /*
+   * Getters/Setters
+   */
 
-class OMR_EXTENSIBLE Register: public OMR::Register
-   {
-   protected:
+  TR_LiveRegisterInfo* getLiveRegisterInfo()
+  {
+    return _liveRegisterInfo._liveRegister;
+  }
+  TR_LiveRegisterInfo* setLiveRegisterInfo(TR_LiveRegisterInfo* p)
+  {
+    return (_liveRegisterInfo._liveRegister = p);
+  }
 
-   Register(uint32_t f=0);
-   Register(TR_RegisterKinds rk);
-   Register(TR_RegisterKinds rk, uint16_t ar);
+  uint32_t getInterference() { return _liveRegisterInfo._interference; }
+  uint32_t setInterference(uint32_t i)
+  {
+    return (_liveRegisterInfo._interference = i);
+  }
 
-   public:
+  TR::MemoryReference* getMemRef() { return _memRef; }
+  void setMemRef(TR::MemoryReference* memRef) { _memRef = memRef; }
 
-   /*
-    * Getters/Setters
-    */
+  /*
+   * Methods for manipulating flags
+   */
 
-   TR_LiveRegisterInfo *getLiveRegisterInfo()                       {return _liveRegisterInfo._liveRegister;}
-   TR_LiveRegisterInfo *setLiveRegisterInfo(TR_LiveRegisterInfo *p) {return (_liveRegisterInfo._liveRegister = p);}
+  bool isUsedInMemRef() { return _flags.testAny(IsUsedInMemRef); }
+  void setIsUsedInMemRef(bool b = true) { _flags.set(IsUsedInMemRef, b); }
 
-   uint32_t getInterference()           {return _liveRegisterInfo._interference;}
-   uint32_t setInterference(uint32_t i) {return (_liveRegisterInfo._interference = i);}
+  bool is64BitReg();
+  void setIs64BitReg(bool b = true);
 
-   TR::MemoryReference *getMemRef() { return _memRef; }
-   void setMemRef(TR::MemoryReference *memRef) { _memRef = memRef; }
+  bool isDependencySet() { return _flags.testAny(DependencySet); }
+  void setDependencySet(bool v)
+  {
+    if (v)
+      _flags.set(DependencySet);
+  }
 
-   /*
-    * Methods for manipulating flags
-    */
+  bool alreadySignExtended() { return _flags.testAny(AlreadySignExtended); }
+  void setAlreadySignExtended() { _flags.set(AlreadySignExtended); }
+  void resetAlreadySignExtended() { _flags.reset(AlreadySignExtended); }
 
-   bool isUsedInMemRef()                    {return _flags.testAny(IsUsedInMemRef);}
-   void setIsUsedInMemRef(bool b = true)    {_flags.set(IsUsedInMemRef, b);}
+  /*
+   * Overriding Base Class Implementation of these methods
+   */
+  void setPlaceholderReg();
 
-   bool is64BitReg();
-   void setIs64BitReg(bool b = true);
+  ncount_t decFutureUseCount(ncount_t fuc = 1);
 
-   bool isDependencySet()    {return _flags.testAny(DependencySet);}
-   void setDependencySet(bool v) {if (v) _flags.set(DependencySet);}
+  bool containsCollectedReference();
+  void setContainsCollectedReference();
 
-   bool alreadySignExtended()           {return _flags.testAny(AlreadySignExtended);}
-   void setAlreadySignExtended()        {_flags.set(AlreadySignExtended);}
-   void resetAlreadySignExtended()      {_flags.reset(AlreadySignExtended);}
-   
-   /*
-    * Overriding Base Class Implementation of these methods
-    */
-   void setPlaceholderReg();
+  /*
+   * Methods specialized in derived classes
+   */
 
-   ncount_t decFutureUseCount(ncount_t fuc=1);
+  virtual bool usesRegister(TR::Register* reg); // ppc may duplicate this
+  virtual bool usesAnyRegister(TR::Register* reg);
 
-   bool containsCollectedReference();
-   void setContainsCollectedReference();
+  /*
+   * Pseudo and Opaque Registers
+   */
+  virtual TR_OpaquePseudoRegister* getOpaquePseudoRegister() { return NULL; }
+  virtual TR_PseudoRegister* getPseudoRegister() { return NULL; }
 
-   /*
-    * Methods specialized in derived classes
-    */
+private:
+  enum
+  {
+    IsUsedInMemRef =
+      0x0800, // 390 cannot associate GPR0 to regs used in memrefs
+    Is64Bit =
+      0x0002, // 390 flag indicates that this Register contained a 64-bit value
+    DependencySet = 0x0200, // 390 flag, post dependancy was assigned
 
-   virtual bool usesRegister(TR::Register* reg);  //ppc may duplicate this
-   virtual bool usesAnyRegister(TR::Register* reg);
+    AlreadySignExtended = 0x1000, // determine whether i2l should be nops
+  };
 
-   /*
-    * Pseudo and Opaque Registers
-    */
-   virtual TR_OpaquePseudoRegister  *getOpaquePseudoRegister() {return NULL;}
-   virtual TR_PseudoRegister  *getPseudoRegister() { return NULL;}
+  // Both x and z have this field, but power has own specialization, may move to
+  // base
+  union
+  {
+    TR_LiveRegisterInfo*
+      _liveRegister;        // Live register entry representing this register
+    uint32_t _interference; // Real registers that interfere with this register
+  } _liveRegisterInfo;
 
-   private:
-
-   enum
-      {
-         IsUsedInMemRef                = 0x0800, // 390 cannot associate GPR0 to regs used in memrefs
-         Is64Bit                       = 0x0002, // 390 flag indicates that this Register contained a 64-bit value
-         DependencySet                 = 0x0200,  // 390 flag, post dependancy was assigned
-
-         AlreadySignExtended           = 0x1000, // determine whether i2l should be nops
-      };
-
-   //Both x and z have this field, but power has own specialization, may move to base
-   union
-      {
-      TR_LiveRegisterInfo *_liveRegister; // Live register entry representing this register
-      uint32_t             _interference; // Real registers that interfere with this register
-      } _liveRegisterInfo;
-
-   // Both x and z have this, but power doesn't, so duplicating in both x and z
-   TR::MemoryReference *_memRef;
-   };
+  // Both x and z have this, but power doesn't, so duplicating in both x and z
+  TR::MemoryReference* _memRef;
+};
 }
 }
 

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #ifndef omrmutex_h
 #define omrmutex_h
@@ -26,32 +27,32 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef pthread_mutex_t MUTEX;
+  typedef pthread_mutex_t MUTEX;
 
-
-/* MUTEX_INIT */
+  /* MUTEX_INIT */
 
 #define MUTEX_INIT(mutex) (pthread_mutex_init(&(mutex), NULL) == 0)
 
-/* MUTEX_DESTROY */
+  /* MUTEX_DESTROY */
 
 #define MUTEX_DESTROY(mutex) pthread_mutex_destroy(&(mutex))
 
-/* MUTEX_ENTER */
+  /* MUTEX_ENTER */
 
 #define MUTEX_ENTER(mutex) pthread_mutex_lock(&(mutex))
 
-/*
- *  MUTEX_TRY_ENTER
- *  returns 0 on success
- */
+  /*
+   *  MUTEX_TRY_ENTER
+   *  returns 0 on success
+   */
 
 #define MUTEX_TRY_ENTER(mutex) pthread_mutex_trylock(&(mutex))
 
-/* MUTEX_EXIT */
+  /* MUTEX_EXIT */
 
 #define MUTEX_EXIT(mutex) pthread_mutex_unlock(&(mutex))
 
@@ -59,6 +60,4 @@ typedef pthread_mutex_t MUTEX;
 }
 #endif
 
-
 #endif /* omrmutex_h */
-

@@ -16,31 +16,34 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef CLASSUDT_HPP
 #define CLASSUDT_HPP
 
-#include "ddr/ir/ClassType.hpp"
 #include "ddr/error.hpp"
+#include "ddr/ir/ClassType.hpp"
 
 /* This type represents both class and struct types */
 class ClassUDT : public ClassType
 {
 public:
-	ClassUDT *_superClass;
-	bool _isClass;
+  ClassUDT* _superClass;
+  bool _isClass;
 
-	explicit ClassUDT(size_t size, bool isClass = true, unsigned int lineNumber = 0);
-	virtual ~ClassUDT();
+  explicit ClassUDT(size_t size,
+                    bool isClass = true,
+                    unsigned int lineNumber = 0);
+  virtual ~ClassUDT();
 
-	virtual const string &getSymbolKindName() const;
+  virtual const string& getSymbolKindName() const;
 
-	virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
+  virtual DDR_RC acceptVisitor(const TypeVisitor& visitor);
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToClass(const ClassUDT &) const;
+  bool operator==(const Type& rhs) const;
+  virtual bool compareToClass(const ClassUDT&) const;
 };
 
 #endif /* CLASSUDT_HPP */

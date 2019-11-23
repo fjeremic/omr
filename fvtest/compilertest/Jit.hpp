@@ -17,15 +17,22 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stdint.h>
 
-namespace TR { class MethodBuilder; }
+namespace TR {
+class MethodBuilder;
+}
 class TR_Memory;
 
-extern "C" bool initializeJit();
-extern "C" bool initializeJitWithOptions(char * options);
-extern "C" uint32_t compileMethodBuilder(TR::MethodBuilder *m, uint8_t **entry);
-extern "C" void shutdownJit();
+extern "C" bool
+initializeJit();
+extern "C" bool
+initializeJitWithOptions(char* options);
+extern "C" uint32_t
+compileMethodBuilder(TR::MethodBuilder* m, uint8_t** entry);
+extern "C" void
+shutdownJit();

@@ -16,42 +16,44 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_Z_CODEGENERATORBASE_INCL
 #define TEST_Z_CODEGENERATORBASE_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef TEST_CODEGENERATORBASE_CONNECTOR
 #define TEST_CODEGENERATORBASE_CONNECTOR
 
-namespace TestCompiler { namespace Z { class CodeGenerator; } }
-namespace TestCompiler { typedef Z::CodeGenerator CodeGeneratorConnector; }
+namespace TestCompiler {
+namespace Z {
+class CodeGenerator;
+}
+}
+namespace TestCompiler {
+typedef Z::CodeGenerator CodeGeneratorConnector;
+}
 
 #else
 #error TestCompiler::Z::CodeGenerator expected to be a primary connector, but a TestCompiler connector is already defined
 #endif
 
-
-#include "compilertest/codegen/TestCodeGenerator.hpp"
 #include "codegen/LinkageConventionsEnum.hpp"
+#include "compilertest/codegen/TestCodeGenerator.hpp"
 
-
-namespace TestCompiler
-{
-namespace Z
-{
+namespace TestCompiler {
+namespace Z {
 
 class OMR_EXTENSIBLE CodeGenerator : public TestCompiler::CodeGenerator
-   {
-   public:
-
-   CodeGenerator();
-
-   };
+{
+public:
+  CodeGenerator();
+};
 
 } // namespace Z
 } // namespace TestCompiler

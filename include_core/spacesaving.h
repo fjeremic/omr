@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #if !defined(SPACESAVING_H_)
 #define SPACESAVING_H_
@@ -29,25 +30,29 @@
 #include "ranking.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef struct {
-	OMRRanking *ranking;
-	OMRPortLibrary *portLib;
-} OMRSpaceSaving;
+  typedef struct
+  {
+    OMRRanking* ranking;
+    OMRPortLibrary* portLib;
+  } OMRSpaceSaving;
 
-OMRSpaceSaving *spaceSavingNew(OMRPortLibrary *portLibrary, uint32_t size);
-void spaceSavingFree(OMRSpaceSaving *spaceSaving);
-void spaceSavingUpdate(OMRSpaceSaving *spaceSaving, void *data, uintptr_t count);
-void spaceSavingClear(OMRSpaceSaving *spaceSaving);
-void *spaceSavingGetKthMostFreq(OMRSpaceSaving *spaceSaving, uintptr_t k);
-uintptr_t spaceSavingGetKthMostFreqCount(OMRSpaceSaving *spaceSaving, uintptr_t k);
-uintptr_t spaceSavingGetCurSize(OMRSpaceSaving *spaceSaving);
+  OMRSpaceSaving* spaceSavingNew(OMRPortLibrary* portLibrary, uint32_t size);
+  void spaceSavingFree(OMRSpaceSaving* spaceSaving);
+  void spaceSavingUpdate(OMRSpaceSaving* spaceSaving,
+                         void* data,
+                         uintptr_t count);
+  void spaceSavingClear(OMRSpaceSaving* spaceSaving);
+  void* spaceSavingGetKthMostFreq(OMRSpaceSaving* spaceSaving, uintptr_t k);
+  uintptr_t spaceSavingGetKthMostFreqCount(OMRSpaceSaving* spaceSaving,
+                                           uintptr_t k);
+  uintptr_t spaceSavingGetCurSize(OMRSpaceSaving* spaceSaving);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif

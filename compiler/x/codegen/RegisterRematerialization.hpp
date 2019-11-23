@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef REGISTERREMATERIALIZATION_INCL
@@ -25,15 +26,45 @@
 #include "codegen/RegisterConstants.hpp"
 #include "env/jittypes.h"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Instruction; }
-namespace TR { class MemoryReference; }
-namespace TR { class Node; }
-namespace TR { class Register; }
-namespace TR { class SymbolReference; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Instruction;
+}
+namespace TR {
+class MemoryReference;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
+namespace TR {
+class SymbolReference;
+}
 
-void setDiscardableIfPossible(TR_RematerializableTypes, TR::Register *, TR::Node *, TR::Instruction *, TR::MemoryReference  *, TR::CodeGenerator *);
-void setDiscardableIfPossible(TR_RematerializableTypes, TR::Register *, TR::Node *, TR::Instruction *, intptrj_t, TR::CodeGenerator *);
-void setDiscardableIfPossible(TR_RematerializableTypes, TR::Register *, TR::Node *, TR::Instruction *, TR::SymbolReference*, TR::CodeGenerator *);
+void
+setDiscardableIfPossible(TR_RematerializableTypes,
+                         TR::Register*,
+                         TR::Node*,
+                         TR::Instruction*,
+                         TR::MemoryReference*,
+                         TR::CodeGenerator*);
+void
+setDiscardableIfPossible(TR_RematerializableTypes,
+                         TR::Register*,
+                         TR::Node*,
+                         TR::Instruction*,
+                         intptrj_t,
+                         TR::CodeGenerator*);
+void
+setDiscardableIfPossible(TR_RematerializableTypes,
+                         TR::Register*,
+                         TR::Node*,
+                         TR::Instruction*,
+                         TR::SymbolReference*,
+                         TR::CodeGenerator*);
 
 #endif

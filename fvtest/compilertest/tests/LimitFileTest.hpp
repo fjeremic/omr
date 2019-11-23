@@ -16,40 +16,45 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_LIMITFILE_INCL
 #define TEST_LIMITFILE_INCL
 
-#include <vector>
 #include "gtest/gtest.h"
+#include <vector>
 
 namespace TestCompiler {
 
 class LimitFileTest : public ::testing::Test
-   {
-   public:
-   LimitFileTest();
-   ~LimitFileTest();
+{
+public:
+  LimitFileTest();
+  ~LimitFileTest();
 
-   void createVLog(const char *vlog, const char *limitFile = NULL);
-   void createAndCheckVLog(const char *vlog, const char *limitFile = NULL, int *iNegLine = NULL);
+  void createVLog(const char* vlog, const char* limitFile = NULL);
+  void createAndCheckVLog(const char* vlog,
+                          const char* limitFile = NULL,
+                          int* iNegLine = NULL);
 
-   void checkVLogForMethod(const char *vlog, const char *method, const char *level = "warm", int *foundOnLine = NULL);
+  void checkVLogForMethod(const char* vlog,
+                          const char* method,
+                          const char* level = "warm",
+                          int* foundOnLine = NULL);
 
-   protected:
-   void delayUnlink(const char *file);
+protected:
+  void delayUnlink(const char* file);
 
-   private:
-   std::vector<const char *> _vlog;
+private:
+  std::vector<const char*> _vlog;
 
-   bool fileExists(const char *name);
-   void generateVLog(const char *vlog, const char *limitFile = NULL);
+  bool fileExists(const char* name);
+  void generateVLog(const char* vlog, const char* limitFile = NULL);
 
-   void compileTests();
-   };
-
+  void compileTests();
+};
 }
 
 #endif // !defined(TEST_LIMITFILE_INCL)

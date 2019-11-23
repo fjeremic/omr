@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -28,9 +29,9 @@
 #if !defined(POOLITERATOR_HPP_)
 #define POOLITERATOR_HPP_
 
+#include "modronbase.h"
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "modronbase.h"
 #include "omrpool.h"
 #include "pool_api.h"
 
@@ -40,39 +41,39 @@
  */
 class GC_PoolIterator
 {
-	J9Pool *_pool;
-	pool_state _state;
-	void **_nextValue;	
+  J9Pool* _pool;
+  pool_state _state;
+  void** _nextValue;
 
 public:
+  /**
+   * Initialize an existing iterator with a new pool.
+   */
+  MMINLINE void init(J9Pool* aPool)
+  {
+    _pool = aPool;
+    if (NULL != _pool) {
+      _nextValue = (void**)pool_startDo(_pool, &_state);
+    } else {
+      _nextValue = NULL;
+    }
+  }
 
-	/**
-	 * Initialize an existing iterator with a new pool.
-	 */
-	MMINLINE void init(J9Pool *aPool)
-	{
-		_pool = aPool;
-		if(NULL != _pool) {
-			_nextValue = (void **)pool_startDo(_pool, &_state);
-		} else {
-			_nextValue = NULL;
-		}
-	}
+  /**
+   * @note This constructor will accept NULL (needed by
+   * GC_VMThreadJNISlotIterator) but behaviour of nextSlot() is undefined after
+   * that.
+   */
+  GC_PoolIterator(J9Pool* aPool)
+    : _pool(aPool)
+    , _nextValue(NULL)
+  {
+    if (_pool) {
+      _nextValue = (void**)pool_startDo(_pool, &_state);
+    }
+  };
 
-	/**
-	 * @note This constructor will accept NULL (needed by GC_VMThreadJNISlotIterator) but behaviour of nextSlot() is undefined after that. 
-	 */
-	GC_PoolIterator(J9Pool *aPool) :
-		_pool(aPool),
-		_nextValue(NULL)
-	{
-		if (_pool) {
-			_nextValue = (void**)pool_startDo(_pool, &_state);
-		}
-	};
-
-	void **nextSlot();
+  void** nextSlot();
 };
 
 #endif /* POOLITERATOR_HPP_ */
-

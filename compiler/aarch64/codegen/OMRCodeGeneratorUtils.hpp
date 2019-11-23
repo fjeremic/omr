@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_ARM64_CODEGENERATOR_UTILS_INCL
@@ -24,45 +25,40 @@
 
 #include "compiler/codegen/OMRCodeGeneratorUtils.hpp"
 
-#include <stddef.h>
 #include "codegen/CodeGenerator.hpp"
 #include "codegen/RealRegister.hpp"
 #include "codegen/Register.hpp"
 #include "codegen/RegisterConstants.hpp"
 #include "codegen/RegisterDependency.hpp"
+#include <stddef.h>
 
-
-namespace TR
-{
+namespace TR {
 
 /**
- * @brief Creates a pre and post condition for the specified virtual and real register
+ * @brief Creates a pre and post condition for the specified virtual and real
+ * register
  *
  * @param[in] dep : TR::RegisterDependencyConditions to add the dependencies to
- * @param[in] vreg : the virtual register.  If NULL then a new virtual register of kind rk will
- *                   be allocated
+ * @param[in] vreg : the virtual register.  If NULL then a new virtual register
+ * of kind rk will be allocated
  * @param[in] rnum : the real register
- * @param[in] rk : the kind of register to allocate if one must be allocated.  Otherwise, this
- *                 parameter is ignored.
+ * @param[in] rk : the kind of register to allocate if one must be allocated.
+ * Otherwise, this parameter is ignored.
  * @param[in] cg : CodeGenerator object
  */
 static inline void
-addDependency(
-      TR::RegisterDependencyConditions *dep,
-      TR::Register *vreg,
-      TR::RealRegister::RegNum rnum,
-      TR_RegisterKinds rk,
-      TR::CodeGenerator *cg)
-   {
-   if (vreg == NULL)
-      {
-      vreg = cg->allocateRegister(rk);
-      }
-   dep->addPreCondition(vreg, rnum);
-   dep->addPostCondition(vreg, rnum);
-   }
-
+addDependency(TR::RegisterDependencyConditions* dep,
+              TR::Register* vreg,
+              TR::RealRegister::RegNum rnum,
+              TR_RegisterKinds rk,
+              TR::CodeGenerator* cg)
+{
+  if (vreg == NULL) {
+    vreg = cg->allocateRegister(rk);
+  }
+  dep->addPreCondition(vreg, rnum);
+  dep->addPostCondition(vreg, rnum);
+}
 }
 
 #endif
-

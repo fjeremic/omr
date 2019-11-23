@@ -16,59 +16,60 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "runtime/Runtime.hpp"
 
 TR_RuntimeHelperTable runtimeHelpers;
 
-#if (defined(__IBMCPP__) || defined(__IBMC__) && !defined(MVS)) && !defined(LINUXPPC64)
- #if defined(AIXPPC)
-  #define JIT_HELPER(x) extern "C" void *x
- #else
-  #define JIT_HELPER(x) extern "C" __cdecl x()
- #endif
+#if (defined(__IBMCPP__) || defined(__IBMC__) && !defined(MVS)) &&             \
+  !defined(LINUXPPC64)
+#if defined(AIXPPC)
+#define JIT_HELPER(x) extern "C" void* x
 #else
- #if defined(LINUXPPC64)
-  #define JIT_HELPER(x) extern "C" void *x
- #elif defined(LINUX)
-  #define JIT_HELPER(x) extern "C" void x()
- #else
-  #define JIT_HELPER(x) extern "C" x()
- #endif
+#define JIT_HELPER(x) extern "C" __cdecl x()
+#endif
+#else
+#if defined(LINUXPPC64)
+#define JIT_HELPER(x) extern "C" void* x
+#elif defined(LINUX)
+#define JIT_HELPER(x) extern "C" void x()
+#else
+#define JIT_HELPER(x) extern "C" x()
+#endif
 #endif
 
+void*
+TR_RuntimeHelperTable::translateAddress(void* a)
+{
+  return a;
+}
 
 void*
-TR_RuntimeHelperTable::translateAddress(void * a)
-   {
-   return a;
-   }
-
-void* TR_RuntimeHelperTable::getFunctionEntryPointOrConst(TR_RuntimeHelper h)
-   {
-   if (h < TR_numRuntimeHelpers)
-      {
-      if (_linkage[h] == TR_Helper)
-         return translateAddress(_helpers[h]);
-      else
-         return _helpers[h];
-      }
-   else
-      return reinterpret_cast<void*>(TR_RuntimeHelperTable::INVALID_FUNCTION_POINTER);
-   }
+TR_RuntimeHelperTable::getFunctionEntryPointOrConst(TR_RuntimeHelper h)
+{
+  if (h < TR_numRuntimeHelpers) {
+    if (_linkage[h] == TR_Helper)
+      return translateAddress(_helpers[h]);
+    else
+      return _helpers[h];
+  } else
+    return reinterpret_cast<void*>(
+      TR_RuntimeHelperTable::INVALID_FUNCTION_POINTER);
+}
 
 void*
 TR_RuntimeHelperTable::getFunctionPointer(TR_RuntimeHelper h)
-   {
-   if ((h < TR_numRuntimeHelpers) && (_linkage[h] == TR_Helper))
-      return _helpers[h];
-   else
-      return reinterpret_cast<void*>(TR_RuntimeHelperTable::INVALID_FUNCTION_POINTER);
-   }
+{
+  if ((h < TR_numRuntimeHelpers) && (_linkage[h] == TR_Helper))
+    return _helpers[h];
+  else
+    return reinterpret_cast<void*>(
+      TR_RuntimeHelperTable::INVALID_FUNCTION_POINTER);
+}
 
 void
 initializeJitRuntimeHelperTable(char isSMP)
-   {
-   }
+{}

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef EVENTTYPES_HPP_
@@ -29,22 +30,23 @@
  * to index into UT_FORMAT_TYPES when creating formatting strings for AppTrace.
  * =============================================================================
  */
-typedef enum TraceEventType {
-	UT_EVENT_TYPE 		= 0,
-	UT_EXCEPTION_TYPE	= 1,
-	UT_ENTRY_TYPE		= 2,
-	UT_ENTRY_EXCPT_TYPE	= 3,
-	UT_EXIT_TYPE		= 4,
-	UT_EXIT_EXCPT_TYPE	= 5,
-	UT_MEM_TYPE			= 6,
-	UT_MEM_EXCPT_TYPE	= 7,
-	UT_DEBUG_TYPE		= 8,
-	UT_DEBUG_EXCPT_TYPE	= 9,
-	UT_PERF_TYPE		= 10,
-	UT_PERF_EXCPT_TYPE	= 11,
-	UT_ASSERT_TYPE		= 12,
-	UT_MAX_TYPES		= 13,
-	TraceEventType_EnsureWideEnum = 0x1000000 /* force 4-byte enum */
+typedef enum TraceEventType
+{
+  UT_EVENT_TYPE = 0,
+  UT_EXCEPTION_TYPE = 1,
+  UT_ENTRY_TYPE = 2,
+  UT_ENTRY_EXCPT_TYPE = 3,
+  UT_EXIT_TYPE = 4,
+  UT_EXIT_EXCPT_TYPE = 5,
+  UT_MEM_TYPE = 6,
+  UT_MEM_EXCPT_TYPE = 7,
+  UT_DEBUG_TYPE = 8,
+  UT_DEBUG_EXCPT_TYPE = 9,
+  UT_PERF_TYPE = 10,
+  UT_PERF_EXCPT_TYPE = 11,
+  UT_ASSERT_TYPE = 12,
+  UT_MAX_TYPES = 13,
+  TraceEventType_EnsureWideEnum = 0x1000000 /* force 4-byte enum */
 } TraceEventType;
 
 /*

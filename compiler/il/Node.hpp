@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_NODE_INCL
@@ -24,36 +25,35 @@
 
 #include "il/OMRNode.hpp"
 
-#include <stddef.h>
-#include <stdint.h>
 #include "il/ILOpCodes.hpp"
 #include "infra/Annotations.hpp"
+#include <stddef.h>
+#include <stdint.h>
 
-namespace TR
-{
+namespace TR {
 
 class OMR_EXTENSIBLE Node : public OMR::NodeConnector
 {
 
 public:
+  Node()
+    : OMR::NodeConnector()
+  {}
 
-   Node() : OMR::NodeConnector() {}
+  Node(TR::Node* originatingByteCodeNode,
+       TR::ILOpCodes op,
+       uint16_t numChildren)
+    : OMR::NodeConnector(originatingByteCodeNode, op, numChildren)
+  {}
 
-   Node(TR::Node *originatingByteCodeNode, TR::ILOpCodes op,
-        uint16_t numChildren)
-      : OMR::NodeConnector(originatingByteCodeNode, op, numChildren)
-      {}
+  Node(Node* from, uint16_t numChildren = 0)
+    : OMR::NodeConnector(from, numChildren)
+  {}
 
-   Node(Node *from, uint16_t numChildren = 0)
-      : OMR::NodeConnector(from, numChildren)
-      {}
-
-   Node(Node& from)
-      : OMR::NodeConnector(from)
-      {}
-
+  Node(Node& from)
+    : OMR::NodeConnector(from)
+  {}
 };
-
 }
 
 #endif

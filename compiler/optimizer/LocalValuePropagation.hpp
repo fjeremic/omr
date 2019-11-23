@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_LOCALVALUEPROPAGATION_INCL
@@ -44,24 +45,22 @@ namespace TR {
  *  engine and home to extension points of language specific optimizations
  */
 class LocalValuePropagation : public TR::ValuePropagation
-   {
-   public:
+{
+public:
+  LocalValuePropagation(TR::OptimizationManager* manager);
+  static TR::Optimization* create(TR::OptimizationManager* manager)
+  {
+    return new (manager->allocator()) TR::LocalValuePropagation(manager);
+  }
 
-   LocalValuePropagation(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR::LocalValuePropagation(manager);
-      }
+  virtual int32_t perform();
+  virtual int32_t performOnBlock(TR::Block*);
+  virtual void prePerformOnBlocks();
+  virtual void postPerformOnBlocks();
+  virtual const char* optDetailString() const throw();
 
-   virtual int32_t perform();
-   virtual int32_t performOnBlock(TR::Block *);
-   virtual void prePerformOnBlocks();
-   virtual void postPerformOnBlocks();
-   virtual const char * optDetailString() const throw();
-
-   private:
-
-   TR::TreeTop *processBlock(TR::TreeTop *start);
-   };
+private:
+  TR::TreeTop* processBlock(TR::TreeTop* start);
+};
 }
 #endif

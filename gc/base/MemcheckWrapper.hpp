@@ -17,12 +17,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
  * Wrapper for communication between valgrind and GC.
-*/
+ */
 
 #ifndef _MEMCHECK_WRAPPER_H_
 #define _MEMCHECK_WRAPPER_H_
@@ -48,16 +49,20 @@ class MM_EnvironmentBase;
  * @param[in] env pointer to MM_EnvironmentBase.
  * @param[in] poolAddr address to refer to memory pool.
  *
-*/
-void valgrindCreateMempool(MM_GCExtensionsBase *extensions, MM_EnvironmentBase* env, uintptr_t poolAddr);
+ */
+void
+valgrindCreateMempool(MM_GCExtensionsBase* extensions,
+                      MM_EnvironmentBase* env,
+                      uintptr_t poolAddr);
 
 /**
  * Destroy memory pool.
  *
  * @param[in] extensions pointer to MM_GCExtensionsBase.
  *
-*/
-void valgrindDestroyMempool(MM_GCExtensionsBase *extensions);
+ */
+void
+valgrindDestroyMempool(MM_GCExtensionsBase* extensions);
 
 /**
  * Allocate Object in memory pool.
@@ -67,8 +72,11 @@ void valgrindDestroyMempool(MM_GCExtensionsBase *extensions);
  * @param[in] baseAddress starting address of the object.
  * @param[in] size size of the object.
  *
-*/
-void valgrindMempoolAlloc(MM_GCExtensionsBase *extensions, uintptr_t baseAddress, uintptr_t size);
+ */
+void
+valgrindMempoolAlloc(MM_GCExtensionsBase* extensions,
+                     uintptr_t baseAddress,
+                     uintptr_t size);
 
 /**
  * Mark a address range as defined (accessable).
@@ -76,8 +84,9 @@ void valgrindMempoolAlloc(MM_GCExtensionsBase *extensions, uintptr_t baseAddress
  * @param[in] starting address of the range.
  * @param[in] size size of the range.
  *
-*/
-void valgrindMakeMemDefined(uintptr_t address, uintptr_t size);
+ */
+void
+valgrindMakeMemDefined(uintptr_t address, uintptr_t size);
 
 /**
  * Mark a address range as noaccess (unaccessable).
@@ -85,8 +94,9 @@ void valgrindMakeMemDefined(uintptr_t address, uintptr_t size);
  * @param[in] starting address of the range.
  * @param[in] size size of the range.
  *
-*/
-void valgrindMakeMemNoaccess(uintptr_t address, uintptr_t size);
+ */
+void
+valgrindMakeMemNoaccess(uintptr_t address, uintptr_t size);
 
 /**
  * Mark a address range as undefined
@@ -94,9 +104,9 @@ void valgrindMakeMemNoaccess(uintptr_t address, uintptr_t size);
  * @param[in] starting address of the range.
  * @param[in] size size of the range.
  *
-*/
-void valgrindMakeMemUndefined(uintptr_t address, uintptr_t size);
-
+ */
+void
+valgrindMakeMemUndefined(uintptr_t address, uintptr_t size);
 
 /**
  * Free objects in given range from memory pool
@@ -106,8 +116,11 @@ void valgrindMakeMemUndefined(uintptr_t address, uintptr_t size);
  * @param[in] baseAddress starting address of the range.
  * @param[in] size size of the range.
  *
-*/
-void valgrindClearRange(MM_GCExtensionsBase *extensions, uintptr_t baseAddress, uintptr_t size);
+ */
+void
+valgrindClearRange(MM_GCExtensionsBase* extensions,
+                   uintptr_t baseAddress,
+                   uintptr_t size);
 
 /**
  * Free a object from memory pool
@@ -116,8 +129,9 @@ void valgrindClearRange(MM_GCExtensionsBase *extensions, uintptr_t baseAddress, 
  * @param[in] extensions pointer to MM_GCExtensionsBase.
  * @param[in] baseAddress starting address of the range.
  *
-*/
-void valgrindFreeObject(MM_GCExtensionsBase *extensions, uintptr_t baseAddress);
+ */
+void
+valgrindFreeObject(MM_GCExtensionsBase* extensions, uintptr_t baseAddress);
 
 /**
  * Check if object exists in memory pool.
@@ -127,8 +141,10 @@ void valgrindFreeObject(MM_GCExtensionsBase *extensions, uintptr_t baseAddress);
  *
  * @return boolean: true if it exists.
  *
-*/
-bool valgrindCheckObjectInPool(MM_GCExtensionsBase *extensions, uintptr_t baseAddress);
+ */
+bool
+valgrindCheckObjectInPool(MM_GCExtensionsBase* extensions,
+                          uintptr_t baseAddress);
 
 /**
  * Resize an object in memory pool.
@@ -139,8 +155,12 @@ bool valgrindCheckObjectInPool(MM_GCExtensionsBase *extensions, uintptr_t baseAd
  * @param[in] oldSize size of the old object.
  * @param[in] newSize size of the new object.
  *
-*/
-void valgrindResizeObject(MM_GCExtensionsBase *extensions, uintptr_t baseAddress, uintptr_t oldSize, uintptr_t newSize);
+ */
+void
+valgrindResizeObject(MM_GCExtensionsBase* extensions,
+                     uintptr_t baseAddress,
+                     uintptr_t oldSize,
+                     uintptr_t newSize);
 
 #endif /* defined(OMR_VALGRIND_MEMCHECK) */
 

@@ -16,42 +16,42 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ddr/macros/MacroInfo.hpp"
 
-MacroInfo::MacroInfo(const string &typeName)
-	: _typeName(typeName)
-{
-}
+MacroInfo::MacroInfo(const string& typeName)
+  : _typeName(typeName)
+{}
 
-const string &
+const string&
 MacroInfo::getTypeName() const
 {
-	return _typeName;
+  return _typeName;
 }
 
 void
-MacroInfo::addMacro(const string &name, const string &value)
+MacroInfo::addMacro(const string& name, const string& value)
 {
-	_macros.insert(make_pair(name, value));
+  _macros.insert(make_pair(name, value));
 }
 
 size_t
 MacroInfo::getNumMacros() const
 {
-	return _macros.size();
+  return _macros.size();
 }
 
-set<pair<string, string> >::const_iterator
+set<pair<string, string>>::const_iterator
 MacroInfo::getMacroStart() const
 {
-	return _macros.begin();
+  return _macros.begin();
 }
 
-set<pair<string, string> >::const_iterator
+set<pair<string, string>>::const_iterator
 MacroInfo::getMacroEnd() const
 {
-	return _macros.end();
+  return _macros.end();
 }

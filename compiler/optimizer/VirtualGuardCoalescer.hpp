@@ -16,14 +16,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef VIRTUALGUARDCOALESCER_HPP
 #define VIRTUALGUARDCOALESCER_HPP
 
-#include <stddef.h>
-#include <stdint.h>
 #include "compile/Method.hpp"
 #include "env/TRMemory.hpp"
 #include "il/Block.hpp"
@@ -35,171 +34,205 @@
 #include "infra/List.hpp"
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
+#include <stddef.h>
+#include <stdint.h>
 
 #define MALFORMED_GUARD MAX_SCOUNT
 
 class TR_ValueNumberInfo;
-namespace TR { class CFG; }
-namespace TR { class Compilation; }
-namespace TR { class SymbolReference; }
+namespace TR {
+class CFG;
+}
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class SymbolReference;
+}
 
-struct TR_SymNodePair {
-   TR::SymbolReference *_symRef;
-   TR::Node *_node;
-   };
+struct TR_SymNodePair
+{
+  TR::SymbolReference* _symRef;
+  TR::Node* _node;
+};
 
 class TR_VirtualGuardTailSplitter : public TR::Optimization
-   {
-   public:
-   TR_VirtualGuardTailSplitter(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_VirtualGuardTailSplitter(manager);
+{
+public:
+  TR_VirtualGuardTailSplitter(TR::OptimizationManager* manager);
+  static TR::Optimization* create(TR::OptimizationManager* manager)
+  {
+    return new (manager->allocator()) TR_VirtualGuardTailSplitter(manager);
+  }
+
+  virtual int32_t perform();
+  virtual const char* optDetailString() const throw();
+
+private:
+  class VGInfo
+  {
+  public:
+    TR_ALLOC(TR_Memory::VirtualGuardTailSplitter)
+
+    VGInfo(TR::Block* branch,
+           TR::Block* call,
+           TR::Block* inlined,
+           TR::Block* merge,
+           VGInfo* parent)
+      : _branch(branch)
+      , _call(call)
+      , _inlined(inlined)
+      , _merge(merge)
+      , _referenceCount(0)
+      , _valid(true)
+    {
+      if (!parent)
+        _parent = this;
+      else {
+        _parent = parent;
+        parent->addChild(this);
       }
+    }
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
+    VGInfo* getRoot() { return _parent == this ? this : _parent->getRoot(); }
 
-   private:
+    bool stillExists() { return _valid; }
+    void markRemoved();
+    bool isRoot() { return _parent == this; }
+    bool isLeaf() { return _referenceCount == 0; }
 
-   class VGInfo
-      {
-      public:
-      TR_ALLOC(TR_Memory::VirtualGuardTailSplitter)
+    bool isNonTrivialRoot() { return _parent == this && _referenceCount != 0; }
+    bool isNonTrivialLeaf()
+    {
+      return _parent != this && _referenceCount == 0;
+    } // a leaf that is not a root
 
-      VGInfo(TR::Block *branch, TR::Block *call, TR::Block *inlined,
-             TR::Block *merge, VGInfo *parent)
-         : _branch(branch), _call(call), _inlined(inlined),
-           _merge(merge), _referenceCount(0), _valid(true)
-            {
-            if (!parent)
-               _parent = this;
-            else
-               {
-               _parent = parent;
-               parent->addChild(this);
-               }
-            }
+    void addChild(VGInfo*) { ++_referenceCount; }
+    void removeChild(VGInfo*) { --_referenceCount; }
 
-      VGInfo *getRoot()
-            { return _parent == this?  this : _parent->getRoot(); }
+    bool isExceptionSafe() { return _call->getExceptionSuccessors().empty(); }
 
-      bool stillExists() { return _valid; }
-      void markRemoved();
-      bool isRoot() { return _parent == this; }
-      bool isLeaf() { return _referenceCount == 0; }
+    TR::Block* getBranchBlock() { return _branch; }
+    TR::Block* getMergeBlock() { return _merge; }
+    TR::Block* getCallBlock() { return _call; }
+    TR::Block* getFirstInlinedBlock() { return _inlined; }
 
-      bool isNonTrivialRoot() { return _parent == this && _referenceCount != 0; }
-      bool isNonTrivialLeaf() { return _parent != this && _referenceCount == 0; } // a leaf that is not a root
+    VGInfo* getParent() { return _parent; }
 
-      void addChild(VGInfo *) { ++_referenceCount; }
-      void removeChild(VGInfo *) { --_referenceCount; }
+    scount_t getIndex()
+    {
+      return _branch->getLastRealTreeTop()->getNode()->getLocalIndex();
+    }
+    uint32_t getNumber() { return _branch->getNumber(); }
 
-      bool isExceptionSafe() { return _call->getExceptionSuccessors().empty(); }
+  private:
+    VGInfo* _parent;
+    TR::Block* _branch;
+    TR::Block* _call;
+    TR::Block* _inlined;
+    TR::Block* _merge;
 
-      TR::Block *getBranchBlock() { return _branch; }
-      TR::Block *getMergeBlock() { return _merge; }
-      TR::Block *getCallBlock() { return _call; }
-      TR::Block *getFirstInlinedBlock() { return _inlined; }
+    uint8_t _referenceCount;
+    bool _valid;
+  };
 
-      VGInfo *getParent() { return _parent; }
+  void initializeDataStructures();
+  void splitLinear(TR::Block* start, TR::Block* end);
 
-      scount_t getIndex() { return _branch->getLastRealTreeTop()->getNode()->getLocalIndex(); }
-      uint32_t getNumber() { return _branch->getNumber(); }
+  void remergeGuard(TR_BlockCloner&, VGInfo*);
 
-      private:
-      VGInfo   *_parent;
-      TR::Block *_branch;
-      TR::Block *_call;
-      TR::Block *_inlined;
-      TR::Block *_merge;
+  bool isBlockInInlinedCallTreeOf(VGInfo*, TR::Block* block);
+  VGInfo* recognizeVirtualGuard(TR::Block*, VGInfo* parent);
+  VGInfo* getVirtualGuardInfo(TR::Block*);
 
-      uint8_t   _referenceCount;
-      bool      _valid;
-      };
+  TR::Block* lookAheadAndSplit(VGInfo* info, List<TR::Block>* stack);
+  void transformLinear(TR::Block* first, TR::Block* last);
 
-   void initializeDataStructures();
-   void splitLinear(TR::Block *start, TR::Block *end);
+  bool isKill(TR::Block*);
+  bool isKill(TR::Node*);
 
-   void remergeGuard(TR_BlockCloner&, VGInfo *);
+  TR::Node* getFirstCallNode(TR::Block* block);
 
-   bool    isBlockInInlinedCallTreeOf(VGInfo *, TR::Block *block);
-   VGInfo *recognizeVirtualGuard(TR::Block *, VGInfo *parent);
-   VGInfo *getVirtualGuardInfo(TR::Block *);
+  TR::CFG* _cfg;
 
-   TR::Block *lookAheadAndSplit(VGInfo *info, List<TR::Block> *stack);
-   void transformLinear(TR::Block *first, TR::Block *last);
-
-   bool isKill(TR::Block *);
-   bool isKill(TR::Node  *);
-
-   TR::Node *getFirstCallNode(TR::Block *block);
-
-   TR::CFG *_cfg;
-
-   // Virtual Guard Information Table and Accessor Methods
-   //
-   uint32_t  _numGuards;
-   vcount_t  _visitCount;
-   VGInfo *getGuard(uint32_t index)   { return index == MALFORMED_GUARD ? NULL : _table[index]; }
-   VGInfo *getGuard(TR::Block *branch) { return getGuard(branch->getLastRealTreeTop()->getNode()); }
-   VGInfo *getGuard(TR::Node  *branch) { return getGuard(branch->getLocalIndex()); }
-   void    putGuard(uint32_t index, VGInfo *info);
-   VGInfo **_table;
-   bool _splitDone;
-   };
+  // Virtual Guard Information Table and Accessor Methods
+  //
+  uint32_t _numGuards;
+  vcount_t _visitCount;
+  VGInfo* getGuard(uint32_t index)
+  {
+    return index == MALFORMED_GUARD ? NULL : _table[index];
+  }
+  VGInfo* getGuard(TR::Block* branch)
+  {
+    return getGuard(branch->getLastRealTreeTop()->getNode());
+  }
+  VGInfo* getGuard(TR::Node* branch)
+  {
+    return getGuard(branch->getLocalIndex());
+  }
+  void putGuard(uint32_t index, VGInfo* info);
+  VGInfo** _table;
+  bool _splitDone;
+};
 
 class TR_InnerPreexistence : public TR::Optimization
-   {
-   public:
-   TR_InnerPreexistence(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_InnerPreexistence(manager);
-      }
+{
+public:
+  TR_InnerPreexistence(TR::OptimizationManager* manager);
+  static TR::Optimization* create(TR::OptimizationManager* manager)
+  {
+    return new (manager->allocator()) TR_InnerPreexistence(manager);
+  }
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
+  virtual int32_t perform();
+  virtual const char* optDetailString() const throw();
 
-   class GuardInfo
-      {
-      public:
-      TR_ALLOC(TR_Memory::VirtualGuardTailSplitter)
-      GuardInfo(TR::Compilation *, TR::Block *block, GuardInfo *parent, TR_ValueNumberInfo *vnInfo, uint32_t numInlinedSites);
+  class GuardInfo
+  {
+  public:
+    TR_ALLOC(TR_Memory::VirtualGuardTailSplitter)
+    GuardInfo(TR::Compilation*,
+              TR::Block* block,
+              GuardInfo* parent,
+              TR_ValueNumberInfo* vnInfo,
+              uint32_t numInlinedSites);
 
-      TR::Block *getBlock() { return _block; }
-      TR::Node  *getGuardNode() { return _block->getLastRealTreeTop()->getNode(); }
-      TR::Node  *getCallNode () { return getGuardNode()->getVirtualCallNodeForGuard(); }
+    TR::Block* getBlock() { return _block; }
+    TR::Node* getGuardNode() { return _block->getLastRealTreeTop()->getNode(); }
+    TR::Node* getCallNode()
+    {
+      return getGuardNode()->getVirtualCallNodeForGuard();
+    }
 
-      GuardInfo *getParent() { return _parent; }
-      TR_BitVector *getArgVNs() { return _argVNs; }
-      int32_t getThisVN() { return _thisVN; }
+    GuardInfo* getParent() { return _parent; }
+    TR_BitVector* getArgVNs() { return _argVNs; }
+    int32_t getThisVN() { return _thisVN; }
 
-      void setVisible(uint32_t inner) { _innerSubTree->set(inner); }
-      bool isVisible (uint32_t inner) { return _innerSubTree->isSet(inner); }
-      TR_BitVector *getVisibleGuards() { return _innerSubTree; }
+    void setVisible(uint32_t inner) { _innerSubTree->set(inner); }
+    bool isVisible(uint32_t inner) { return _innerSubTree->isSet(inner); }
+    TR_BitVector* getVisibleGuards() { return _innerSubTree; }
 
-      void setHasBeenDevirtualized() { _hasBeenDevirtualized = true; }
-      bool getHasBeenDevirtualized() { return _hasBeenDevirtualized; }
+    void setHasBeenDevirtualized() { _hasBeenDevirtualized = true; }
+    bool getHasBeenDevirtualized() { return _hasBeenDevirtualized; }
 
+  private:
+    GuardInfo* _parent;
+    TR::Block* _block;
+    uint32_t _thisVN;
+    TR_BitVector* _argVNs;
+    bool _hasBeenDevirtualized;
+    TR_BitVector* _innerSubTree;
+  };
 
-      private:
-      GuardInfo    *_parent;
-      TR::Block     *_block;
-      uint32_t      _thisVN;
-      TR_BitVector *_argVNs;
-      bool          _hasBeenDevirtualized;
-      TR_BitVector *_innerSubTree;
-      };
+private:
+  int32_t initialize();
+  void transform();
+  void devirtualize(GuardInfo* guard);
 
-   private:
-   int32_t initialize();
-   void    transform();
-   void    devirtualize(GuardInfo *guard);
-
-   int32_t     _numInlinedSites;
-   GuardInfo **_guardTable;
-   TR_ValueNumberInfo *_vnInfo;
-   };
+  int32_t _numInlinedSites;
+  GuardInfo** _guardTable;
+  TR_ValueNumberInfo* _vnInfo;
+};
 
 #endif

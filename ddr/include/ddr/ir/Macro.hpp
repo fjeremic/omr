@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef MACRO_HPP
@@ -28,29 +29,21 @@
 class Macro
 {
 private:
-	std::string _value;
+  std::string _value;
 
 public:
-	std::string _name;
+  std::string _name;
 
-	Macro(const std::string &name, const std::string &value)
-		: _value(value), _name(name)
-	{
-	}
+  Macro(const std::string& name, const std::string& value)
+    : _value(value)
+    , _name(name)
+  {}
 
-	const std::string &
-	getValue() const
-	{
-		return _value;
-	}
+  const std::string& getValue() const { return _value; }
 
-	void
-	setValue(const std::string &value)
-	{
-		_value = value;
-	}
+  void setValue(const std::string& value) { _value = value; }
 
-	DDR_RC getNumeric(long long *ret) const;
+  DDR_RC getNumeric(long long* ret) const;
 };
 
 #endif /* MACRO_HPP */

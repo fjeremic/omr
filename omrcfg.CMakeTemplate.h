@@ -17,12 +17,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
- * The OMR build configuration. A public header. Controls the APIs of all other headers.
- * Include at the top of every OMR source and header.
+ * The OMR build configuration. A public header. Controls the APIs of all other
+ * headers. Include at the top of every OMR source and header.
  */
 
 #if !defined(OMRCFG_H_)
@@ -80,9 +81,9 @@
 #cmakedefine OMR_RAS_TDF_TRACE
 
 /**
- * Support options to adapt spinning as controlled by options provided to the vm.
- * Requires flag: OMR_THR_JLM_HOLD_TIMES
- * ifRemoved: No adaptive spinning supported
+ * Support options to adapt spinning as controlled by options provided to the
+ * vm. Requires flag: OMR_THR_JLM_HOLD_TIMES ifRemoved: No adaptive spinning
+ * supported
  */
 #cmakedefine OMR_THR_ADAPTIVE_SPIN
 
@@ -93,8 +94,8 @@
 #cmakedefine OMR_THR_JLM
 
 /**
- * Enable support for lock monitor to profile locking behaviour - counts + timings only
- * ifRemoved: Lock monitor cannot be enabled
+ * Enable support for lock monitor to profile locking behaviour - counts +
+ * timings only ifRemoved: Lock monitor cannot be enabled
  */
 #cmakedefine OMR_THR_JLM_HOLD_TIMES
 
@@ -140,7 +141,6 @@
  */
 #cmakedefine OMR_ARCH_RISCV
 
-
 #cmakedefine OMR_ENV_DATA64
 #cmakedefine OMR_ENV_GCC
 #cmakedefine OMR_ENV_LITTLE_ENDIAN
@@ -151,8 +151,8 @@
 #cmakedefine OMR_GC_VLHGC
 
 /**
- * Flag to indicate that on 64-bit platforms, the monitor slot in object headers is a U32 rather than a UDATA.
- * ifRemoved: The monitor slot is a UDATA.
+ * Flag to indicate that on 64-bit platforms, the monitor slot in object headers
+ * is a U32 rather than a UDATA. ifRemoved: The monitor slot is a UDATA.
  */
 #cmakedefine OMR_INTERP_SMALL_MONITOR_SLOT
 
@@ -162,8 +162,9 @@
 #cmakedefine OMR_OPT_CUDA
 
 /**
- * Enabling this flag implies the platform's vmem implementation is able to allocate memory top down.
- * ifRemoved: Implies the platform's vmem implementation is not able to allocate memory top down
+ * Enabling this flag implies the platform's vmem implementation is able to
+ * allocate memory top down. ifRemoved: Implies the platform's vmem
+ * implementation is not able to allocate memory top down
  */
 #cmakedefine OMR_PORT_ALLOCATE_TOP_DOWN
 
@@ -174,22 +175,25 @@
 #cmakedefine OMR_PORT_ASYNC_HANDLER
 
 /**
- * The platform is able to attempt to reserve virtual memory via a call to omrvmem_reserve_memory at the address specified by the user.
- * ifRemoved: The platform is not able to reserve virtual memory at a specific address
+ * The platform is able to attempt to reserve virtual memory via a call to
+ * omrvmem_reserve_memory at the address specified by the user. ifRemoved: The
+ * platform is not able to reserve virtual memory at a specific address
  */
 #cmakedefine OMR_PORT_CAN_RESERVE_SPECIFIC_ADDRESS
 
 /**
- * This platform is able to associate memory with a specific node, as is relevant when the system has a Non Uniform Memory Access configuration.
- * ifRemoved: This platform is not able to associate memory with a specific node.
+ * This platform is able to associate memory with a specific node, as is
+ * relevant when the system has a Non Uniform Memory Access configuration.
+ * ifRemoved: This platform is not able to associate memory with a specific
+ * node.
  */
 #cmakedefine OMR_PORT_NUMA_SUPPORT
 
 /**
- * If set, omrsig_protect will include support for registering a handler using CEEHDLR.
- * Pass OMRPORT_SIG_OPTIONS_ZOS_USE_CEEHDLR into omrsig_set_options() before the first call
- * to omrsig_protect() to turn on the use of CEEHDLR at runtime.
- * ifRemoved: omrsig_protect will not include support for CEEHDLR.
+ * If set, omrsig_protect will include support for registering a handler using
+ * CEEHDLR. Pass OMRPORT_SIG_OPTIONS_ZOS_USE_CEEHDLR into omrsig_set_options()
+ * before the first call to omrsig_protect() to turn on the use of CEEHDLR at
+ * runtime. ifRemoved: omrsig_protect will not include support for CEEHDLR.
  */
 #cmakedefine OMR_PORT_ZOS_CEEHDLRSUPPORT
 
@@ -200,8 +204,9 @@
 #cmakedefine OMR_THR_FORK_SUPPORT
 
 /**
- * Attempt to enter raw monitors using user-space spinlocks before reverting to an OS synchronization object
- * ifRemoved: All raw monitor enters will proceed directly to an OS synchronization object
+ * Attempt to enter raw monitors using user-space spinlocks before reverting to
+ * an OS synchronization object ifRemoved: All raw monitor enters will proceed
+ * directly to an OS synchronization object
  */
 #cmakedefine OMR_THR_THREE_TIER_LOCKING
 
@@ -214,13 +219,14 @@
 
 /**
  * Allows a user to select the thread notify policy: signal or broadcast.
- * ifRemoved: User will not be able to select the thread notify policy, and broadcast policy will always be used.
+ * ifRemoved: User will not be able to select the thread notify policy, and
+ * broadcast policy will always be used.
  */
 #cmakedefine OMR_NOTIFY_POLICY_CONTROL
 
 /**
- * This flag enables new synchronization prototypes which  
- * -- prevent large number of threads to spin at a time on a monitor 
+ * This flag enables new synchronization prototypes which
+ * -- prevent large number of threads to spin at a time on a monitor
  * -- avoid the thundering herd problem on wake up
  *
  * The prototypes provide the following features
@@ -237,9 +243,10 @@
 #cmakedefine OMR_THR_YIELD_ALG
 
 /**
- * This flags enables calls to omrsig_primary_signal, omrsig_primary_sigaction and
- * omrsig_handler (omrsig library). If disabled, then calls to signal and sigaction
- * will be enabled, and calls to functions in omrsig library will be disabled.
+ * This flags enables calls to omrsig_primary_signal, omrsig_primary_sigaction
+ * and omrsig_handler (omrsig library). If disabled, then calls to signal and
+ * sigaction will be enabled, and calls to functions in omrsig library will be
+ * disabled.
  */
 #cmakedefine OMRPORT_OMRSIG_SUPPORT
 
@@ -249,8 +256,8 @@
 #cmakedefine OMR_USE_ZOS_SEMAPHORES
 
 /**
- * This flag enables the usage of the MCS (queue-based) lock instead of the default
- * TATAS (Test & Test & Set) lock in the OMR thread monitor.
+ * This flag enables the usage of the MCS (queue-based) lock instead of the
+ * default TATAS (Test & Test & Set) lock in the OMR thread monitor.
  */
 #cmakedefine OMR_THR_MCS_LOCKS
 

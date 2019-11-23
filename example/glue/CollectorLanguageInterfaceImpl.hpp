@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef COLLECTORLANGUAGEINTERFACEIMPL_HPP_
@@ -38,34 +39,34 @@ class MM_MarkingScheme;
 class MM_MemorySubSpaceSemiSpace;
 
 /**
- * Class representing a collector language interface.  This implements the API between the OMR
- * functionality and the language being implemented.
+ * Class representing a collector language interface.  This implements the API
+ * between the OMR functionality and the language being implemented.
  */
-class MM_CollectorLanguageInterfaceImpl : public MM_CollectorLanguageInterface {
+class MM_CollectorLanguageInterfaceImpl : public MM_CollectorLanguageInterface
+{
 private:
 protected:
-	OMR_VM *_omrVM;
-	MM_GCExtensionsBase *_extensions;
-public:
+  OMR_VM* _omrVM;
+  MM_GCExtensionsBase* _extensions;
 
+public:
 private:
 protected:
-	bool initialize(OMR_VM *omrVM);
-	void tearDown(OMR_VM *omrVM);
+  bool initialize(OMR_VM* omrVM);
+  void tearDown(OMR_VM* omrVM);
 
-	MM_CollectorLanguageInterfaceImpl(OMR_VM *omrVM)
-		: MM_CollectorLanguageInterface()
-		,_omrVM(omrVM)
-		,_extensions(MM_GCExtensionsBase::getExtensions(omrVM))
-	{
-		_typeId = __FUNCTION__;
-	}
+  MM_CollectorLanguageInterfaceImpl(OMR_VM* omrVM)
+    : MM_CollectorLanguageInterface()
+    , _omrVM(omrVM)
+    , _extensions(MM_GCExtensionsBase::getExtensions(omrVM))
+  {
+    _typeId = __FUNCTION__;
+  }
 
 public:
-	static MM_CollectorLanguageInterfaceImpl *newInstance(MM_EnvironmentBase *env);
-	virtual void kill(MM_EnvironmentBase *env);
-
-
+  static MM_CollectorLanguageInterfaceImpl* newInstance(
+    MM_EnvironmentBase* env);
+  virtual void kill(MM_EnvironmentBase* env);
 };
 
 #endif /* COLLECTORLANGUAGEINTERFACEIMPL_HPP_ */

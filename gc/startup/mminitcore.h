@@ -17,27 +17,28 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef MMINITCORE_H_
 #define MMINITCORE_H_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "omr.h"
-intptr_t initializeMutatorModel(OMR_VMThread* omrVMThread);
-void cleanupMutatorModel(OMR_VMThread* omrVMThread, uintptr_t flushCaches);
+  intptr_t initializeMutatorModel(OMR_VMThread* omrVMThread);
+  void cleanupMutatorModel(OMR_VMThread* omrVMThread, uintptr_t flushCaches);
 
-intptr_t gcOmrInitializeDefaults(OMR_VM* omrVM);
+  intptr_t gcOmrInitializeDefaults(OMR_VM* omrVM);
 
-void gcOmrInitializeTrace(OMR_VMThread *omrVMThread);
+  void gcOmrInitializeTrace(OMR_VMThread* omrVMThread);
 
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif
-
 
 #endif /* MMINITCORE_H_ */

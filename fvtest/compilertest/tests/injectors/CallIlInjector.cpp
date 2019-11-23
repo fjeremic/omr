@@ -16,32 +16,33 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/CallIlInjector.hpp"
 #include "compile/Compilation.hpp"
-#include "env/FrontEnd.hpp"
 #include "compile/ResolvedMethod.hpp"
+#include "env/FrontEnd.hpp"
 #include "ilgen/TypeDictionary.hpp"
 #include "tests/OpCodesTest.hpp"
-#include "tests/injectors/CallIlInjector.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 bool
 CallIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
-   OpCodesTest *test = static_cast<OpCodesTest *>(_test);
-   createBlocks(1);
-   // Block 2: blocks(0)
-   // return function()
-   TR::ResolvedMethod *resolvedCompilee = test->resolvedMethod(_dataType);
-   returnValue(callFunction(resolvedCompilee, _types->PrimitiveType(_dataType), 1, parm(1)));
+{
+  if (!isOpCodeSupported())
+    return false;
+  OpCodesTest* test = static_cast<OpCodesTest*>(_test);
+  createBlocks(1);
+  // Block 2: blocks(0)
+  // return function()
+  TR::ResolvedMethod* resolvedCompilee = test->resolvedMethod(_dataType);
+  returnValue(callFunction(
+    resolvedCompilee, _types->PrimitiveType(_dataType), 1, parm(1)));
 
-   return true;
-   }
+  return true;
+}
 
 } // namespace TestCompiler

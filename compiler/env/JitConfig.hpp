@@ -16,55 +16,57 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITCONFIG_HPP_BThFwv
 #define JITCONFIG_HPP_BThFwv
 
+#include "env/IO.hpp"
 #include <stddef.h>
 #include <stdint.h>
-#include "env/IO.hpp"
 
-namespace TR
-{
+namespace TR {
 
 class JitConfig
-   {
-   protected:
-   JitConfig();
+{
+protected:
+  JitConfig();
 
-   public:
+public:
+  static JitConfig* instance();
 
-   static JitConfig *instance();
+  // possibly temporary place for options to be stored?
+  struct
+  {
+    int32_t codeCacheKB;
+    char* vLogFileName;
+    TR::FILE* vLogFile;
+    uint64_t verboseFlags;
+  } options;
 
-   // possibly temporary place for options to be stored?
-   struct
-      {
-      int32_t       codeCacheKB;
-      char        * vLogFileName;
-      TR::FILE    * vLogFile;
-      uint64_t      verboseFlags;
-      } options;
+  void* getProcessorInfo() { return _processorInfo; }
+  void setProcessorInfo(void* buf) { _processorInfo = buf; }
 
-   void *getProcessorInfo() { return _processorInfo; }
-   void setProcessorInfo(void *buf) { _processorInfo = buf; }
+  void setInterpreterTOC(size_t interpreterTOC)
+  {
+    _interpreterTOC = interpreterTOC;
+  }
+  size_t getInterpreterTOC() { return _interpreterTOC; }
 
-   void setInterpreterTOC(size_t interpreterTOC) { _interpreterTOC = interpreterTOC; }
-   size_t getInterpreterTOC()                    { return _interpreterTOC; }
+  void* getPseudoTOC() { return _pseudoTOC; }
+  void setPseudoTOC(void* pseudoTOC) { _pseudoTOC = pseudoTOC; }
 
-   void *getPseudoTOC()               { return _pseudoTOC; }
-   void setPseudoTOC(void *pseudoTOC) { _pseudoTOC = pseudoTOC; }
+private:
+  char _eyecatcher[8];
 
-   private:
-   char                        _eyecatcher[8];
+  void* _processorInfo;
 
-   void                      * _processorInfo;
+  size_t _interpreterTOC;
 
-   size_t                      _interpreterTOC;
-
-   void                      * _pseudoTOC; // only used on POWER, otherwise should be NULL
-   };
+  void* _pseudoTOC; // only used on POWER, otherwise should be NULL
+};
 
 } /* namespace TR */
 

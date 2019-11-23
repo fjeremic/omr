@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stdint.h>
@@ -25,18 +26,20 @@
 extern int32_t test_calls(int32_t);
 
 int32_t
-doublesum(int32_t first, int32_t second) {
-	int32_t result = (second << 1) + (first << 1);
-	fprintf(stderr, "doublesum(%d, %d) == %d\n", first, second, result);
-	return result;
+doublesum(int32_t first, int32_t second)
+{
+  int32_t result = (second << 1) + (first << 1);
+  fprintf(stderr, "doublesum(%d, %d) == %d\n", first, second, result);
+  return result;
 }
 
-int main(int argc, char *argv[]) {
-	int32_t n;
-	for (n=0; n < 10; n++) {
-		printf("call(%2d) = %d\n", n, test_calls(n));
-	}
-	printf("STATIC TEST PASS\n");
-	return 0;
+int
+main(int argc, char* argv[])
+{
+  int32_t n;
+  for (n = 0; n < 10; n++) {
+    printf("call(%2d) = %d\n", n, test_calls(n));
+  }
+  printf("STATIC TEST PASS\n");
+  return 0;
 }
-

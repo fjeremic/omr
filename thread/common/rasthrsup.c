@@ -17,14 +17,16 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #include "omrthread.h"
 
 /**
  * Get the RAS thread ID of the current thread.
- * The RAS thread ID is the platform-dependent thread ID that matches thread IDs used by the native debugger.
- * The current thread might not be attached to the thread library.
+ * The RAS thread ID is the platform-dependent thread ID that matches thread IDs
+ * used by the native debugger. The current thread might not be attached to the
+ * thread library.
  *
  * @return a thread ID
  * @see omrthread_get_osId
@@ -33,6 +35,5 @@ uintptr_t
 omrthread_get_ras_tid(void)
 {
 #error omrthread_get_ras_tid() is not implemented on this platform
-	return 0;
+  return 0;
 }
-

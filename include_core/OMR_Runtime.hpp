@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(OMR_RUNTIME_HPP_)
@@ -27,32 +28,32 @@
  * @ddr_namespace: default
  */
 
-#include "omr.h"
 #include "OMR_BaseNonVirtual.hpp"
 #include "OMR_RuntimeConfiguration.hpp"
+#include "omr.h"
 
-extern "C" {
+extern "C"
+{
 
-/**
- * Internal: Attach a VM to the runtime.
- *
- * @param[in] *runtime the runtime
- * @param[in] *vm the VM to attach
- *
- * @return an OMR error code
- */
-omr_error_t attachVM(OMR_Runtime *runtime, OMR_VM *vm);
+  /**
+   * Internal: Attach a VM to the runtime.
+   *
+   * @param[in] *runtime the runtime
+   * @param[in] *vm the VM to attach
+   *
+   * @return an OMR error code
+   */
+  omr_error_t attachVM(OMR_Runtime* runtime, OMR_VM* vm);
 
-/**
- * Internal: Detach a VM from the runtime.
- *
- * @param[in] *runtime the runtime
- * @param[in] *vm the VM to detach
- *
- * @return an OMR error code
- */
-omr_error_t detachVM(OMR_Runtime *runtime, OMR_VM *vm);
-
+  /**
+   * Internal: Detach a VM from the runtime.
+   *
+   * @param[in] *runtime the runtime
+   * @param[in] *vm the VM to detach
+   *
+   * @return an OMR error code
+   */
+  omr_error_t detachVM(OMR_Runtime* runtime, OMR_VM* vm);
 }
 
 #endif /* OMR_RUNTIME_HPP_ */

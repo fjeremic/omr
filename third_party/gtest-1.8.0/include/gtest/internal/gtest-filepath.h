@@ -56,23 +56,29 @@ namespace internal {
 // Names are NOT checked for syntax correctness -- no checking for illegal
 // characters, malformed paths, etc.
 
-class GTEST_API_ FilePath {
- public:
-  FilePath() : pathname_("") { }
-  FilePath(const FilePath& rhs) : pathname_(rhs.pathname_) { }
+class GTEST_API_ FilePath
+{
+public:
+  FilePath()
+    : pathname_("")
+  {}
+  FilePath(const FilePath& rhs)
+    : pathname_(rhs.pathname_)
+  {}
 
-  explicit FilePath(const std::string& pathname) : pathname_(pathname) {
+  explicit FilePath(const std::string& pathname)
+    : pathname_(pathname)
+  {
     Normalize();
   }
 
-  FilePath& operator=(const FilePath& rhs) {
+  FilePath& operator=(const FilePath& rhs)
+  {
     Set(rhs);
     return *this;
   }
 
-  void Set(const FilePath& rhs) {
-    pathname_ = rhs.pathname_;
-  }
+  void Set(const FilePath& rhs) { pathname_ = rhs.pathname_; }
 
   const std::string& string() const { return pathname_; }
   const char* c_str() const { return pathname_.c_str(); }
@@ -169,7 +175,7 @@ class GTEST_API_ FilePath {
   // Returns true if pathname describes an absolute path.
   bool IsAbsolutePath() const;
 
- private:
+private:
   // Replaces multiple consecutive separators with a single separator.
   // For example, "bar///foo" becomes "bar/foo". Does not eliminate other
   // redundancies that might be in a pathname involving "." or "..".
@@ -198,9 +204,9 @@ class GTEST_API_ FilePath {
   const char* FindLastPathSeparator() const;
 
   std::string pathname_;
-};  // class FilePath
+}; // class FilePath
 
-}  // namespace internal
-}  // namespace testing
+} // namespace internal
+} // namespace testing
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_

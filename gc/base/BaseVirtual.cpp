@@ -17,11 +17,12 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "BaseVirtual.hpp"
-	
+
 /*
  * Required to force MM_BaseVirtual to have a vtable, otherwise
  * field offsets are wrong in DDR (due to addition of the vpointer
@@ -29,4 +30,7 @@
  * issues because we never use -lstdc++ (outside tests) and the
  * delete implementation will be missing (e.g. needed by stack allocation)
  */
-void MM_BaseVirtual::emptyMethod() { /* No implementation */ }
+void
+MM_BaseVirtual::emptyMethod()
+{ /* No implementation */
+}

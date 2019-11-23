@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_INSTRUCTION_INCL
@@ -27,59 +28,64 @@
 
 #include "codegen/RegisterDependency.hpp" // @@@@
 
-namespace TR
-{
+namespace TR {
 class Instruction;
 
 class OMR_EXTENSIBLE Instruction : public OMR::InstructionConnector
-   {
+{
 
-   public:
+public:
+  Instruction(TR::CodeGenerator* cg,
+              TR::InstOpCode::Mnemonic op,
+              TR::Node* node = 0)
+    : OMR::InstructionConnector(cg, op, node)
+  {}
+  Instruction(TR::CodeGenerator* cg,
+              TR::Instruction* precedingInstruction,
+              TR::InstOpCode::Mnemonic op,
+              TR::Node* node = 0)
+    : OMR::InstructionConnector(cg, precedingInstruction, op, node)
+  {}
 
-   Instruction(TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic op, TR::Node *node = 0)
-      : OMR::InstructionConnector(cg, op, node)
-      {}
-   Instruction(TR::CodeGenerator *cg, TR::Instruction *precedingInstruction, TR::InstOpCode::Mnemonic op, TR::Node *node = 0)
-      : OMR::InstructionConnector(cg, precedingInstruction, op, node)
-      {}
+  Instruction(TR::Node* node, TR::CodeGenerator* cg)
+    : OMR::InstructionConnector(node, cg)
+  {}
 
-   Instruction(TR::Node *node, TR::CodeGenerator *cg)
-      : OMR::InstructionConnector(node, cg)
-      {}
+  Instruction(TR_ARMOpCodes op, TR::Node* node, TR::CodeGenerator* cg)
+    : OMR::InstructionConnector(op, node, cg)
+  {}
 
-   Instruction(TR_ARMOpCodes op, TR::Node *node, TR::CodeGenerator *cg)
-      : OMR::InstructionConnector(op, node, cg)
-      {}
+  Instruction(TR::Instruction* precedingInstruction,
+              TR_ARMOpCodes op,
+              TR::Node* node,
+              TR::CodeGenerator* cg)
+    : OMR::InstructionConnector(precedingInstruction, op, node, cg)
+  {}
 
-   Instruction(TR::Instruction   *precedingInstruction,
-               TR_ARMOpCodes     op,
-               TR::Node          *node,
-               TR::CodeGenerator *cg)
-      : OMR::InstructionConnector(precedingInstruction, op, node, cg)
-      {}
+  Instruction(TR_ARMOpCodes op,
+              TR::Node* node,
+              TR::RegisterDependencyConditions* cond,
+              TR::CodeGenerator* cg)
+    : OMR::InstructionConnector(op, node, cond, cg)
+  {}
 
-   Instruction(TR_ARMOpCodes                       op,
-               TR::Node                            *node,
-               TR::RegisterDependencyConditions    *cond,
-               TR::CodeGenerator                   *cg)
-      : OMR::InstructionConnector(op, node, cond, cg)
-      {}
-
-   Instruction(TR::Instruction                     *precedingInstruction,
-               TR_ARMOpCodes                       op,
-               TR::Node                            *node,
-               TR::RegisterDependencyConditions    *cond,
-               TR::CodeGenerator                   *cg)
-      : OMR::InstructionConnector(precedingInstruction, op, node, cond, cg)
-      {}
-
-   };
-
+  Instruction(TR::Instruction* precedingInstruction,
+              TR_ARMOpCodes op,
+              TR::Node* node,
+              TR::RegisterDependencyConditions* cond,
+              TR::CodeGenerator* cg)
+    : OMR::InstructionConnector(precedingInstruction, op, node, cond, cg)
+  {}
+};
 }
 
 #include "codegen/OMRInstruction_inlines.hpp"
 
-//TODO: these downcasts everywhere need to be removed
-inline uint32_t        * toARMCursor(uint8_t *i) { return (uint32_t *)i; }
+// TODO: these downcasts everywhere need to be removed
+inline uint32_t*
+toARMCursor(uint8_t* i)
+{
+  return (uint32_t*)i;
+}
 
 #endif

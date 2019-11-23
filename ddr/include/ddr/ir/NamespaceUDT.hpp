@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef NAMESPACEUDT_HPP
@@ -30,22 +31,23 @@ class EnumMember;
 class NamespaceUDT : public UDT
 {
 public:
-	std::vector<UDT *> _subUDTs;
-	std::vector<Macro> _macros;
-	vector<EnumMember *> _enumMembers; /* used for anonymous enums */
+  std::vector<UDT*> _subUDTs;
+  std::vector<Macro> _macros;
+  vector<EnumMember*> _enumMembers; /* used for anonymous enums */
 
-	explicit NamespaceUDT(unsigned int lineNumber = 0);
-	virtual ~NamespaceUDT();
+  explicit NamespaceUDT(unsigned int lineNumber = 0);
+  virtual ~NamespaceUDT();
 
-	virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
-	virtual bool insertUnique(Symbol_IR *ir);
-	virtual const string &getSymbolKindName() const;
-	virtual void addMacro(Macro *macro);
-	virtual std::vector<UDT *> * getSubUDTS();
-	virtual void renameFieldsAndMacros(const FieldOverride &fieldOverride, Type *replacementType);
+  virtual DDR_RC acceptVisitor(const TypeVisitor& visitor);
+  virtual bool insertUnique(Symbol_IR* ir);
+  virtual const string& getSymbolKindName() const;
+  virtual void addMacro(Macro* macro);
+  virtual std::vector<UDT*>* getSubUDTS();
+  virtual void renameFieldsAndMacros(const FieldOverride& fieldOverride,
+                                     Type* replacementType);
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToNamespace(const NamespaceUDT &) const;
+  bool operator==(const Type& rhs) const;
+  virtual bool compareToNamespace(const NamespaceUDT&) const;
 };
 
 #endif /* NAMESPACEUDT_HPP */
