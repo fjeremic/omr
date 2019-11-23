@@ -45,24 +45,18 @@ class MM_MemorySubSpaceSemiSpace;
 class MM_CollectorLanguageInterface : public MM_BaseVirtual {
 
 private:
-
 protected:
-
 public:
-
 private:
-
 protected:
-
 public:
+    virtual void kill(MM_EnvironmentBase* env) = 0;
 
-	virtual void kill(MM_EnvironmentBase *env) = 0;
-
-	MM_CollectorLanguageInterface()
-		: MM_BaseVirtual()
-	{
-		_typeId = __FUNCTION__;
-	}
+    MM_CollectorLanguageInterface()
+        : MM_BaseVirtual()
+    {
+        _typeId = __FUNCTION__;
+    }
 };
 
 #endif /* COLLECTORLANGUAGEINTERFACE_HPP_ */

@@ -22,5 +22,4 @@
 #include "env/SegmentProvider.hpp"
 
 TR::SegmentProvider::~SegmentProvider() throw()
-   {
-   }
+{}

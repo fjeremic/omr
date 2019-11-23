@@ -25,62 +25,53 @@
 #include "ddr/ir/Symbol_IR.hpp"
 
 UDT::UDT(size_t size, unsigned int lineNumber)
-	: Type(size)
-	, _outerNamespace(NULL)
-	, _lineNumber(lineNumber)
-{
-}
+    : Type(size)
+    , _outerNamespace(NULL)
+    , _lineNumber(lineNumber)
+{}
 
 UDT::~UDT()
+{}
+
+string UDT::getFullName() const
 {
+    return (NULL == _outerNamespace) ? _name : (_outerNamespace->getFullName() + "::" + _name);
 }
 
-string
-UDT::getFullName() const
+bool UDT::insertUnique(Symbol_IR* ir)
 {
-	return (NULL == _outerNamespace)
-			? _name
-			: (_outerNamespace->getFullName() + "::" + _name);
+    bool inserted = false;
+    if (!isAnonymousType()) {
+        string fullName = getFullName();
+        if (ir->_fullTypeNames.end() == ir->_fullTypeNames.find(fullName)) {
+            ir->_fullTypeNames.insert(fullName);
+            inserted = true;
+        }
+    }
+    return inserted;
 }
 
-bool
-UDT::insertUnique(Symbol_IR *ir)
+NamespaceUDT* UDT::getNamespace()
 {
-	bool inserted = false;
-	if (!isAnonymousType()) {
-		string fullName = getFullName();
-		if (ir->_fullTypeNames.end() == ir->_fullTypeNames.find(fullName)) {
-			ir->_fullTypeNames.insert(fullName);
-			inserted = true;
-		}
-	}
-	return inserted;
+    return _outerNamespace;
 }
 
-NamespaceUDT *
-UDT::getNamespace()
+bool UDT::operator==(const Type& rhs) const
 {
-	return _outerNamespace;
+    return rhs.compareToUDT(*this);
 }
 
-bool
-UDT::operator==(const Type & rhs) const
+bool UDT::compareToUDT(const UDT& other) const
 {
-	return rhs.compareToUDT(*this);
-}
+    if (compareToType(other)) {
+        if (NULL != _outerNamespace) {
+            if (NULL != other._outerNamespace) {
+                return *_outerNamespace == *other._outerNamespace;
+            }
+        } else if (NULL == other._outerNamespace) {
+            return true;
+        }
+    }
 
-bool
-UDT::compareToUDT(const UDT &other) const
-{
-	if (compareToType(other)) {
-		if (NULL != _outerNamespace) {
-			if (NULL != other._outerNamespace) {
-				return *_outerNamespace == *other._outerNamespace;
-			}
-		} else if (NULL == other._outerNamespace) {
-			return true;
-		}
-	}
-
-	return false;
+    return false;
 }

@@ -26,7 +26,8 @@
 #include "JBTestUtil.hpp"
 #include "gtest/gtest-spi.h"
 
-DEFINE_TYPES(NoTypes) {}
+DEFINE_TYPES(NoTypes)
+{}
 
 /*
  * `JustReturn` generates a function that simply returns.
@@ -37,20 +38,20 @@ DECLARE_BUILDER(JustReturn);
 typedef void (*JustReturnFunctionType)(void);
 
 DEFINE_BUILDER_CTOR(JustReturn)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
+{
+    DefineLine(LINETOSTR(__LINE__));
+    DefineFile(__FILE__);
 
-   DefineName("JustReturn");
-   DefineReturnType(NoType);
-   }
+    DefineName("JustReturn");
+    DefineReturnType(NoType);
+}
 
 DEFINE_BUILDIL(JustReturn)
-   {
-   Return();
+{
+    Return();
 
-   return true;
-   }
+    return true;
+}
 
 /*
  * `BadBuilder` simply fails to generate any IL. This should lead to a failed compilation.
@@ -61,18 +62,18 @@ DECLARE_BUILDER(BadBuilder);
 typedef void (*BadBuilderFunctionType)(void);
 
 DEFINE_BUILDER_CTOR(BadBuilder)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
+{
+    DefineLine(LINETOSTR(__LINE__));
+    DefineFile(__FILE__);
 
-   DefineName("BadBuilder");
-   DefineReturnType(NoType);
-   }
+    DefineName("BadBuilder");
+    DefineReturnType(NoType);
+}
 
 DEFINE_BUILDIL(BadBuilder)
-   {
-   return false;
-   }
+{
+    return false;
+}
 
 class selftest : public JitBuilderTest {};
 
@@ -83,11 +84,11 @@ class selftest : public JitBuilderTest {};
  */
 
 TEST_F(selftest, JustReturnTest)
-   {
-   JustReturnFunctionType justReturn;
-   ASSERT_COMPILE(NoTypes, JustReturn, justReturn);
-   ASSERT_NO_FATAL_FAILURE(justReturn());
-   }
+{
+    JustReturnFunctionType justReturn;
+    ASSERT_COMPILE(NoTypes, JustReturn, justReturn);
+    ASSERT_NO_FATAL_FAILURE(justReturn());
+}
 
 /*
  * `BadBuilderTest` attempts to compile the `BadBuilder` method. The test passes
@@ -99,12 +100,12 @@ TEST_F(selftest, JustReturnTest)
  */
 
 static void badBuilderRunner()
-   {
-   BadBuilderFunctionType badBuilder;
-   ASSERT_COMPILE(NoTypes,BadBuilder,badBuilder);
-   }
+{
+    BadBuilderFunctionType badBuilder;
+    ASSERT_COMPILE(NoTypes, BadBuilder, badBuilder);
+}
 
 TEST_F(selftest, BadBuilderTest)
-   {
-   EXPECT_FATAL_FAILURE(badBuilderRunner(), "Failed to compile method ");
-   }
+{
+    EXPECT_FATAL_FAILURE(badBuilderRunner(), "Failed to compile method ");
+}

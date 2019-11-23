@@ -30,104 +30,92 @@ using std::stringstream;
 using std::vector;
 
 Modifiers::Modifiers()
-	: _arrayLengths()
-	, _modifierFlags(NO_MOD)
-	, _pointerCount(0)
-	, _referenceCount(0)
-{
-}
+    : _arrayLengths()
+    , _modifierFlags(NO_MOD)
+    , _pointerCount(0)
+    , _referenceCount(0)
+{}
 
 Modifiers::~Modifiers()
+{}
+
+static const char* const MODIFIER_NAMES[] = { "const", "volatile", "unaligned", "restrict", "shared" };
+
+string Modifiers::getModifierNames() const
 {
+    stringstream modifiers;
+    for (uint8_t i = 1, index = 0; i < MODIFIER_FLAGS; i <<= 1, ++index) {
+        if (0 != (_modifierFlags & i)) {
+            modifiers << MODIFIER_NAMES[index] << " ";
+        }
+    }
+    return modifiers.str();
 }
 
-static const char * const MODIFIER_NAMES[] = { "const", "volatile", "unaligned", "restrict", "shared" };
-
-string
-Modifiers::getModifierNames() const
+string Modifiers::getPointerType() const
 {
-	stringstream modifiers;
-	for (uint8_t i = 1, index = 0; i < MODIFIER_FLAGS; i <<= 1, ++index) {
-		if (0 != (_modifierFlags & i)) {
-			modifiers << MODIFIER_NAMES[index] << " ";
-		}
-	}
-	return modifiers.str();
+    stringstream s;
+
+    for (size_t i = 0; i < _pointerCount; ++i) {
+        s << "*";
+    }
+
+    for (size_t i = 0; i < _referenceCount; ++i) {
+        s << "&";
+    }
+
+    for (size_t i = getArrayDimensions(); i != 0; i -= 1) {
+        s << "[]";
+    }
+
+    return s.str();
 }
 
-string
-Modifiers::getPointerType() const
+void Modifiers::addArrayDimension(size_t length)
 {
-	stringstream s;
-
-	for (size_t i = 0; i < _pointerCount; ++i) {
-		s << "*";
-	}
-
-	for (size_t i = 0; i < _referenceCount; ++i) {
-		s << "&";
-	}
-
-	for (size_t i = getArrayDimensions(); i != 0; i -= 1) {
-		s << "[]";
-	}
-
-	return s.str();
+    _arrayLengths.push_back(length);
 }
 
-void
-Modifiers::addArrayDimension(size_t length)
+bool Modifiers::isArray() const
 {
-	_arrayLengths.push_back(length);
+    return _arrayLengths.size() > 0;
 }
 
-bool
-Modifiers::isArray() const
+size_t Modifiers::getArrayLength(size_t i) const
 {
-	return _arrayLengths.size() > 0;
+    if (i >= _arrayLengths.size()) {
+        return 0;
+    }
+    return _arrayLengths[i];
 }
 
-size_t
-Modifiers::getArrayLength(size_t i) const
+size_t Modifiers::getArrayDimensions() const
 {
-	if (i >= _arrayLengths.size()) {
-		return 0;
-	}
-	return _arrayLengths[i];
+    return _arrayLengths.size();
 }
 
-size_t
-Modifiers::getArrayDimensions() const
+size_t Modifiers::getSize(size_t typeSize) const
 {
-	return _arrayLengths.size();
+    size_t sizeOf = typeSize;
+    if (_pointerCount > 0) {
+        sizeOf = sizeof(void*);
+    }
+    for (vector<size_t>::const_iterator it = _arrayLengths.begin(); it != _arrayLengths.end(); ++it) {
+        sizeOf *= *it;
+    }
+    return sizeOf;
 }
 
-size_t
-Modifiers::getSize(size_t typeSize) const
+bool Modifiers::operator==(const Modifiers& type) const
 {
-	size_t sizeOf = typeSize;
-	if (_pointerCount > 0) {
-		sizeOf = sizeof(void *);
-	}
-	for (vector<size_t>::const_iterator it = _arrayLengths.begin(); it != _arrayLengths.end(); ++it) {
-		sizeOf *= *it;
-	}
-	return sizeOf;
-}
+    bool arrayLengthsEqual = true;
+    for (size_t i = _arrayLengths.size(); i != 0; i -= 1) {
+        if (_arrayLengths[i] != type.getArrayLength(i)) {
+            arrayLengthsEqual = false;
+            break;
+        }
+    }
 
-bool
-Modifiers::operator==(const Modifiers &type) const
-{
-	bool arrayLengthsEqual = true;
-	for (size_t i = _arrayLengths.size(); i != 0; i -= 1) {
-		if (_arrayLengths[i] != type.getArrayLength(i)) {
-			arrayLengthsEqual = false;
-			break;
-		}
-	}
-
-	return arrayLengthsEqual
-		&& (_modifierFlags == type._modifierFlags)
-		&& (_referenceCount == type._referenceCount)
-		&& (_pointerCount == type._pointerCount);
+    return arrayLengthsEqual && (_modifierFlags == type._modifierFlags) && (_referenceCount == type._referenceCount)
+        && (_pointerCount == type._pointerCount);
 }

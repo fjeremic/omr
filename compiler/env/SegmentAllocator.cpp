@@ -22,5 +22,4 @@
 #include "env/SegmentAllocator.hpp"
 
 TR::SegmentAllocator::~SegmentAllocator() throw()
-   {
-   }
+{}

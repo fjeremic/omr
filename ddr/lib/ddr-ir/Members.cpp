@@ -22,5 +22,4 @@
 #include "ddr/ir/Members.hpp"
 
 Members::~Members()
-{
-}
+{}
