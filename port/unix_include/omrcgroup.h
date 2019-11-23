@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #ifndef omrcgroup_h
 #define omrcgroup_h
@@ -25,18 +26,24 @@
 #if defined(LINUX)
 
 /**
- * Stores memory usage statistics of the cgroup. These stats are collected from the files present
- * in memory resource controller of the cgroup.
- * Refer https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt for more details.
+ * Stores memory usage statistics of the cgroup. These stats are collected from
+ * the files present in memory resource controller of the cgroup. Refer
+ * https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt for more
+ * details.
  *
- * Parameter which is not available is set to OMRPORT_MEMINFO_NOT_AVAILABLE by default.
+ * Parameter which is not available is set to OMRPORT_MEMINFO_NOT_AVAILABLE by
+ * default.
  */
 typedef struct OMRCgroupMemoryInfo {
-	uint64_t memoryLimit; /**< memory limit in bytes (as in memory.limit_in_bytes file)*/
-	uint64_t memoryUsage; /**< current memory usage in bytes (as in memory.usage_in_bytes file)*/
-	uint64_t memoryAndSwapLimit; /**< memory + swap limit in bytes (as in memory.memsw.limit_in_bytes file)*/
-	uint64_t memoryAndSwapUsage; /**< current memory + swap usage in bytes (as in memory.memsw.usage_in_bytes file) */
-	uint64_t cached; /**< page cache memory (as in memory.stat file)*/
+  uint64_t memoryLimit; /**< memory limit in bytes (as in memory.limit_in_bytes
+                           file)*/
+  uint64_t memoryUsage; /**< current memory usage in bytes (as in
+                           memory.usage_in_bytes file)*/
+  uint64_t memoryAndSwapLimit; /**< memory + swap limit in bytes (as in
+                                  memory.memsw.limit_in_bytes file)*/
+  uint64_t memoryAndSwapUsage; /**< current memory + swap usage in bytes (as in
+                                  memory.memsw.usage_in_bytes file) */
+  uint64_t cached;             /**< page cache memory (as in memory.stat file)*/
 } OMRCgroupMemoryInfo;
 
 #endif /* defined(LINUX) */

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef STRING_HPP
@@ -32,8 +33,8 @@
 
 #include <string>
 
-#define toupper(c)     (islower(c) ? (c & _XUPPER_ASCII) : c)
-#define tolower(c)     (isupper(c) ? (c | _XLOWER_ASCII) : c)
+#define toupper(c) (islower(c) ? (c & _XUPPER_ASCII) : c)
+#define tolower(c) (isupper(c) ? (c | _XLOWER_ASCII) : c)
 
 #else /* defined(J9ZOS390) */
 #include <string>

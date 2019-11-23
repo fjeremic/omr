@@ -17,53 +17,53 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "omrport.h"
-#include "pool_api.h"
 #include "omrutil.h"
+#include "pool_api.h"
 
-void *
-pool_portLibAlloc(OMRPortLibrary *portLibrary, uint32_t size, const char *callSite, uint32_t memoryCategory, uint32_t type, uint32_t *doInit)
-{
-	return portLibrary->mem_allocate_memory(portLibrary, size, callSite, memoryCategory);
+void *pool_portLibAlloc(OMRPortLibrary *portLibrary, uint32_t size,
+                        const char *callSite, uint32_t memoryCategory,
+                        uint32_t type, uint32_t *doInit) {
+  return portLibrary->mem_allocate_memory(portLibrary, size, callSite,
+                                          memoryCategory);
 }
 
-void
-pool_portLibFree(OMRPortLibrary *portLibrary, void *address, uint32_t type)
-{
-	OMRPORT_ACCESS_FROM_OMRPORT(portLibrary);
-	omrmem_free_memory(address);
+void pool_portLibFree(OMRPortLibrary *portLibrary, void *address,
+                      uint32_t type) {
+  OMRPORT_ACCESS_FROM_OMRPORT(portLibrary);
+  omrmem_free_memory(address);
 }
-
 
 #if defined(OMR_ENV_DATA64)
 
-void *
-pool_portLibAlloc32(OMRPortLibrary *portLibrary, uint32_t size, const char *callSite, uint32_t memoryCategory, uint32_t type, uint32_t *doInit)
-{
-	void *address = NULL;
+void *pool_portLibAlloc32(OMRPortLibrary *portLibrary, uint32_t size,
+                          const char *callSite, uint32_t memoryCategory,
+                          uint32_t type, uint32_t *doInit) {
+  void *address = NULL;
 
-	if (POOL_ALLOC_TYPE_PUDDLE == type) {
-		address = portLibrary->mem_allocate_memory32(portLibrary, size, callSite, memoryCategory);
-	} else {
-		address = portLibrary->mem_allocate_memory(portLibrary, size, callSite, memoryCategory);
-	}
+  if (POOL_ALLOC_TYPE_PUDDLE == type) {
+    address = portLibrary->mem_allocate_memory32(portLibrary, size, callSite,
+                                                 memoryCategory);
+  } else {
+    address = portLibrary->mem_allocate_memory(portLibrary, size, callSite,
+                                               memoryCategory);
+  }
 
-	return address;
+  return address;
 }
 
-
-void
-pool_portLibFree32(OMRPortLibrary *portLibrary, void *address, uint32_t type)
-{
-	OMRPORT_ACCESS_FROM_OMRPORT(portLibrary);
-	if (POOL_ALLOC_TYPE_PUDDLE == type) {
-		omrmem_free_memory32(address);
-	} else {
-		omrmem_free_memory(address);
-	}
+void pool_portLibFree32(OMRPortLibrary *portLibrary, void *address,
+                        uint32_t type) {
+  OMRPORT_ACCESS_FROM_OMRPORT(portLibrary);
+  if (POOL_ALLOC_TYPE_PUDDLE == type) {
+    omrmem_free_memory32(address);
+  } else {
+    omrmem_free_memory(address);
+  }
 }
 
 #endif /* defined(OMR_ENV_DATA64) */

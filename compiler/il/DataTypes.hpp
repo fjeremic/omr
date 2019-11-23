@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_DATATYPES_INCL
@@ -24,19 +25,16 @@
 
 #include "il/OMRDataTypes.hpp"
 
-namespace TR
-{ 
+namespace TR {
 
-class OMR_EXTENSIBLE DataType : public OMR::DataTypeConnector
-   { 
+class OMR_EXTENSIBLE DataType : public OMR::DataTypeConnector {
 
 public:
-   DataType() : OMR::DataTypeConnector() { }
-   DataType(TR::DataTypes t) : OMR::DataTypeConnector(t) { }
+  DataType() : OMR::DataTypeConnector() {}
+  DataType(TR::DataTypes t) : OMR::DataTypeConnector(t) {}
+};
 
-   };
-
-}
+} // namespace TR
 
 #include "il/DataTypes_inlines.hpp"
 

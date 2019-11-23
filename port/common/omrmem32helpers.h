@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrmem32helpers_h
@@ -28,10 +29,10 @@
 
 int32_t startup_memory32(struct OMRPortLibrary *portLibrary);
 void shutdown_memory32(struct OMRPortLibrary *portLibrary);
-void *allocate_memory32(struct OMRPortLibrary *portLibrary, uintptr_t byteAmount, const char *callSite);
+void *allocate_memory32(struct OMRPortLibrary *portLibrary,
+                        uintptr_t byteAmount, const char *callSite);
 void free_memory32(struct OMRPortLibrary *portLibrary, void *memoryPointer);
-uintptr_t ensure_capacity32(struct OMRPortLibrary *portLibrary, uintptr_t byteAmount);
+uintptr_t ensure_capacity32(struct OMRPortLibrary *portLibrary,
+                            uintptr_t byteAmount);
 
 #endif /* omrmemhelpers_h */
-
-

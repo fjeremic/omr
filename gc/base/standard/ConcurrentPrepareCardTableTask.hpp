@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -31,8 +32,8 @@
 #include "omrcfg.h"
 #include "omrmodroncore.h"
 
-#include "ParallelTask.hpp"
 #include "ConcurrentCardTableForWC.hpp"
+#include "ParallelTask.hpp"
 
 class MM_Dispatcher;
 class MM_EnvironmentBase;
@@ -41,28 +42,29 @@ class MM_EnvironmentBase;
  * Task used to prepare the card-table in parallel on weakly-ordered platforms.
  * @ingroup GC_Modron_Standard
  */
-class MM_ConcurrentPrepareCardTableTask : public MM_ParallelTask
-{
+class MM_ConcurrentPrepareCardTableTask : public MM_ParallelTask {
 private:
-	MM_ConcurrentCardTableForWC *_cardTable;
-	Card *_firstCard;
-	Card *_lastCard;
-	CardAction _action;
+  MM_ConcurrentCardTableForWC *_cardTable;
+  Card *_firstCard;
+  Card *_lastCard;
+  CardAction _action;
 
 public:
-	virtual UDATA getVMStateID() { return OMRVMSTATE_GC_CONCURRENT_MARK_PREPARE_CARD_TABLE; }
-	
-	virtual void run(MM_EnvironmentBase *env);
+  virtual UDATA getVMStateID() {
+    return OMRVMSTATE_GC_CONCURRENT_MARK_PREPARE_CARD_TABLE;
+  }
 
-	MM_ConcurrentPrepareCardTableTask(MM_EnvironmentBase *env, MM_Dispatcher *dispatcher, MM_ConcurrentCardTableForWC *cardTable, Card *firstCard, Card *lastCard, CardAction action) :
-		MM_ParallelTask(env, dispatcher),
-		_cardTable(cardTable),
-		_firstCard(firstCard),
-		_lastCard(lastCard),
-		_action(action)
-	{
-		_typeId = __FUNCTION__;
-	}
+  virtual void run(MM_EnvironmentBase *env);
+
+  MM_ConcurrentPrepareCardTableTask(MM_EnvironmentBase *env,
+                                    MM_Dispatcher *dispatcher,
+                                    MM_ConcurrentCardTableForWC *cardTable,
+                                    Card *firstCard, Card *lastCard,
+                                    CardAction action)
+      : MM_ParallelTask(env, dispatcher), _cardTable(cardTable),
+        _firstCard(firstCard), _lastCard(lastCard), _action(action) {
+    _typeId = __FUNCTION__;
+  }
 };
 
 #endif /* CONCURRENTPREPARECARDTABLETASK_HPP_ */

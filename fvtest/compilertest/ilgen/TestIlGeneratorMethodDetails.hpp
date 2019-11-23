@@ -16,76 +16,87 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_ILGENERATOR_METHOD_DETAILS_INCL
 #define TEST_ILGENERATOR_METHOD_DETAILS_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef TEST_ILGENERATOR_METHOD_DETAILS_CONNECTOR
 #define TEST_ILGENERATOR_METHOD_DETAILS_CONNECTOR
-namespace TestCompiler { class IlGeneratorMethodDetails; }
-namespace TestCompiler { typedef TestCompiler::IlGeneratorMethodDetails IlGeneratorMethodDetailsConnector; }
+namespace TestCompiler {
+class IlGeneratorMethodDetails;
+}
+namespace TestCompiler {
+typedef TestCompiler::IlGeneratorMethodDetails
+    IlGeneratorMethodDetailsConnector;
+}
 #endif
 
 #include "ilgen/OMRIlGeneratorMethodDetails.hpp"
 
-#include "infra/Annotations.hpp"
 #include "env/IO.hpp"
+#include "infra/Annotations.hpp"
 
 class TR_InlineBlocks;
 class TR_ResolvedMethod;
 class TR_IlGenerator;
-namespace TR { class Compilation; }
-namespace TR { class IlVerifier; }
-namespace TR { class ResolvedMethod; }
-namespace TR { class ResolvedMethodSymbol; }
-namespace TR { class SymbolReferenceTable; }
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class IlVerifier;
+}
+namespace TR {
+class ResolvedMethod;
+}
+namespace TR {
+class ResolvedMethodSymbol;
+}
+namespace TR {
+class SymbolReferenceTable;
+}
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
 class ResolvedMethod;
 
-class OMR_EXTENSIBLE IlGeneratorMethodDetails : public OMR::IlGeneratorMethodDetailsConnector
-   {
+class OMR_EXTENSIBLE IlGeneratorMethodDetails
+    : public OMR::IlGeneratorMethodDetailsConnector {
 
 public:
+  IlGeneratorMethodDetails()
+      : OMR::IlGeneratorMethodDetailsConnector(), _method(NULL) {}
 
-   IlGeneratorMethodDetails() :
-      OMR::IlGeneratorMethodDetailsConnector(),
-      _method(NULL)
-      { }
+  IlGeneratorMethodDetails(TR::ResolvedMethod *method)
+      : OMR::IlGeneratorMethodDetailsConnector(), _method(method) {}
 
-   IlGeneratorMethodDetails(TR::ResolvedMethod *method) :
-      OMR::IlGeneratorMethodDetailsConnector(),
-      _method(method)
-      { }
+  IlGeneratorMethodDetails(TR_ResolvedMethod *method);
 
-   IlGeneratorMethodDetails(TR_ResolvedMethod *method);
+  TR::ResolvedMethod *getMethod() { return _method; }
+  TR_ResolvedMethod *getResolvedMethod() {
+    return (TR_ResolvedMethod *)_method;
+  }
 
-   TR::ResolvedMethod * getMethod() { return _method; }
-   TR_ResolvedMethod * getResolvedMethod() { return (TR_ResolvedMethod *)_method; }
+  bool sameAs(TR::IlGeneratorMethodDetails &other, TR_FrontEnd *fe);
 
-   bool sameAs(TR::IlGeneratorMethodDetails & other, TR_FrontEnd *fe);
+  void print(TR_FrontEnd *fe, TR::FILE *file);
 
-   void print(TR_FrontEnd *fe, TR::FILE *file);
-
-   virtual TR_IlGenerator *getIlGenerator(TR::ResolvedMethodSymbol *methodSymbol,
-                                          TR_FrontEnd * fe,
-                                          TR::Compilation *comp,
-                                          TR::SymbolReferenceTable *symRefTab,
-                                          bool forceClassLookahead,
-                                          TR_InlineBlocks *blocksToInline);
+  virtual TR_IlGenerator *getIlGenerator(TR::ResolvedMethodSymbol *methodSymbol,
+                                         TR_FrontEnd *fe, TR::Compilation *comp,
+                                         TR::SymbolReferenceTable *symRefTab,
+                                         bool forceClassLookahead,
+                                         TR_InlineBlocks *blocksToInline);
 
 protected:
+  TR::ResolvedMethod *_method;
+};
 
-   TR::ResolvedMethod * _method;
-   };
-
-}
+} // namespace TestCompiler
 
 #endif

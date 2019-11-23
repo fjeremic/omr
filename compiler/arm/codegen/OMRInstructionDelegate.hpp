@@ -16,19 +16,27 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_ARM_INSTRUCTIONDELEGATE_INCL
 #define OMR_ARM_INSTRUCTIONDELEGATE_INCL
 
 /*
- * The following #define and typedef must appear before any #includes in this file
+ * The following #define and typedef must appear before any #includes in this
+ * file
  */
 #ifndef OMR_INSTRUCTIONDELEGATE_CONNECTOR
 #define OMR_INSTRUCTIONDELEGATE_CONNECTOR
-namespace OMR { namespace ARM { class InstructionDelegate; } }
-namespace OMR { typedef OMR::ARM::InstructionDelegate InstructionDelegateConnector; }
+namespace OMR {
+namespace ARM {
+class InstructionDelegate;
+}
+} // namespace OMR
+namespace OMR {
+typedef OMR::ARM::InstructionDelegate InstructionDelegateConnector;
+}
 #else
 #error OMR::ARM::InstructionDelegate expected to be a primary connector, but an OMR connector is already defined
 #endif
@@ -36,22 +44,17 @@ namespace OMR { typedef OMR::ARM::InstructionDelegate InstructionDelegateConnect
 #include "compiler/codegen/OMRInstructionDelegate.hpp"
 #include "infra/Annotations.hpp"
 
-namespace OMR
-{
+namespace OMR {
 
-namespace ARM
-{
+namespace ARM {
 
-class OMR_EXTENSIBLE InstructionDelegate : public OMR::InstructionDelegate
-   {
+class OMR_EXTENSIBLE InstructionDelegate : public OMR::InstructionDelegate {
 protected:
+  InstructionDelegate() {}
+};
 
-   InstructionDelegate() {}
+} // namespace ARM
 
-   };
-
-}
-
-}
+} // namespace OMR
 
 #endif

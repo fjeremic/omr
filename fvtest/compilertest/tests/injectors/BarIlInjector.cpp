@@ -16,45 +16,43 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/BarIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "env/FrontEnd.hpp"
 #include "tests/FooBarTest.hpp"
-#include "tests/injectors/BarIlInjector.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
-bool
-BarIlInjector::injectIL()
-   {
-   FooBarTest *test = static_cast<FooBarTest *>(_test);
-   createBlocks(4);
+bool BarIlInjector::injectIL() {
+  FooBarTest *test = static_cast<FooBarTest *>(_test);
+  createBlocks(4);
 
+  // 4 blocks requested start at 2 (0 is entry, 1 is exit)
+  // by default, generate to block 2
 
-   // 4 blocks requested start at 2 (0 is entry, 1 is exit)
-   // by default, generate to block 2
+  // Block2: blocks(0)
+  // if (index < 0) goto Block5;
+  ifjump(TR::ificmplt, indexParameter(), iconst(0), 3);
 
-   // Block2: blocks(0)
-   // if (index < 0) goto Block5;
-   ifjump(TR::ificmplt, indexParameter(), iconst(0), 3);
+  // Block3: blocks(1)
+  // if (index >= 100) goto Block5;
+  ifjump(TR::ificmpge, indexParameter(), iconst(test->dataArraySize()), 3);
 
-   // Block3: blocks(1)
-   // if (index >= 100) goto Block5;
-   ifjump(TR::ificmpge, indexParameter(), iconst(test->dataArraySize()), 3);
+  // Block4: blocks(2)
+  // return dataArray[index];
+  returnValue(
+      arrayLoad(staticAddress(test->dataArray()), indexParameter(), Int32));
 
-   // Block4: blocks(2)
-   // return dataArray[index];
-   returnValue(arrayLoad(staticAddress(test->dataArray()), indexParameter(), Int32));
+  // Block5: blocks(3)
+  // return -1;
+  generateToBlock(3);
+  returnValue(iconst(-1));
 
-   // Block5: blocks(3)
-   // return -1;
-   generateToBlock(3);
-   returnValue(iconst(-1));
-
-   return true;
-   }
+  return true;
+}
 
 } // namespace TestCompiler

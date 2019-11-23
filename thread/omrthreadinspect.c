@@ -17,18 +17,17 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 #ifndef root_omrthread_inspect_c
 #define root_omrthread_inspect_c
 
-/** Super-evil.  This file is referenced via the Smalltalk virtualModuleObjectFiles
-	mechanism which isn't vpath aware.  Just link directly to the to actual implementation
-	below.
+/** Super-evil.  This file is referenced via the Smalltalk
+   virtualModuleObjectFiles mechanism which isn't vpath aware.  Just link
+   directly to the to actual implementation below.
  */
 
 #include "common/omrthreadinspect.c"
 
-#endif     /* root_omrthread_inspect_h */
-
-
+#endif /* root_omrthread_inspect_h */

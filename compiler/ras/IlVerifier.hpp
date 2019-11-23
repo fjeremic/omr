@@ -16,28 +16,30 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef IlVerifier_hpp
 #define IlVerifier_hpp
 
-namespace TR { class ResolvedMethodSymbol; }
+namespace TR {
+class ResolvedMethodSymbol;
+}
 
 namespace TR {
 
-class IlVerifier
-   {
-   public:
-   /**
-    * Verify the IL of a method has certain properties.
-    *
-    * @return 0 on success, or a non-zero error code. If non-zero is returned,
-    * compilation stops.
-    */
-   virtual int32_t verify(TR::ResolvedMethodSymbol *methodSymbol) = 0; 
-   };
+class IlVerifier {
+public:
+  /**
+   * Verify the IL of a method has certain properties.
+   *
+   * @return 0 on success, or a non-zero error code. If non-zero is returned,
+   * compilation stops.
+   */
+  virtual int32_t verify(TR::ResolvedMethodSymbol *methodSymbol) = 0;
+};
 
-}
+} // namespace TR
 
 #endif

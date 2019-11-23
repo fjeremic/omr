@@ -16,27 +16,27 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_CODEGENPHASE_INCL
 #define TR_CODEGENPHASE_INCL
 
-#include "infra/Annotations.hpp"
 #include "codegen/OMRCodeGenPhase.hpp"
+#include "infra/Annotations.hpp"
 
-namespace TR { class CodeGenerator; }
-
-namespace TR
-{
-
-class OMR_EXTENSIBLE CodeGenPhase: public OMR::CodeGenPhaseConnector
-   {
-   public:
-
-   CodeGenPhase(TR::CodeGenerator * cg): OMR::CodeGenPhaseConnector(cg) {}
-   };
-
+namespace TR {
+class CodeGenerator;
 }
+
+namespace TR {
+
+class OMR_EXTENSIBLE CodeGenPhase : public OMR::CodeGenPhaseConnector {
+public:
+  CodeGenPhase(TR::CodeGenerator *cg) : OMR::CodeGenPhaseConnector(cg) {}
+};
+
+} // namespace TR
 
 #endif

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -33,16 +34,21 @@
  * Defines data which is common to all types of GC start and end events.
  */
 typedef struct MM_CommonGCData {
-	uintptr_t nurseryFreeBytes; /**&lt; number of bytes free in the nursery */
-	uintptr_t nurseryTotalBytes; /**&lt; total number of bytes in the nursery */
-	uintptr_t tenureFreeBytes; /**&lt; number of bytes free in the tenure area */
-	uintptr_t tenureTotalBytes; /**&lt; total number of bytes in the tenure area */
-	uintptr_t loaEnabled; /**&lt; flag to indicate whether or not the LOA is enabled */
-	uintptr_t tenureLOAFreeBytes; /**&lt; number of bytes free in the LOA */
-	uintptr_t tenureLOATotalBytes; /**&lt; total number of bytes in the LOA */
-	uintptr_t immortalFreeBytes; /**&lt; number of bytes free in the immortal memory area */
-	uintptr_t immortalTotalBytes; /**&lt; total number of bytes in the immortal memory area */
-	uintptr_t rememberedSetCount; /**&lt; number of elements in the rememberedSet */
+  uintptr_t nurseryFreeBytes;  /**&lt; number of bytes free in the nursery */
+  uintptr_t nurseryTotalBytes; /**&lt; total number of bytes in the nursery */
+  uintptr_t tenureFreeBytes; /**&lt; number of bytes free in the tenure area */
+  uintptr_t
+      tenureTotalBytes; /**&lt; total number of bytes in the tenure area */
+  uintptr_t
+      loaEnabled; /**&lt; flag to indicate whether or not the LOA is enabled */
+  uintptr_t tenureLOAFreeBytes;  /**&lt; number of bytes free in the LOA */
+  uintptr_t tenureLOATotalBytes; /**&lt; total number of bytes in the LOA */
+  uintptr_t immortalFreeBytes;   /**&lt; number of bytes free in the immortal
+                                    memory area */
+  uintptr_t immortalTotalBytes;  /**&lt; total number of bytes in the immortal
+                                    memory area */
+  uintptr_t
+      rememberedSetCount; /**&lt; number of elements in the rememberedSet */
 } MM_CommonGCData;
 
 /**
@@ -55,19 +61,30 @@ typedef struct MM_CommonGCData {
  * we currently have)
  */
 typedef struct MM_CommonGCStartData {
-	MM_CommonGCData commonData; /**&lt; common data to GC start and GC end */
+  MM_CommonGCData commonData; /**&lt; common data to GC start and GC end */
 
-	uint64_t exclusiveAccessTime; /**&lt; time taken to get exclusive access (in ticks) */
-	uint64_t meanExclusiveAccessIdleTime; /**&lt; the average time each thread (including the requester) spent idle until the last thread checked in (in ticks) */
-	uintptr_t haltedThreads; /**&lt; the number of threads which had to be halted to acquire exclusive access */
-	struct OMR_VMThread* lastResponder; /**&lt; the last thread to respond the the exclusive request */
-	uintptr_t beatenByOtherThread; /**&lt; flag to indicate if another thread beat us to exclusive access */
+  uint64_t exclusiveAccessTime; /**&lt; time taken to get exclusive access (in
+                                   ticks) */
+  uint64_t
+      meanExclusiveAccessIdleTime; /**&lt; the average time each thread
+                                      (including the requester) spent idle until
+                                      the last thread checked in (in ticks) */
+  uintptr_t haltedThreads; /**&lt; the number of threads which had to be halted
+                              to acquire exclusive access */
+  struct OMR_VMThread *lastResponder; /**&lt; the last thread to respond the the
+                                         exclusive request */
+  uintptr_t beatenByOtherThread; /**&lt; flag to indicate if another thread beat
+                                    us to exclusive access */
 
-	uintptr_t tlhAllocCount; /**&lt; number of TLHs allocated since the last GC */
-	uintptr_t tlhAllocBytes; /**&lt; number of bytes allocated for TLHs since the last GC */
-	uintptr_t tlhRequestedBytes; /**&lt; number of bytes requested for TLHs since the last GC */
-	uintptr_t nonTlhAllocCount; /**&lt; number of non-TLH allocates since the last GC */
-	uintptr_t nonTlhAllocBytes; /**&lt; number of bytes allocated for other than for TLHs since the last GC */
+  uintptr_t tlhAllocCount; /**&lt; number of TLHs allocated since the last GC */
+  uintptr_t tlhAllocBytes; /**&lt; number of bytes allocated for TLHs since the
+                              last GC */
+  uintptr_t tlhRequestedBytes; /**&lt; number of bytes requested for TLHs since
+                                  the last GC */
+  uintptr_t
+      nonTlhAllocCount; /**&lt; number of non-TLH allocates since the last GC */
+  uintptr_t nonTlhAllocBytes; /**&lt; number of bytes allocated for other than
+                                 for TLHs since the last GC */
 } MM_CommonGCStartData;
 
 /**
@@ -76,9 +93,7 @@ typedef struct MM_CommonGCStartData {
  * GC cycle.
  */
 typedef struct MM_CommonGCEndData {
-	MM_CommonGCData commonData; /**&lt; common data to GC start and GC end */
+  MM_CommonGCData commonData; /**&lt; common data to GC start and GC end */
 } MM_CommonGCEndData;
-
-
 
 #endif /* MMHOOK_H_ */

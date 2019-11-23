@@ -16,27 +16,26 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "threadExtendedTestHelpers.hpp"
 
-void
-thrExtendedTestSetUp(OMRPortLibrary *portLibrary)
-{
-	intptr_t rc = omrthread_attach_ex(NULL, J9THREAD_ATTR_DEFAULT);
-	ASSERT_EQ(0, rc) << "omrthread_attach_ex(NULL, J9THREAD_ATTR_DEFAULT) failed\n";
+void thrExtendedTestSetUp(OMRPortLibrary *portLibrary) {
+  intptr_t rc = omrthread_attach_ex(NULL, J9THREAD_ATTR_DEFAULT);
+  ASSERT_EQ(0, rc)
+      << "omrthread_attach_ex(NULL, J9THREAD_ATTR_DEFAULT) failed\n";
 
-	/* initialize port Library */
-	rc = (int)omrport_init_library(portLibrary, sizeof(OMRPortLibrary));
-	ASSERT_EQ(0, rc) << "omrport_init_library(&_OMRPortLibrary, sizeof(OMRPortLibrary)) failed\n";
+  /* initialize port Library */
+  rc = (int)omrport_init_library(portLibrary, sizeof(OMRPortLibrary));
+  ASSERT_EQ(0, rc) << "omrport_init_library(&_OMRPortLibrary, "
+                      "sizeof(OMRPortLibrary)) failed\n";
 }
 
-void
-thrExtendedTestTearDown(OMRPortLibrary *portLibrary)
-{
-	int rc = portLibrary->port_shutdown_library(portLibrary);
-	ASSERT_EQ(0, rc) << "port_shutdown_library() failed\n";
+void thrExtendedTestTearDown(OMRPortLibrary *portLibrary) {
+  int rc = portLibrary->port_shutdown_library(portLibrary);
+  ASSERT_EQ(0, rc) << "port_shutdown_library() failed\n";
 
-	omrthread_detach(NULL);
+  omrthread_detach(NULL);
 }

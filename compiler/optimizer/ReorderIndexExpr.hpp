@@ -16,41 +16,43 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef REORDER_INDEX_EXPR_INCL
 #define REORDER_INDEX_EXPR_INCL
 
-#include <stdint.h>
 #include "il/Node.hpp"
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
+#include <stdint.h>
 
 class TR_PrimaryInductionVariable;
 class TR_Structure;
-namespace TR { class Node; }
+namespace TR {
+class Node;
+}
 
-class TR_IndexExprManipulator: public TR::Optimization
-   {
-   public:
-   TR_IndexExprManipulator(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_IndexExprManipulator(manager);
-      }
+class TR_IndexExprManipulator : public TR::Optimization {
+public:
+  TR_IndexExprManipulator(TR::OptimizationManager *manager);
+  static TR::Optimization *create(TR::OptimizationManager *manager) {
+    return new (manager->allocator()) TR_IndexExprManipulator(manager);
+  }
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
+  virtual int32_t perform();
+  virtual const char *optDetailString() const throw();
 
-   void rewriteIndexExpression(TR_Structure *);
+  void rewriteIndexExpression(TR_Structure *);
 
-   private:
-   void rewriteIndexExpression(TR_PrimaryInductionVariable *primeIV,TR::Node *parent,TR::Node *node,bool parentIsAiadd);
-   vcount_t _visitCount;
-   bool    _somethingChanged;
-   bool    _debug;
-
+private:
+  void rewriteIndexExpression(TR_PrimaryInductionVariable *primeIV,
+                              TR::Node *parent, TR::Node *node,
+                              bool parentIsAiadd);
+  vcount_t _visitCount;
+  bool _somethingChanged;
+  bool _debug;
 };
 
 #endif

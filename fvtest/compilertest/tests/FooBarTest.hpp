@@ -16,40 +16,40 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "TestDriver.hpp"
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
-typedef int32_t (FooMethodType)(int32_t);
-typedef int32_t (BarMethodType)(int32_t);
+typedef int32_t(FooMethodType)(int32_t);
+typedef int32_t(BarMethodType)(int32_t);
 
-class FooBarTest : public TestDriver
-   {
-   public:
-   static int32_t          dataArraySize() { return _dataArraySize; }
-   static int32_t        * dataArray()     { return _dataArray; }
-   static TR::ResolvedMethod * barMethod() { return _barCompilee; }
+class FooBarTest : public TestDriver {
+public:
+  static int32_t dataArraySize() { return _dataArraySize; }
+  static int32_t *dataArray() { return _dataArray; }
+  static TR::ResolvedMethod *barMethod() { return _barCompilee; }
 
-   protected:
-   virtual void compileTestMethods();
-   virtual void invokeTests();
+protected:
+  virtual void compileTestMethods();
+  virtual void invokeTests();
 
-   private:
-   const static int32_t _dataArraySize = 100;
-   static int32_t _dataArray[100];
+private:
+  const static int32_t _dataArraySize = 100;
+  static int32_t _dataArray[100];
 
-   static FooMethodType *_foo;
-   static BarMethodType *_bar;
+  static FooMethodType *_foo;
+  static BarMethodType *_bar;
 
-   static TR::ResolvedMethod *_barCompilee;
+  static TR::ResolvedMethod *_barCompilee;
 
-   // straight C(++) implementations of foo and bar for initial test validation purposes
-   static int32_t foo(int32_t);
-   static int32_t bar(int32_t);
-   };
+  // straight C(++) implementations of foo and bar for initial test validation
+  // purposes
+  static int32_t foo(int32_t);
+  static int32_t bar(int32_t);
+};
 
 } // namespace TestCompiler

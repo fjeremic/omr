@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(MM_STARTUPMANAGERTESTEXAMPLE_HPP_)
@@ -24,35 +25,30 @@
 
 #include "gcTestHelpers.hpp"
 
-class MM_StartupManagerTestExample : public MM_StartupManagerImpl
-{
-	/*
-	 * Data members
-	 */
+class MM_StartupManagerTestExample : public MM_StartupManagerImpl {
+  /*
+   * Data members
+   */
 private:
-	const char *_configFile;
+  const char *_configFile;
+
 protected:
-
 public:
-
-	/*
-	 * Function members
-	 */
+  /*
+   * Function members
+   */
 private:
 protected:
-	/**
-	 * parse gc options in test configuration file
-	 * @param extensions GCExtensions
-	 * @return true if parsing completed, false otherwise
-	 */
-	virtual bool parseLanguageOptions(MM_GCExtensionsBase *extensions);
+  /**
+   * parse gc options in test configuration file
+   * @param extensions GCExtensions
+   * @return true if parsing completed, false otherwise
+   */
+  virtual bool parseLanguageOptions(MM_GCExtensionsBase *extensions);
 
 public:
-	MM_StartupManagerTestExample(OMR_VM *omrVM, const char *configFile)
-		: MM_StartupManagerImpl(omrVM)
-		, _configFile(configFile)
-	{
-	}
+  MM_StartupManagerTestExample(OMR_VM *omrVM, const char *configFile)
+      : MM_StartupManagerImpl(omrVM), _configFile(configFile) {}
 };
 
 #endif /* MM_STARTUPMANAGERTESTEXAMPLE_HPP_ */

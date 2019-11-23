@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /*
@@ -24,23 +25,13 @@
  * definitions are permitted.
  */
 
- // The entries in this file must be kept in sync with compiler/codegen/OMRCodeGenPhaseFunctionTable.hpp
-      ReserveCodeCachePhase,
-      LowerTreesPhase,
-      UncommonCallConstNodesPhase,
-      SetupForInstructionSelectionPhase,
-      InstructionSelectionPhase,
-      CreateStackAtlasPhase,
-      RegisterAssigningPhase,
-      MapStackPhase,
-      PeepholePhase,
-      BinaryEncodingPhase,
-      EmitSnippetsPhase,
-      ProcessRelocationsPhase,
-      FindAndFixCommonedReferencesPhase,
-      RemoveUnusedLocalsPhase,
-      InliningReportPhase, // all
-      InsertDebugCountersPhase,
-      CleanUpFlagsPhase,
-      ExpandInstructionsPhase,
-      LastOMRPhase = ExpandInstructionsPhase,
+// The entries in this file must be kept in sync with
+// compiler/codegen/OMRCodeGenPhaseFunctionTable.hpp
+ReserveCodeCachePhase, LowerTreesPhase, UncommonCallConstNodesPhase,
+    SetupForInstructionSelectionPhase, InstructionSelectionPhase,
+    CreateStackAtlasPhase, RegisterAssigningPhase, MapStackPhase, PeepholePhase,
+    BinaryEncodingPhase, EmitSnippetsPhase, ProcessRelocationsPhase,
+    FindAndFixCommonedReferencesPhase, RemoveUnusedLocalsPhase,
+    InliningReportPhase, // all
+    InsertDebugCountersPhase, CleanUpFlagsPhase, ExpandInstructionsPhase,
+    LastOMRPhase = ExpandInstructionsPhase,

@@ -16,25 +16,25 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "codegen/ELFRelocationResolver.hpp"
 
 #if defined(LINUX)
 
-#include <elf.h>
 #include "infra/Assert.hpp"
+#include <elf.h>
 
-uint32_t
-OMR::X86::AMD64::ELFRelocationResolver::resolveRelocationType(const TR::StaticRelocation &relocation)
-   {
-   if (relocation.size() == TR::StaticRelocationSize::word64 && relocation.type() == TR::StaticRelocationType::Absolute)
-      {
-      return R_X86_64_64;
-      }
-   TR_ASSERT(false, "Unknown ELF relocation type.");
-   return static_cast<uint32_t>(-1);
-   }
+uint32_t OMR::X86::AMD64::ELFRelocationResolver::resolveRelocationType(
+    const TR::StaticRelocation &relocation) {
+  if (relocation.size() == TR::StaticRelocationSize::word64 &&
+      relocation.type() == TR::StaticRelocationType::Absolute) {
+    return R_X86_64_64;
+  }
+  TR_ASSERT(false, "Unknown ELF relocation type.");
+  return static_cast<uint32_t>(-1);
+}
 
 #endif /* defined(LINUX) */

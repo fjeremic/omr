@@ -17,46 +17,43 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "StringUtils.hpp"
 
-RCType
-StringUtils::getPositiveIntValue(const char *line, const char *key, unsigned int *result)
-{
-	RCType rc = RC_FAILED;
-	const char *vpos = StringUtils::containsUpperLower(line, key);
-	if (NULL != vpos) {
-		*result = atoi(vpos + strlen(key));
-		rc = RC_OK;
-	}
-	return rc;
+RCType StringUtils::getPositiveIntValue(const char *line, const char *key,
+                                        unsigned int *result) {
+  RCType rc = RC_FAILED;
+  const char *vpos = StringUtils::containsUpperLower(line, key);
+  if (NULL != vpos) {
+    *result = atoi(vpos + strlen(key));
+    rc = RC_OK;
+  }
+  return rc;
 }
 
-bool
-StringUtils::startsWithUpperLower(const char *text, const char *prefix)
-{
-	return (0 == Port::strncasecmp(text, prefix, strlen(prefix)));
+bool StringUtils::startsWithUpperLower(const char *text, const char *prefix) {
+  return (0 == Port::strncasecmp(text, prefix, strlen(prefix)));
 }
 
-const char *
-StringUtils::containsUpperLower(const char *text, const char *toFind)
-{
-	while ('\0' != *text) {
-		if (tolower(*text) == tolower(*toFind)) {
-			/* Start of search string (potentially) */
-			if (startsWithUpperLower(text, toFind)) {
-				return text;
-			}
-		}
-		text += 1;
-	}
+const char *StringUtils::containsUpperLower(const char *text,
+                                            const char *toFind) {
+  while ('\0' != *text) {
+    if (tolower(*text) == tolower(*toFind)) {
+      /* Start of search string (potentially) */
+      if (startsWithUpperLower(text, toFind)) {
+        return text;
+      }
+    }
+    text += 1;
+  }
 
-	return NULL;
+  return NULL;
 }

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_CODEGENERATOR_UTILS_INCL
@@ -26,11 +27,11 @@
  * A collection of utility functions to be used during code generation.  These
  * are standalone functions.
  *
- * They should not be included within component header files of extensible classes
- * due to the risk of introducing circular include dependencies.
+ * They should not be included within component header files of extensible
+ * classes due to the risk of introducing circular include dependencies.
  *
- * The functions may be in the public (TR) or project-specific namespaces (e.g., OMR)
- * depending upon how they are expected to be used.
+ * The functions may be in the public (TR) or project-specific namespaces (e.g.,
+ * OMR) depending upon how they are expected to be used.
  */
 
 #endif

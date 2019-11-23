@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef UDT_HPP
@@ -24,21 +25,20 @@
 
 #include "ddr/ir/Type.hpp"
 
-class UDT : public Type
-{
+class UDT : public Type {
 public:
-	NamespaceUDT *_outerNamespace;
-	unsigned int const _lineNumber;
+  NamespaceUDT *_outerNamespace;
+  unsigned int const _lineNumber;
 
-	explicit UDT(size_t size, unsigned int lineNumber = 0);
-	virtual ~UDT();
+  explicit UDT(size_t size, unsigned int lineNumber = 0);
+  virtual ~UDT();
 
-	virtual string getFullName() const;
-	virtual bool insertUnique(Symbol_IR *ir);
-	virtual NamespaceUDT * getNamespace();
+  virtual string getFullName() const;
+  virtual bool insertUnique(Symbol_IR *ir);
+  virtual NamespaceUDT *getNamespace();
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToUDT(const UDT &) const;
+  bool operator==(const Type &rhs) const;
+  virtual bool compareToUDT(const UDT &) const;
 };
 
 #endif /* UDT_HPP */

@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -50,52 +51,49 @@ class MM_MarkMap;
  * with a parallel task, and slave threads are active.
  * @ingroup GC_Base
  */
-class GC_ParallelObjectHeapIterator : public GC_ObjectHeapIterator
-{
-	/*
-	 * Data members
-	 */
+class GC_ParallelObjectHeapIterator : public GC_ObjectHeapIterator {
+  /*
+   * Data members
+   */
 private:
-	MM_EnvironmentBase *_env;
-	GC_ObjectHeapBufferedIterator _objectHeapIterator;
-	GC_MarkMapSegmentChunkIterator _segmentChunkIterator;
-	void *_topAddress;
-	MM_MarkMap *_markMap;
-	UDATA *_chunkBase;
-	UDATA *_chunkTop;
+  MM_EnvironmentBase *_env;
+  GC_ObjectHeapBufferedIterator _objectHeapIterator;
+  GC_MarkMapSegmentChunkIterator _segmentChunkIterator;
+  void *_topAddress;
+  MM_MarkMap *_markMap;
+  UDATA *_chunkBase;
+  UDATA *_chunkTop;
 
 protected:
 public:
-	
-	/* 
-	 * Function members
-	 */
+  /*
+   * Function members
+   */
 private:
-	bool getNextChunk();
+  bool getNextChunk();
+
 protected:
 public:
-	virtual omrobjectptr_t nextObject();
-	virtual omrobjectptr_t nextObjectNoAdvance();
-	virtual void advance(UDATA size);
-	virtual void reset(UDATA *base, UDATA *top);
-	
-	GC_ParallelObjectHeapIterator(MM_EnvironmentBase *env, MM_HeapRegionDescriptor *region, void *base, void *top, MM_MarkMap *markMap, UDATA parallelChunkSize)
-		: GC_ObjectHeapIterator()
-		, _env(env)
-		, _objectHeapIterator(env->getExtensions(), region, base, top, false, 1)
-		, _segmentChunkIterator(env->getExtensions(), base, top, parallelChunkSize)
-		, _topAddress(top)
-		, _markMap(markMap)
-		, _chunkBase(NULL)
-		, _chunkTop(NULL)
-	{
-		/* Metronome currently has no notion of address-ordered-list */
-		Assert_MM_true(!env->getExtensions()->isMetronomeGC());
-		if (!getNextChunk()) {
-			_objectHeapIterator.reset(NULL, NULL);
-		}
-	}
+  virtual omrobjectptr_t nextObject();
+  virtual omrobjectptr_t nextObjectNoAdvance();
+  virtual void advance(UDATA size);
+  virtual void reset(UDATA *base, UDATA *top);
+
+  GC_ParallelObjectHeapIterator(MM_EnvironmentBase *env,
+                                MM_HeapRegionDescriptor *region, void *base,
+                                void *top, MM_MarkMap *markMap,
+                                UDATA parallelChunkSize)
+      : GC_ObjectHeapIterator(), _env(env),
+        _objectHeapIterator(env->getExtensions(), region, base, top, false, 1),
+        _segmentChunkIterator(env->getExtensions(), base, top,
+                              parallelChunkSize),
+        _topAddress(top), _markMap(markMap), _chunkBase(NULL), _chunkTop(NULL) {
+    /* Metronome currently has no notion of address-ordered-list */
+    Assert_MM_true(!env->getExtensions()->isMetronomeGC());
+    if (!getNextChunk()) {
+      _objectHeapIterator.reset(NULL, NULL);
+    }
+  }
 };
 
 #endif /* PARALLELOBJECTHEAPITERATOR_HPP_ */
-

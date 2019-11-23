@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ARMOUTOFLINECODESECTION_INCL
@@ -26,29 +27,41 @@
 #include "codegen/OutOfLineCodeSection.hpp"
 #include "env/TRMemory.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class LabelSymbol; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class LabelSymbol;
+}
 class TR_ARMRegisterDependencyConditions;
 
-class TR_ARMOutOfLineCodeSection : public TR_OutOfLineCodeSection
-   {
+class TR_ARMOutOfLineCodeSection : public TR_OutOfLineCodeSection {
 
 public:
-   TR_ARMOutOfLineCodeSection(TR::LabelSymbol * entryLabel, TR::LabelSymbol * restartLabel,
-                               TR::CodeGenerator *cg) : TR_OutOfLineCodeSection(entryLabel, restartLabel, cg)
-                              {}
+  TR_ARMOutOfLineCodeSection(TR::LabelSymbol *entryLabel,
+                             TR::LabelSymbol *restartLabel,
+                             TR::CodeGenerator *cg)
+      : TR_OutOfLineCodeSection(entryLabel, restartLabel, cg) {}
 
-   TR_ARMOutOfLineCodeSection(TR::LabelSymbol * entryLabel,
-                               TR::CodeGenerator *cg) : TR_OutOfLineCodeSection(entryLabel, cg)
-                              {}
-   // For calls
-   //
-   TR_ARMOutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp, TR::Register *targetReg, TR::LabelSymbol *entryLabel, TR::LabelSymbol *restartLabel, TR::CodeGenerator *cg);
+  TR_ARMOutOfLineCodeSection(TR::LabelSymbol *entryLabel, TR::CodeGenerator *cg)
+      : TR_OutOfLineCodeSection(entryLabel, cg) {}
+  // For calls
+  //
+  TR_ARMOutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp,
+                             TR::Register *targetReg,
+                             TR::LabelSymbol *entryLabel,
+                             TR::LabelSymbol *restartLabel,
+                             TR::CodeGenerator *cg);
 
-   TR_ARMOutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp, TR::Register *targetReg, TR::LabelSymbol *entryLabel, TR::LabelSymbol *restartLabel, TR_ARMOpCodes targetRegMovOpcode, TR::CodeGenerator *cg);
+  TR_ARMOutOfLineCodeSection(TR::Node *callNode, TR::ILOpCodes callOp,
+                             TR::Register *targetReg,
+                             TR::LabelSymbol *entryLabel,
+                             TR::LabelSymbol *restartLabel,
+                             TR_ARMOpCodes targetRegMovOpcode,
+                             TR::CodeGenerator *cg);
 
 public:
-   void assignRegisters(TR_RegisterKinds kindsToBeAssigned);
-   void generateARMOutOfLineCodeSectionDispatch();
-   };
+  void assignRegisters(TR_RegisterKinds kindsToBeAssigned);
+  void generateARMOutOfLineCodeSectionDispatch();
+};
 #endif

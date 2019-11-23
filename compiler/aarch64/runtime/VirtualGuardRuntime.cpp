@@ -16,24 +16,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <stdint.h>
 #include "codegen/ARM64Instruction.hpp"
 #include "codegen/InstOpCode.hpp"
 #include "env/CompilerEnv.hpp"
 #include "env/jittypes.h"
 #include <infra/Assert.hpp>
+#include <stdint.h>
 
 extern void arm64CodeSync(unsigned char *codeStart, unsigned int codeSize);
 
-extern "C" void _patchVirtualGuard(uint8_t *locationAddr, uint8_t *destinationAddr, int32_t smpFlag)
-   {
-   TR_ASSERT_FATAL(TR::Compiler->target.cpu.isTargetWithinUnconditionalBranchImmediateRange((intptrj_t)destinationAddr, (intptrj_t)locationAddr),
+extern "C" void _patchVirtualGuard(uint8_t *locationAddr,
+                                   uint8_t *destinationAddr, int32_t smpFlag) {
+  TR_ASSERT_FATAL(
+      TR::Compiler->target.cpu.isTargetWithinUnconditionalBranchImmediateRange(
+          (intptrj_t)destinationAddr, (intptrj_t)locationAddr),
       "_patchVirtualGuard: Destination too far");
 
-   int64_t distance = (int64_t)destinationAddr - (int64_t)locationAddr;
-   *(uint32_t *)locationAddr = TR::InstOpCode::getOpCodeBinaryEncoding(TR::InstOpCode::b) | ((distance >> 2) & 0x3ffffff); /* imm26 */
-   arm64CodeSync((unsigned char *)locationAddr, ARM64_INSTRUCTION_LENGTH);
-   }
+  int64_t distance = (int64_t)destinationAddr - (int64_t)locationAddr;
+  *(uint32_t *)locationAddr =
+      TR::InstOpCode::getOpCodeBinaryEncoding(TR::InstOpCode::b) |
+      ((distance >> 2) & 0x3ffffff); /* imm26 */
+  arm64CodeSync((unsigned char *)locationAddr, ARM64_INSTRUCTION_LENGTH);
+}

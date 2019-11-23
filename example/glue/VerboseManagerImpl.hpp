@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(VERBOSEMANAGEREXAMPLE_HPP_)
@@ -29,46 +30,39 @@
 
 class MM_EnvironmentBase;
 
-class MM_VerboseManagerImpl : public MM_VerboseManager
-{
-	/*
-	 * Data members
-	 */
+class MM_VerboseManagerImpl : public MM_VerboseManager {
+  /*
+   * Data members
+   */
 private:
-
 protected:
-	char *filename;
-	uintptr_t fileCount;
-	uintptr_t iterations;
+  char *filename;
+  uintptr_t fileCount;
+  uintptr_t iterations;
 
 public:
-
-	/*
-	 * Function members
-	 */
+  /*
+   * Function members
+   */
 private:
-
 protected:
-	virtual void tearDown(MM_EnvironmentBase *env);
+  virtual void tearDown(MM_EnvironmentBase *env);
 
 public:
+  /* Interface for Dynamic Configuration */
+  virtual bool configureVerboseGC(OMR_VM *vm, char *filename,
+                                  uintptr_t fileCount, uintptr_t iterations);
 
-	/* Interface for Dynamic Configuration */
-	virtual bool configureVerboseGC(OMR_VM *vm, char* filename, uintptr_t fileCount, uintptr_t iterations);
+  virtual bool reconfigureVerboseGC(OMR_VM *vm);
 
-	virtual bool reconfigureVerboseGC(OMR_VM *vm);
+  virtual MM_VerboseHandlerOutput *
+  createVerboseHandlerOutputObject(MM_EnvironmentBase *env);
 
-	virtual MM_VerboseHandlerOutput *createVerboseHandlerOutputObject(MM_EnvironmentBase *env);
+  static MM_VerboseManagerImpl *newInstance(MM_EnvironmentBase *env,
+                                            OMR_VM *vm);
 
-	static MM_VerboseManagerImpl *newInstance(MM_EnvironmentBase *env, OMR_VM* vm);
-
-	MM_VerboseManagerImpl(OMR_VM *omrVM)
-		: MM_VerboseManager(omrVM)
-		,filename(NULL)
-		,fileCount(1)
-		,iterations(0)
-	{
-	}
+  MM_VerboseManagerImpl(OMR_VM *omrVM)
+      : MM_VerboseManager(omrVM), filename(NULL), fileCount(1), iterations(0) {}
 };
 
 #endif /* VERBOSEMANAGEREXAMPLE_HPP_ */

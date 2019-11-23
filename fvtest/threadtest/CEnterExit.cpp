@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "threadTestLib.hpp"
@@ -24,20 +25,16 @@
 /*
  * Thread that acquires and holds a monitor for a time.
  */
-CEnterExit::CEnterExit(CMonitor& monitor, int sleep) :
-	m_monitor(monitor), m_sleep(sleep)
-{
-}
+CEnterExit::CEnterExit(CMonitor &monitor, int sleep)
+    : m_monitor(monitor), m_sleep(sleep) {}
 
-intptr_t
-CEnterExit::Run(void)
-{
-	omrTestEnv->log(LEVEL_VERBOSE, "ENTERING\n");
-	m_monitor.Enter();
-	omrTestEnv->log(LEVEL_VERBOSE, "ENTERED\n");
-	omrthread_sleep(m_sleep);
-	omrTestEnv->log(LEVEL_VERBOSE, "EXITING\n");
-	m_monitor.Exit();
-	omrTestEnv->log(LEVEL_VERBOSE, "EXITED\n");
-	return 0;
+intptr_t CEnterExit::Run(void) {
+  omrTestEnv->log(LEVEL_VERBOSE, "ENTERING\n");
+  m_monitor.Enter();
+  omrTestEnv->log(LEVEL_VERBOSE, "ENTERED\n");
+  omrthread_sleep(m_sleep);
+  omrTestEnv->log(LEVEL_VERBOSE, "EXITING\n");
+  m_monitor.Exit();
+  omrTestEnv->log(LEVEL_VERBOSE, "EXITED\n");
+  return 0;
 }

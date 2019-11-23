@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef omrportasserts_h
@@ -26,18 +27,18 @@
 #include "ut_omrport.h"
 #include <assert.h>
 
-#define Assert_PRT_true_wrapper(arg) \
-	do { \
-		if (!(arg)) { \
-			Assert_PRT_true(FALSE && (arg)); \
-			assert(FALSE && (arg)); \
-		} \
-	} while(0)
+#define Assert_PRT_true_wrapper(arg)                                           \
+  do {                                                                         \
+    if (!(arg)) {                                                              \
+      Assert_PRT_true(FALSE && (arg));                                         \
+      assert(FALSE && (arg));                                                  \
+    }                                                                          \
+  } while (0)
 
-#define Assert_PRT_ShouldNeverHappen_wrapper() \
-	do { \
-		Trc_PRT_Assert_ShouldNeverHappen(); \
-		assert(FALSE); \
-	} while (0)
+#define Assert_PRT_ShouldNeverHappen_wrapper()                                 \
+  do {                                                                         \
+    Trc_PRT_Assert_ShouldNeverHappen();                                        \
+    assert(FALSE);                                                             \
+  } while (0)
 
 #endif /* omrportasserts_h */

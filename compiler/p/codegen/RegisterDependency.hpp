@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_REGISTER_DEPENDENCY_INCL
@@ -24,30 +25,33 @@
 
 #include "codegen/OMRRegisterDependency.hpp"
 
-namespace TR
-{
+namespace TR {
 
+class RegisterDependencyConditions
+    : public OMR::RegisterDependencyConditionsConnector {
+public:
+  RegisterDependencyConditions()
+      : OMR::RegisterDependencyConditionsConnector() {}
 
-class RegisterDependencyConditions : public OMR::RegisterDependencyConditionsConnector
-   {
-   public:
+  RegisterDependencyConditions(uint16_t numPreConds, uint16_t numPostConds,
+                               TR_Memory *m)
+      : OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds,
+                                                   m) {}
 
-   RegisterDependencyConditions() : OMR::RegisterDependencyConditionsConnector () {}
-
-   RegisterDependencyConditions(uint16_t numPreConds, uint16_t numPostConds, TR_Memory * m) :
-      OMR::RegisterDependencyConditionsConnector(numPreConds, numPostConds, m) {}
-
-   RegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node, uint32_t extranum, TR::Instruction **cursorPtr=NULL) :
-      OMR::RegisterDependencyConditionsConnector(cg, node, extranum, cursorPtr) {}
-
-   };
-}
+  RegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node,
+                               uint32_t extranum,
+                               TR::Instruction **cursorPtr = NULL)
+      : OMR::RegisterDependencyConditionsConnector(cg, node, extranum,
+                                                   cursorPtr) {}
+};
+} // namespace TR
 
 inline TR::RegisterDependencyConditions *
-generateRegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node, uint32_t extranum, TR::Instruction **cursorPtr=NULL)
-   {
-   return new (cg->trHeapMemory()) TR::RegisterDependencyConditions(cg, node, extranum, cursorPtr);
-   }
-
+generateRegisterDependencyConditions(TR::CodeGenerator *cg, TR::Node *node,
+                                     uint32_t extranum,
+                                     TR::Instruction **cursorPtr = NULL) {
+  return new (cg->trHeapMemory())
+      TR::RegisterDependencyConditions(cg, node, extranum, cursorPtr);
+}
 
 #endif

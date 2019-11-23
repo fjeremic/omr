@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_COMPILATION_INCL
@@ -30,40 +31,27 @@ class TR_FrontEnd;
 class TR_Memory;
 class TR_OptimizationPlan;
 class TR_ResolvedMethod;
-namespace TR { class IlGenRequest; }
-namespace TR { class Options; }
+namespace TR {
+class IlGenRequest;
+}
+namespace TR {
+class Options;
+}
 struct OMR_VMThread;
 
-namespace TR
-{
-class OMR_EXTENSIBLE Compilation : public OMR::CompilationConnector
-   {
-   public:
+namespace TR {
+class OMR_EXTENSIBLE Compilation : public OMR::CompilationConnector {
+public:
+  Compilation(int32_t compThreadId, OMR_VMThread *omrVMThread, TR_FrontEnd *fe,
+              TR_ResolvedMethod *method, TR::IlGenRequest &request,
+              TR::Options &options, TR::Region &heapMemoryRegion,
+              TR_Memory *memory, TR_OptimizationPlan *optimizationPlan)
+      : OMR::CompilationConnector(compThreadId, omrVMThread, fe, method,
+                                  request, options, heapMemoryRegion, memory,
+                                  optimizationPlan) {}
 
-   Compilation(
-         int32_t compThreadId,
-         OMR_VMThread *omrVMThread,
-         TR_FrontEnd *fe,
-         TR_ResolvedMethod *method,
-         TR::IlGenRequest &request,
-         TR::Options &options,
-         TR::Region &heapMemoryRegion,
-         TR_Memory *memory,
-         TR_OptimizationPlan *optimizationPlan) :
-      OMR::CompilationConnector(
-         compThreadId,
-         omrVMThread,
-         fe,
-         method,
-         request,
-         options,
-         heapMemoryRegion,
-         memory,
-         optimizationPlan)
-      {}
-
-   ~Compilation() {}
-   };
-}
+  ~Compilation() {}
+};
+} // namespace TR
 
 #endif

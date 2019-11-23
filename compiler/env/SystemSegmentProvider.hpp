@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_SYSTEM_SEGMENT_PROVIDER
@@ -26,49 +27,46 @@
 
 #ifndef TR_SYSTEM_SEGMENT_PROVIDER
 #define TR_SYSTEM_SEGMENT_PROVIDER
-namespace OMR { class SystemSegmentProvider; }
-namespace TR { using OMR::SystemSegmentProvider; }
+namespace OMR {
+class SystemSegmentProvider;
+}
+namespace TR {
+using OMR::SystemSegmentProvider;
+}
 #endif
 
-#include <stddef.h>
-#include <set>
+#include "env/RawAllocator.hpp"
+#include "env/SegmentAllocator.hpp"
 #include "env/TypedAllocator.hpp"
 #include "infra/ReferenceWrapper.hpp"
-#include "env/SegmentAllocator.hpp"
-#include "env/RawAllocator.hpp"
+#include <set>
+#include <stddef.h>
 
 namespace OMR {
 
-class SystemSegmentProvider : public TR::SegmentAllocator
-   {
+class SystemSegmentProvider : public TR::SegmentAllocator {
 public:
-   SystemSegmentProvider(size_t segmentSize, TR::RawAllocator rawAllocator);
-   ~SystemSegmentProvider() throw();
-   virtual TR::MemorySegment &request(size_t requiredSize);
-   virtual void release(TR::MemorySegment &segment) throw();
-   size_t bytesAllocated() const throw();
-   size_t regionBytesAllocated() const throw();
-   size_t systemBytesAllocated() const throw();
-   size_t allocationLimit() const throw();
-   void setAllocationLimit(size_t);
+  SystemSegmentProvider(size_t segmentSize, TR::RawAllocator rawAllocator);
+  ~SystemSegmentProvider() throw();
+  virtual TR::MemorySegment &request(size_t requiredSize);
+  virtual void release(TR::MemorySegment &segment) throw();
+  size_t bytesAllocated() const throw();
+  size_t regionBytesAllocated() const throw();
+  size_t systemBytesAllocated() const throw();
+  size_t allocationLimit() const throw();
+  void setAllocationLimit(size_t);
 
 private:
-   TR::RawAllocator _rawAllocator;
-   size_t _currentBytesAllocated;
-   size_t _highWaterMark;
-   typedef TR::typed_allocator<
-      TR::MemorySegment,
-      TR::RawAllocator
-      > SegmentSetAllocator;
+  TR::RawAllocator _rawAllocator;
+  size_t _currentBytesAllocated;
+  size_t _highWaterMark;
+  typedef TR::typed_allocator<TR::MemorySegment, TR::RawAllocator>
+      SegmentSetAllocator;
 
-   std::set<
-      TR::MemorySegment,
-      std::less< TR::MemorySegment >,
-      SegmentSetAllocator
-      > _segments;
+  std::set<TR::MemorySegment, std::less<TR::MemorySegment>, SegmentSetAllocator>
+      _segments;
+};
 
-   };
-
-} // namespace TR
+} // namespace OMR
 
 #endif // OMR_SYSTEM_SEGMENT_PROVIDER

@@ -16,21 +16,20 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "env/JitConfig.hpp"
-#include <string.h>
 #include "env/ConcreteFE.hpp"
+#include <string.h>
 
 TR::JitConfig::JitConfig()
-   : _processorInfo(0), _interpreterTOC(0), _pseudoTOC(0)
-   {
-   memcpy(_eyecatcher, "JITCONF" /* 7 bytes + null */, sizeof(this->_eyecatcher));
-   }
+    : _processorInfo(0), _interpreterTOC(0), _pseudoTOC(0) {
+  memcpy(_eyecatcher, "JITCONF" /* 7 bytes + null */,
+         sizeof(this->_eyecatcher));
+}
 
-TR::JitConfig *
-TR::JitConfig::instance()
-   {
-   return OMR::FrontEnd::singleton().jitConfig();
-   }
+TR::JitConfig *TR::JitConfig::instance() {
+  return OMR::FrontEnd::singleton().jitConfig();
+}

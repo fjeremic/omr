@@ -16,28 +16,33 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef IA32_LINKAGEUTILS_INCL
 #define IA32_LINKAGEUTILS_INCL
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class Register; }
-
-namespace TR
-{
-
-class IA32LinkageUtils
-   {
-   public:
-
-   static TR::Register *pushIntegerWordArg(TR::Node *child, TR::CodeGenerator *cg);
-   static TR::Register *pushLongArg(TR::Node *child, TR::CodeGenerator *cg);
-   static TR::Register *pushFloatArg(TR::Node *child, TR::CodeGenerator *cg);
-   static TR::Register *pushDoubleArg(TR::Node *child, TR::CodeGenerator *cg);
-   };
-
+namespace TR {
+class CodeGenerator;
 }
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
+
+namespace TR {
+
+class IA32LinkageUtils {
+public:
+  static TR::Register *pushIntegerWordArg(TR::Node *child,
+                                          TR::CodeGenerator *cg);
+  static TR::Register *pushLongArg(TR::Node *child, TR::CodeGenerator *cg);
+  static TR::Register *pushFloatArg(TR::Node *child, TR::CodeGenerator *cg);
+  static TR::Register *pushDoubleArg(TR::Node *child, TR::CodeGenerator *cg);
+};
+
+} // namespace TR
 #endif

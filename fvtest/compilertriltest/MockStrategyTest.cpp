@@ -16,64 +16,58 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "JitTest.hpp"
+#include "SharedVerifiers.hpp" //for NoAndIlVerifier
 #include "default_compiler.hpp"
 #include "il/Node.hpp"
 #include "infra/ILWalk.hpp"
 #include "ras/IlVerifier.hpp"
 #include "ras/IlVerifierHelpers.hpp"
-#include "SharedVerifiers.hpp" //for NoAndIlVerifier
-
 
 /**
- * Uses the mockStrategy support to select only an 
- * optimization that should have no effect on the 
- * existence of 'and' operations. 
+ * Uses the mockStrategy support to select only an
+ * optimization that should have no effect on the
+ * existence of 'and' operations.
  *
  * Coupling note: This is assuming the default optimization
  * strategy contains the simplifier. If it did not, this test
  * case would be invalid
  */
-class MockStrategyTest : public TRTest::JitOptTest
-   {
+class MockStrategyTest : public TRTest::JitOptTest {
 
-   public:
-   MockStrategyTest()
-      {
-      /*
-       * By adding a non-simplifier opt, we make sure the 
-       * simplifier doesn't run. 
-       */
-      addOptimization(OMR::trivialDeadTreeRemoval);
-      }
-
-   };
+public:
+  MockStrategyTest() {
+    /*
+     * By adding a non-simplifier opt, we make sure the
+     * simplifier doesn't run.
+     */
+    addOptimization(OMR::trivialDeadTreeRemoval);
+  }
+};
 
 /*
  * This tree should not fold, as the simplifier should be disabled. This
- * ensures that the mock optimizer support is working. 
+ * ensures that the mock optimizer support is working.
  */
 TEST_F(MockStrategyTest, FoldDoesntHappen) {
-    auto* inputTrees = "(method return=Int64 args=[Int32]  "
-                       " (block                            "
-                       "  (lreturn                         "
-                       "   (land                           " 
-                       "    (lconst 0xFFFFFFFF00000000)    "
-                       "    (iu2l (iload parm=0))))))      "; 
+  auto *inputTrees = "(method return=Int64 args=[Int32]  "
+                     " (block                            "
+                     "  (lreturn                         "
+                     "   (land                           "
+                     "    (lconst 0xFFFFFFFF00000000)    "
+                     "    (iu2l (iload parm=0))))))      ";
 
+  auto trees = parseString(inputTrees);
 
-    auto trees = parseString(inputTrees);
+  ASSERT_NOTNULL(trees);
 
-    ASSERT_NOTNULL(trees);
+  Tril::DefaultCompiler compiler(trees);
+  NoAndIlVerifier verifier;
 
-    Tril::DefaultCompiler compiler(trees);
-    NoAndIlVerifier verifier;  
-
-    ASSERT_NE(0, compiler.compileWithVerifier(&verifier)) 
-       << "Simplifier simplified when it shouldn't have!";
+  ASSERT_NE(0, compiler.compileWithVerifier(&verifier))
+      << "Simplifier simplified when it shouldn't have!";
 }
-
-

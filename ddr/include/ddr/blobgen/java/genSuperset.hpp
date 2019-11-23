@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef GENSUPERSET_HPP
@@ -29,30 +30,31 @@ class SupersetFieldVisitor;
 class SupersetVisitor;
 class Symbol_IR;
 
-class JavaSupersetGenerator : public SupersetGenerator
-{
+class JavaSupersetGenerator : public SupersetGenerator {
 private:
-	intptr_t _file;
-	OMRPortLibrary *_portLibrary;
-	bool _printEmptyTypes;
-	string _pendingTypeHeading;
+  intptr_t _file;
+  OMRPortLibrary *_portLibrary;
+  bool _printEmptyTypes;
+  string _pendingTypeHeading;
 
-	void convertJ9BaseTypedef(Type *type, string *name);
-	void replaceBaseTypedef(Type *type, string *name);
-	DDR_RC getFieldType(Field *field, string *assembledTypeName, string *simpleTypeName);
-	DDR_RC printType(Type *type, Type *superClass);
-	DDR_RC printPendingType();
-	DDR_RC printFieldMember(Field *field, const string &prefix);
-	DDR_RC printConstantMember(const string &name);
-	DDR_RC print(const string &text);
+  void convertJ9BaseTypedef(Type *type, string *name);
+  void replaceBaseTypedef(Type *type, string *name);
+  DDR_RC getFieldType(Field *field, string *assembledTypeName,
+                      string *simpleTypeName);
+  DDR_RC printType(Type *type, Type *superClass);
+  DDR_RC printPendingType();
+  DDR_RC printFieldMember(Field *field, const string &prefix);
+  DDR_RC printConstantMember(const string &name);
+  DDR_RC print(const string &text);
 
-	friend class SupersetFieldVisitor;
-	friend class SupersetVisitor;
+  friend class SupersetFieldVisitor;
+  friend class SupersetVisitor;
 
 public:
-	explicit JavaSupersetGenerator(bool printEmptyTypes);
+  explicit JavaSupersetGenerator(bool printEmptyTypes);
 
-	DDR_RC printSuperset(OMRPortLibrary *portLibrary, Symbol_IR *ir, const char *supersetFile);
+  DDR_RC printSuperset(OMRPortLibrary *portLibrary, Symbol_IR *ir,
+                       const char *supersetFile);
 };
 
 #endif /* GENSUPERSET_HPP */

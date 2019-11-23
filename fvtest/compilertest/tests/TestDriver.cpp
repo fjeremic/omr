@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include <stdio.h>
@@ -28,24 +29,20 @@
 #include "ilgen/IlGeneratorMethodDetails.hpp"
 #include "ilgen/MethodBuilder.hpp"
 
-namespace TestCompiler
-{
-void
-TestDriver::RunTest()
-   {
-   compileTestMethods();
-   invokeTests();
-   }
+namespace TestCompiler {
+void TestDriver::RunTest() {
+  compileTestMethods();
+  invokeTests();
+}
 
-int32_t
-TestDriver::compileMethodBuilder(TR::MethodBuilder *m, uint8_t ** entry)
-   {
-   TR::ResolvedMethod resolvedMethod(m);
-   TR::IlGeneratorMethodDetails details(&resolvedMethod);
+int32_t TestDriver::compileMethodBuilder(TR::MethodBuilder *m,
+                                         uint8_t **entry) {
+  TR::ResolvedMethod resolvedMethod(m);
+  TR::IlGeneratorMethodDetails details(&resolvedMethod);
 
-   int32_t rc=0;
-   *entry = (uint8_t *) compileMethod(details, warm, rc);
-   return rc;
-   }
+  int32_t rc = 0;
+  *entry = (uint8_t *)compileMethod(details, warm, rc);
+  return rc;
+}
 
-} //namespace TestCompiler
+} // namespace TestCompiler

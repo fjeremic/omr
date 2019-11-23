@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_JITBUILDERRECORDER_TEXTFILE_INCL
@@ -24,37 +25,42 @@
 
 #include "ilgen/JitBuilderRecorder.hpp"
 
-namespace TR { class IlBuilder; }
-namespace TR { class MethodBuilder; }
-namespace TR { class IlType; }
-namespace TR { class IlValue; }
+namespace TR {
+class IlBuilder;
+}
+namespace TR {
+class MethodBuilder;
+}
+namespace TR {
+class IlType;
+}
+namespace TR {
+class IlValue;
+}
 
-namespace OMR
-{
+namespace OMR {
 
-class JitBuilderRecorderTextFile : public TR::JitBuilderRecorder
-   {
-   public:
-   JitBuilderRecorderTextFile(const TR::MethodBuilder *mb, const char *fileName);
-   virtual ~JitBuilderRecorderTextFile() { }
+class JitBuilderRecorderTextFile : public TR::JitBuilderRecorder {
+public:
+  JitBuilderRecorderTextFile(const TR::MethodBuilder *mb, const char *fileName);
+  virtual ~JitBuilderRecorderTextFile() {}
 
-   virtual void Close();
-   virtual void String(const char * const string);
-   virtual void Number(int8_t num);
-   virtual void Number(int16_t num);
-   virtual void Number(int32_t num);
-   virtual void Number(int64_t num);
-   virtual void Number(float num);
-   virtual void Number(double num);
-   virtual void ID(TypeID id);
-   virtual void Statement(const char *s);
-   virtual void Type(const TR::IlType *type);
-   virtual void Value(const TR::IlValue *v);
-   virtual void Builder(const TR::IlBuilder *b);
-   virtual void Location(const void * location);
-   virtual void EndStatement();
-
-   };
+  virtual void Close();
+  virtual void String(const char *const string);
+  virtual void Number(int8_t num);
+  virtual void Number(int16_t num);
+  virtual void Number(int32_t num);
+  virtual void Number(int64_t num);
+  virtual void Number(float num);
+  virtual void Number(double num);
+  virtual void ID(TypeID id);
+  virtual void Statement(const char *s);
+  virtual void Type(const TR::IlType *type);
+  virtual void Value(const TR::IlValue *v);
+  virtual void Builder(const TR::IlBuilder *b);
+  virtual void Location(const void *location);
+  virtual void EndStatement();
+};
 
 } // namespace OMR
 

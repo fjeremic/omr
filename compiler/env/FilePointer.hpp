@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_FILEPOINTER_INCL
@@ -26,22 +27,20 @@
 
 #include <stdio.h>
 
-namespace TR
-{
+namespace TR {
 
-   typedef struct FilePointer
-      {
+typedef struct FilePointer {
 
-      static FILE *Null() { return NULL; }
+  static FILE *Null() { return NULL; }
 
-      static FILE *Stdin() { return stdin; }
+  static FILE *Stdin() { return stdin; }
 
-      static FILE *Stdout() { return stdout; }
+  static FILE *Stdout() { return stdout; }
 
-      static FILE *Stderr() { return stderr; }
+  static FILE *Stderr() { return stderr; }
 
-      } FilePointer;
+} FilePointer;
 
-}
+} // namespace TR
 
 #endif

@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(DDR_UNORDERED_MAP)
@@ -42,8 +43,8 @@ using std::tr1::unordered_map;
 #endif /* defined(OMR_HAVE_CXX11) */
 
 #if defined(J9ZOS390)
-#define toupper(c)     (islower(c) ? (c & _XUPPER_ASCII) : c)
-#define tolower(c)     (isupper(c) ? (c | _XLOWER_ASCII) : c)
+#define toupper(c) (islower(c) ? (c & _XUPPER_ASCII) : c)
+#define tolower(c) (isupper(c) ? (c | _XLOWER_ASCII) : c)
 #endif /* defined(J9ZOS390) */
 
 #endif /* DDR_UNORDERED_MAP */

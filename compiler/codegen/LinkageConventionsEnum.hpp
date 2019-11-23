@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_LINKAGECONVENTION_INCL
@@ -24,21 +25,20 @@
 
 // Linkage conventions
 //
-// A "Linkage Convention" is the abstraction of one group of similar calling conventions;
-// actual interpretation is up to the Front End / Code Generator combination.
-// For example, by default, TR_System is interpreted as:
+// A "Linkage Convention" is the abstraction of one group of similar calling
+// conventions; actual interpretation is up to the Front End / Code Generator
+// combination. For example, by default, TR_System is interpreted as:
 //     X86-32 Windows and Linux: cdecl calling convention
 //     X86-64 Windows:           Microsoft x64 calling convention
 //     X86-64 Linux:             System V AMD64 ABI
 //
 
-enum TR_LinkageConventions
-   {
-   #include "codegen/LinkageConventions.enum"
-   TR_NumLinkages,
+enum TR_LinkageConventions {
+#include "codegen/LinkageConventions.enum"
+  TR_NumLinkages,
 
-   // Force size to be at least 32-bit, as it may be cast to/from integers
-   TR_LinkageForceSize = 0x7fffffff
-   };
+  // Force size to be at least 32-bit, as it may be cast to/from integers
+  TR_LinkageForceSize = 0x7fffffff
+};
 
 #endif

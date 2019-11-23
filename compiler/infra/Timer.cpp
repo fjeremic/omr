@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 //
@@ -27,51 +28,42 @@
 
 #include "infra/Timer.hpp"
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 #include "compile/Compilation.hpp"
 #include "env/CompilerEnv.hpp"
 #include "env/IO.hpp"
 #include "env/TRMemory.hpp"
 #include "infra/Array.hpp"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-void TR_SingleTimer::initialize(const char *title, TR_Memory * trMemory)
-   {
-   if (title)
-      {
-      _phaseTitle = (char *)trMemory->allocateHeapMemory( strlen(title)+1 );
-      strcpy(_phaseTitle, title);
-      }
-   else
-      _phaseTitle = NULL;
-   _total = 0;
-   _start = 0;
-   _timerRunning = false;
-   }
+void TR_SingleTimer::initialize(const char *title, TR_Memory *trMemory) {
+  if (title) {
+    _phaseTitle = (char *)trMemory->allocateHeapMemory(strlen(title) + 1);
+    strcpy(_phaseTitle, title);
+  } else
+    _phaseTitle = NULL;
+  _total = 0;
+  _start = 0;
+  _timerRunning = false;
+}
 
-void TR_SingleTimer::startTiming(TR::Compilation *comp)
-   {
-   if (!_timerRunning)
-      {
-      _start = TR::Compiler->vm.getHighResClock(comp);
-      _timerRunning = true;
-      }
-   }
+void TR_SingleTimer::startTiming(TR::Compilation *comp) {
+  if (!_timerRunning) {
+    _start = TR::Compiler->vm.getHighResClock(comp);
+    _timerRunning = true;
+  }
+}
 
-uint32_t TR_SingleTimer::stopTiming(TR::Compilation *comp)
-   {
-   if (_timerRunning)
-      {
-      _total += TR::Compiler->vm.getHighResClock(comp) - _start;
-      _timerRunning = false;
-      }
-   return (uint32_t) _total;
-   }
+uint32_t TR_SingleTimer::stopTiming(TR::Compilation *comp) {
+  if (_timerRunning) {
+    _total += TR::Compiler->vm.getHighResClock(comp) - _start;
+    _timerRunning = false;
+  }
+  return (uint32_t)_total;
+}
 
-
-double TR_SingleTimer::secondsTaken()
-   {
-   uint64_t frequency = TR::Compiler->vm.getHighResClockResolution();
-   return frequency ? (double)_total / (double)frequency : 0.0;
-   }
+double TR_SingleTimer::secondsTaken() {
+  uint64_t frequency = TR::Compiler->vm.getHighResClockResolution();
+  return frequency ? (double)_total / (double)frequency : 0.0;
+}

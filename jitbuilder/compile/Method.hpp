@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_METHOD_INCL
@@ -30,31 +31,28 @@
 //
 #include "compiler/compile/Method.hpp"
 
-
 // quick and dirty implementation to get up and running
 // needs major overhaul
 
-namespace JitBuilder
-{
+namespace JitBuilder {
 
-class Method : public TR::Method
-   {
-   public:
-   TR_ALLOC(TR_Memory::Method);
+class Method : public TR::Method {
+public:
+  TR_ALLOC(TR_Memory::Method);
 
-   Method() : TR::Method(TR::Method::JitBuilder) {}
+  Method() : TR::Method(TR::Method::JitBuilder) {}
 
-   // FIXME: need to provide real code for this group
-   virtual uint16_t              classNameLength() { return strlen(classNameChars()); }
-   virtual uint16_t              nameLength()      { return strlen(nameChars()); }
-   virtual uint16_t              signatureLength() { return strlen(signatureChars()); }
-   virtual char                * nameChars()       { return "Method"; }
-   virtual char                * classNameChars()  { return ""; }
-   virtual char                * signatureChars()  { return "()V"; }
+  // FIXME: need to provide real code for this group
+  virtual uint16_t classNameLength() { return strlen(classNameChars()); }
+  virtual uint16_t nameLength() { return strlen(nameChars()); }
+  virtual uint16_t signatureLength() { return strlen(signatureChars()); }
+  virtual char *nameChars() { return "Method"; }
+  virtual char *classNameChars() { return ""; }
+  virtual char *signatureChars() { return "()V"; }
 
-   virtual bool                  isConstructor()   { return false; }
-   virtual bool                  isFinalInObject() { return false; }
-   };
+  virtual bool isConstructor() { return false; }
+  virtual bool isFinalInObject() { return false; }
+};
 
 } // namespace JitBuilder
 

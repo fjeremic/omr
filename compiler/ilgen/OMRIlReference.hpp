@@ -16,44 +16,39 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef OMR_ILREFERENCE_INCL
 #define OMR_ILREFERENCE_INCL
 
-namespace TR { class SymbolReference; }
+namespace TR {
+class SymbolReference;
+}
 
-namespace OMR
-{
+namespace OMR {
 
-class IlReference
-   {
+class IlReference {
 public:
-   TR_ALLOC(TR_Memory::IlGenerator)
+  TR_ALLOC(TR_Memory::IlGenerator)
 
-   /**
-    * @brief really just a wrapper for a TR::SymbolReference
-    */
-   IlReference(TR::SymbolReference *symRef)
-      : _symRef(symRef)
-      {
-      }
+  /**
+   * @brief really just a wrapper for a TR::SymbolReference
+   */
+  IlReference(TR::SymbolReference *symRef) : _symRef(symRef) {}
 
-   /**
-    * @brief returns the wrapped TR::SymbolReference
-    */
-   TR::SymbolReference *symRef()
-      {
-      return _symRef;
-      }
+  /**
+   * @brief returns the wrapped TR::SymbolReference
+   */
+  TR::SymbolReference *symRef() { return _symRef; }
 
 protected:
-   /**
-    * @brief the wrapped TR::SymbolReference pointer
-    */
-   TR::SymbolReference * _symRef;
-   };
+  /**
+   * @brief the wrapped TR::SymbolReference pointer
+   */
+  TR::SymbolReference *_symRef;
+};
 
 } // namespace OMR
 

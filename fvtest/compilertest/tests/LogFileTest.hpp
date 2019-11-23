@@ -16,38 +16,41 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEST_LOGFILE_INCL
 #define TEST_LOGFILE_INCL
 
-#include <vector>
-#include <map>
 #include "gtest/gtest.h"
+#include <map>
+#include <vector>
 
 namespace TestCompiler {
 
-class LogFileTest : public ::testing::Test
-   {
-   public:
-   LogFileTest();
-   ~LogFileTest();
+class LogFileTest : public ::testing::Test {
+public:
+  LogFileTest();
+  ~LogFileTest();
 
-   void forkAndCompile(std::string logFile, const char *logType = "traceFull");
-   void checkLogForKeywords(std::map<const char*, bool> keywords, const char *logFile);
-   void runKeywordTests(std::map<const char*, std::map<const char*, bool>> logFileChecks);
-   bool fileIsNotEmpty(std::string logFile);
-   std::map<const char*, bool> buildKeywordMap(std::vector<const char*> inputs);
+  void forkAndCompile(std::string logFile, const char *logType = "traceFull");
+  void checkLogForKeywords(std::map<const char *, bool> keywords,
+                           const char *logFile);
+  void runKeywordTests(
+      std::map<const char *, std::map<const char *, bool>> logFileChecks);
+  bool fileIsNotEmpty(std::string logFile);
+  std::map<const char *, bool>
+  buildKeywordMap(std::vector<const char *> inputs);
 
-   private:
-   std::vector<std::string> _logFiles;
+private:
+  std::vector<std::string> _logFiles;
 
-   bool fileExists(std::string name);
-   void createLog(std::string logFile, const char *logType);
-   void compileTests();
-   };
+  bool fileExists(std::string name);
+  void createLog(std::string logFile, const char *logType);
+  void compileTests();
+};
 
-}
+} // namespace TestCompiler
 
 #endif // !defined(TEST_LOGFILE_INCL)

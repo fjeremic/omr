@@ -16,39 +16,37 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/CmpBranchOpIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "env/FrontEnd.hpp"
-#include "tests/injectors/CmpBranchOpIlInjector.hpp"
 
-namespace TestCompiler
-{
-bool
-CmpBranchOpIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
-   createBlocks(3);
+namespace TestCompiler {
+bool CmpBranchOpIlInjector::injectIL() {
+  if (!isOpCodeSupported())
+    return false;
+  createBlocks(3);
 
-   // 3 blocks requested start at 2 (0 is entry, 1 is exit)
-   // by default, generate to block 2
+  // 3 blocks requested start at 2 (0 is entry, 1 is exit)
+  // by default, generate to block 2
 
-   // Block2: blocks(0)
-   // if () goto Block4;
-   ifjump(_opCode, parm(1), parm(2), 2);
+  // Block2: blocks(0)
+  // if () goto Block4;
+  ifjump(_opCode, parm(1), parm(2), 2);
 
-   // Block3: blocks(1)
-   // return 0;
-   returnValue(iconst(0));
+  // Block3: blocks(1)
+  // return 0;
+  returnValue(iconst(0));
 
-   // Block4: blocks(2)
-   // return 1;
-   generateToBlock(2);
-   returnValue(iconst(1));
+  // Block4: blocks(2)
+  // return 1;
+  generateToBlock(2);
+  returnValue(iconst(1));
 
-   return true;
-   }
+  return true;
+}
 
 } // namespace TestCompiler

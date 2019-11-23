@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_ALIASBUILDER_INCL
@@ -24,20 +25,20 @@
 
 #include "compile/OMRAliasBuilder.hpp"
 
-namespace TR { class Compilation; }
-namespace TR { class SymbolReferenceTable; }
+namespace TR {
+class Compilation;
+}
+namespace TR {
+class SymbolReferenceTable;
+}
 
-namespace TR
-   {
-   class AliasBuilder : public OMR::AliasBuilderConnector
-      {
-      public:
-
-      AliasBuilder(TR::SymbolReferenceTable *symRefTab, size_t sizeHint, TR::Compilation *c) :
-         OMR::AliasBuilderConnector(symRefTab, sizeHint, c)
-         {
-         }
-      };
-   }
+namespace TR {
+class AliasBuilder : public OMR::AliasBuilderConnector {
+public:
+  AliasBuilder(TR::SymbolReferenceTable *symRefTab, size_t sizeHint,
+               TR::Compilation *c)
+      : OMR::AliasBuilderConnector(symRefTab, sizeHint, c) {}
+};
+} // namespace TR
 
 #endif

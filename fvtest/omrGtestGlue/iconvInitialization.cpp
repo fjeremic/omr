@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if defined(J9ZOS390) && !defined(OMR_EBCDIC)
@@ -24,15 +25,13 @@
 
 extern "C" int iconv_init(void);
 
-int
-iconv_initialization(void)
-{
-	static int count = 0;
-	if (0 == count) {
-		iconv_init();
-		count = 1;
-	}
-	return 0;
+int iconv_initialization(void) {
+  static int count = 0;
+  if (0 == count) {
+    iconv_init();
+    count = 1;
+  }
+  return 0;
 }
 
 #endif /* defined(J9ZOS390) && !defined(OMR_EBCDIC) */

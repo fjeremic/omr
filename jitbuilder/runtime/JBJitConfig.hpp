@@ -17,27 +17,29 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef JITBUILDER_JITCONFIG_HPP
 #define JITBUILDER_JITCONFIG_HPP
 
-#include "env/TRMemory.hpp"
 #include "env/FEBase.hpp"
 #include "env/JitConfig.hpp"
+#include "env/TRMemory.hpp"
 
-namespace JitBuilder { class FrontEnd; }
+namespace JitBuilder {
+class FrontEnd;
+}
 
-// Singleton JitConfig. The only instance of this is JitBuilder::FrontEnd::_jitConfig
-namespace JitBuilder
-{
-struct JitConfig : public TR::JitConfig
-   {
-   private:
-   friend class TR::FEBase<FrontEnd>;
-   JitConfig() : TR::JitConfig() {}
-   };
+// Singleton JitConfig. The only instance of this is
+// JitBuilder::FrontEnd::_jitConfig
+namespace JitBuilder {
+struct JitConfig : public TR::JitConfig {
+private:
+  friend class TR::FEBase<FrontEnd>;
+  JitConfig() : TR::JitConfig() {}
+};
 } // namespace JitBuilder
 
 #endif // !defined(JITBUILDER_JITCONFIG_HPP)

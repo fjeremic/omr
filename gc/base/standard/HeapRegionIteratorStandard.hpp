@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(HEAPREGIONITERATORSTANDARD_HPP)
@@ -33,37 +34,35 @@ class GC_HeapRegionIteratorStandard : public GC_HeapRegionIterator {
 private:
 private:
 protected:
-	
 public:
-	
-	/**
-	 * Construct a HeapRegionIterator for the specified heap.
-	 * 
-	 * @param manager The versions of the regions returned will come from this manager
-	 */
-	GC_HeapRegionIteratorStandard(MM_HeapRegionManager *manager) 
-		: GC_HeapRegionIterator(manager)
-		{ }
+  /**
+   * Construct a HeapRegionIterator for the specified heap.
+   *
+   * @param manager The versions of the regions returned will come from this
+   * manager
+   */
+  GC_HeapRegionIteratorStandard(MM_HeapRegionManager *manager)
+      : GC_HeapRegionIterator(manager) {}
 
-	/**
-	 * Construct a HeapRegionIterator for the regions which belong to the specified memory space.
-	 * 
-	 * @param manager The versions of the regions returned will come from this manager
-	 * @param space the memory space whose regions should be walked
-	 */
-	GC_HeapRegionIteratorStandard(MM_HeapRegionManager *manager, MM_MemorySpace* space)
-		: GC_HeapRegionIterator(manager, space)
-		{ }
-	
-	/**
-	 * @return the next region in the heap, or NULL if there are no more regions
-	 */
-	MM_HeapRegionDescriptorStandard *nextRegion() 
-	{
-		return (MM_HeapRegionDescriptorStandard*)GC_HeapRegionIterator::nextRegion();
-	}
+  /**
+   * Construct a HeapRegionIterator for the regions which belong to the
+   * specified memory space.
+   *
+   * @param manager The versions of the regions returned will come from this
+   * manager
+   * @param space the memory space whose regions should be walked
+   */
+  GC_HeapRegionIteratorStandard(MM_HeapRegionManager *manager,
+                                MM_MemorySpace *space)
+      : GC_HeapRegionIterator(manager, space) {}
 
+  /**
+   * @return the next region in the heap, or NULL if there are no more regions
+   */
+  MM_HeapRegionDescriptorStandard *nextRegion() {
+    return (
+        MM_HeapRegionDescriptorStandard *)GC_HeapRegionIterator::nextRegion();
+  }
 };
-
 
 #endif /* HEAPREGIONITERATORSTANDARD_HPP */

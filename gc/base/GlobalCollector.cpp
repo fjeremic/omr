@@ -17,29 +17,24 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "GlobalCollector.hpp"
 #include "GlobalCollectorDelegate.hpp"
 
-void
-MM_GlobalCollector::internalPostCollect(MM_EnvironmentBase* env, MM_MemorySubSpace* subSpace)
-{
-	_delegate.postCollect(env, subSpace);
+void MM_GlobalCollector::internalPostCollect(MM_EnvironmentBase *env,
+                                             MM_MemorySubSpace *subSpace) {
+  _delegate.postCollect(env, subSpace);
 }
 
-bool
-MM_GlobalCollector::isTimeForGlobalGCKickoff()
-{
-	return _delegate.isTimeForGlobalGCKickoff();
+bool MM_GlobalCollector::isTimeForGlobalGCKickoff() {
+  return _delegate.isTimeForGlobalGCKickoff();
 }
 
 /**
  * Abort any currently active garbage collection activity.
  */
-void
-MM_GlobalCollector::abortCollection(MM_EnvironmentBase* env, CollectionAbortReason reason)
-{
-}
-
+void MM_GlobalCollector::abortCollection(MM_EnvironmentBase *env,
+                                         CollectionAbortReason reason) {}

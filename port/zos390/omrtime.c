@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -26,13 +27,12 @@
  * @brief Timer utilities
  */
 
-
-#include <time.h>
-#include <sys/types.h>
-#include <sys/time.h>
 #include "omrport.h"
-#include "omrportpriv.h"
 #include "omrportpg.h"
+#include "omrportpriv.h"
+#include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
 
 extern int64_t MAXPREC();
 
@@ -45,13 +45,13 @@ extern int64_t MAXPREC();
  *
  * @return The result of the multiplication
  */
-static int64_t
-muldiv64(const int64_t num, const int64_t numerator, const int64_t denominator)
-{
-	const int64_t quotient = num / denominator;
-	const int64_t remainder = num - quotient * denominator;
-	const int64_t res = quotient * numerator + ((remainder * numerator) / denominator);
-	return res;
+static int64_t muldiv64(const int64_t num, const int64_t numerator,
+                        const int64_t denominator) {
+  const int64_t quotient = num / denominator;
+  const int64_t remainder = num - quotient * denominator;
+  const int64_t res =
+      quotient * numerator + ((remainder * numerator) / denominator);
+  return res;
 }
 
 /**
@@ -63,12 +63,11 @@ muldiv64(const int64_t num, const int64_t numerator, const int64_t denominator)
  * @return 0 on failure, time value in milliseconds on success.
  * @deprecated Use @ref omrtime_hires_clock and @ref omrtime_hires_delta
  */
-/*  technically, this should return int64_t since both timeval.tv_sec and timeval.tv_usec are long */
-uintptr_t
-omrtime_msec_clock(struct OMRPortLibrary *portLibrary)
-{
-	int64_t millisec = MAXPREC() / OMRPORT_TIME_HIRES_MILLITIME_DIVISOR;
-	return millisec;
+/*  technically, this should return int64_t since both timeval.tv_sec and
+ * timeval.tv_usec are long */
+uintptr_t omrtime_msec_clock(struct OMRPortLibrary *portLibrary) {
+  int64_t millisec = MAXPREC() / OMRPORT_TIME_HIRES_MILLITIME_DIVISOR;
+  return millisec;
 }
 /**
  * Query OS for timestamp.
@@ -79,25 +78,24 @@ omrtime_msec_clock(struct OMRPortLibrary *portLibrary)
  * @return 0 on failure, time value in microseconds on success.
  * @deprecated Use @ref omrtime_hires_clock and @ref omrtime_hires_delta
  */
-uintptr_t
-omrtime_usec_clock(struct OMRPortLibrary *portLibrary)
-{
-	int64_t microsec = MAXPREC() / OMRPORT_TIME_HIRES_MICROTIME_DIVISOR;
-	return microsec;
+uintptr_t omrtime_usec_clock(struct OMRPortLibrary *portLibrary) {
+  int64_t microsec = MAXPREC() / OMRPORT_TIME_HIRES_MICROTIME_DIVISOR;
+  return microsec;
 }
 
-uint64_t
-omrtime_current_time_nanos(struct OMRPortLibrary *portLibrary, uintptr_t *success)
-{
-	*success = 1;
+uint64_t omrtime_current_time_nanos(struct OMRPortLibrary *portLibrary,
+                                    uintptr_t *success) {
+  *success = 1;
 
-	const int64_t subnanosec = MAXPREC();
+  const int64_t subnanosec = MAXPREC();
 
-	// calculate nanosec = subnanosec * NUMERATOR / DENOMINATOR via integer arithmetics
-	const int64_t nanosec = muldiv64(subnanosec,
-			OMRPORT_TIME_HIRES_NANOTIME_NUMERATOR, OMRPORT_TIME_HIRES_NANOTIME_DENOMINATOR);
+  // calculate nanosec = subnanosec * NUMERATOR / DENOMINATOR via integer
+  // arithmetics
+  const int64_t nanosec =
+      muldiv64(subnanosec, OMRPORT_TIME_HIRES_NANOTIME_NUMERATOR,
+               OMRPORT_TIME_HIRES_NANOTIME_DENOMINATOR);
 
-	return nanosec;
+  return nanosec;
 }
 
 /**
@@ -109,23 +107,21 @@ omrtime_current_time_nanos(struct OMRPortLibrary *portLibrary, uintptr_t *succes
  *
  * @return 0 on failure, time value in milliseconds on success.
  */
-int64_t
-omrtime_current_time_millis(struct OMRPortLibrary *portLibrary)
-{
-	int64_t millisec = MAXPREC() / OMRPORT_TIME_HIRES_MILLITIME_DIVISOR;
-	return millisec;
+int64_t omrtime_current_time_millis(struct OMRPortLibrary *portLibrary) {
+  int64_t millisec = MAXPREC() / OMRPORT_TIME_HIRES_MILLITIME_DIVISOR;
+  return millisec;
 }
 
-int64_t
-omrtime_nano_time(struct OMRPortLibrary *portLibrary)
-{
-	const int64_t subnanosec = MAXPREC();
+int64_t omrtime_nano_time(struct OMRPortLibrary *portLibrary) {
+  const int64_t subnanosec = MAXPREC();
 
-	// calculate nanosec = subnanosec * NUMERATOR / DENOMINATOR via integer arithmetics
-	const int64_t nanosec = muldiv64(subnanosec,
-			OMRPORT_TIME_HIRES_NANOTIME_NUMERATOR, OMRPORT_TIME_HIRES_NANOTIME_DENOMINATOR);
+  // calculate nanosec = subnanosec * NUMERATOR / DENOMINATOR via integer
+  // arithmetics
+  const int64_t nanosec =
+      muldiv64(subnanosec, OMRPORT_TIME_HIRES_NANOTIME_NUMERATOR,
+               OMRPORT_TIME_HIRES_NANOTIME_DENOMINATOR);
 
-	return nanosec;
+  return nanosec;
 }
 
 /**
@@ -136,11 +132,9 @@ omrtime_nano_time(struct OMRPortLibrary *portLibrary)
  *
  * @return 0 on failure, time value on success.
  */
-uint64_t
-omrtime_hires_clock(struct OMRPortLibrary *portLibrary)
-{
-	int64_t hires = MAXPREC();
-	return hires;
+uint64_t omrtime_hires_clock(struct OMRPortLibrary *portLibrary) {
+  int64_t hires = MAXPREC();
+  return hires;
 }
 /**
  * Query OS for clock frequency
@@ -150,24 +144,23 @@ omrtime_hires_clock(struct OMRPortLibrary *portLibrary)
  *
  * @return 0 on failure, number of ticks per second on success.
  */
-uint64_t
-omrtime_hires_frequency(struct OMRPortLibrary *portLibrary)
-{
-	return OMRTIME_HIRES_CLOCK_FREQUENCY;
+uint64_t omrtime_hires_frequency(struct OMRPortLibrary *portLibrary) {
+  return OMRTIME_HIRES_CLOCK_FREQUENCY;
 }
 /**
- * Calculate time difference between two hires clock timer values @ref omrtime_hires_clock.
+ * Calculate time difference between two hires clock timer values @ref
+ * omrtime_hires_clock.
  *
- * Given a start and end time determine how much time elapsed.  Return the value as
- * requested by the required resolution
+ * Given a start and end time determine how much time elapsed.  Return the value
+ * as requested by the required resolution
  *
  * @param[in] portLibrary The port library.
  * @param[in] startTime Timer value at start of timing interval
  * @param[in] endTime Timer value at end of timing interval
- * @param[in] requiredResolution Returned timer resolution as a fraction of a second.  For example:
- *  \arg 1 to report elapsed time in seconds
- *  \arg 1,000 to report elapsed time in milliseconds
- *  \arg 1,000,000 to report elapsed time in microseconds
+ * @param[in] requiredResolution Returned timer resolution as a fraction of a
+ * second.  For example: \arg 1 to report elapsed time in seconds \arg 1,000 to
+ * report elapsed time in milliseconds \arg 1,000,000 to report elapsed time in
+ * microseconds
  *
  * @return 0 on failure, time difference on success.
  *
@@ -177,44 +170,36 @@ omrtime_hires_frequency(struct OMRPortLibrary *portLibrary)
  *  \arg OMRPORT_TIME_DELTA_IN_MICROSECONDS return timer value in micoseconds.
  *  \arg OMRPORT_TIME_DELTA_IN_NANOSECONDS return timer value in nanoseconds.
  */
-uint64_t
-omrtime_hires_delta(struct OMRPortLibrary *portLibrary, uint64_t startTime, uint64_t endTime, uint64_t requiredResolution)
-{
-	uint64_t ticks;
+uint64_t omrtime_hires_delta(struct OMRPortLibrary *portLibrary,
+                             uint64_t startTime, uint64_t endTime,
+                             uint64_t requiredResolution) {
+  uint64_t ticks;
 
-	/* modular arithmetic saves us, answer is always ...*/
-	ticks = endTime - startTime;
+  /* modular arithmetic saves us, answer is always ...*/
+  ticks = endTime - startTime;
 
-	if (OMRTIME_HIRES_CLOCK_FREQUENCY == requiredResolution) {
-		/* no conversion necessary */
-	} else if (OMRTIME_HIRES_CLOCK_FREQUENCY < requiredResolution) {
-		ticks = muldiv64(ticks, requiredResolution, OMRTIME_HIRES_CLOCK_FREQUENCY);
-	} else {
-		/*equivalent to ticks / (OMRTIME_HIRES_CLOCK_FREQUENCY / requiredResolution)*/
-		ticks = muldiv64(ticks, requiredResolution, OMRTIME_HIRES_CLOCK_FREQUENCY);
-	}
-	return ticks;
+  if (OMRTIME_HIRES_CLOCK_FREQUENCY == requiredResolution) {
+    /* no conversion necessary */
+  } else if (OMRTIME_HIRES_CLOCK_FREQUENCY < requiredResolution) {
+    ticks = muldiv64(ticks, requiredResolution, OMRTIME_HIRES_CLOCK_FREQUENCY);
+  } else {
+    /*equivalent to ticks / (OMRTIME_HIRES_CLOCK_FREQUENCY /
+     * requiredResolution)*/
+    ticks = muldiv64(ticks, requiredResolution, OMRTIME_HIRES_CLOCK_FREQUENCY);
+  }
+  return ticks;
 }
 
 /**
  * PortLibrary shutdown.
  *
- * This function is called during shutdown of the portLibrary.  Any resources that were created by @ref omrtime_startup
- * should be destroyed here.
+ * This function is called during shutdown of the portLibrary.  Any resources
+ * that were created by @ref omrtime_startup should be destroyed here.
  *
  * @param[in] portLib The port library.
  *
  * @note Most implementations will be empty.
  */
-void
-omrtime_shutdown(struct OMRPortLibrary *portLibrary)
-{
-}
+void omrtime_shutdown(struct OMRPortLibrary *portLibrary) {}
 
-int32_t
-omrtime_startup(struct OMRPortLibrary *portLibrary)
-{
-	return 0;
-}
-
-
+int32_t omrtime_startup(struct OMRPortLibrary *portLibrary) { return 0; }

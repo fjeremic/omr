@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2001, 2015 IBM Corp. and others
  *
- * This program and the accompanying materials are made available 
- *  under the terms of the Eclipse Public License 2.0 which 
- * accompanies this distribution and is available at 
- * https://www.eclipse.org/legal/epl-2.0/ or the 
- * Apache License, Version 2.0 which accompanies this distribution 
+ * This program and the accompanying materials are made available
+ *  under the terms of the Eclipse Public License 2.0 which
+ * accompanies this distribution and is available at
+ * https://www.eclipse.org/legal/epl-2.0/ or the
+ * Apache License, Version 2.0 which accompanies this distribution
  *  and is available at https://www.apache.org/licenses/LICENSE-2.0.
  *
  * This Source Code may also be made available under the following
@@ -14,11 +14,12 @@
  * General Public License, version 2 with the GNU Classpath
  * Exception [1] and GNU General Public License, version 2 with the
  * OpenJDK Assembly Exception [2].
- *   
+ *
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  ******************************************************************************/
 
 #include <stdlib.h>
@@ -44,26 +45,25 @@
  * z/OS 1.6 or z/OS.e 1.6 	OS/390 		16.00 		03
  */
 BOOLEAN
-zos_version_at_least(double min_release, double min_version)
-{
-	struct utsname sysinfo;
-	int rc;
+zos_version_at_least(double min_release, double min_version) {
+  struct utsname sysinfo;
+  int rc;
 
-	rc = uname(&sysinfo);
-	if (rc >= 0) {
-		double release;
-		double version;
+  rc = uname(&sysinfo);
+  if (rc >= 0) {
+    double release;
+    double version;
 
-		release = strtod(sysinfo.release, NULL);
-		version = strtod(sysinfo.version, NULL);
+    release = strtod(sysinfo.release, NULL);
+    version = strtod(sysinfo.version, NULL);
 
-		if (min_release < release) {
-			return TRUE;
-		} else if (min_release == release) {
-			if (min_version <= version) {
-				return TRUE;
-			}
-		}
-	}
-	return FALSE;
+    if (min_release < release) {
+      return TRUE;
+    } else if (min_release == release) {
+      if (min_version <= version) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
 }

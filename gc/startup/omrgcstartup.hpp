@@ -17,37 +17,39 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef MM_OMRGCSTARTUPAPI_HPP_
 #define MM_OMRGCSTARTUPAPI_HPP_
 
-#include "omr.h"
-#include "objectdescription.h"
-#include "omrcomp.h"
 #include "j9nongenerated.h"
+#include "objectdescription.h"
+#include "omr.h"
+#include "omrcomp.h"
 
 class MM_StartupManager;
 
 /* Initialization & Shutdown API */
 
-omr_error_t OMR_GC_InitializeHeap(OMR_VM* omrVM, MM_StartupManager *manager);
+omr_error_t OMR_GC_InitializeHeap(OMR_VM *omrVM, MM_StartupManager *manager);
 
-omr_error_t OMR_GC_IntializeHeapAndCollector(OMR_VM* omrVM, MM_StartupManager *manager);
+omr_error_t OMR_GC_IntializeHeapAndCollector(OMR_VM *omrVM,
+                                             MM_StartupManager *manager);
 
-omr_error_t OMR_GC_InitializeDispatcherThreads(OMR_VMThread* omrVMThread);
+omr_error_t OMR_GC_InitializeDispatcherThreads(OMR_VMThread *omrVMThread);
 
-omr_error_t OMR_GC_ShutdownDispatcherThreads(OMR_VMThread* omrVMThread);
+omr_error_t OMR_GC_ShutdownDispatcherThreads(OMR_VMThread *omrVMThread);
 
-omr_error_t OMR_GC_InitializeCollector(OMR_VMThread* omrVMThread);
+omr_error_t OMR_GC_InitializeCollector(OMR_VMThread *omrVMThread);
 
-omr_error_t OMR_GC_ShutdownCollector(OMR_VMThread* omrVMThread);
+omr_error_t OMR_GC_ShutdownCollector(OMR_VMThread *omrVMThread);
 
-omr_error_t OMR_GC_ShutdownCollector(OMR_VM* vm);
+omr_error_t OMR_GC_ShutdownCollector(OMR_VM *vm);
 
-omr_error_t OMR_GC_ShutdownHeap(OMR_VM* omrVM);
+omr_error_t OMR_GC_ShutdownHeap(OMR_VM *omrVM);
 
-omr_error_t OMR_GC_ShutdownHeapAndCollector(OMR_VM* vm);
+omr_error_t OMR_GC_ShutdownHeapAndCollector(OMR_VM *vm);
 
 #endif /* MM_OMRGCSTARTUPAPI_HPP_ */

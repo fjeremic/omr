@@ -16,35 +16,39 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TESTDRIVER_HPP
 #define TESTDRIVER_HPP
 
-#include <stdint.h>
 #include "compile/CompilationTypes.hpp"
+#include <stdint.h>
 
-namespace TR { class IlGeneratorMethodDetails; }
-namespace TR { class MethodBuilder; }
+namespace TR {
+class IlGeneratorMethodDetails;
+}
+namespace TR {
+class MethodBuilder;
+}
 
-extern "C" uint8_t *compileMethod(TR::IlGeneratorMethodDetails &, TR_Hotness, int32_t &);
+extern "C" uint8_t *compileMethod(TR::IlGeneratorMethodDetails &, TR_Hotness,
+                                  int32_t &);
 
-namespace TestCompiler
-{
-#define TOSTR(x)     #x
+namespace TestCompiler {
+#define TOSTR(x) #x
 #define LINETOSTR(x) TOSTR(x)
 
-class TestDriver
-   {
-   public:
-   void RunTest();
-   virtual void compileTestMethods() = 0;
-   virtual void invokeTests() = 0;
+class TestDriver {
+public:
+  void RunTest();
+  virtual void compileTestMethods() = 0;
+  virtual void invokeTests() = 0;
 
-   int32_t compileMethodBuilder(TR::MethodBuilder *m, uint8_t **entry);
-   };
+  int32_t compileMethodBuilder(TR::MethodBuilder *m, uint8_t **entry);
+};
 
-}// namespace TestCompiler
+} // namespace TestCompiler
 
 #endif

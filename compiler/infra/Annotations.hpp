@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef ANNOTATIONS_INCL
@@ -58,14 +59,13 @@
  *
  */
 
-
 // OMR_NORETURN
 #if defined(_MSC_VER)
 #define OMR_NORETURN _declspec(noreturn)
 #elif defined(__GNUC__)
-#define OMR_NORETURN __attribute__ ((noreturn))
+#define OMR_NORETURN __attribute__((noreturn))
 #elif defined(__IBMCPP__)
-#define OMR_NORETURN __attribute__ ((noreturn))
+#define OMR_NORETURN __attribute__((noreturn))
 #else
 #warning "Noreturn attribute undefined for this platform."
 #define OMR_NORETURN
@@ -82,11 +82,11 @@
 // TODO: check if the definition of these macros is too broad,
 //       __builtin_expect() may not have any effect on xlC
 #if defined(TR_HOST_X86) && defined(OMR_OS_WINDOWS)
-   #define OMR_LIKELY(expr) (expr)
-   #define OMR_UNLIKELY(expr) (expr)
+#define OMR_LIKELY(expr) (expr)
+#define OMR_UNLIKELY(expr) (expr)
 #else
-   #define OMR_LIKELY(expr)   __builtin_expect((expr), 1)
-   #define OMR_UNLIKELY(expr) __builtin_expect((expr), 0)
+#define OMR_LIKELY(expr) __builtin_expect((expr), 1)
+#define OMR_UNLIKELY(expr) __builtin_expect((expr), 0)
 #endif /* defined(TR_HOST_X86) && defined(OMR_OS_WINDOWS) */
 
 #endif

@@ -16,41 +16,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_VIRTUALMACHINEREGISTER_INCL
 #define TR_VIRTUALMACHINEREGISTER_INCL
 
-
 #include "ilgen/OMRVirtualMachineRegister.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class VirtualMachineRegister : public OMR::VirtualMachineRegister
-   {
-   public:
-   VirtualMachineRegister(TR::IlBuilder *b,
-                          const char * const localName,
-                          TR::IlType * pointerToRegisterType,
-                          uint32_t adjustByStep,
-                          TR::IlValue * addressOfRegister)
-      : OMR::VirtualMachineRegister(b, localName, pointerToRegisterType, adjustByStep, addressOfRegister)
-      { }
+class VirtualMachineRegister : public OMR::VirtualMachineRegister {
+public:
+  VirtualMachineRegister(TR::IlBuilder *b, const char *const localName,
+                         TR::IlType *pointerToRegisterType,
+                         uint32_t adjustByStep, TR::IlValue *addressOfRegister)
+      : OMR::VirtualMachineRegister(b, localName, pointerToRegisterType,
+                                    adjustByStep, addressOfRegister) {}
 
-   VirtualMachineRegister(const char * const localName,
-                          TR::IlType * pointerToRegisterType,
-                          uint32_t adjustByStep,
-                          TR::IlValue * addressOfRegister)
-      : OMR::VirtualMachineRegister(localName, pointerToRegisterType, adjustByStep, addressOfRegister)
-      { }
+  VirtualMachineRegister(const char *const localName,
+                         TR::IlType *pointerToRegisterType,
+                         uint32_t adjustByStep, TR::IlValue *addressOfRegister)
+      : OMR::VirtualMachineRegister(localName, pointerToRegisterType,
+                                    adjustByStep, addressOfRegister) {}
 
-   protected:
-   VirtualMachineRegister(const char * const localName)
-      : OMR::VirtualMachineRegister(localName)
-      { }
-   };
-}
+protected:
+  VirtualMachineRegister(const char *const localName)
+      : OMR::VirtualMachineRegister(localName) {}
+};
+} // namespace TR
 
 #endif // !defined(TR_VIRTUALMACHINEREGISTER_INCL)

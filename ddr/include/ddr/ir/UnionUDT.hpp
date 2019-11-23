@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef UNIONUDT_HPP
@@ -24,17 +25,16 @@
 
 #include "ddr/ir/ClassType.hpp"
 
-class UnionUDT : public ClassType
-{
+class UnionUDT : public ClassType {
 public:
-	explicit UnionUDT(size_t size, unsigned int lineNumber = 0);
-	virtual ~UnionUDT();
+  explicit UnionUDT(size_t size, unsigned int lineNumber = 0);
+  virtual ~UnionUDT();
 
-	virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
-	virtual const string &getSymbolKindName() const;
+  virtual DDR_RC acceptVisitor(const TypeVisitor &visitor);
+  virtual const string &getSymbolKindName() const;
 
-	bool operator==(const Type & rhs) const;
-	virtual bool compareToUnion(const UnionUDT &) const;
+  bool operator==(const Type &rhs) const;
+  virtual bool compareToUnion(const UnionUDT &) const;
 };
 
 #endif /* UNIONUDT_HPP */

@@ -16,18 +16,18 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 // make sure the code gets from the data cache to the instruction cache
-void arm64CodeSync(unsigned char *codeStart, unsigned int codeSize)
-   {
+void arm64CodeSync(unsigned char *codeStart, unsigned int codeSize) {
 #if defined(TR_HOST_ARM64)
 #if defined(__GNUC__)
-   // GCC built-in function
-   __builtin___clear_cache(codeStart, codeStart+codeSize);
+  // GCC built-in function
+  __builtin___clear_cache(codeStart, codeStart + codeSize);
 #else
 #error Not supported yet
 #endif
 #endif
-   }
+}

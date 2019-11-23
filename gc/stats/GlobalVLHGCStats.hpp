@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -37,16 +38,14 @@
  * Storage for statistics relevant to global garbage collections
  * @ingroup GC_Stats
  */
-class MM_GlobalVLHGCStats
-{
+class MM_GlobalVLHGCStats {
 public:
-	uintptr_t gcCount;  /**< Count of the number of GC cycles that have occurred */
-	uintptr_t incrementCount;	/**< The number of incremental taxation entry point collection operations which have been completed since the VM started */
+  uintptr_t gcCount; /**< Count of the number of GC cycles that have occurred */
+  uintptr_t incrementCount; /**< The number of incremental taxation entry point
+                               collection operations which have been completed
+                               since the VM started */
 
-	MM_GlobalVLHGCStats() :
-		gcCount(0)
-		,incrementCount(0)
-	{};
+  MM_GlobalVLHGCStats() : gcCount(0), incrementCount(0){};
 };
 
 #endif /* OMR_GC_VLHGC */

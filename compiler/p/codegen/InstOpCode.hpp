@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TR_POWER_INSTOPCODE_INCL
@@ -25,22 +26,23 @@
 #include "codegen/OMRInstOpCode.hpp"
 
 #ifndef OPS_MAX
-#define OPS_MAX    TR::InstOpCode::NumOpCodes
+#define OPS_MAX TR::InstOpCode::NumOpCodes
 #endif
 
-namespace TR
-{
+namespace TR {
 
-class InstOpCode: public OMR::InstOpCodeConnector
-   {
-   public:
-   InstOpCode()	: 			OMR::InstOpCodeConnector(bad) {}
-   InstOpCode(TR::InstOpCode::Mnemonic m): OMR::InstOpCodeConnector(m) {}
+class InstOpCode : public OMR::InstOpCodeConnector {
+public:
+  InstOpCode() : OMR::InstOpCodeConnector(bad) {}
+  InstOpCode(TR::InstOpCode::Mnemonic m) : OMR::InstOpCodeConnector(m) {}
 
-   TR::InstOpCode::Mnemonic getOpCodeValue()                 {return _mnemonic;}
-   TR::InstOpCode::Mnemonic setOpCodeValue(TR::InstOpCode::Mnemonic op) {return (_mnemonic = op);}
-   TR::InstOpCode::Mnemonic getRecordFormOpCodeValue()       {return (TR::InstOpCode::Mnemonic)(_mnemonic+1);}
-
-   };
-}
+  TR::InstOpCode::Mnemonic getOpCodeValue() { return _mnemonic; }
+  TR::InstOpCode::Mnemonic setOpCodeValue(TR::InstOpCode::Mnemonic op) {
+    return (_mnemonic = op);
+  }
+  TR::InstOpCode::Mnemonic getRecordFormOpCodeValue() {
+    return (TR::InstOpCode::Mnemonic)(_mnemonic + 1);
+  }
+};
+} // namespace TR
 #endif

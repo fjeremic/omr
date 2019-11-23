@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #if !defined(PHYSICALSUBARENAVIRTUALMEMORYSEMISPACE_HPP_)
@@ -37,45 +38,54 @@ class MM_MemorySubSpace;
  * @todo Provide class documentation
  * @ingroup GC_Modron_Standard
  */
-class MM_PhysicalSubArenaVirtualMemorySemiSpace : public MM_PhysicalSubArenaVirtualMemory
-{
+class MM_PhysicalSubArenaVirtualMemorySemiSpace
+    : public MM_PhysicalSubArenaVirtualMemory {
 private:
-	bool _resizable; /**< determines if the semi space is resizable */
-	bool _avoidMovingObjects; /**< VMDESIGN 1690: avoid moving objects during contract where possible */
+  bool _resizable;          /**< determines if the semi space is resizable */
+  bool _avoidMovingObjects; /**< VMDESIGN 1690: avoid moving objects during
+                               contract where possible */
 
-	uintptr_t calculateExpansionSplit(MM_EnvironmentBase *env, uintptr_t requestExpandSize, uintptr_t *allocateSpaceSize, uintptr_t *survivorSpaceSize);
+  uintptr_t calculateExpansionSplit(MM_EnvironmentBase *env,
+                                    uintptr_t requestExpandSize,
+                                    uintptr_t *allocateSpaceSize,
+                                    uintptr_t *survivorSpaceSize);
 
 protected:
-	MM_HeapRegionDescriptor *_lowSemiSpaceRegion;
-	MM_HeapRegionDescriptor *_highSemiSpaceRegion;
+  MM_HeapRegionDescriptor *_lowSemiSpaceRegion;
+  MM_HeapRegionDescriptor *_highSemiSpaceRegion;
 
-	virtual bool initialize(MM_EnvironmentBase *env);
-	virtual void tearDown(MM_EnvironmentBase *env);
+  virtual bool initialize(MM_EnvironmentBase *env);
+  virtual void tearDown(MM_EnvironmentBase *env);
 
 public:
-	static MM_PhysicalSubArenaVirtualMemorySemiSpace *newInstance(MM_EnvironmentBase *env, MM_Heap *heap);
-	virtual void kill(MM_EnvironmentBase *env);
+  static MM_PhysicalSubArenaVirtualMemorySemiSpace *
+  newInstance(MM_EnvironmentBase *env, MM_Heap *heap);
+  virtual void kill(MM_EnvironmentBase *env);
 
-	virtual bool inflate(MM_EnvironmentBase *env);
+  virtual bool inflate(MM_EnvironmentBase *env);
 
-	virtual uintptr_t expand(MM_EnvironmentBase *env, uintptr_t expandSize);
-	virtual bool canExpand(MM_EnvironmentBase *env);
-	virtual uintptr_t expandNoCheck(MM_EnvironmentBase *env, uintptr_t expandSize);
-	virtual uintptr_t checkCounterBalanceExpand(MM_EnvironmentBase *env, uintptr_t expandSizeDeltaAlignment, uintptr_t expandSize);
+  virtual uintptr_t expand(MM_EnvironmentBase *env, uintptr_t expandSize);
+  virtual bool canExpand(MM_EnvironmentBase *env);
+  virtual uintptr_t expandNoCheck(MM_EnvironmentBase *env,
+                                  uintptr_t expandSize);
+  virtual uintptr_t
+  checkCounterBalanceExpand(MM_EnvironmentBase *env,
+                            uintptr_t expandSizeDeltaAlignment,
+                            uintptr_t expandSize);
 
-	virtual uintptr_t contract(MM_EnvironmentBase *env, uintptr_t expandSize);
-	virtual bool canContract(MM_EnvironmentBase *env);
+  virtual uintptr_t contract(MM_EnvironmentBase *env, uintptr_t expandSize);
+  virtual bool canContract(MM_EnvironmentBase *env);
 
-	virtual void tilt(MM_EnvironmentBase *env, uintptr_t allocateSpaceSize, uintptr_t survivorSpaceSize, bool updateMemoryPools = true);
-	virtual void tilt(MM_EnvironmentBase *env, uintptr_t survivorSpaceSizeRequest);
+  virtual void tilt(MM_EnvironmentBase *env, uintptr_t allocateSpaceSize,
+                    uintptr_t survivorSpaceSize, bool updateMemoryPools = true);
+  virtual void tilt(MM_EnvironmentBase *env,
+                    uintptr_t survivorSpaceSizeRequest);
 
-	MM_PhysicalSubArenaVirtualMemorySemiSpace(MM_Heap *heap) :
-		MM_PhysicalSubArenaVirtualMemory(heap),
-		_lowSemiSpaceRegion(NULL),
-		_highSemiSpaceRegion(NULL)
-	{
-		_typeId = __FUNCTION__;
-	};
+  MM_PhysicalSubArenaVirtualMemorySemiSpace(MM_Heap *heap)
+      : MM_PhysicalSubArenaVirtualMemory(heap), _lowSemiSpaceRegion(NULL),
+        _highSemiSpaceRegion(NULL) {
+    _typeId = __FUNCTION__;
+  };
 };
 
 #endif /* defined(OMR_GC_MODRON_SCAVENGER) */

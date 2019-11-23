@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "ConcurrentMarkingDelegate.hpp"
@@ -24,31 +25,31 @@
 #include "ConcurrentGC.hpp"
 #include "MarkingScheme.hpp"
 
-bool
-MM_ConcurrentMarkingDelegate::initialize(MM_EnvironmentBase *env, MM_ConcurrentGC *collector)
-{
-	MM_GCExtensionsBase *extensions = env->getExtensions();
-	_objectModel = &(extensions->objectModel);
-	_markingScheme = collector->getMarkingScheme();
-	_collector = collector;
-	return true;
+bool MM_ConcurrentMarkingDelegate::initialize(MM_EnvironmentBase *env,
+                                              MM_ConcurrentGC *collector) {
+  MM_GCExtensionsBase *extensions = env->getExtensions();
+  _objectModel = &(extensions->objectModel);
+  _markingScheme = collector->getMarkingScheme();
+  _collector = collector;
+  return true;
 }
 
-uintptr_t
-MM_ConcurrentMarkingDelegate::collectRoots(MM_EnvironmentBase *env, uintptr_t concurrentStatus, bool *collectedRoots, bool *paidTax)
-{
-	uintptr_t bytesScanned = 0;
-	*collectedRoots = true;
-	*paidTax = true;
+uintptr_t MM_ConcurrentMarkingDelegate::collectRoots(MM_EnvironmentBase *env,
+                                                     uintptr_t concurrentStatus,
+                                                     bool *collectedRoots,
+                                                     bool *paidTax) {
+  uintptr_t bytesScanned = 0;
+  *collectedRoots = true;
+  *paidTax = true;
 
-	switch (concurrentStatus) {
-	case CONCURRENT_ROOT_TRACING1:
-		_markingScheme->markLiveObjectsRoots(env);
-		break;
-	default:
-		Assert_MM_unreachable();
-	}
+  switch (concurrentStatus) {
+  case CONCURRENT_ROOT_TRACING1:
+    _markingScheme->markLiveObjectsRoots(env);
+    break;
+  default:
+    Assert_MM_unreachable();
+  }
 
-	return bytesScanned;
+  return bytesScanned;
 }
 #endif /* defined(OMR_GC_MODRON_CONCURRENT_MARK) */

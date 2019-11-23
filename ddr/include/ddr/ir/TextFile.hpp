@@ -16,7 +16,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #ifndef TEXTFILE_HPP
@@ -26,22 +27,18 @@
 
 struct OMRPortLibrary;
 
-class TextFile
-{
+class TextFile {
 private:
-	OMRPortLibrary * const _portLibrary;
-	intptr_t _file;
+  OMRPortLibrary *const _portLibrary;
+  intptr_t _file;
 
 public:
-	explicit TextFile(OMRPortLibrary *portLibrary)
-		: _portLibrary(portLibrary)
-		, _file(-1)
-	{
-	}
+  explicit TextFile(OMRPortLibrary *portLibrary)
+      : _portLibrary(portLibrary), _file(-1) {}
 
-	bool openRead(const char *filename);
-	bool readLine(std::string &line);
-	void close();
+  bool openRead(const char *filename);
+  bool readLine(std::string &line);
+  void close();
 };
 
 #endif /* TEXTFILE_HPP */

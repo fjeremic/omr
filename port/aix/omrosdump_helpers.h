@@ -17,7 +17,8 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 /**
@@ -29,14 +30,15 @@
 #include "omrport.h"
 #include "omrportpriv.h"
 
-/* TODO: these should be moved back to omrosdump_helpers.c once the refactoring of omrosdump.c is complete */
+/* TODO: these should be moved back to omrosdump_helpers.c once the refactoring
+ * of omrosdump.c is complete */
 #include <core.h>
 #define DEFAULT_CORE_FILE_NAME "core"
 /* endTODO */
 
 void findOSPreferredCoreDir(struct OMRPortLibrary *portLibrary, char *buffer);
-uintptr_t getPEnvValue(struct OMRPortLibrary *portLibrary, char *envVar, char *infoString);
-intptr_t genSystemCoreUsingGencore(struct OMRPortLibrary *portLibrary, char *filename);
+uintptr_t getPEnvValue(struct OMRPortLibrary *portLibrary, char *envVar,
+                       char *infoString);
+intptr_t genSystemCoreUsingGencore(struct OMRPortLibrary *portLibrary,
+                                   char *filename);
 void appendCoreName(OMRPortLibrary *portLibrary, char *corepath, intptr_t pid);
-
-

@@ -16,12 +16,13 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "FrequentObjectsStats.hpp"
-#include "GCExtensionsBase.hpp"
 #include "EnvironmentBase.hpp"
+#include "GCExtensionsBase.hpp"
 #include "ModronAssertions.h"
 
 /**
@@ -30,45 +31,33 @@
  * @return the new instance, or NULL on failure.
  */
 MM_FrequentObjectsStats *
-MM_FrequentObjectsStats::newInstance(MM_EnvironmentBase *env)
-{
-	/* DO NOTHING */
-	return NULL;
+MM_FrequentObjectsStats::newInstance(MM_EnvironmentBase *env) {
+  /* DO NOTHING */
+  return NULL;
 }
 
-
-bool
-MM_FrequentObjectsStats::initialize(MM_EnvironmentBase *env)
-{
-	/* DO NOTHING */
-	return false;
+bool MM_FrequentObjectsStats::initialize(MM_EnvironmentBase *env) {
+  /* DO NOTHING */
+  return false;
 }
 
-void
-MM_FrequentObjectsStats::tearDown(MM_EnvironmentBase *env)
-{
-	/* DO NOTHING */
-	return;
+void MM_FrequentObjectsStats::tearDown(MM_EnvironmentBase *env) {
+  /* DO NOTHING */
+  return;
 }
 
-
-void
-MM_FrequentObjectsStats::kill(MM_EnvironmentBase *env)
-{
-	/* DO NOTHING */
-	return;
+void MM_FrequentObjectsStats::kill(MM_EnvironmentBase *env) {
+  /* DO NOTHING */
+  return;
 }
 
-void
-MM_FrequentObjectsStats::traceStats(MM_EnvironmentBase *env)
-{
-	/* DO NOTHING */
-	return;
+void MM_FrequentObjectsStats::traceStats(MM_EnvironmentBase *env) {
+  /* DO NOTHING */
+  return;
 }
 
-void
-MM_FrequentObjectsStats::merge(MM_FrequentObjectsStats* frequentObjectsStats)
-{
-	/* DO NOTHING */
-	return;
+void MM_FrequentObjectsStats::merge(
+    MM_FrequentObjectsStats *frequentObjectsStats) {
+  /* DO NOTHING */
+  return;
 }

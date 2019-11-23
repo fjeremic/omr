@@ -15,9 +15,9 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #ifndef TYPEDICTIONARY_EXTRAS_OUTSIDE_CLASS_INCL
 #define TYPEDICTIONARY_EXTRAS_OUTSIDE_CLASS_INCL
@@ -25,13 +25,14 @@
 #include <OMR/TypeTraits.hpp>
 
 /**
- * @brief Convenience API for defining JitBuilder structs from C/C++ structs (PODs)
+ * @brief Convenience API for defining JitBuilder structs from C/C++ structs
+ * (PODs)
  *
  * These macros simply allow the name of C/C++ structs and fields to be used to
  * define JitBuilder structs. This can help ensure a consistent API between a
- * VM struct and JitBuilder's representation of the same struct. Their definitions
- * expand to calls to `TR::TypeDictionary` methods that create a representation
- * corresponding to that specified type.
+ * VM struct and JitBuilder's representation of the same struct. Their
+ * definitions expand to calls to `TR::TypeDictionary` methods that create a
+ * representation corresponding to that specified type.
  *
  * ## Usage
  *
@@ -63,11 +64,10 @@
  * d.CloseStruct("MyStruct", sizeof(MyStruct));
  * ```
  */
-#define DEFINE_STRUCT(structName) \
-   DefineStruct(#structName)
-#define DEFINE_FIELD(structName, fieldName, filedIlType) \
-   DefineField(#structName, #fieldName, filedIlType, offsetof(structName, fieldName))
-#define CLOSE_STRUCT(structName) \
-   CloseStruct(#structName, sizeof(structName))
+#define DEFINE_STRUCT(structName) DefineStruct(#structName)
+#define DEFINE_FIELD(structName, fieldName, filedIlType)                       \
+  DefineField(#structName, #fieldName, filedIlType,                            \
+              offsetof(structName, fieldName))
+#define CLOSE_STRUCT(structName) CloseStruct(#structName, sizeof(structName))
 
 #endif // !defined(TYPEDICTIONARY_EXTRAS_OUTSIDE_CLASS_INCL)

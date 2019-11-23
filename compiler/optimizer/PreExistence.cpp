@@ -16,51 +16,45 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
 #include "optimizer/PreExistence.hpp"
 
+#include "compile/Compilation.hpp"
 #include "env/CompilerEnv.hpp"
 #include "env/KnownObjectTable.hpp"
-#include "compile/Compilation.hpp"
 #ifdef J9_PROJECT_SPECIFIC
 #include "env/VMAccessCriticalSection.hpp"
 #endif
 #include "optimizer/Inliner.hpp"
 
-PrexKnowledgeLevel
-TR_PrexArgument::knowledgeLevel(TR_PrexArgument *pa)
-   {
-   if (!pa)
-      return NONE;
-   else if (pa->hasKnownObjectIndex())
-      return KNOWN_OBJECT;
-   else if (pa->classIsFixed())
-      return FIXED_CLASS;
-   else if (pa->classIsPreexistent())
-      return PREEXISTENT;
-   else
-      return NONE;
-   }
+PrexKnowledgeLevel TR_PrexArgument::knowledgeLevel(TR_PrexArgument *pa) {
+  if (!pa)
+    return NONE;
+  else if (pa->hasKnownObjectIndex())
+    return KNOWN_OBJECT;
+  else if (pa->classIsFixed())
+    return FIXED_CLASS;
+  else if (pa->classIsPreexistent())
+    return PREEXISTENT;
+  else
+    return NONE;
+}
 
-TR_PrexArgument::TR_PrexArgument(
-      TR::KnownObjectTable::Index knownObjectIndex,
-      TR::Compilation *comp) :
-   _classKind(ClassIsUnknown),
-   _class(0),
-   _profiledClazz(0),
-   _isTypeInfoForInlinedBody(false),
-   _knownObjectIndex(knownObjectIndex)
-   {
+TR_PrexArgument::TR_PrexArgument(TR::KnownObjectTable::Index knownObjectIndex,
+                                 TR::Compilation *comp)
+    : _classKind(ClassIsUnknown), _class(0), _profiledClazz(0),
+      _isTypeInfoForInlinedBody(false), _knownObjectIndex(knownObjectIndex) {
 #ifdef J9_PROJECT_SPECIFIC
-   TR::VMAccessCriticalSection prexArgumentCriticalSection(comp,
-                                                            TR::VMAccessCriticalSection::tryToAcquireVMAccess);
+  TR::VMAccessCriticalSection prexArgumentCriticalSection(
+      comp, TR::VMAccessCriticalSection::tryToAcquireVMAccess);
 
-   if (prexArgumentCriticalSection.hasVMAccess())
-      {
-      _class = TR::Compiler->cls.objectClass(comp, comp->getKnownObjectTable()->getPointer(knownObjectIndex));
-      _classKind = ClassIsFixed;
-      }
+  if (prexArgumentCriticalSection.hasVMAccess()) {
+    _class = TR::Compiler->cls.objectClass(
+        comp, comp->getKnownObjectTable()->getPointer(knownObjectIndex));
+    _classKind = ClassIsFixed;
+  }
 #endif
-   }
+}

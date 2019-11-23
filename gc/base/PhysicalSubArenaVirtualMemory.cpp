@@ -17,38 +17,35 @@
  * [1] https://www.gnu.org/software/classpath/license.html
  * [2] http://openjdk.java.net/legal/assembly-exception.html
  *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH
+ *Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
-
 
 #include "PhysicalSubArenaVirtualMemory.hpp"
 
 class MM_EnvironmentBase;
 
-bool
-MM_PhysicalSubArenaVirtualMemory::initialize(MM_EnvironmentBase* env)
-{
-	if (!MM_PhysicalSubArena::initialize(env)) {
-		return false;
-	}
+bool MM_PhysicalSubArenaVirtualMemory::initialize(MM_EnvironmentBase *env) {
+  if (!MM_PhysicalSubArena::initialize(env)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 /**
- * Find the next valid address higher than the current physical subarenas memory.
- * This routine is typically used for decommit purposes, to find the valid ranges surrounding a particular
- * address range.
+ * Find the next valid address higher than the current physical subarenas
+ * memory. This routine is typically used for decommit purposes, to find the
+ * valid ranges surrounding a particular address range.
  * @return the next highest valid range, or NULL if there is none.
  */
-void*
-MM_PhysicalSubArenaVirtualMemory::findAdjacentHighValidAddress(MM_EnvironmentBase* env)
-{
-	/* Is there a valid higher address? */
-	if (NULL == _highArena) {
-		return NULL;
-	}
+void *MM_PhysicalSubArenaVirtualMemory::findAdjacentHighValidAddress(
+    MM_EnvironmentBase *env) {
+  /* Is there a valid higher address? */
+  if (NULL == _highArena) {
+    return NULL;
+  }
 
-	/* There is - return its lowest address */
-	return _highArena->getLowAddress();
+  /* There is - return its lowest address */
+  return _highArena->getLowAddress();
 }
