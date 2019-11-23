@@ -27,8 +27,14 @@
  */
 #ifndef OMR_CPU_CONNECTOR
 #define OMR_CPU_CONNECTOR
-namespace OMR { namespace Power { class CPU; } }
-namespace OMR { typedef OMR::Power::CPU CPUConnector; }
+namespace OMR {
+namespace Power {
+    class CPU;
+}
+}
+namespace OMR {
+typedef OMR::Power::CPU CPUConnector;
+}
 #else
 #error OMR::Power::CPU expected to be a primary connector, but a OMR connector is already defined
 #endif
@@ -40,55 +46,65 @@ namespace OMR { typedef OMR::Power::CPU CPUConnector; }
 
 #define VALID_PROCESSOR TR_ASSERT(id() >= TR_FirstPPCProcessor && id() <= TR_LastPPCProcessor, "Not a valid PPC Processor Type")
 
-namespace OMR
-{
+namespace OMR {
 
-namespace Power
-{
+namespace Power {
 
-class CPU : public OMR::CPU
-   {
-protected:
+    class CPU : public OMR::CPU {
+    protected:
+        CPU()
+            : OMR::CPU()
+        {
+        }
 
-   CPU() : OMR::CPU() {}
+    public:
+        bool getSupportsHardwareSQRT()
+        {
+            VALID_PROCESSOR;
+            return id() >= TR_FirstPPCHwSqrtProcessor;
+        }
+        bool getSupportsHardwareRound()
+        {
+            VALID_PROCESSOR;
+            return id() >= TR_FirstPPCHwRoundProcessor;
+        }
+        bool getSupportsHardwareCopySign()
+        {
+            VALID_PROCESSOR;
+            return id() >= TR_FirstPPCHwCopySignProcessor;
+        }
 
-public:
+        bool getPPCis64bit();
+        bool getPPCSupportsVMX() { return false; }
+        bool getPPCSupportsVSX() { return false; }
+        bool getPPCSupportsAES() { return false; }
+        bool getPPCSupportsTM() { return false; }
+        bool getPPCSupportsLM() { return false; }
 
-   bool getSupportsHardwareSQRT() { VALID_PROCESSOR; return id() >= TR_FirstPPCHwSqrtProcessor; }
-   bool getSupportsHardwareRound() { VALID_PROCESSOR; return id() >= TR_FirstPPCHwRoundProcessor; }
-   bool getSupportsHardwareCopySign() { VALID_PROCESSOR; return id() >= TR_FirstPPCHwCopySignProcessor;}
-
-   bool getPPCis64bit();
-   bool getPPCSupportsVMX() { return false; }
-   bool getPPCSupportsVSX() { return false; }
-   bool getPPCSupportsAES() { return false; }
-   bool getPPCSupportsTM()  { return false; }
-   bool getPPCSupportsLM()  { return false; }
-
-   /** @brief Determines whether the Transactional Memory (TM) facility is available on the current processor.
+        /** @brief Determines whether the Transactional Memory (TM) facility is available on the current processor.
     *         Alias of getPPCSupportsTM() as a platform agnostic query.
     *
     *  @return true if TM is available, false otherwise.
     */
-   bool supportsTransactionalMemoryInstructions();
+        bool supportsTransactionalMemoryInstructions();
 
-   /**
+        /**
     * @brief Provides the maximum forward branch displacement in bytes reachable
     *        with an I-Form branch instruction.
     *
     * @return Maximum forward branch displacement in bytes.
     */
-   int32_t maxIFormBranchForwardOffset() { return 0x01fffffc; }
+        int32_t maxIFormBranchForwardOffset() { return 0x01fffffc; }
 
-   /**
+        /**
     * @brief Provides the maximum backward branch displacement in bytes reachable
     *        with an I-Form branch instruction.
     *
     * @return Maximum backward branch displacement in bytes.
     */
-   int32_t maxIFormBranchBackwardOffset() { return 0xfe000000; }
+        int32_t maxIFormBranchBackwardOffset() { return 0xfe000000; }
 
-   /**
+        /**
     * @brief Answers whether the distance between a target and source address
     *        is within the reachable displacement range of an I-form branch
     *        instruction.
@@ -100,12 +116,9 @@ public:
     *
     * @return true if the target is within range; false otherwise.
     */
-   bool isTargetWithinIFormBranchRange(intptrj_t targetAddress, intptrj_t sourceAddress);
-
-   };
-
+        bool isTargetWithinIFormBranchRange(intptrj_t targetAddress, intptrj_t sourceAddress);
+    };
 }
-
 }
 
 #endif

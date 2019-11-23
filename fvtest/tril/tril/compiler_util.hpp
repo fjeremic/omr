@@ -21,36 +21,51 @@
 
 #ifndef COMPILER_UTIL_HPP
 #define COMPILER_UTIL_HPP
-#include <stdexcept>
-#include "il/DataTypes.hpp"
 #include "ast.hpp"
 #include "codegen/LinkageConventionsEnum.hpp"
+#include "il/DataTypes.hpp"
 #include "infra/Flags.hpp"
+#include <stdexcept>
 
-namespace Tril { 
+namespace Tril {
 /**
  * @brief Gets the TR::DataTypes value from the data type's name
  * @param name is the name of the data type as a string
  * @return the TR::DataTypes value corresponding to the specified name
  */
-static TR::DataTypes getTRDataTypes(const std::string& name) {
-   if (name == "Int8") return TR::Int8;
-   else if (name == "Int16") return TR::Int16;
-   else if (name == "Int32") return TR::Int32;
-   else if (name == "Int64") return TR::Int64;
-   else if (name == "Address") return TR::Address;
-   else if (name == "Float") return TR::Float;
-   else if (name == "Double") return TR::Double;
-   else if (name == "VectorInt8") return TR::VectorInt8;
-   else if (name == "VectorInt16") return TR::VectorInt16;
-   else if (name == "VectorInt32") return TR::VectorInt32;
-   else if (name == "VectorInt64") return TR::VectorInt64;
-   else if (name == "VectorFloat") return TR::VectorFloat;
-   else if (name == "VectorDouble") return TR::VectorDouble;
-   else if (name == "NoType") return TR::NoType;
-   else {
-      throw std::runtime_error(static_cast<const std::string&>(std::string("Unknown type name: ").append(name)));
-   }
+static TR::DataTypes getTRDataTypes(const std::string& name)
+{
+    if (name == "Int8")
+        return TR::Int8;
+    else if (name == "Int16")
+        return TR::Int16;
+    else if (name == "Int32")
+        return TR::Int32;
+    else if (name == "Int64")
+        return TR::Int64;
+    else if (name == "Address")
+        return TR::Address;
+    else if (name == "Float")
+        return TR::Float;
+    else if (name == "Double")
+        return TR::Double;
+    else if (name == "VectorInt8")
+        return TR::VectorInt8;
+    else if (name == "VectorInt16")
+        return TR::VectorInt16;
+    else if (name == "VectorInt32")
+        return TR::VectorInt32;
+    else if (name == "VectorInt64")
+        return TR::VectorInt64;
+    else if (name == "VectorFloat")
+        return TR::VectorFloat;
+    else if (name == "VectorDouble")
+        return TR::VectorDouble;
+    else if (name == "NoType")
+        return TR::NoType;
+    else {
+        throw std::runtime_error(static_cast<const std::string&>(std::string("Unknown type name: ").append(name)));
+    }
 }
 
 /**
@@ -60,19 +75,20 @@ static TR::DataTypes getTRDataTypes(const std::string& name) {
  * @return the std::vector of TR::DataTypes corresponding to the 
  *         args=[Type1,Type2,...] attached to the ASTNode. 
  */
-static std::vector<TR::DataTypes> parseArgTypes(const ASTNode* node) { 
+static std::vector<TR::DataTypes> parseArgTypes(const ASTNode* node)
+{
 
-   std::vector<TR::DataTypes> argTypes;
-   auto argTypesArg = node->getArgByName("args");
-   if (argTypesArg != NULL) {
-      auto typeValue = argTypesArg->getValue();
-      while (typeValue != NULL) {
-         argTypes.push_back(getTRDataTypes(typeValue->getString()));
-         typeValue = typeValue->next;
-      }
-   }
+    std::vector<TR::DataTypes> argTypes;
+    auto argTypesArg = node->getArgByName("args");
+    if (argTypesArg != NULL) {
+        auto typeValue = argTypesArg->getValue();
+        while (typeValue != NULL) {
+            argTypes.push_back(getTRDataTypes(typeValue->getString()));
+            typeValue = typeValue->next;
+        }
+    }
 
-   return argTypes;
+    return argTypes;
 }
 
 /**
@@ -82,20 +98,21 @@ static std::vector<TR::DataTypes> parseArgTypes(const ASTNode* node) {
  * @return a flags32_t representing the flags that the ASTNode's
  *         "flags" list specified should be set.
  */
-static OMR::flags32_t parseFlags(const ASTNode* node) {
-   OMR::flags32_t flags = 0;
+static OMR::flags32_t parseFlags(const ASTNode* node)
+{
+    OMR::flags32_t flags = 0;
 
-   auto flagsArg = node->getArgByName("flags");
-   if (flagsArg != NULL) {
-      auto flagsValue = flagsArg->getValue();
-      while (flagsValue != NULL) {
-         if (flagsValue->getInteger() >= 0 && flagsValue->getInteger() < 32)
-            flags.set(1u << flagsValue->getInteger());
-         flagsValue = flagsValue->next;
-      }
-   }
+    auto flagsArg = node->getArgByName("flags");
+    if (flagsArg != NULL) {
+        auto flagsValue = flagsArg->getValue();
+        while (flagsValue != NULL) {
+            if (flagsValue->getInteger() >= 0 && flagsValue->getInteger() < 32)
+                flags.set(1u << flagsValue->getInteger());
+            flagsValue = flagsValue->next;
+        }
+    }
 
-   return flags;
+    return flags;
 }
 
 /**
@@ -105,17 +122,16 @@ static OMR::flags32_t parseFlags(const ASTNode* node) {
  * @return the linkage convention, or TR_None if the name is not 
  *         recognized. 
  */
-static TR_LinkageConventions convertStringToLinkage(const char * linkageName) { 
-   std::string ln = linkageName;  
-   if (ln == "system") {
-      return TR_System;
-   }
+static TR_LinkageConventions convertStringToLinkage(const char* linkageName)
+{
+    std::string ln = linkageName;
+    if (ln == "system") {
+        return TR_System;
+    }
 
-   // Not found
-   return TR_None; 
+    // Not found
+    return TR_None;
 }
-
 }
 
 #endif
-

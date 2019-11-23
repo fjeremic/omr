@@ -24,43 +24,41 @@
 
 #include <string.h>
 
-#include "omrport.h"
 #include "omrTest.h"
 #include "omrTestHelpers.h"
+#include "omrport.h"
 #include "testEnvironment.hpp"
 
-class ThreadExtendedTestEnvironment: public BaseEnvironment
-{
-/*
+class ThreadExtendedTestEnvironment : public BaseEnvironment {
+    /*
  * Data members
  */
 private:
 protected:
 public:
-
-/*
+    /*
 * Function members
 */
 private:
 protected:
 public:
-	ThreadExtendedTestEnvironment(int argc, char **argv, OMRPortLibrary *portLibrary) :
-		BaseEnvironment(argc, argv)
-	{
-		portLib = portLibrary;
-	}
+    ThreadExtendedTestEnvironment(int argc, char** argv, OMRPortLibrary* portLibrary)
+        : BaseEnvironment(argc, argv)
+    {
+        portLib = portLibrary;
+    }
 };
 
 /**
  * Initialize port library and attach thread
  */
-void thrExtendedTestSetUp(OMRPortLibrary *portLibrary);
+void thrExtendedTestSetUp(OMRPortLibrary* portLibrary);
 
 /**
  * Shutdown port library and detach thread
  */
-void thrExtendedTestTearDown(OMRPortLibrary *portLibrary);
+void thrExtendedTestTearDown(OMRPortLibrary* portLibrary);
 
-extern ThreadExtendedTestEnvironment *omrTestEnv;
+extern ThreadExtendedTestEnvironment* omrTestEnv;
 
 #endif /* THREADEXTENDEDTESTHELPERS_HPP_INCLUDED */

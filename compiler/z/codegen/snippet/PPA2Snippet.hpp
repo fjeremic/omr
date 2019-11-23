@@ -29,7 +29,9 @@
 #include "codegen/Relocation.hpp"
 #include "codegen/Snippet.hpp"
 
-namespace TR { class S390zOSSystemLinkage; }
+namespace TR {
+class S390zOSSystemLinkage;
+}
 
 namespace TR {
 
@@ -59,27 +61,23 @@ namespace TR {
  *       +----------------------------------+----------------------------------+----------------------------------+----------------------------------+
  *  \endverbatim
  */
-class PPA2Snippet : public TR::Snippet
-   {
-   public:
-
-   /** \brief
+class PPA2Snippet : public TR::Snippet {
+public:
+    /** \brief
     *     Size (in bytes) of the fixed area of the PPA1 data structure which is always present.
     */
-   static const size_t FIXED_AREA_SIZE = 24;
+    static const size_t FIXED_AREA_SIZE = 24;
 
-   public:
+public:
+    PPA2Snippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage);
 
-   PPA2Snippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage);
+    virtual uint8_t* emitSnippetBody();
 
-   virtual uint8_t* emitSnippetBody();
+    virtual uint32_t getLength(int32_t estimatedSnippetStart);
 
-   virtual uint32_t getLength(int32_t estimatedSnippetStart);
-
-   private:
-
-   TR::S390zOSSystemLinkage* _linkage;
-   };
+private:
+    TR::S390zOSSystemLinkage* _linkage;
+};
 }
 
 #endif

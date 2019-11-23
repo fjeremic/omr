@@ -20,9 +20,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "modronopt.h"
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "modronopt.h"
 
 #include "AllocationContext.hpp"
 
@@ -32,23 +32,20 @@
 /**
  * Initialization.
  */
-bool
-MM_AllocationContext::initialize(MM_EnvironmentBase *env)
+bool MM_AllocationContext::initialize(MM_EnvironmentBase* env)
 {
-	return true;
+    return true;
 }
 
-void
-MM_AllocationContext::kill(MM_EnvironmentBase *env)
+void MM_AllocationContext::kill(MM_EnvironmentBase* env)
 {
-	tearDown(env);
-	env->getForge()->free(this);
+    tearDown(env);
+    env->getForge()->free(this);
 }
 
 /**
  * Initialization.
  */
-void
-MM_AllocationContext::tearDown(MM_EnvironmentBase *env)
+void MM_AllocationContext::tearDown(MM_EnvironmentBase* env)
 {
 }

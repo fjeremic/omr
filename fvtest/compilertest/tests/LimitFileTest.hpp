@@ -22,34 +22,32 @@
 #ifndef TEST_LIMITFILE_INCL
 #define TEST_LIMITFILE_INCL
 
-#include <vector>
 #include "gtest/gtest.h"
+#include <vector>
 
 namespace TestCompiler {
 
-class LimitFileTest : public ::testing::Test
-   {
-   public:
-   LimitFileTest();
-   ~LimitFileTest();
+class LimitFileTest : public ::testing::Test {
+public:
+    LimitFileTest();
+    ~LimitFileTest();
 
-   void createVLog(const char *vlog, const char *limitFile = NULL);
-   void createAndCheckVLog(const char *vlog, const char *limitFile = NULL, int *iNegLine = NULL);
+    void createVLog(const char* vlog, const char* limitFile = NULL);
+    void createAndCheckVLog(const char* vlog, const char* limitFile = NULL, int* iNegLine = NULL);
 
-   void checkVLogForMethod(const char *vlog, const char *method, const char *level = "warm", int *foundOnLine = NULL);
+    void checkVLogForMethod(const char* vlog, const char* method, const char* level = "warm", int* foundOnLine = NULL);
 
-   protected:
-   void delayUnlink(const char *file);
+protected:
+    void delayUnlink(const char* file);
 
-   private:
-   std::vector<const char *> _vlog;
+private:
+    std::vector<const char*> _vlog;
 
-   bool fileExists(const char *name);
-   void generateVLog(const char *vlog, const char *limitFile = NULL);
+    bool fileExists(const char* name);
+    void generateVLog(const char* vlog, const char* limitFile = NULL);
 
-   void compileTests();
-   };
-
+    void compileTests();
+};
 }
 
 #endif // !defined(TEST_LIMITFILE_INCL)

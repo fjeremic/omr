@@ -19,16 +19,16 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "testHeader.h"
 #include "map_to_type/map_to_type.hpp"
+#include "testHeader.h"
 
 /*
  * @ddr_namespace: default
  */
 
 /* These should be included: */
-#define dolphin			11
-#define fish ((unsigned int)(4))/* Test comment block. */
+#define dolphin 11
+#define fish ((unsigned int)(4)) /* Test comment block. */
 #define whale (7) // Test comment.
 #define octopus dolphin
 

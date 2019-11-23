@@ -22,8 +22,8 @@
 #ifndef GENBLOB_HPP
 #define GENBLOB_HPP
 
-#include "ddr/std/string.hpp"
 #include "ddr/error.hpp"
+#include "ddr/std/string.hpp"
 #include "omrport.h"
 
 using std::string;
@@ -36,24 +36,22 @@ class Type;
 class TypedefUDT;
 class UnionUDT;
 
-DDR_RC genBlob(OMRPortLibrary *portLibrary, Symbol_IR *ir, const char *supersetFile, const char *blobFile, bool printEmptyTypes);
+DDR_RC genBlob(OMRPortLibrary* portLibrary, Symbol_IR* ir, const char* supersetFile, const char* blobFile, bool printEmptyTypes);
 
-class BlobGenerator
-{
+class BlobGenerator {
 protected:
-	 bool _printEmptyTypes;
+    bool _printEmptyTypes;
 
 public:
-	virtual DDR_RC genBinaryBlob(OMRPortLibrary *portLibrary, Symbol_IR *ir, const char *blobFile) = 0;
+    virtual DDR_RC genBinaryBlob(OMRPortLibrary* portLibrary, Symbol_IR* ir, const char* blobFile) = 0;
 };
 
-class SupersetGenerator
-{
+class SupersetGenerator {
 protected:
-	bool _printEmptyTypes;
+    bool _printEmptyTypes;
 
 public:
-	virtual DDR_RC printSuperset(OMRPortLibrary *portLibrary, Symbol_IR *ir, const char *supersetFile) = 0;
+    virtual DDR_RC printSuperset(OMRPortLibrary* portLibrary, Symbol_IR* ir, const char* supersetFile) = 0;
 };
 
 #endif /* GENBLOB_HPP */

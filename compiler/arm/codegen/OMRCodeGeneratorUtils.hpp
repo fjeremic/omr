@@ -24,16 +24,14 @@
 
 #include "compiler/codegen/OMRCodeGeneratorUtils.hpp"
 
-#include <stddef.h>
 #include "codegen/CodeGenerator.hpp"
 #include "codegen/RealRegister.hpp"
 #include "codegen/Register.hpp"
 #include "codegen/RegisterConstants.hpp"
 #include "codegen/RegisterDependency.hpp"
+#include <stddef.h>
 
-
-namespace TR
-{
+namespace TR {
 
 /**
  * @brief Creates a pre and post condition for the specified virtual and real register
@@ -48,21 +46,18 @@ namespace TR
  */
 static inline void
 addDependency(
-      TR::RegisterDependencyConditions *dep,
-      TR::Register *vreg,
-      TR::RealRegister::RegNum rnum,
-      TR_RegisterKinds rk,
-      TR::CodeGenerator *cg)
-   {
-   if (vreg == NULL)
-      {
-      vreg = cg->allocateRegister(rk);
-      }
-   dep->addPreCondition(vreg, rnum);
-   dep->addPostCondition(vreg, rnum);
-   }
-
+    TR::RegisterDependencyConditions* dep,
+    TR::Register* vreg,
+    TR::RealRegister::RegNum rnum,
+    TR_RegisterKinds rk,
+    TR::CodeGenerator* cg)
+{
+    if (vreg == NULL) {
+        vreg = cg->allocateRegister(rk);
+    }
+    dep->addPreCondition(vreg, rnum);
+    dep->addPostCondition(vreg, rnum);
+}
 }
 
 #endif
-

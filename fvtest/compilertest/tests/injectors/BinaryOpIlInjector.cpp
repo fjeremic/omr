@@ -19,25 +19,23 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/BinaryOpIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "env/FrontEnd.hpp"
-#include "tests/injectors/BinaryOpIlInjector.hpp"
 
-namespace TestCompiler
+namespace TestCompiler {
+
+bool BinaryOpIlInjector::injectIL()
 {
+    if (!isOpCodeSupported())
+        return false;
 
-bool
-BinaryOpIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
+    createBlocks(1);
+    // Block 2: blocks(0)
+    // return parameter1 op parameter2;
+    returnValue(createWithoutSymRef(_opCode, 2, parm(1), parm(2)));
 
-   createBlocks(1);
-   // Block 2: blocks(0)
-   // return parameter1 op parameter2;
-   returnValue(createWithoutSymRef(_opCode, 2, parm(1), parm(2)));
-
-   return true;
-   }
+    return true;
+}
 
 } // namespace TestCompiler

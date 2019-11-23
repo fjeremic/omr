@@ -25,9 +25,9 @@
  * @ingroup Port
  * @brief shared library
  */
-#include <string.h>
-#include "omrport.h"
 #include "omrgetjobname.h"
+#include "omrport.h"
+#include <string.h>
 
 /**
  * Generic version of omrgetjobname, to the job name for a job.
@@ -39,12 +39,11 @@
  *       jobname.
  *
  */
-void
-omrget_jobname(struct OMRPortLibrary *portLibrary, char *jobname, uintptr_t length)
+void omrget_jobname(struct OMRPortLibrary* portLibrary, char* jobname, uintptr_t length)
 {
-	if (jobname != NULL) {
-		if (length >= 5) {
-			strcpy(jobname, "%job");
-		}
-	}
+    if (jobname != NULL) {
+        if (length >= 5) {
+            strcpy(jobname, "%job");
+        }
+    }
 }

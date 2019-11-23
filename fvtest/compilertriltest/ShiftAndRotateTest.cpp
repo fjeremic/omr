@@ -23,84 +23,80 @@
 #include "default_compiler.hpp"
 #include "omrformatconsts.h"
 
-template <typename T> static
-std::vector<int32_t> test_shifts()
-    {
-    int32_t shiftArray[] = {0, 1, 5, 8, 25, 8*sizeof(T) - 1, 8*sizeof(T)};
-    return std::vector<int32_t>(shiftArray, shiftArray + sizeof(shiftArray)/sizeof(int32_t));
-    }
-
-template <typename T> static
-std::vector<std::tuple<T, int32_t>> test_input_values()
-   {
-   return TRTest::combine(TRTest::const_values<T>(), test_shifts<T>());
-   }
-
-template <typename T> static T rotate(T a, int32_t b)
-   {
-   bool isOne = false;
-   int32_t wordSize = sizeof(a);
-   int32_t bitMask = 8;
-   while (1 != wordSize)
-      {
-      bitMask = bitMask << 1;
-      wordSize = wordSize >> 1;
-      }
-   bitMask -= 1;
-   int32_t rotateNumber = b & bitMask;
-   for (int i = 0; i < rotateNumber; i++)
-      {
-      if (a < 0)
-         {
-         isOne = true;
-         }
-      a = a << 1;
-      if (isOne)
-         {
-         a = a | 1;
-         }
-      isOne = false;
-      }
-   return a;
-   }
-
-template <typename Left> static Left shift_left(Left left, int32_t right)
-   {
-   int32_t r = right;
-   if (sizeof(Left) <= sizeof(int32_t))
-      {
-      r = (r & (8 * sizeof(int32_t) - 1));
-      }
-   else
-      {
-      r = (r & (8 * sizeof(int64_t) - 1));
-      }
-   return left << r;
-   }
-
-template <typename Left> static Left shift_right(Left left, int32_t right)
-   {
-   int32_t r = right;
-   if (sizeof(Left) <= sizeof(int32_t))
-      {
-      r = (r & (8 * sizeof(int32_t) - 1));
-      }
-   else
-      {
-      r = (r & (8 * sizeof(int64_t) - 1));
-      }
-   return left >> r;
-   }
+template <typename T>
+static std::vector<int32_t> test_shifts()
+{
+    int32_t shiftArray[] = { 0, 1, 5, 8, 25, 8 * sizeof(T) - 1, 8 * sizeof(T) };
+    return std::vector<int32_t>(shiftArray, shiftArray + sizeof(shiftArray) / sizeof(int32_t));
+}
 
 template <typename T>
-class ShiftAndRotateArithmetic : public TRTest::OpCodeTest<T, T, int32_t> {};
+static std::vector<std::tuple<T, int32_t>> test_input_values()
+{
+    return TRTest::combine(TRTest::const_values<T>(), test_shifts<T>());
+}
 
-class Int32ShiftAndRotate : public ShiftAndRotateArithmetic<int32_t> {};
+template <typename T>
+static T rotate(T a, int32_t b)
+{
+    bool isOne = false;
+    int32_t wordSize = sizeof(a);
+    int32_t bitMask = 8;
+    while (1 != wordSize) {
+        bitMask = bitMask << 1;
+        wordSize = wordSize >> 1;
+    }
+    bitMask -= 1;
+    int32_t rotateNumber = b & bitMask;
+    for (int i = 0; i < rotateNumber; i++) {
+        if (a < 0) {
+            isOne = true;
+        }
+        a = a << 1;
+        if (isOne) {
+            a = a | 1;
+        }
+        isOne = false;
+    }
+    return a;
+}
 
-TEST_P(Int32ShiftAndRotate, UsingConst) {
+template <typename Left>
+static Left shift_left(Left left, int32_t right)
+{
+    int32_t r = right;
+    if (sizeof(Left) <= sizeof(int32_t)) {
+        r = (r & (8 * sizeof(int32_t) - 1));
+    } else {
+        r = (r & (8 * sizeof(int64_t) - 1));
+    }
+    return left << r;
+}
+
+template <typename Left>
+static Left shift_right(Left left, int32_t right)
+{
+    int32_t r = right;
+    if (sizeof(Left) <= sizeof(int32_t)) {
+        r = (r & (8 * sizeof(int32_t) - 1));
+    } else {
+        r = (r & (8 * sizeof(int64_t) - 1));
+    }
+    return left >> r;
+}
+
+template <typename T>
+class ShiftAndRotateArithmetic : public TRTest::OpCodeTest<T, T, int32_t> {
+};
+
+class Int32ShiftAndRotate : public ShiftAndRotateArithmetic<int32_t> {
+};
+
+TEST_P(Int32ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[120] = {0};
+    char inputTrees[120] = { 0 };
     std::snprintf(inputTrees, 120, "(method return=Int32 (block (ireturn (%s (iconst %d) (iconst %d)))))", param.opcode.c_str(), param.lhs, param.rhs);
     auto trees = parseString(inputTrees);
 
@@ -108,16 +104,18 @@ TEST_P(Int32ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int32_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(Int32ShiftAndRotate, UsingRhsConst) {
+TEST_P(Int32ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -133,16 +131,18 @@ TEST_P(Int32ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int32_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(Int32ShiftAndRotate, UsingLhsConst) {
+TEST_P(Int32ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -158,16 +158,18 @@ TEST_P(Int32ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int32_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(Int32ShiftAndRotate, UsingLoadParam) {
+TEST_P(Int32ShiftAndRotate, UsingLoadParam)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32, Int32]"
         "  (block"
@@ -182,25 +184,23 @@ TEST_P(Int32ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int32_t (*)(int32_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int32ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<int32_t, int32_t>> (*) (void) > (test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, int32_t(*)(int32_t, int32_t)>("ishl", static_cast<int32_t(*)(int32_t, int32_t)>(shift_left)),
-                      std::make_tuple<const char*, int32_t(*)(int32_t, int32_t)>("ishr", static_cast<int32_t(*)(int32_t, int32_t)>(shift_right)),
-                      std::make_tuple<const char*, int32_t(*)(int32_t, int32_t)>("irol", static_cast<int32_t(*)(int32_t, int32_t)>(rotate))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int32ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<int32_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, int32_t (*)(int32_t, int32_t)>("ishl", static_cast<int32_t (*)(int32_t, int32_t)>(shift_left)), std::make_tuple<const char*, int32_t (*)(int32_t, int32_t)>("ishr", static_cast<int32_t (*)(int32_t, int32_t)>(shift_right)), std::make_tuple<const char*, int32_t (*)(int32_t, int32_t)>("irol", static_cast<int32_t (*)(int32_t, int32_t)>(rotate)))));
 
-class Int64ShiftAndRotate : public ShiftAndRotateArithmetic<int64_t> {};
+class Int64ShiftAndRotate : public ShiftAndRotateArithmetic<int64_t> {
+};
 
-TEST_P(Int64ShiftAndRotate, UsingConst) {
+TEST_P(Int64ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64"
         "  (block"
@@ -217,16 +217,18 @@ TEST_P(Int64ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int64_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(Int64ShiftAndRotate, UsingRhsConst) {
+TEST_P(Int64ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64]"
         "  (block"
@@ -242,16 +244,18 @@ TEST_P(Int64ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int64_t (*)(int64_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(Int64ShiftAndRotate, UsingLhsConst) {
+TEST_P(Int64ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int32]"
         "  (block"
@@ -267,16 +271,18 @@ TEST_P(Int64ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int64_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(Int64ShiftAndRotate, UsingLoadParam) {
+TEST_P(Int64ShiftAndRotate, UsingLoadParam)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64, Int32]"
         "  (block"
@@ -291,25 +297,23 @@ TEST_P(Int64ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int64_t (*)(int64_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int64ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<int64_t, int32_t>> (*) (void) > (test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, int64_t(*)(int64_t, int32_t)>("lshl", static_cast<int64_t(*)(int64_t, int32_t)>(shift_left)),
-                      std::make_tuple<const char*, int64_t(*)(int64_t, int32_t)>("lshr", static_cast<int64_t(*)(int64_t, int32_t)>(shift_right)),
-                      std::make_tuple<const char*, int64_t(*)(int64_t, int32_t)>("lrol", static_cast<int64_t(*)(int64_t,int32_t)>(rotate))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int64ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<int64_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, int64_t (*)(int64_t, int32_t)>("lshl", static_cast<int64_t (*)(int64_t, int32_t)>(shift_left)), std::make_tuple<const char*, int64_t (*)(int64_t, int32_t)>("lshr", static_cast<int64_t (*)(int64_t, int32_t)>(shift_right)), std::make_tuple<const char*, int64_t (*)(int64_t, int32_t)>("lrol", static_cast<int64_t (*)(int64_t, int32_t)>(rotate)))));
 
-class Int8ShiftAndRotate : public ShiftAndRotateArithmetic<int8_t> {};
+class Int8ShiftAndRotate : public ShiftAndRotateArithmetic<int8_t> {
+};
 
-TEST_P(Int8ShiftAndRotate, UsingConst) {
+TEST_P(Int8ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8"
         "  (block"
@@ -327,13 +331,15 @@ TEST_P(Int8ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int8_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(Int8ShiftAndRotate, UsingRhsConst) {
+TEST_P(Int8ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -342,7 +348,7 @@ TEST_P(Int8ShiftAndRotate, UsingRhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8]"
         "  (block"
@@ -359,13 +365,15 @@ TEST_P(Int8ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int8_t (*)(int8_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(Int8ShiftAndRotate, UsingLhsConst) {
+TEST_P(Int8ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -374,7 +382,7 @@ TEST_P(Int8ShiftAndRotate, UsingLhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int32]"
         "  (block"
@@ -391,13 +399,15 @@ TEST_P(Int8ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int8_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(Int8ShiftAndRotate, UsingLoadParam) {
+TEST_P(Int8ShiftAndRotate, UsingLoadParam)
+{
     auto param = TRTest::to_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -406,7 +416,7 @@ TEST_P(Int8ShiftAndRotate, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8, Int32]"
         "  (block"
@@ -422,24 +432,23 @@ TEST_P(Int8ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int8_t (*)(int8_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int8ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<int8_t, int32_t>> (*) (void) > (test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, int8_t(*)(int8_t, int32_t)>("bshl", static_cast<int8_t(*)(int8_t, int32_t)>(shift_left)),
-                      std::make_tuple<const char*, int8_t(*)(int8_t, int32_t)>("bshr", static_cast<int8_t(*)(int8_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int8ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<int8_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, int8_t (*)(int8_t, int32_t)>("bshl", static_cast<int8_t (*)(int8_t, int32_t)>(shift_left)), std::make_tuple<const char*, int8_t (*)(int8_t, int32_t)>("bshr", static_cast<int8_t (*)(int8_t, int32_t)>(shift_right)))));
 
-class Int16ShiftAndRotate : public ShiftAndRotateArithmetic<int16_t> {};
+class Int16ShiftAndRotate : public ShiftAndRotateArithmetic<int16_t> {
+};
 
-TEST_P(Int16ShiftAndRotate, UsingConst) {
+TEST_P(Int16ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16"
         "  (block"
@@ -457,13 +466,15 @@ TEST_P(Int16ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int16_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(Int16ShiftAndRotate, UsingRhsConst) {
+TEST_P(Int16ShiftAndRotate, UsingRhsConst)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     auto param = TRTest::to_struct(GetParam());
 
@@ -472,7 +483,7 @@ TEST_P(Int16ShiftAndRotate, UsingRhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16]"
         "  (block"
@@ -489,13 +500,15 @@ TEST_P(Int16ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int16_t (*)(int16_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(Int16ShiftAndRotate, UsingLhsConst) {
+TEST_P(Int16ShiftAndRotate, UsingLhsConst)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     auto param = TRTest::to_struct(GetParam());
 
@@ -504,7 +517,7 @@ TEST_P(Int16ShiftAndRotate, UsingLhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int32]"
         "  (block"
@@ -521,13 +534,15 @@ TEST_P(Int16ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int16_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(Int16ShiftAndRotate, UsingLoadParam) {
+TEST_P(Int16ShiftAndRotate, UsingLoadParam)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     auto param = TRTest::to_struct(GetParam());
 
@@ -536,7 +551,7 @@ TEST_P(Int16ShiftAndRotate, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16, Int32]"
         "  (block"
@@ -552,24 +567,23 @@ TEST_P(Int16ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int16_t (*)(int16_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int16ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<int16_t, int32_t>> (*) (void) > (test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, int16_t(*)(int16_t, int32_t)>("sshl", static_cast<int16_t(*)(int16_t, int32_t)>(shift_left)),
-                      std::make_tuple<const char*, int16_t(*)(int16_t, int32_t)>("sshr", static_cast<int16_t(*)(int16_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int16ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<int16_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, int16_t (*)(int16_t, int32_t)>("sshl", static_cast<int16_t (*)(int16_t, int32_t)>(shift_left)), std::make_tuple<const char*, int16_t (*)(int16_t, int32_t)>("sshr", static_cast<int16_t (*)(int16_t, int32_t)>(shift_right)))));
 
-class UInt32ShiftAndRotate : public ShiftAndRotateArithmetic<uint32_t> {};
+class UInt32ShiftAndRotate : public ShiftAndRotateArithmetic<uint32_t> {
+};
 
-TEST_P(UInt32ShiftAndRotate, UsingConst) {
+TEST_P(UInt32ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32"
         "  (block"
@@ -586,16 +600,18 @@ TEST_P(UInt32ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint32_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(UInt32ShiftAndRotate, UsingRhsConst) {
+TEST_P(UInt32ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -611,16 +627,18 @@ TEST_P(UInt32ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint32_t (*)(uint32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(UInt32ShiftAndRotate, UsingLhsConst) {
+TEST_P(UInt32ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -636,16 +654,18 @@ TEST_P(UInt32ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint32_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(UInt32ShiftAndRotate, UsingLoadParam) {
+TEST_P(UInt32ShiftAndRotate, UsingLoadParam)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32, Int32]"
         "  (block"
@@ -660,23 +680,23 @@ TEST_P(UInt32ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint32_t (*)(uint32_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt32ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<uint32_t, int32_t>> (*) (void)>(test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint32_t (*) (uint32_t, int32_t)>("iushr", static_cast<uint32_t (*) (uint32_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt32ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<uint32_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, uint32_t (*)(uint32_t, int32_t)>("iushr", static_cast<uint32_t (*)(uint32_t, int32_t)>(shift_right)))));
 
-class UInt64ShiftAndRotate : public ShiftAndRotateArithmetic<uint64_t> {};
+class UInt64ShiftAndRotate : public ShiftAndRotateArithmetic<uint64_t> {
+};
 
-TEST_P(UInt64ShiftAndRotate, UsingConst) {
+TEST_P(UInt64ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64"
         "  (block"
@@ -693,16 +713,18 @@ TEST_P(UInt64ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint64_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(UInt64ShiftAndRotate, UsingRhsConst) {
+TEST_P(UInt64ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64]"
         "  (block"
@@ -718,16 +740,18 @@ TEST_P(UInt64ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint64_t (*)(uint64_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(UInt64ShiftAndRotate, UsingLhsConst) {
+TEST_P(UInt64ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int32]"
         "  (block"
@@ -743,16 +767,18 @@ TEST_P(UInt64ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint64_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(UInt64ShiftAndRotate, UsingLoadParam) {
+TEST_P(UInt64ShiftAndRotate, UsingLoadParam)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64, Int32]"
         "  (block"
@@ -767,23 +793,23 @@ TEST_P(UInt64ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint64_t (*)(uint64_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt64ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<uint64_t, int32_t>> (*) (void)>(test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint64_t (*) (uint64_t, int32_t)>("lushr", static_cast<uint64_t (*) (uint64_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt64ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<uint64_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, uint64_t (*)(uint64_t, int32_t)>("lushr", static_cast<uint64_t (*)(uint64_t, int32_t)>(shift_right)))));
 
-class UInt8ShiftAndRotate : public ShiftAndRotateArithmetic<uint8_t> {};
+class UInt8ShiftAndRotate : public ShiftAndRotateArithmetic<uint8_t> {
+};
 
-TEST_P(UInt8ShiftAndRotate, UsingConst) {
+TEST_P(UInt8ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8"
         "  (block"
@@ -801,13 +827,15 @@ TEST_P(UInt8ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint8_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(UInt8ShiftAndRotate, UsingRhsConst) {
+TEST_P(UInt8ShiftAndRotate, UsingRhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -816,7 +844,7 @@ TEST_P(UInt8ShiftAndRotate, UsingRhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8]"
         "  (block"
@@ -833,13 +861,15 @@ TEST_P(UInt8ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint8_t (*)(uint8_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(UInt8ShiftAndRotate, UsingLhsConst) {
+TEST_P(UInt8ShiftAndRotate, UsingLhsConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -848,7 +878,7 @@ TEST_P(UInt8ShiftAndRotate, UsingLhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int32]"
         "  (block"
@@ -865,13 +895,15 @@ TEST_P(UInt8ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint8_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(UInt8ShiftAndRotate, UsingLoadParam) {
+TEST_P(UInt8ShiftAndRotate, UsingLoadParam)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     SKIP_IF(OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch, KnownBug)
         << "The Z code generator incorrectly spills sub-integer types arguments (see issue #3525)";
@@ -880,7 +912,7 @@ TEST_P(UInt8ShiftAndRotate, UsingLoadParam) {
 
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8, Int32]"
         "  (block"
@@ -896,23 +928,23 @@ TEST_P(UInt8ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint8_t (*)(uint8_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt8ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<uint8_t, int32_t>> (*) (void) > (test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint8_t (*) (uint8_t, int32_t)>("bushr", static_cast<uint8_t (*) (uint8_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt8ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<uint8_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, uint8_t (*)(uint8_t, int32_t)>("bushr", static_cast<uint8_t (*)(uint8_t, int32_t)>(shift_right)))));
 
-class UInt16ShiftAndRotate : public ShiftAndRotateArithmetic<uint16_t> {};
+class UInt16ShiftAndRotate : public ShiftAndRotateArithmetic<uint16_t> {
+};
 
-TEST_P(UInt16ShiftAndRotate, UsingConst) {
+TEST_P(UInt16ShiftAndRotate, UsingConst)
+{
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16"
         "  (block"
@@ -930,13 +962,15 @@ TEST_P(UInt16ShiftAndRotate, UsingConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint16_t (*)(void)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point());
 }
 
-TEST_P(UInt16ShiftAndRotate, UsingRhsConst) {
+TEST_P(UInt16ShiftAndRotate, UsingRhsConst)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     auto param = TRTest::to_struct(GetParam());
 
@@ -945,7 +979,7 @@ TEST_P(UInt16ShiftAndRotate, UsingRhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16]"
         "  (block"
@@ -962,13 +996,15 @@ TEST_P(UInt16ShiftAndRotate, UsingRhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint16_t (*)(uint16_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs));
 }
 
-TEST_P(UInt16ShiftAndRotate, UsingLhsConst) {
+TEST_P(UInt16ShiftAndRotate, UsingLhsConst)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     auto param = TRTest::to_struct(GetParam());
 
@@ -977,7 +1013,7 @@ TEST_P(UInt16ShiftAndRotate, UsingLhsConst) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int32]"
         "  (block"
@@ -994,13 +1030,15 @@ TEST_P(UInt16ShiftAndRotate, UsingLhsConst) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint16_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.rhs));
 }
 
-TEST_P(UInt16ShiftAndRotate, UsingLoadParam) {
+TEST_P(UInt16ShiftAndRotate, UsingLoadParam)
+{
     std::string arch = omrsysinfo_get_CPU_architecture();
     SKIP_IF(OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch, KnownBug)
         << "The Z code generator incorrectly spills sub-integer types arguments (see issue #3525)";
@@ -1009,7 +1047,7 @@ TEST_P(UInt16ShiftAndRotate, UsingLoadParam) {
 
     auto param = TRTest::to_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16, Int32]"
         "  (block"
@@ -1025,22 +1063,19 @@ TEST_P(UInt16ShiftAndRotate, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint16_t (*)(uint16_t, int32_t)>();
     ASSERT_EQ(param.oracle(param.lhs, param.rhs), entry_point(param.lhs, param.rhs));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt16ShiftAndRotate, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<uint16_t, int32_t>> (*) (void) >(test_input_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint16_t (*) (uint16_t, int32_t)>("sushr", static_cast<uint16_t (*) (uint16_t, int32_t)>(shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt16ShiftAndRotate, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<uint16_t, int32_t>> (*)(void)>(test_input_values)()), ::testing::Values(std::make_tuple<const char*, uint16_t (*)(uint16_t, int32_t)>("sushr", static_cast<uint16_t (*)(uint16_t, int32_t)>(shift_right)))));
 
-template <typename T> static
-std::vector<T> test_masks();
+template <typename T>
+static std::vector<T> test_masks();
 
-static uint64_t mask64Values[] =
-    {
+static uint64_t mask64Values[] = {
     0x0000000000000000,
     0x0000000000000001,
     0x0000000000000002,
@@ -1062,22 +1097,21 @@ static uint64_t mask64Values[] =
     0xffffffff00000000,
     0xffffffffffff0000,
     0xffffffffffffffff
-    };
+};
 
 template <>
 std::vector<uint64_t> test_masks<uint64_t>()
-    {
-    return std::vector<uint64_t>(mask64Values, mask64Values + sizeof(mask64Values)/sizeof(*mask64Values));
-    }
+{
+    return std::vector<uint64_t>(mask64Values, mask64Values + sizeof(mask64Values) / sizeof(*mask64Values));
+}
 
 template <>
 std::vector<int64_t> test_masks<int64_t>()
-    {
-    return std::vector<int64_t>(mask64Values, mask64Values + sizeof(mask64Values)/sizeof(*mask64Values));
-    }
+{
+    return std::vector<int64_t>(mask64Values, mask64Values + sizeof(mask64Values) / sizeof(*mask64Values));
+}
 
-static uint32_t mask32Values[] =
-    {
+static uint32_t mask32Values[] = {
     0x00000000,
     0xffffffff,
     0x7fffffff,
@@ -1086,22 +1120,21 @@ static uint32_t mask32Values[] =
     0xffff0000,
     0x0000ffff,
     0xff0000ff
-    };
+};
 
 template <>
 std::vector<uint32_t> test_masks<uint32_t>()
-    {
-    return std::vector<uint32_t>(mask32Values, mask32Values + sizeof(mask32Values)/sizeof(*mask32Values));
-    }
+{
+    return std::vector<uint32_t>(mask32Values, mask32Values + sizeof(mask32Values) / sizeof(*mask32Values));
+}
 
 template <>
 std::vector<int32_t> test_masks<int32_t>()
-    {
-    return std::vector<int32_t>(mask32Values, mask32Values + sizeof(mask32Values)/sizeof(*mask32Values));
-    }
+{
+    return std::vector<int32_t>(mask32Values, mask32Values + sizeof(mask32Values) / sizeof(*mask32Values));
+}
 
-static uint16_t mask16Values[] =
-    {
+static uint16_t mask16Values[] = {
     0x0000,
     0xffff,
     0x7fff,
@@ -1110,22 +1143,21 @@ static uint16_t mask16Values[] =
     0xff00,
     0x00ff,
     0xf00f
-    };
+};
 
 template <>
 std::vector<uint16_t> test_masks<uint16_t>()
-    {
-    return std::vector<uint16_t>(mask16Values, mask16Values + sizeof(mask16Values)/sizeof(*mask16Values));
-    }
+{
+    return std::vector<uint16_t>(mask16Values, mask16Values + sizeof(mask16Values) / sizeof(*mask16Values));
+}
 
 template <>
 std::vector<int16_t> test_masks<int16_t>()
-    {
-    return std::vector<int16_t>(mask16Values, mask16Values + sizeof(mask16Values)/sizeof(*mask16Values));
-    }
+{
+    return std::vector<int16_t>(mask16Values, mask16Values + sizeof(mask16Values) / sizeof(*mask16Values));
+}
 
-static uint8_t mask8Values[] =
-    {
+static uint8_t mask8Values[] = {
     0x00,
     0xff,
     0x7f,
@@ -1134,53 +1166,47 @@ static uint8_t mask8Values[] =
     0xf0,
     0x0f,
     0xc3
-    };
+};
 
 template <>
 std::vector<uint8_t> test_masks<uint8_t>()
-    {
-    return std::vector<uint8_t>(mask8Values, mask8Values + sizeof(mask8Values)/sizeof(*mask8Values));
-    }
+{
+    return std::vector<uint8_t>(mask8Values, mask8Values + sizeof(mask8Values) / sizeof(*mask8Values));
+}
 
 template <>
 std::vector<int8_t> test_masks<int8_t>()
-    {
-    return std::vector<int8_t>(mask8Values, mask8Values + sizeof(mask8Values)/sizeof(*mask8Values));
-    }
+{
+    return std::vector<int8_t>(mask8Values, mask8Values + sizeof(mask8Values) / sizeof(*mask8Values));
+}
 
-template <typename T> static
-std::vector<std::tuple<std::tuple<T, T>, int32_t>> test_mask_then_shift_values()
-   {
-   return TRTest::combine(TRTest::combine(TRTest::const_values<T>(), test_masks<T>()), test_shifts<T>());
-   }
+template <typename T>
+static std::vector<std::tuple<std::tuple<T, T>, int32_t>> test_mask_then_shift_values()
+{
+    return TRTest::combine(TRTest::combine(TRTest::const_values<T>(), test_masks<T>()), test_shifts<T>());
+}
 
 template <typename T>
 T mask_then_shift_right(T value, T mask, int32_t shift)
-    {
-    if (sizeof(T) <= sizeof(int32_t))
-        {
+{
+    if (sizeof(T) <= sizeof(int32_t)) {
         shift &= (shift & (8 * sizeof(int32_t) - 1));
-        }
-    else
-        {
+    } else {
         shift &= (8 * sizeof(int64_t) - 1);
-        }
-    return (value & mask) >> shift;
     }
+    return (value & mask) >> shift;
+}
 
 template <typename T>
 T mask_then_shift_left(T value, T mask, int32_t shift)
-    {
-    if (sizeof(T) <= sizeof(int32_t))
-        {
+{
+    if (sizeof(T) <= sizeof(int32_t)) {
         shift &= (shift & (8 * sizeof(int32_t) - 1));
-        }
-    else
-        {
+    } else {
         shift &= (8 * sizeof(int64_t) - 1);
-        }
-    return (value & mask) << shift;
     }
+    return (value & mask) << shift;
+}
 
 template <typename T>
 struct MaskThenShiftParamStruct {
@@ -1188,11 +1214,13 @@ struct MaskThenShiftParamStruct {
     T mask;
     int32_t shift;
     std::string opcode;
-    T (*oracle)(T, T, int32_t);
+    T (*oracle)
+    (T, T, int32_t);
 };
 
 template <typename T>
-MaskThenShiftParamStruct<T> to_mask_then_shift_struct(std::tuple<std::tuple<std::tuple<T, T>, int32_t>, std::tuple<std::string, T (*)(T, T, int32_t)>> param) {
+MaskThenShiftParamStruct<T> to_mask_then_shift_struct(std::tuple<std::tuple<std::tuple<T, T>, int32_t>, std::tuple<std::string, T (*)(T, T, int32_t)>> param)
+{
     MaskThenShiftParamStruct<T> s;
 
     s.value = std::get<0>(std::get<0>(std::get<0>(param)));
@@ -1205,14 +1233,17 @@ MaskThenShiftParamStruct<T> to_mask_then_shift_struct(std::tuple<std::tuple<std:
 }
 
 template <typename T>
-class MaskThenShiftArithmetic : public TRTest::JitTest, public ::testing::WithParamInterface<std::tuple<std::tuple<std::tuple<T, T>, int32_t>, std::tuple<std::string, T (*)(T, T, int32_t)>>> {};
+class MaskThenShiftArithmetic : public TRTest::JitTest, public ::testing::WithParamInterface<std::tuple<std::tuple<std::tuple<T, T>, int32_t>, std::tuple<std::string, T (*)(T, T, int32_t)>>> {
+};
 
-class UInt64MaskThenShift : public MaskThenShiftArithmetic<uint64_t> {};
+class UInt64MaskThenShift : public MaskThenShiftArithmetic<uint64_t> {
+};
 
-TEST_P(UInt64MaskThenShift, UsingLoadParam) {
+TEST_P(UInt64MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64]"
         "  (block"
@@ -1231,23 +1262,23 @@ TEST_P(UInt64MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint64_t (*)(uint64_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt64MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<uint64_t, uint64_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint64_t (*) (uint64_t, uint64_t, int32_t)>("lushr", static_cast<uint64_t (*) (uint64_t, uint64_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt64MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<uint64_t, uint64_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, uint64_t (*)(uint64_t, uint64_t, int32_t)>("lushr", static_cast<uint64_t (*)(uint64_t, uint64_t, int32_t)>(mask_then_shift_right)))));
 
-class Int64MaskThenShift : public MaskThenShiftArithmetic<int64_t> {};
+class Int64MaskThenShift : public MaskThenShiftArithmetic<int64_t> {
+};
 
-TEST_P(Int64MaskThenShift, UsingLoadParam) {
+TEST_P(Int64MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int64 args=[Int64]"
         "  (block"
@@ -1266,25 +1297,23 @@ TEST_P(Int64MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int64_t (*)(int64_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int64MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<int64_t, int64_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(
-        std::make_tuple<const char*, int64_t (*) (int64_t, int64_t, int32_t)>("lshr", static_cast<int64_t (*) (int64_t, int64_t, int32_t)>(mask_then_shift_right)),
-        std::make_tuple<const char*, int64_t (*) (int64_t, int64_t, int32_t)>("lshl", static_cast<int64_t (*) (int64_t, int64_t, int32_t)>(mask_then_shift_left))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int64MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<int64_t, int64_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, int64_t (*)(int64_t, int64_t, int32_t)>("lshr", static_cast<int64_t (*)(int64_t, int64_t, int32_t)>(mask_then_shift_right)), std::make_tuple<const char*, int64_t (*)(int64_t, int64_t, int32_t)>("lshl", static_cast<int64_t (*)(int64_t, int64_t, int32_t)>(mask_then_shift_left)))));
 
-class UInt32MaskThenShift : public MaskThenShiftArithmetic<uint32_t> {};
+class UInt32MaskThenShift : public MaskThenShiftArithmetic<uint32_t> {
+};
 
-TEST_P(UInt32MaskThenShift, UsingLoadParam) {
+TEST_P(UInt32MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -1303,23 +1332,23 @@ TEST_P(UInt32MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint32_t (*)(uint32_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt32MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<uint32_t, uint32_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint32_t (*) (uint32_t, uint32_t, int32_t)>("iushr", static_cast<uint32_t (*) (uint32_t, uint32_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt32MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<uint32_t, uint32_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, uint32_t (*)(uint32_t, uint32_t, int32_t)>("iushr", static_cast<uint32_t (*)(uint32_t, uint32_t, int32_t)>(mask_then_shift_right)))));
 
-class Int32MaskThenShift : public MaskThenShiftArithmetic<int32_t> {};
+class Int32MaskThenShift : public MaskThenShiftArithmetic<int32_t> {
+};
 
-TEST_P(Int32MaskThenShift, UsingLoadParam) {
+TEST_P(Int32MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int32 args=[Int32]"
         "  (block"
@@ -1338,20 +1367,20 @@ TEST_P(Int32MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int32_t (*)(int32_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int32MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<int32_t, int32_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, int32_t (*) (int32_t, int32_t, int32_t)>("ishr", static_cast<int32_t (*) (int32_t, int32_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int32MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<int32_t, int32_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, int32_t (*)(int32_t, int32_t, int32_t)>("ishr", static_cast<int32_t (*)(int32_t, int32_t, int32_t)>(mask_then_shift_right)))));
 
-class UInt16MaskThenShift : public MaskThenShiftArithmetic<uint16_t> {};
+class UInt16MaskThenShift : public MaskThenShiftArithmetic<uint16_t> {
+};
 
-TEST_P(UInt16MaskThenShift, UsingLoadParam) {
+TEST_P(UInt16MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -1360,7 +1389,7 @@ TEST_P(UInt16MaskThenShift, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16]"
         "  (block"
@@ -1380,20 +1409,20 @@ TEST_P(UInt16MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint16_t (*)(uint16_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt16MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<uint16_t, uint16_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint16_t (*) (uint16_t, uint16_t, int32_t)>("sushr", static_cast<uint16_t (*) (uint16_t, uint16_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt16MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<uint16_t, uint16_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, uint16_t (*)(uint16_t, uint16_t, int32_t)>("sushr", static_cast<uint16_t (*)(uint16_t, uint16_t, int32_t)>(mask_then_shift_right)))));
 
-class Int16MaskThenShift : public MaskThenShiftArithmetic<int16_t> {};
+class Int16MaskThenShift : public MaskThenShiftArithmetic<int16_t> {
+};
 
-TEST_P(Int16MaskThenShift, UsingLoadParam) {
+TEST_P(Int16MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -1402,7 +1431,7 @@ TEST_P(Int16MaskThenShift, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int16 args=[Int16]"
         "  (block"
@@ -1422,20 +1451,20 @@ TEST_P(Int16MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int16_t (*)(int16_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int16MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<int16_t, int16_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, int16_t (*) (int16_t, int16_t, int32_t)>("sshr", static_cast<int16_t (*) (int16_t, int16_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int16MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<int16_t, int16_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, int16_t (*)(int16_t, int16_t, int32_t)>("sshr", static_cast<int16_t (*)(int16_t, int16_t, int32_t)>(mask_then_shift_right)))));
 
-class UInt8MaskThenShift : public MaskThenShiftArithmetic<uint8_t> {};
+class UInt8MaskThenShift : public MaskThenShiftArithmetic<uint8_t> {
+};
 
-TEST_P(UInt8MaskThenShift, UsingLoadParam) {
+TEST_P(UInt8MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -1444,7 +1473,7 @@ TEST_P(UInt8MaskThenShift, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8]"
         "  (block"
@@ -1464,20 +1493,20 @@ TEST_P(UInt8MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<uint8_t (*)(uint8_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt8MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<uint8_t, uint8_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, uint8_t (*) (uint8_t, uint8_t, int32_t)>("bushr", static_cast<uint8_t (*) (uint8_t, uint8_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, UInt8MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<uint8_t, uint8_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, uint8_t (*)(uint8_t, uint8_t, int32_t)>("bushr", static_cast<uint8_t (*)(uint8_t, uint8_t, int32_t)>(mask_then_shift_right)))));
 
-class Int8MaskThenShift : public MaskThenShiftArithmetic<int8_t> {};
+class Int8MaskThenShift : public MaskThenShiftArithmetic<int8_t> {
+};
 
-TEST_P(Int8MaskThenShift, UsingLoadParam) {
+TEST_P(Int8MaskThenShift, UsingLoadParam)
+{
     auto param = to_mask_then_shift_struct(GetParam());
 
     std::string arch = omrsysinfo_get_CPU_architecture();
@@ -1486,7 +1515,7 @@ TEST_P(Int8MaskThenShift, UsingLoadParam) {
     SKIP_IF(OMRPORT_ARCH_PPC64 == arch || OMRPORT_ARCH_PPC == arch, KnownBug)
         << "The Power code generator incorrectly spills sub-integer type arguments on big-endian machines (see issue #3525)";
 
-    char inputTrees[300] = {0};
+    char inputTrees[300] = { 0 };
     std::snprintf(inputTrees, sizeof(inputTrees),
         "(method return=Int8 args=[Int8]"
         "  (block"
@@ -1506,13 +1535,11 @@ TEST_P(Int8MaskThenShift, UsingLoadParam) {
 
     Tril::DefaultCompiler compiler(trees);
 
-    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n" << "Input trees: " << inputTrees;
+    ASSERT_EQ(0, compiler.compile()) << "Compilation failed unexpectedly\n"
+                                     << "Input trees: " << inputTrees;
 
     auto entry_point = compiler.getEntryPoint<int8_t (*)(int8_t)>();
     ASSERT_EQ(param.oracle(param.value, param.mask, param.shift), entry_point(param.value));
 }
 
-INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int8MaskThenShift, ::testing::Combine(
-    ::testing::ValuesIn(static_cast< std::vector<std::tuple<std::tuple<int8_t, int8_t>, int32_t>> (*) (void)>(test_mask_then_shift_values)()),
-    ::testing::Values(std::make_tuple<const char*, int8_t (*) (int8_t, int8_t, int32_t)>("bshr", static_cast<int8_t (*) (int8_t, int8_t, int32_t)>(mask_then_shift_right))
-    )));
+INSTANTIATE_TEST_CASE_P(ShiftAndRotateTest, Int8MaskThenShift, ::testing::Combine(::testing::ValuesIn(static_cast<std::vector<std::tuple<std::tuple<int8_t, int8_t>, int32_t>> (*)(void)>(test_mask_then_shift_values)()), ::testing::Values(std::make_tuple<const char*, int8_t (*)(int8_t, int8_t, int32_t)>("bshr", static_cast<int8_t (*)(int8_t, int8_t, int32_t)>(mask_then_shift_right)))));

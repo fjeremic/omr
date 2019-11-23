@@ -24,19 +24,19 @@
 
 #include "optimizer/OMRCFGSimplifier.hpp"
 
-namespace TR { class OptimizationManager; }
+namespace TR {
+class OptimizationManager;
+}
 
-namespace TR
-{
+namespace TR {
 
-class CFGSimplifier : public OMR::CFGSimplifier
-   {
-   public:
-
-   CFGSimplifier(TR::OptimizationManager *manager) :
-      OMR::CFGSimplifier(manager) {}
-   };
-
+class CFGSimplifier : public OMR::CFGSimplifier {
+public:
+    CFGSimplifier(TR::OptimizationManager* manager)
+        : OMR::CFGSimplifier(manager)
+    {
+    }
+};
 }
 
 #endif

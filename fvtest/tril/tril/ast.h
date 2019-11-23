@@ -22,8 +22,8 @@
 #ifndef AST_H
 #define AST_H
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,9 +47,9 @@ typedef struct ASTNode ASTNode;
  * The following functions are wrappers for the AST struct constructors.
  */
 
-ASTNode* createNode(const char* name, ASTNodeArg* args, ASTNode* children,  ASTNode* next);
+ASTNode* createNode(const char* name, ASTNodeArg* args, ASTNode* children, ASTNode* next);
 
-ASTNodeArg* createNodeArg(const char* name, ASTValue * value,  ASTNodeArg* next);
+ASTNodeArg* createNodeArg(const char* name, ASTValue* value, ASTNodeArg* next);
 
 ASTValue* createIntegerValue(uint64_t val);
 ASTValue* createFloatingPointValue(double val);

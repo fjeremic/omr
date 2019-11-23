@@ -24,13 +24,14 @@
 
 #include "p/runtime/OMRCodeCacheConfig.hpp"
 
-namespace TR
-{
-   class OMR_EXTENSIBLE CodeCacheConfig : public OMR::CodeCacheConfigConnector
-      {
-      public:
-      CodeCacheConfig() : OMR::CodeCacheConfigConnector() { }
-      };
+namespace TR {
+class OMR_EXTENSIBLE CodeCacheConfig : public OMR::CodeCacheConfigConnector {
+public:
+    CodeCacheConfig()
+        : OMR::CodeCacheConfigConnector()
+    {
+    }
+};
 
 } // namespace TR
 

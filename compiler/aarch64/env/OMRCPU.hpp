@@ -27,48 +27,51 @@
  */
 #ifndef OMR_CPU_CONNECTOR
 #define OMR_CPU_CONNECTOR
-namespace OMR { namespace ARM64 { class CPU; } }
-namespace OMR { typedef OMR::ARM64::CPU CPUConnector; }
+namespace OMR {
+namespace ARM64 {
+    class CPU;
+}
+}
+namespace OMR {
+typedef OMR::ARM64::CPU CPUConnector;
+}
 #else
 #error OMR::ARM64::CPU expected to be a primary connector, but an OMR connector is already defined
 #endif
 
-#include <stdint.h>
 #include "compiler/env/OMRCPU.hpp"
 #include "env/jittypes.h"
+#include <stdint.h>
 
+namespace OMR {
 
-namespace OMR
-{
+namespace ARM64 {
 
-namespace ARM64
-{
+    class CPU : public OMR::CPU {
+    protected:
+        CPU()
+            : OMR::CPU()
+        {
+        }
 
-class CPU : public OMR::CPU
-   {
-protected:
-
-   CPU() : OMR::CPU() {}
-
-public:
-
-   /**
+    public:
+        /**
     * @brief Provides the maximum forward branch displacement in bytes reachable
     *        with a relative unconditional branch with immediate (B or BL) instruction.
     *
     * @return Maximum forward branch displacement in bytes.
     */
-   int32_t maxUnconditionalBranchImmediateForwardOffset() { return 0x07fffffc; }
+        int32_t maxUnconditionalBranchImmediateForwardOffset() { return 0x07fffffc; }
 
-   /**
+        /**
     * @brief Provides the maximum backward branch displacement in bytes reachable
     *        with a relative unconditional branch with immediate (B or BL) instruction.
     *
     * @return Maximum backward branch displacement in bytes.
     */
-   int32_t maxUnconditionalBranchImmediateBackwardOffset() { return 0xf8000000; }
+        int32_t maxUnconditionalBranchImmediateBackwardOffset() { return 0xf8000000; }
 
-   /**
+        /**
     * @brief Answers whether the distance between a target and source address
     *        is within the reachable displacement range for a relative unconditional
     *        branch with immediate (B or BL) instruction.
@@ -81,12 +84,9 @@ public:
     *
     * @return true if the target is within range; false otherwise.
     */
-   bool isTargetWithinUnconditionalBranchImmediateRange(intptrj_t targetAddress, intptrj_t sourceAddress);
-
-   };
-
+        bool isTargetWithinUnconditionalBranchImmediateRange(intptrj_t targetAddress, intptrj_t sourceAddress);
+    };
 }
-
 }
 
 #endif

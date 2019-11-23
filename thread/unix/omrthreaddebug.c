@@ -26,9 +26,9 @@
  * @brief Debug helpers
  */
 
+#include "threaddef.h"
 #include <stdio.h>
 #include <string.h>
-#include "threaddef.h"
 
 #ifdef THREAD_ASSERTS
 /**
@@ -38,11 +38,11 @@
  * @returns retVal
  */
 intptr_t
-omrthread_debug_syscall(const char *func, intptr_t retVal)
+omrthread_debug_syscall(const char* func, intptr_t retVal)
 {
-	if (retVal != 0) {
-		fprintf(stderr, "%s: %s\n", func, strerror(retVal));
-	}
-	return retVal;
+    if (retVal != 0) {
+        fprintf(stderr, "%s: %s\n", func, strerror(retVal));
+    }
+    return retVal;
 }
 #endif

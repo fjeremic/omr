@@ -22,18 +22,18 @@
 #ifndef JITTEST_HPP
 #define JITTEST_HPP
 
-#include <gtest/gtest.h>
-#include "ilgen/MethodBuilder.hpp"
 #include "Jit.hpp"
+#include "ilgen/MethodBuilder.hpp"
+#include <gtest/gtest.h>
 
 bool initializeJit();
-int32_t compileMethodBuilder(TR::MethodBuilder * methodBuilder, void ** entryPoint);
+int32_t compileMethodBuilder(TR::MethodBuilder* methodBuilder, void** entryPoint);
 void shutdownJit();
 
 namespace Tril {
 namespace Test {
 
-/**
+    /**
  * @brief The JitTest class is a basic test fixture for Jit test cases.
  *
  * Most Jit test case fixtures should publically inherit from this class.
@@ -42,20 +42,18 @@ namespace Test {
  *
  *    class MyTestCase : public JitTest {};
  */
-class JitTest : public ::testing::Test
-   {
-   public:
+    class JitTest : public ::testing::Test {
+    public:
+        static void SetUpTestCase()
+        {
+            ASSERT_TRUE(initializeJit()) << "Failed to initialize the JIT.";
+        }
 
-   static void SetUpTestCase()
-      {
-      ASSERT_TRUE(initializeJit()) << "Failed to initialize the JIT.";
-      }
-
-   static void TearDownTestCase()
-      {
-      shutdownJit();
-      }
-   };
+        static void TearDownTestCase()
+        {
+            shutdownJit();
+        }
+    };
 
 } // namespace Test
 } // namespace Tril

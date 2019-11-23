@@ -22,18 +22,17 @@
 #ifndef OMR_ILHELPERS_INCL
 #define OMR_ILHELPERS_INCL
 
-#include <stdint.h>
 #include "il/DataTypes.hpp"
 #include "il/ILOpCodes.hpp"
+#include <stdint.h>
 
-enum TR_ComparisonTypes
-   {
-   TR_cmpEQ,
-   TR_cmpNE,
-   TR_cmpLT,
-   TR_cmpLE,
-   TR_cmpGT,
-   TR_cmpGE
-   };
+enum TR_ComparisonTypes {
+    TR_cmpEQ,
+    TR_cmpNE,
+    TR_cmpLT,
+    TR_cmpLE,
+    TR_cmpGT,
+    TR_cmpGE
+};
 
 #endif // !defined(OMR_ILHELPERS_INCL)

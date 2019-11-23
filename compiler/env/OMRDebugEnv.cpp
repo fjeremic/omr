@@ -19,23 +19,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <stddef.h>
-#include <stdint.h>
-#include "env/DebugEnv.hpp"
 #include "env/CompilerEnv.hpp"
+#include "env/DebugEnv.hpp"
 #include "env/jittypes.h"
 #include "infra/Assert.hpp"
+#include <stddef.h>
+#include <stdint.h>
 
 #if defined(LINUX) || defined(AIXPPC)
 #include <signal.h>
 #endif
 
-void
-OMR::DebugEnv::breakPoint()
-   {
+void OMR::DebugEnv::breakPoint()
+{
 #if defined(LINUX) || defined(AIXPPC)
-   raise(SIGTRAP);
+    raise(SIGTRAP);
 #else
-   TR_UNIMPLEMENTED();
+    TR_UNIMPLEMENTED();
 #endif
-   }
+}

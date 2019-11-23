@@ -20,11 +20,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <pthread.h>
 #include "omrthread.h"
+#include <pthread.h>
 
 uintptr_t
 omrthread_get_ras_tid(void)
 {
-	return (uintptr_t)(*(uint32_t *)pthread_self().__);
+    return (uintptr_t)(*(uint32_t*)pthread_self().__);
 }

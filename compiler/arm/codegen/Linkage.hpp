@@ -26,16 +26,15 @@
 
 #include "infra/Annotations.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE Linkage : public OMR::LinkageConnector
-   {
-   public:
-
-   Linkage(TR::CodeGenerator *cg)
-      : OMR::LinkageConnector(cg) {}
-   };
+class OMR_EXTENSIBLE Linkage : public OMR::LinkageConnector {
+public:
+    Linkage(TR::CodeGenerator* cg)
+        : OMR::LinkageConnector(cg)
+    {
+    }
+};
 }
 
 #endif

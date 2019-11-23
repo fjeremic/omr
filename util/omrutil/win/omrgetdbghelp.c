@@ -21,17 +21,17 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  ******************************************************************************/
 
+#include "omr.h"
+#include "omrport.h"
+#include "omrutil.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <winnt.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "omrport.h"
-#include "omr.h"
-#include "omrutil.h"
 
 #define UNICODE_DBGHELPDLL_NAME L"dbghelp.dll"
 
-static uintptr_t getDbgHelpDLLLocation(wchar_t *dbghelpPath);
+static uintptr_t getDbgHelpDLLLocation(wchar_t* dbghelpPath);
 
 /**
  * Load the version of dbghelp.dll that shipped with the JRE.
@@ -44,35 +44,34 @@ uintptr_t
 omrgetdbghelp_loadDLL(void)
 {
 
-	HINSTANCE dbghelpDLL = NULL;
-	wchar_t dbgHelpPath[EsMaxPath];
+    HINSTANCE dbghelpDLL = NULL;
+    wchar_t dbgHelpPath[EsMaxPath];
 
-	if (0 != getDbgHelpDLLLocation(dbgHelpPath)) {
-		return 0;
-	}
+    if (0 != getDbgHelpDLLLocation(dbgHelpPath)) {
+        return 0;
+    }
 
-	dbghelpDLL = LoadLibraryExW(dbgHelpPath, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
-	if (dbghelpDLL != NULL) {
+    dbghelpDLL = LoadLibraryExW(dbgHelpPath, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+    if (dbghelpDLL != NULL) {
 #if defined(GDHL_DEBUG)
-		printf("\nloadDbgHelpDLL loaded shipped version");
+        printf("\nloadDbgHelpDLL loaded shipped version");
 #endif
-	} else {
-		/* see if the OS can find it for us anywhere */
-		dbghelpDLL = LoadLibraryW(UNICODE_DBGHELPDLL_NAME);
+    } else {
+        /* see if the OS can find it for us anywhere */
+        dbghelpDLL = LoadLibraryW(UNICODE_DBGHELPDLL_NAME);
 
-		if (dbghelpDLL != NULL) {
+        if (dbghelpDLL != NULL) {
 #if defined(GDHL_DEBUG)
-			printf("\nloadDbgHelpDLL could not find shipped version, but the OS found another");
+            printf("\nloadDbgHelpDLL could not find shipped version, but the OS found another");
 #endif
-		}
-	}
+        }
+    }
 
 #if defined(GDHL_DEBUG)
-	printf("\nloadDbgHelpDLL returning %p\n", dbghelpDLL);
+    printf("\nloadDbgHelpDLL returning %p\n", dbghelpDLL);
 #endif
 
-	return (uintptr_t) dbghelpDLL;
-
+    return (uintptr_t)dbghelpDLL;
 }
 
 /**
@@ -85,21 +84,20 @@ uintptr_t
 omrgetdbghelp_getDLL(void)
 {
 
-	HINSTANCE dbghelpDLL = NULL;
-	wchar_t dbgHelpPath[EsMaxPath];
+    HINSTANCE dbghelpDLL = NULL;
+    wchar_t dbgHelpPath[EsMaxPath];
 
-	if (0 != getDbgHelpDLLLocation(dbgHelpPath)) {
-		return 0;
-	}
+    if (0 != getDbgHelpDLLLocation(dbgHelpPath)) {
+        return 0;
+    }
 
-	dbghelpDLL = GetModuleHandleW(dbgHelpPath);
+    dbghelpDLL = GetModuleHandleW(dbgHelpPath);
 
 #if defined(GDHL_DEBUG)
-	printf("\ngetDbgHelpDLL returning %p\n", dbghelpDLL);
+    printf("\ngetDbgHelpDLL returning %p\n", dbghelpDLL);
 #endif
 
-	return (uintptr_t) dbghelpDLL;
-
+    return (uintptr_t)dbghelpDLL;
 }
 
 /**
@@ -108,13 +106,12 @@ omrgetdbghelp_getDLL(void)
  * @return 0 if the library was freed, non-zero otherwise
  *
  */
-void
-omrgetdbghelp_freeDLL(uintptr_t dbgHelpDLL)
+void omrgetdbghelp_freeDLL(uintptr_t dbgHelpDLL)
 {
-	if (NULL != (HMODULE)dbgHelpDLL) {
-		FreeLibrary((HMODULE) dbgHelpDLL);
-	}
-	return;
+    if (NULL != (HMODULE)dbgHelpDLL) {
+        FreeLibrary((HMODULE)dbgHelpDLL);
+    }
+    return;
 }
 
 /**
@@ -126,14 +123,14 @@ omrgetdbghelp_freeDLL(uintptr_t dbgHelpDLL)
  *
  */
 static uintptr_t
-getDbgHelpDLLLocation(wchar_t *dbghelpPath)
+getDbgHelpDLLLocation(wchar_t* dbghelpPath)
 {
-	wchar_t *pathEnd = NULL;
-	if (OMR_ERROR_NONE == detectVMDirectory(dbghelpPath, EsMaxPath, &pathEnd)) {
-		size_t length = EsMaxPath - wcslen(dbghelpPath) - 2;
-		_snwprintf(pathEnd, length, L"\\%s", UNICODE_DBGHELPDLL_NAME);
-		dbghelpPath[EsMaxPath - 1] = L'\0';
-		return 0;
-	}
-	return 1;
+    wchar_t* pathEnd = NULL;
+    if (OMR_ERROR_NONE == detectVMDirectory(dbghelpPath, EsMaxPath, &pathEnd)) {
+        size_t length = EsMaxPath - wcslen(dbghelpPath) - 2;
+        _snwprintf(pathEnd, length, L"\\%s", UNICODE_DBGHELPDLL_NAME);
+        dbghelpPath[EsMaxPath - 1] = L'\0';
+        return 0;
+    }
+    return 1;
 }

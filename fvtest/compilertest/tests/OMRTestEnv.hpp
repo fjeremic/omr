@@ -22,25 +22,23 @@
 #ifndef TEST_TESTS_OMRTESTENV_HPP_
 #define TEST_TESTS_OMRTESTENV_HPP_
 
-#include <limits.h>
-#include <stdio.h>
-#include <stdint.h>
 #include "il/DataTypes.hpp"
 #include "gtest/gtest.h"
+#include <limits.h>
+#include <stdint.h>
+#include <stdio.h>
 
 class TR_Memory;
 
 namespace TestCompiler {
 
-class OMRTestEnv : public testing::Environment
-   {
-   public:
-   virtual void SetUp();
-   virtual void TearDown();
-   static void initialize(char *options);
-   static void shutdown();
+class OMRTestEnv : public testing::Environment {
+public:
+    virtual void SetUp();
+    virtual void TearDown();
+    static void initialize(char* options);
+    static void shutdown();
 };
-
 }
 
 #endif /* TEST_TESTS_OMRTESTENV_HPP_ */

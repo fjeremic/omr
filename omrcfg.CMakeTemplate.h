@@ -140,7 +140,6 @@
  */
 #cmakedefine OMR_ARCH_RISCV
 
-
 #cmakedefine OMR_ENV_DATA64
 #cmakedefine OMR_ENV_GCC
 #cmakedefine OMR_ENV_LITTLE_ENDIAN

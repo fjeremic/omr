@@ -27,12 +27,12 @@
 #if defined(J9ZOS390)
 #include "atoe.h"
 #endif
-#include <stdio.h>
-#include <string.h>
 #include "omrcfg.h"
 #include "omrcomp.h"
-#include "omrthread.h"
 #include "omrport.h"
+#include "omrthread.h"
+#include <stdio.h>
+#include <string.h>
 
 #if defined(OMR_OS_WINDOWS)
 #define SPEC_WIN_API
@@ -100,7 +100,7 @@
 
 /* ospriority.c */
 extern void initPrioMap(void);
-extern const char *mapOSPolicy(intptr_t policy);
+extern const char* mapOSPolicy(intptr_t policy);
 #if defined(LINUX) || defined(OSX)
 extern void initRealtimePrioMap(void);
 #endif /* defined(LINUX) || defined(OSX) */
@@ -111,6 +111,5 @@ extern int getRTPolicy(omrthread_prio_t priority);
 
 typedef int osprio_t;
 extern osprio_t getOsPriority(omrthread_prio_t priority);
-
 
 #endif /*CREATETESTHELPER_H_*/

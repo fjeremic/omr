@@ -23,8 +23,7 @@
 #if !defined(OMR_TYPETRAITS_HPP_)
 #define OMR_TYPETRAITS_HPP_
 
-namespace OMR
-{
+namespace OMR {
 
 ///
 /// Basic constants
@@ -32,29 +31,30 @@ namespace OMR
 
 /// Define an integral constant.
 template <typename T, T value>
-struct IntegralConstant
-{
-	typedef T ValueType;
+struct IntegralConstant {
+    typedef T ValueType;
 
-	static const ValueType VALUE = value;
+    static const ValueType VALUE = value;
 
-	ValueType operator()() const { return VALUE; }
+    ValueType operator()() const { return VALUE; }
 };
 
 template <typename T, T value>
 const T IntegralConstant<T, value>::VALUE;
 
 template <bool value>
-struct BoolConstant : IntegralConstant<bool, value> {};
+struct BoolConstant : IntegralConstant<bool, value> {
+};
 
-struct FalseConstant : BoolConstant<false> {};
+struct FalseConstant : BoolConstant<false> {
+};
 
-struct TrueConstant : BoolConstant<true> {};
+struct TrueConstant : BoolConstant<true> {
+};
 
 template <typename T>
-struct TypeAlias
-{
-	typedef T Type;
+struct TypeAlias {
+    typedef T Type;
 };
 
 ///
@@ -63,28 +63,35 @@ struct TypeAlias
 
 /// RemoveConst<T> is T without any const qualifiers.
 template <typename T>
-struct RemoveConst : TypeAlias<T> {};
+struct RemoveConst : TypeAlias<T> {
+};
 
 template <typename T>
-struct RemoveConst<const T> : TypeAlias<T> {};
+struct RemoveConst<const T> : TypeAlias<T> {
+};
 
 /// RemoveVolatile<T>::Type is T without volatile qualifiers.
 template <typename T>
-struct RemoveVolatile : TypeAlias<T> {};
+struct RemoveVolatile : TypeAlias<T> {
+};
 
 template <typename T>
-struct RemoveVolatile<volatile T> : TypeAlias<T> {};
+struct RemoveVolatile<volatile T> : TypeAlias<T> {
+};
 
 /// RemoveCv<T>::Type is T without const/volatile qualifiers.
 template <typename T>
-struct RemoveCv : RemoveVolatile<typename RemoveConst<T>::Type> {};
+struct RemoveCv : RemoveVolatile<typename RemoveConst<T>::Type> {
+};
 
 /// RemoveReference<T>::Type is T as a non-reference.
 template <typename T>
-struct RemoveReference : TypeAlias<T> {};
+struct RemoveReference : TypeAlias<T> {
+};
 
 template <typename T>
-struct RemoveReference<T&> : TypeAlias<T> {};
+struct RemoveReference<T&> : TypeAlias<T> {
+};
 
 // TODO: Handle RValue references in typetraits
 // template <typename T>
@@ -92,7 +99,8 @@ struct RemoveReference<T&> : TypeAlias<T> {};
 
 /// Remove cv-qualifiers and one layer of references.
 template <typename T>
-struct RemoveCvRef : RemoveCv<typename RemoveReference<T>::Type> {};
+struct RemoveCvRef : RemoveCv<typename RemoveReference<T>::Type> {
+};
 
 // TODO: Handle rvalue references in type traits
 // template <typename T>
@@ -100,14 +108,17 @@ struct RemoveCvRef : RemoveCv<typename RemoveReference<T>::Type> {};
 
 /// Remove one layer of non-cv-qualified pointers
 template <typename T>
-struct RemoveNonCvPointer : TypeAlias<T> {};
+struct RemoveNonCvPointer : TypeAlias<T> {
+};
 
 template <typename T>
-struct RemoveNonCvPointer<T*> : TypeAlias<T> {};
+struct RemoveNonCvPointer<T*> : TypeAlias<T> {
+};
 
 /// Remove one layer of possibly cv-qualified pointers
 template <typename T>
-struct RemovePointer : RemoveNonCvPointer<typename RemoveCv<T>::Type> {};
+struct RemovePointer : RemoveNonCvPointer<typename RemoveCv<T>::Type> {
+};
 
 ///
 /// Type reflection: statically query types
@@ -115,17 +126,21 @@ struct RemovePointer : RemoveNonCvPointer<typename RemoveCv<T>::Type> {};
 
 /// True if T and U are the exact same type. Does not remove qualifiers.
 template <typename T, typename U>
-struct IsSame : FalseConstant {};
+struct IsSame : FalseConstant {
+};
 
 template <typename T>
-struct IsSame<T, T> : TrueConstant {};
+struct IsSame<T, T> : TrueConstant {
+};
 
 /// true if T is a reference type.
 template <typename T>
-struct IsReference : FalseConstant {};
+struct IsReference : FalseConstant {
+};
 
 template <typename T>
-struct IsReference<T&> : TrueConstant {};
+struct IsReference<T&> : TrueConstant {
+};
 
 // TODO: Handle rvalue references in type traits
 // template <typename T>
@@ -133,60 +148,99 @@ struct IsReference<T&> : TrueConstant {};
 
 /// Helper for IsPointer.
 template <typename T>
-struct IsNonCvPointer : FalseConstant {};
+struct IsNonCvPointer : FalseConstant {
+};
 
 template <typename T>
-struct IsNonCvPointer<T*> : TrueConstant {};
+struct IsNonCvPointer<T*> : TrueConstant {
+};
 
 /// IsPointer<T>::VALUE is true if T is a (possibly cv qualified) primitive pointer type.
 template <typename T>
-struct IsPointer : IsNonCvPointer<typename RemoveCv<T>::Type> {};
+struct IsPointer : IsNonCvPointer<typename RemoveCv<T>::Type> {
+};
 
 /// IsVoid<T>::VALUE is true if T is (possibly cv qualified) void.
 template <typename T>
-struct IsVoid : IsSame<typename RemoveCv<T>::Type, void> {};
+struct IsVoid : IsSame<typename RemoveCv<T>::Type, void> {
+};
 
 /// IsNonCvIntegral<T>::VALUE is true if T is a non-cv-qualified primitive integral type
 ///
 /// Note: Unlike `std::is_integral`, any compiler-defined extended integer types are not
 /// supported by IsNonCvIntegral.
 template <typename T>
-struct IsNonCvIntegral : FalseConstant {};
+struct IsNonCvIntegral : FalseConstant {
+};
 
-template <> struct IsNonCvIntegral<bool> : TrueConstant {};
-template <> struct IsNonCvIntegral<char> : TrueConstant {};
-template <> struct IsNonCvIntegral<signed char> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned char> : TrueConstant {};
-template <> struct IsNonCvIntegral<short> : TrueConstant {};
-template <> struct IsNonCvIntegral<int> : TrueConstant {};
-template <> struct IsNonCvIntegral<long> : TrueConstant {};
-template <> struct IsNonCvIntegral<long long> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned short> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned int> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned long> : TrueConstant {};
-template <> struct IsNonCvIntegral<unsigned long long> : TrueConstant {};
+template <>
+struct IsNonCvIntegral<bool> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<char> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<signed char> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<unsigned char> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<short> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<int> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<long> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<long long> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<unsigned short> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<unsigned int> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<unsigned long> : TrueConstant {
+};
+template <>
+struct IsNonCvIntegral<unsigned long long> : TrueConstant {
+};
 
 /// IsIntegral<T>::VALUE is true if T is a (possibly cv-qualified) primitive integral type.
 ///
 /// (see note for IsNonCvIntegral)
 template <typename T>
-struct IsIntegral : IsNonCvIntegral<typename RemoveCv<T>::Type> {};
+struct IsIntegral : IsNonCvIntegral<typename RemoveCv<T>::Type> {
+};
 
 /// IsNonCvFloatingPoint<T>::VALUE is true if T is a non-cv-qualified floating point type
 template <typename T>
-struct IsNonCvFloatingPoint : FalseConstant {};
+struct IsNonCvFloatingPoint : FalseConstant {
+};
 
-template <> struct IsNonCvFloatingPoint<float> : TrueConstant {};
-template <> struct IsNonCvFloatingPoint<double> : TrueConstant {};
-template <> struct IsNonCvFloatingPoint<long double> : TrueConstant {};
+template <>
+struct IsNonCvFloatingPoint<float> : TrueConstant {
+};
+template <>
+struct IsNonCvFloatingPoint<double> : TrueConstant {
+};
+template <>
+struct IsNonCvFloatingPoint<long double> : TrueConstant {
+};
 
 /// IsFloatingPoint<T>::VALUE is tue if T is a (possibly cv-qualified) floating point type
 template <typename T>
-struct IsFloatingPoint : IsNonCvFloatingPoint<typename RemoveCv<T>::Type> {};
+struct IsFloatingPoint : IsNonCvFloatingPoint<typename RemoveCv<T>::Type> {
+};
 
 /// IsArithmetic<T>::VALUE is true if T is a (possibly cv-qualified) primtive integral or floating point type
 template <typename T>
-struct IsArithmetic : BoolConstant<IsIntegral<T>::VALUE || IsFloatingPoint<T>::VALUE> {};
+struct IsArithmetic : BoolConstant<IsIntegral<T>::VALUE || IsFloatingPoint<T>::VALUE> {
+};
 
 ///
 /// Miscellaneous transformations
@@ -194,13 +248,13 @@ struct IsArithmetic : BoolConstant<IsIntegral<T>::VALUE || IsFloatingPoint<T>::V
 
 /// EnableIf<B, T>::Type will exist if-and-only-if B is true (a basic SFINAE construct)
 template <bool B, typename T = void>
-struct EnableIf {};
+struct EnableIf {
+};
 
 template <typename T>
-struct EnableIf<true, T>
-{
-	typedef T Type;
+struct EnableIf<true, T> {
+    typedef T Type;
 };
-}  // namespace OMR
+} // namespace OMR
 
 #endif // OMR_TYPETRAITS_HPP_

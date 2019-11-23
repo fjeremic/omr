@@ -22,25 +22,24 @@
 #ifndef TR_OPTIMIZATIONMANAGER_INCL
 #define TR_OPTIMIZATIONMANAGER_INCL
 
-#include <stddef.h>
 #include "optimizer/OMROptimizationManager.hpp"
 #include "optimizer/Optimizations.hpp"
+#include <stddef.h>
 
-
-namespace TR { class Optimizer; }
+namespace TR {
+class Optimizer;
+}
 struct OptimizationStrategy;
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE OptimizationManager : public OMR::OptimizationManagerConnector
-   {
-   public:
-
-   OptimizationManager(TR::Optimizer *o, OptimizationFactory factory, OMR::Optimizations optNum, const OptimizationStrategy *groupOfOpts = NULL) :
-      OMR::OptimizationManagerConnector(o, factory, optNum, groupOfOpts) {}
-   };
-
+class OMR_EXTENSIBLE OptimizationManager : public OMR::OptimizationManagerConnector {
+public:
+    OptimizationManager(TR::Optimizer* o, OptimizationFactory factory, OMR::Optimizations optNum, const OptimizationStrategy* groupOfOpts = NULL)
+        : OMR::OptimizationManagerConnector(o, factory, optNum, groupOfOpts)
+    {
+    }
+};
 }
 
 #endif

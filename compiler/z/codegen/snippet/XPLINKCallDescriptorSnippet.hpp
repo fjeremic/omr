@@ -22,12 +22,18 @@
 #ifndef OMR_Z_SNIPPET_XPLINKCALLDESCRIPTORSNIPPET_INCL
 #define OMR_Z_SNIPPET_XPLINKCALLDESCRIPTORSNIPPET_INCL
 
-#include <stdint.h>
 #include "codegen/ConstantDataSnippet.hpp"
+#include <stdint.h>
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class S390zOSSystemLinkage; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class S390zOSSystemLinkage;
+}
 
 namespace TR {
 
@@ -54,28 +60,24 @@ namespace TR {
  *       +----------------------------------+----------------------------------+----------------------------------+----------------------------------+
  *  \endverbatim
  */
-class XPLINKCallDescriptorSnippet : public TR::S390ConstantDataSnippet
-   {
-   public:
-
-   /** \brief
+class XPLINKCallDescriptorSnippet : public TR::S390ConstantDataSnippet {
+public:
+    /** \brief
     *     Size (in bytes) of the call descriptor data structure.
     */
-   static const size_t SIZE = 8;
+    static const size_t SIZE = 8;
 
-   static uint32_t generateCallDescriptorValue(TR::S390zOSSystemLinkage* linkage, TR::Node* callNode);
+    static uint32_t generateCallDescriptorValue(TR::S390zOSSystemLinkage* linkage, TR::Node* callNode);
 
-   public:
+public:
+    XPLINKCallDescriptorSnippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage, uint32_t callDescriptorValue);
 
-   XPLINKCallDescriptorSnippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage, uint32_t callDescriptorValue);
+    virtual uint8_t* emitSnippetBody();
 
-   virtual uint8_t* emitSnippetBody();
-
-   private:
-
-   TR::S390zOSSystemLinkage* _linkage;
-   uint32_t _callDescriptorValue;
-   };
+private:
+    TR::S390zOSSystemLinkage* _linkage;
+    uint32_t _callDescriptorValue;
+};
 }
 
 #endif

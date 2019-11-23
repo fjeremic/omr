@@ -27,9 +27,11 @@
 #define ASSERT_NULL(pointer) ASSERT_EQ(NULL, (pointer))
 #define ASSERT_NOTNULL(pointer) ASSERT_TRUE(NULL != (pointer))
 
-class CompileTest : public Tril::Test::JitTest {};
+class CompileTest : public Tril::Test::JitTest {
+};
 
-TEST_F(CompileTest, Return3) {
+TEST_F(CompileTest, Return3)
+{
     auto trees = parseString("(method return=\"Int32\" (block (ireturn (iconst 3))))");
 
     ASSERT_NOTNULL(trees);
@@ -43,14 +45,14 @@ TEST_F(CompileTest, Return3) {
     ASSERT_EQ(3, entry()) << "Compiled body did not return expected value";
 }
 
-
-TEST_F(CompileTest, NoCodeGen) {
+TEST_F(CompileTest, NoCodeGen)
+{
     auto trees = parseString("(method return=\"Int32\" (block (ireturn (iconst 3))))");
 
     ASSERT_NOTNULL(trees);
 
     Tril::DefaultCompiler compiler(trees);
-    TR::NoCodegenVerifier verifier(NULL); 
+    TR::NoCodegenVerifier verifier(NULL);
 
     EXPECT_NE(0, compiler.compileWithVerifier(&verifier)) << "Compilation succeeded";
 

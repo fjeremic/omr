@@ -26,10 +26,9 @@
 #pragma once
 
 #include "control/OMROptions.hpp"
-#include "optimizer/OptimizationManager.hpp" 
+#include "optimizer/OptimizationManager.hpp"
 
-namespace TR 
-{
+namespace TR {
 
 /**
  * Implementation of an optimization selection facility.
@@ -50,18 +49,15 @@ namespace TR
  *       TR::SelectOpt<SomeOption, Opt1, Opt2>::create, OMR::someOpt);
  *
  */
-template<enum TR_CompilationOptions E, class C1, class C2>
-class SelectOpt
-   {
-   public:
-
-   static TR::Optimization *
-   create(TR::OptimizationManager *m)
-      {
-      return TR::Options::getJITCmdLineOptions()->getOption(E) ? C1::create(m) : C2::create(m);
-      }
-
-   };
+template <enum TR_CompilationOptions E, class C1, class C2>
+class SelectOpt {
+public:
+    static TR::Optimization*
+    create(TR::OptimizationManager* m)
+    {
+        return TR::Options::getJITCmdLineOptions()->getOption(E) ? C1::create(m) : C2::create(m);
+    }
+};
 
 } // namespace TR
 

@@ -22,35 +22,44 @@
 #ifndef OMR_CFGSIMPLIFIER_INCL
 #define OMR_CFGSIMPLIFIER_INCL
 
-#include <stdint.h>
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
+#include <stdint.h>
 
-namespace TR { class Block; }
-namespace TR { class CFG; }
-namespace TR { class CFGEdge; }
-namespace TR { class Node; }
-namespace TR { class TreeTop; }
-template <class T> class ListElement;
+namespace TR {
+class Block;
+}
+namespace TR {
+class CFG;
+}
+namespace TR {
+class CFGEdge;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class TreeTop;
+}
+template <class T>
+class ListElement;
 
-namespace OMR
-{
+namespace OMR {
 
 // Control flow graph simplifier
 //
 // Look for opportunities to simplify control flow.
 //
-class CFGSimplifier : public TR::Optimization
-   {
-   public:
-   CFGSimplifier(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager);
+class CFGSimplifier : public TR::Optimization {
+public:
+    CFGSimplifier(TR::OptimizationManager* manager);
+    static TR::Optimization* create(TR::OptimizationManager* manager);
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
-   
-   protected:
-   /**
+    virtual int32_t perform();
+    virtual const char* optDetailString() const throw();
+
+protected:
+    /**
     * \brief
     *    This function calls individual routines to try to match different `if` control flow structure 
     *    for simplification.
@@ -60,9 +69,9 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicates whether tranformation is performed based on a matched pattern
     */
-   virtual bool simplifyIfPatterns(bool needToDuplicateTree);
+    virtual bool simplifyIfPatterns(bool needToDuplicateTree);
 
-   /**
+    /**
     * \brief
     *    This function tries to match a triangle or dimond like (if (cond) x = 0; else x = y) and tries to 
     *    remove the control flow if the condition can be represented by the result of "cmp" node.
@@ -72,9 +81,9 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicatestrue if tranformation is performed based on a matched pattern.
     */
-   bool simplifyBooleanStore(bool needToDuplicateTree);
+    bool simplifyBooleanStore(bool needToDuplicateTree);
 
-   /**
+    /**
     * \brief
     *    This function tries to match an ifacmpeq/ifacmpne of NULL node to a block ending in throw 
     *    and reaplce with a NULLCHK to a catch.
@@ -84,9 +93,9 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicates true if tranformation is performed based on a matched pattern.
     */
-   bool simplifyNullToException(bool needToDuplicateTree);
+    bool simplifyNullToException(bool needToDuplicateTree);
 
-   /**
+    /**
     * \brief
     *    This function tries to match a simple diamond or traigle that performs conditional store in a temp 
     *    and repalce with an appropriate ternary node.
@@ -96,9 +105,9 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicates true if tranformation is performed based on a matched pattern.
     */
-   bool simplifySimpleStore(bool needToDuplicateTree);
+    bool simplifySimpleStore(bool needToDuplicateTree);
 
-   /**
+    /**
     * \brief
     *    This function tries to match diamond or traigle that performs conditional stores in temps 
     *    and repalce with seqeunce of appropriate ternary nodes.
@@ -108,9 +117,9 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicates true if tranformation is performed based on a matched pattern.
     */
-   bool simplifyCondStoreSequence(bool needToDuplicateTree);
+    bool simplifyCondStoreSequence(bool needToDuplicateTree);
 
-   /**
+    /**
     * \brief
     *    This function tries to match ificmp of instanceof with throw and replace with a checkcastAndNULLCHK.
     *
@@ -119,35 +128,32 @@ class CFGSimplifier : public TR::Optimization
     *
     * \return Boolean that indicates true if tranformation is performed based on a matched pattern.
     */
-   bool simplifyInstanceOfTestToCheckcast(bool needToDuplicateTree);
+    bool simplifyInstanceOfTestToCheckcast(bool needToDuplicateTree);
 
-   TR::TreeTop *getNextRealTreetop(TR::TreeTop *treeTop);
-   TR::TreeTop *getLastRealTreetop(TR::Block *block);
-   TR::Block   *getFallThroughBlock(TR::Block *block);
-   bool hasExceptionPoint(TR::Block *block, TR::TreeTop *end);
+    TR::TreeTop* getNextRealTreetop(TR::TreeTop* treeTop);
+    TR::TreeTop* getLastRealTreetop(TR::Block* block);
+    TR::Block* getFallThroughBlock(TR::Block* block);
+    bool hasExceptionPoint(TR::Block* block, TR::TreeTop* end);
 
-   TR::CFG                  *_cfg;
+    TR::CFG* _cfg;
 
-   // Current block
-   TR::Block                *_block;
+    // Current block
+    TR::Block* _block;
 
-   // First successor to the current block
-   TR::CFGEdge              *_succ1;
-   TR::Block                *_next1;
+    // First successor to the current block
+    TR::CFGEdge* _succ1;
+    TR::Block* _next1;
 
-   // Second successor to the current block
-   TR::CFGEdge              *_succ2;
-   TR::Block                *_next2;
+    // Second successor to the current block
+    TR::CFGEdge* _succ2;
+    TR::Block* _next2;
 
-   private :
-
-   bool simplify();
-   bool simplifyIfStructure();
-   bool simplifyCondCodeBooleanStore(TR::Block *joinBlock, TR::Node *branchNode, TR::Node *store1Node, TR::Node *store2Node);
-   bool canReverseBranchMask();
-
-   };
-
+private:
+    bool simplify();
+    bool simplifyIfStructure();
+    bool simplifyCondCodeBooleanStore(TR::Block* joinBlock, TR::Node* branchNode, TR::Node* store1Node, TR::Node* store2Node);
+    bool canReverseBranchMask();
+};
 }
 
 #endif

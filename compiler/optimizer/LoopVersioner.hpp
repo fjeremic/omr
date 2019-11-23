@@ -22,9 +22,6 @@
 #ifndef LOOPVERSIONER_INCL
 #define LOOPVERSIONER_INCL
 
-#include <stddef.h>
-#include <stdint.h>
-#include <map>
 #include "compile/Compilation.hpp"
 #include "env/TRMemory.hpp"
 #include "il/ILOps.hpp"
@@ -37,104 +34,119 @@
 #include "infra/Checklist.hpp"
 #include "infra/Link.hpp"
 #include "infra/List.hpp"
-#include "optimizer/OptimizationManager.hpp"
 #include "optimizer/LoopCanonicalizer.hpp"
+#include "optimizer/OptimizationManager.hpp"
+#include <map>
+#include <stddef.h>
+#include <stdint.h>
 
 class TR_PostDominators;
 class TR_RegionStructure;
 class TR_Structure;
-namespace TR { class Block; }
-namespace TR { class Optimization; }
+namespace TR {
+class Block;
+}
+namespace TR {
+class Optimization;
+}
 
-class TR_NodeParentSymRef
-   {
-   public:
-   TR_ALLOC(TR_Memory::LoopTransformer)
+class TR_NodeParentSymRef {
+public:
+    TR_ALLOC(TR_Memory::LoopTransformer)
 
-   TR_NodeParentSymRef(TR::Node *node, TR::Node *parent, TR::SymbolReference *symRef)
-      : _node(node), _parent(parent), _symRef(symRef)
-      {
-      }
-
-   TR::Node *_node;
-   TR::Node *_parent;
-   TR::SymbolReference *_symRef;
-   };
-
-class TR_NodeParentSymRefWeightTuple
-   {
-   public:
-   TR_ALLOC(TR_Memory::LoopTransformer)
-
-   TR_NodeParentSymRefWeightTuple(TR::Node *node, TR::Node *parent, TR::SymbolReference *symRef, int32_t weight)
-      : _node(node), _parent(parent), _symRef(symRef), _weight(weight)
-      {
-      }
-
-   TR::Node *_node;
-   TR::Node *_parent;
-   TR::SymbolReference *_symRef;
-   int32_t _weight;
-   };
-
-
-struct VirtualGuardPair
-   {
-   TR::Block *_hotGuardBlock;
-   TR::Block *_coldGuardBlock;
-   bool _isGuarded;
-   TR::Block *_coldGuardLoopEntryBlock;
-   bool _isInsideInnerLoop;
-   };
-
-struct VGLoopInfo
-   {
-   VGLoopInfo(): _count(0), _coldGuardLoopInvariantBlock(NULL), _loopTempSymRef(NULL), _targetNum(-1) {}
-   int32_t _count;
-   TR::Block *_coldGuardLoopInvariantBlock;
-   TR::SymbolReference *_loopTempSymRef;
-   int32_t _targetNum;
-   };
-
-struct VirtualGuardInfo : public TR_Link<VirtualGuardInfo>
-   {
-   VirtualGuardInfo(TR::Compilation *c)
-      :_virtualGuardPairs(c->trMemory())
-      {
-
-      _virtualGuardPairs.deleteAll();
-      _coldLoopEntryBlock = NULL;
-      _coldLoopInvariantBlock = NULL;
-      _loopEntry = NULL;
-      }
-   List<VirtualGuardPair> _virtualGuardPairs;
-   TR::Block *_coldLoopEntryBlock;
-   TR::Block *_coldLoopInvariantBlock;
-   TR::Block *_loopEntry;
-   };
-
- class TR_NodeParentBlockTuple
+    TR_NodeParentSymRef(TR::Node* node, TR::Node* parent, TR::SymbolReference* symRef)
+        : _node(node)
+        , _parent(parent)
+        , _symRef(symRef)
     {
-   public:
-   TR_ALLOC(TR_Memory::LoopTransformer)
+    }
 
-   TR_NodeParentBlockTuple(TR::Node *node, TR::Node *parent,TR::Block *block)
-      : _node(node), _parent(parent),_block(block)
-      {
-      }
+    TR::Node* _node;
+    TR::Node* _parent;
+    TR::SymbolReference* _symRef;
+};
 
-    TR::Node  *_node;
-    TR::Node  *_parent;
-    TR::Block *_block;
-   };
+class TR_NodeParentSymRefWeightTuple {
+public:
+    TR_ALLOC(TR_Memory::LoopTransformer)
 
-struct LoopTemps : public TR_Link<LoopTemps>
-   {
-   LoopTemps(): _symRef(NULL), _maxValue(0) {}
-   TR::SymbolReference *_symRef;
-   int32_t _maxValue;
-   };
+    TR_NodeParentSymRefWeightTuple(TR::Node* node, TR::Node* parent, TR::SymbolReference* symRef, int32_t weight)
+        : _node(node)
+        , _parent(parent)
+        , _symRef(symRef)
+        , _weight(weight)
+    {
+    }
 
+    TR::Node* _node;
+    TR::Node* _parent;
+    TR::SymbolReference* _symRef;
+    int32_t _weight;
+};
+
+struct VirtualGuardPair {
+    TR::Block* _hotGuardBlock;
+    TR::Block* _coldGuardBlock;
+    bool _isGuarded;
+    TR::Block* _coldGuardLoopEntryBlock;
+    bool _isInsideInnerLoop;
+};
+
+struct VGLoopInfo {
+    VGLoopInfo()
+        : _count(0)
+        , _coldGuardLoopInvariantBlock(NULL)
+        , _loopTempSymRef(NULL)
+        , _targetNum(-1)
+    {
+    }
+    int32_t _count;
+    TR::Block* _coldGuardLoopInvariantBlock;
+    TR::SymbolReference* _loopTempSymRef;
+    int32_t _targetNum;
+};
+
+struct VirtualGuardInfo : public TR_Link<VirtualGuardInfo> {
+    VirtualGuardInfo(TR::Compilation* c)
+        : _virtualGuardPairs(c->trMemory())
+    {
+
+        _virtualGuardPairs.deleteAll();
+        _coldLoopEntryBlock = NULL;
+        _coldLoopInvariantBlock = NULL;
+        _loopEntry = NULL;
+    }
+    List<VirtualGuardPair> _virtualGuardPairs;
+    TR::Block* _coldLoopEntryBlock;
+    TR::Block* _coldLoopInvariantBlock;
+    TR::Block* _loopEntry;
+};
+
+class TR_NodeParentBlockTuple {
+public:
+    TR_ALLOC(TR_Memory::LoopTransformer)
+
+    TR_NodeParentBlockTuple(TR::Node* node, TR::Node* parent, TR::Block* block)
+        : _node(node)
+        , _parent(parent)
+        , _block(block)
+    {
+    }
+
+    TR::Node* _node;
+    TR::Node* _parent;
+    TR::Block* _block;
+};
+
+struct LoopTemps : public TR_Link<LoopTemps> {
+    LoopTemps()
+        : _symRef(NULL)
+        , _maxValue(0)
+    {
+    }
+    TR::SymbolReference* _symRef;
+    int32_t _maxValue;
+};
 
 /**
  * Class TR_LoopVersioner
@@ -266,27 +278,24 @@ struct LoopTemps : public TR_Link<LoopTemps>
  * \see LoopBodySearch
  */
 
-class TR_LoopVersioner : public TR_LoopTransformer
-   {
-   public:
+class TR_LoopVersioner : public TR_LoopTransformer {
+public:
+    TR_LoopVersioner(TR::OptimizationManager* manager, bool onlySpecialize = false, bool refineAliases = false);
+    static TR::Optimization* create(TR::OptimizationManager* manager)
+    {
+        return new (manager->allocator()) TR_LoopVersioner(manager);
+    }
 
-   TR_LoopVersioner(TR::OptimizationManager *manager, bool onlySpecialize = false, bool refineAliases = false);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_LoopVersioner(manager);
-      }
+    virtual int32_t perform();
+    virtual TR_LoopVersioner* asLoopVersioner() { return this; }
 
-   virtual int32_t perform();
-   virtual TR_LoopVersioner *asLoopVersioner() {return this;}
+    virtual int32_t detectCanonicalizedPredictableLoops(TR_Structure*, TR_BitVector**, int32_t);
+    virtual bool isStoreInRequiredForm(int32_t, TR_Structure*);
 
-   virtual int32_t detectCanonicalizedPredictableLoops(TR_Structure *, TR_BitVector **, int32_t);
-   virtual bool isStoreInRequiredForm(int32_t, TR_Structure *);
+    virtual const char* optDetailString() const throw();
 
-   virtual const char * optDetailString() const throw();
-
-   protected:
-
-   /**
+protected:
+    /**
     * \brief An expression that may be emitted outside the loop.
     *
     * These expressions are interned to easily avoid generating duplicate
@@ -330,29 +339,26 @@ class TR_LoopVersioner : public TR_LoopTransformer
     * \see emitExpr()
     * \see substitutePrivTemps()
     */
-   struct Expr
-      {
-      TR_ALLOC(TR_Memory::LoopTransformer);
+    struct Expr {
+        TR_ALLOC(TR_Memory::LoopTransformer);
 
-      enum
-         {
-         /// The maximum number of children representable.
-         MAX_CHILDREN = 3,
-         };
+        enum {
+            /// The maximum number of children representable.
+            MAX_CHILDREN = 3,
+        };
 
-      /// The operation at the root of this expression.
-      TR::ILOpCode _op;
+        /// The operation at the root of this expression.
+        TR::ILOpCode _op;
 
-      union
-         {
-         /// The constant value, when <tt>_op.isLoadConst()</tt>.
-         int64_t _constValue;
+        union {
+            /// The constant value, when <tt>_op.isLoadConst()</tt>.
+            int64_t _constValue;
 
-         /// The symbol reference, when <tt>_op.hasSymbolReference()</tt>.
-         TR::SymbolReference *_symRef;
-         };
+            /// The symbol reference, when <tt>_op.hasSymbolReference()</tt>.
+            TR::SymbolReference* _symRef;
+        };
 
-      /**
+        /**
        * \brief Flags that can't be cleared,
        * e.g. TR::Node::isClassPointerConstant().
        *
@@ -360,38 +366,38 @@ class TR_LoopVersioner : public TR_LoopTransformer
        * Otherwise irrelevant flags set on original nodes in the loop will
        * prevent substitution of privatization temps.
        */
-      flags32_t _mandatoryFlags;
+        flags32_t _mandatoryFlags;
 
-      /**
+        /**
        * \brief The immediate subexpressions.
        *
        * If there are fewer than \ref MAX_CHILDREN children, trailing elements
        * are set to null.
        */
-      const Expr *_children[MAX_CHILDREN];
+        const Expr* _children[MAX_CHILDREN];
 
-      /**
+        /**
        * \brief Best-effort bytecode info.
        *
        * This is ignored in comparisons, so it comes from an arbitrary matching
        * node. It is only used to ensure that nodes generated outside the loop
        * have \em some valid bytecode info.
        */
-      TR_ByteCodeInfo _bci;
+        TR_ByteCodeInfo _bci;
 
-      /**
+        /**
        * \brief Best-effort flags.
        *
        * This must be a superset of \ref _mandatoryFlags. It is ignored in
        * comparisons, so it comes from an arbitrary matching node. This
        * preserves optional flags such as TR::Node::isMaxLoopIterationGuard().
        */
-      flags32_t _flags;
+        flags32_t _flags;
 
-      bool operator<(const Expr &rhs) const;
-      };
+        bool operator<(const Expr& rhs) const;
+    };
 
-   /**
+    /**
     * \brief A deferred transformation consisting of an expression to be
     * emitted outside the loop in preparation for loop entry.
     *
@@ -417,17 +423,15 @@ class TR_LoopVersioner : public TR_LoopTransformer
     * \see emitPrep()
     * \see unsafelyEmitAllTests()
     */
-   struct LoopEntryPrep
-      {
-      TR_ALLOC(TR_Memory::LoopTransformer);
+    struct LoopEntryPrep {
+        TR_ALLOC(TR_Memory::LoopTransformer);
 
-      enum Kind
-         {
-         TEST, ///< A versioning test
-         PRIVATIZE, ///< An expression to be privatized
-         };
+        enum Kind {
+            TEST, ///< A versioning test
+            PRIVATIZE, ///< An expression to be privatized
+        };
 
-      /**
+        /**
        * \brief Construct an instance of LoopEntryPrep. This is probably not
        * what you want! Use createLoopEntryPrep().
        *
@@ -435,47 +439,48 @@ class TR_LoopVersioner : public TR_LoopTransformer
        * \param expr The expression to be emitted ahead of the loop
        * \param memoryRegion The memory region to use for the dependency list
        */
-      LoopEntryPrep(Kind kind, const Expr *expr, TR::Region &memoryRegion)
-         : _kind(kind)
-         , _expr(expr)
-         , _deps(memoryRegion)
-         , _emitted(false)
-         , _requiresPrivatization(false)
-         , _unsafelyEmitted(false)
-         {}
+        LoopEntryPrep(Kind kind, const Expr* expr, TR::Region& memoryRegion)
+            : _kind(kind)
+            , _expr(expr)
+            , _deps(memoryRegion)
+            , _emitted(false)
+            , _requiresPrivatization(false)
+            , _unsafelyEmitted(false)
+        {
+        }
 
-      /// Distinguishes versioning tests from privatizations.
-      const Kind _kind;
+        /// Distinguishes versioning tests from privatizations.
+        const Kind _kind;
 
-      /**
+        /**
        * \brief The expression to emitted ahead of the loop.
        *
        * For tests, this is the entire conditional. For privatizations, this is
        * only the value, not including the store, which is generated later.
        */
-      const Expr * const _expr;
+        const Expr* const _expr;
 
-      /**
+        /**
        * \brief Dependencies of this LoopEntryPrep.
        *
        * These are other tests and privatizations that must run before this one
        * to ensure that this is safe to evaluate.
        */
-      TR::list<LoopEntryPrep*, TR::Region&> _deps;
+        TR::list<LoopEntryPrep*, TR::Region&> _deps;
 
-      /**
+        /**
        * \brief True if this LoopEntryPrep has already been emitted.
        *
        * This is used to ensure that no LoopEntryPrep is emitted multiple times.
        *
        * \see emitPrep()
        */
-      bool _emitted;
+        bool _emitted;
 
-      /// True when either this LoopEntryPrep or a (transitive) dependency privatizes.
-      bool _requiresPrivatization;
+        /// True when either this LoopEntryPrep or a (transitive) dependency privatizes.
+        bool _requiresPrivatization;
 
-      /**
+        /**
        * \brief True if this LoopEntryPrep has already been "unsafely emitted."
        *
        * This is used to ensure that no LoopEntryPrep is unsafely emitted
@@ -484,42 +489,43 @@ class TR_LoopVersioner : public TR_LoopTransformer
        *
        * \see unsafelyEmitAllTests()
        */
-      bool _unsafelyEmitted;
-      };
+        bool _unsafelyEmitted;
+    };
 
-   /**
+    /**
     * \brief A deferred transformation that can improve a loop body, so long as
     * a particular LoopEntryPrep (typically a versioning test) is emitted.
     *
     * For an overview of privatization and the deferral of transformations see
     * TR_LoopVersioner.
     */
-   class LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      /**
+        /**
        * Construct this LoopImprovement.
        *
        * \param versioner The optimization pass object
        * \param prep The LoopEntryPrep required to allow for this improvement
        */
-      LoopImprovement(TR_LoopVersioner *versioner, LoopEntryPrep *prep)
-         : _versioner(versioner), _prep(prep)
-         {}
+        LoopImprovement(TR_LoopVersioner* versioner, LoopEntryPrep* prep)
+            : _versioner(versioner)
+            , _prep(prep)
+        {
+        }
 
-      /// Improve the loop, for example by removing a check.
-      virtual void improveLoop() = 0;
+        /// Improve the loop, for example by removing a check.
+        virtual void improveLoop() = 0;
 
-      TR::Compilation *comp() { return _versioner->comp(); }
-      TR_FrontEnd *fe() { return _versioner->fe(); }
+        TR::Compilation* comp() { return _versioner->comp(); }
+        TR_FrontEnd* fe() { return _versioner->fe(); }
 
-      TR_LoopVersioner * const _versioner;
-      LoopEntryPrep * const _prep;
-      };
+        TR_LoopVersioner* const _versioner;
+        LoopEntryPrep* const _prep;
+    };
 
-   /**
+    /**
     * \brief An iterator over all trees in the loop body reachable with certain
     * assumptions, in breadth-first order.
     *
@@ -558,504 +564,506 @@ class TR_LoopVersioner : public TR_LoopTransformer
     * For an overview of privatization and the deferral of transformations see
     * TR_LoopVersioner.
     */
-   class LoopBodySearch
-      {
-      public:
-      LoopBodySearch(
-         TR::Compilation *comp,
-         TR::Region &memRegion,
-         TR_RegionStructure *loop,
-         TR::NodeChecklist *removedNodes,
-         TR::NodeChecklist *takenBranches);
+    class LoopBodySearch {
+    public:
+        LoopBodySearch(
+            TR::Compilation* comp,
+            TR::Region& memRegion,
+            TR_RegionStructure* loop,
+            TR::NodeChecklist* removedNodes,
+            TR::NodeChecklist* takenBranches);
 
-      /**
+        /**
        * \brief Determine whether iteration is still in progress.
        *
        * \return true when iteration is still in progress and there is a
        * current tree
        */
-      bool hasTreeTop() { return _currentTreeTop != NULL; }
+        bool hasTreeTop() { return _currentTreeTop != NULL; }
 
-      /**
+        /**
        * \brief Get the block containing the current tree.
        *
        * \return the block, or null if iteration has finished
        */
-      TR::Block *currentBlock() { return _currentBlock; }
+        TR::Block* currentBlock() { return _currentBlock; }
 
-      /**
+        /**
        * \brief Get the current tree.
        *
        * \return the tree, or null if iteration has finished
        */
-      TR::TreeTop *currentTreeTop() { return _currentTreeTop; }
+        TR::TreeTop* currentTreeTop() { return _currentTreeTop; }
 
-      void advance();
+        void advance();
 
-      private:
-      bool isBranchConstant(TR::Node *ifNode);
-      bool isConstantBranchTaken(TR::Node *ifNode);
-      void enqueueReachableSuccessorsInLoop();
-      void enqueueReachableSuccessorsInLoopFrom(TR::CFGEdgeList &outgoingEdges);
-      void enqueueBlockIfInLoop(TR::TreeTop *entry);
-      void enqueueBlockIfInLoop(TR::Block *block);
+    private:
+        bool isBranchConstant(TR::Node* ifNode);
+        bool isConstantBranchTaken(TR::Node* ifNode);
+        void enqueueReachableSuccessorsInLoop();
+        void enqueueReachableSuccessorsInLoopFrom(TR::CFGEdgeList& outgoingEdges);
+        void enqueueBlockIfInLoop(TR::TreeTop* entry);
+        void enqueueBlockIfInLoop(TR::Block* block);
 
-      TR_RegionStructure * const _loop;
-      TR::NodeChecklist * const _removedNodes;
-      TR::NodeChecklist * const _takenBranches;
-      TR::list<TR::Block*, TR::Region&> _queue;
-      TR::BlockChecklist _alreadyEnqueuedBlocks;
-      TR::Block *_currentBlock;
-      TR::TreeTop *_currentTreeTop;
-      bool _blockHasExceptionPoint;
-      };
+        TR_RegionStructure* const _loop;
+        TR::NodeChecklist* const _removedNodes;
+        TR::NodeChecklist* const _takenBranches;
+        TR::list<TR::Block*, TR::Region&> _queue;
+        TR::BlockChecklist _alreadyEnqueuedBlocks;
+        TR::Block* _currentBlock;
+        TR::TreeTop* _currentTreeTop;
+        bool _blockHasExceptionPoint;
+    };
 
-   struct PrepKey
-      {
-      PrepKey(LoopEntryPrep::Kind kind, const Expr *expr, LoopEntryPrep *prev)
-         : _kind(kind), _expr(expr), _prev(prev) {}
+    struct PrepKey {
+        PrepKey(LoopEntryPrep::Kind kind, const Expr* expr, LoopEntryPrep* prev)
+            : _kind(kind)
+            , _expr(expr)
+            , _prev(prev)
+        {
+        }
 
-      const LoopEntryPrep::Kind _kind;
-      const Expr * const _expr;
-      LoopEntryPrep * const _prev;
+        const LoopEntryPrep::Kind _kind;
+        const Expr* const _expr;
+        LoopEntryPrep* const _prev;
 
-      bool operator<(const PrepKey &rhs) const;
-      };
+        bool operator<(const PrepKey& rhs) const;
+    };
 
-   struct PrivTemp
-      {
-      PrivTemp(TR::SymbolReference *symRef, TR::DataType type)
-         : _symRef(symRef), _type(type) {}
+    struct PrivTemp {
+        PrivTemp(TR::SymbolReference* symRef, TR::DataType type)
+            : _symRef(symRef)
+            , _type(type)
+        {
+        }
 
-      TR::SymbolReference * const _symRef;
-      const TR::DataType _type;
-      };
+        TR::SymbolReference* const _symRef;
+        const TR::DataType _type;
+    };
 
-   typedef TR::typed_allocator<std::pair<const Expr, const Expr*>, TR::Region&> ExprTableAlloc;
-   typedef std::map<Expr, const Expr*, std::less<Expr>, ExprTableAlloc> ExprTable;
+    typedef TR::typed_allocator<std::pair<const Expr, const Expr*>, TR::Region&> ExprTableAlloc;
+    typedef std::map<Expr, const Expr*, std::less<Expr>, ExprTableAlloc> ExprTable;
 
-   typedef TR::typed_allocator<std::pair<TR::Node * const, const Expr*>, TR::Region&> NodeToExprAlloc;
-   typedef std::map<TR::Node*, const Expr*, std::less<TR::Node*>, NodeToExprAlloc> NodeToExpr;
+    typedef TR::typed_allocator<std::pair<TR::Node* const, const Expr*>, TR::Region&> NodeToExprAlloc;
+    typedef std::map<TR::Node*, const Expr*, std::less<TR::Node*>, NodeToExprAlloc> NodeToExpr;
 
-   typedef TR::typed_allocator<std::pair<const PrepKey, LoopEntryPrep*>, TR::Region&> PrepTableAlloc;
-   typedef std::map<PrepKey, LoopEntryPrep*, std::less<PrepKey>, PrepTableAlloc> PrepTable;
+    typedef TR::typed_allocator<std::pair<const PrepKey, LoopEntryPrep*>, TR::Region&> PrepTableAlloc;
+    typedef std::map<PrepKey, LoopEntryPrep*, std::less<PrepKey>, PrepTableAlloc> PrepTable;
 
-   typedef TR::typed_allocator<std::pair<const Expr * const, LoopEntryPrep*>, TR::Region&> NullTestPrepMapAlloc;
-   typedef std::map<const Expr*, LoopEntryPrep*, std::less<const Expr*>, NullTestPrepMapAlloc> NullTestPrepMap;
+    typedef TR::typed_allocator<std::pair<const Expr* const, LoopEntryPrep*>, TR::Region&> NullTestPrepMapAlloc;
+    typedef std::map<const Expr*, LoopEntryPrep*, std::less<const Expr*>, NullTestPrepMapAlloc> NullTestPrepMap;
 
-   typedef TR::typed_allocator<std::pair<TR::Node * const, LoopEntryPrep*>, TR::Region&> NodePrepMapAlloc;
-   typedef std::map<TR::Node*, LoopEntryPrep*, std::less<TR::Node*>, NodePrepMapAlloc> NodePrepMap;
+    typedef TR::typed_allocator<std::pair<TR::Node* const, LoopEntryPrep*>, TR::Region&> NodePrepMapAlloc;
+    typedef std::map<TR::Node*, LoopEntryPrep*, std::less<TR::Node*>, NodePrepMapAlloc> NodePrepMap;
 
-   typedef TR::typed_allocator<std::pair<const Expr * const, PrivTemp>, TR::Region&> PrivTempMapAlloc;
-   typedef std::map<const Expr*, PrivTemp, std::less<const Expr*>, PrivTempMapAlloc> PrivTempMap;
+    typedef TR::typed_allocator<std::pair<const Expr* const, PrivTemp>, TR::Region&> PrivTempMapAlloc;
+    typedef std::map<const Expr*, PrivTemp, std::less<const Expr*>, PrivTempMapAlloc> PrivTempMap;
 
-   typedef TR::typed_allocator<std::pair<const Expr * const, TR::Node*>, TR::Region&> EmitExprMemoAlloc;
-   typedef std::map<const Expr*, TR::Node*, std::less<const Expr*>, EmitExprMemoAlloc> EmitExprMemo;
+    typedef TR::typed_allocator<std::pair<const Expr* const, TR::Node*>, TR::Region&> EmitExprMemoAlloc;
+    typedef std::map<const Expr*, TR::Node*, std::less<const Expr*>, EmitExprMemoAlloc> EmitExprMemo;
 
-   /**
+    /**
     * \brief Information about the loop currently under consideration by
     * TR_LoopVersioner.
     *
     * For an overview of privatization and the deferral of transformations see
     * TR_LoopVersioner.
     */
-   struct CurLoop
-      {
-      CurLoop(TR::Compilation *comp, TR::Region &memRegion, TR_RegionStructure *loop);
+    struct CurLoop {
+        CurLoop(TR::Compilation* comp, TR::Region& memRegion, TR_RegionStructure* loop);
 
-      /// A memory region that is freed when versioner finishes processing this loop.
-      TR::Region &_memRegion;
+        /// A memory region that is freed when versioner finishes processing this loop.
+        TR::Region& _memRegion;
 
-      /// The structure of the current loop.
-      TR_RegionStructure * const _loop;
+        /// The structure of the current loop.
+        TR_RegionStructure* const _loop;
 
-      /// The intern table for Expr.
-      ExprTable _exprTable;
+        /// The intern table for Expr.
+        ExprTable _exprTable;
 
-      /// Memoized results for the Expr corresponding to a TR::Node.
-      NodeToExpr _nodeToExpr;
+        /// Memoized results for the Expr corresponding to a TR::Node.
+        NodeToExpr _nodeToExpr;
 
-      /// Table of LoopEntryPrep objects for deduplication.
-      PrepTable _prepTable;
+        /// Table of LoopEntryPrep objects for deduplication.
+        PrepTable _prepTable;
 
-      /// Map from null-tested Expr to the null test LoopEntryPrep.
-      NullTestPrepMap _nullTestPreps;
+        /// Map from null-tested Expr to the null test LoopEntryPrep.
+        NullTestPrepMap _nullTestPreps;
 
-      /**
+        /**
        * \brief Map from \c BNDCHKwithSpineCheck node to bound check LoopEntryPrep.
        *
        * This allows the LoopEntryPrep for spine check removal to depend on the
        * one for bound check removal.
        */
-      NodePrepMap _boundCheckPrepsWithSpineChecks;
+        NodePrepMap _boundCheckPrepsWithSpineChecks;
 
-      /// Check and branch nodes that will definitely be removed.
-      TR::NodeChecklist _definitelyRemovableNodes;
+        /// Check and branch nodes that will definitely be removed.
+        TR::NodeChecklist _definitelyRemovableNodes;
 
-      /// Check and branch nodes that will be removed if privatization is allowed.
-      TR::NodeChecklist _optimisticallyRemovableNodes;
+        /// Check and branch nodes that will be removed if privatization is allowed.
+        TR::NodeChecklist _optimisticallyRemovableNodes;
 
-      /// Branch nodes that, if removed, will be taken.
-      TR::NodeChecklist _takenBranches;
+        /// Branch nodes that, if removed, will be taken.
+        TR::NodeChecklist _takenBranches;
 
-      /// All \ref LoopImprovement "LoopImprovements" for the current loop
-      TR::list<LoopImprovement*, TR::Region&> _loopImprovements;
+        /// All \ref LoopImprovement "LoopImprovements" for the current loop
+        TR::list<LoopImprovement*, TR::Region&> _loopImprovements;
 
-      /// A map from canonical Expr to privatization temp. \see emitPrep()
-      PrivTempMap _privTemps;
+        /// A map from canonical Expr to privatization temp. \see emitPrep()
+        PrivTempMap _privTemps;
 
-      /// True if any privatizing LoopEntryPrep has been created.
-      bool _privatizationsRequested;
+        /// True if any privatizing LoopEntryPrep has been created.
+        bool _privatizationsRequested;
 
-      /// The result of the analysis to say whether privatization can be done.
-      bool _privatizationOK;
-      };
+        /// The result of the analysis to say whether privatization can be done.
+        bool _privatizationOK;
+    };
 
-   class Hoist : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class Hoist : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      Hoist(TR_LoopVersioner *versioner, LoopEntryPrep *prep)
-         : LoopImprovement(versioner, prep)
-         {}
+        Hoist(TR_LoopVersioner* versioner, LoopEntryPrep* prep)
+            : LoopImprovement(versioner, prep)
+        {
+        }
 
-      virtual void improveLoop()
-         {
-         // Nothing to do. This just pulls in a privatization, which, once
-         // emitted, makes the substitution mandatory throughout the entire
-         // loop body.
-         }
-      };
+        virtual void improveLoop()
+        {
+            // Nothing to do. This just pulls in a privatization, which, once
+            // emitted, makes the substitution mandatory throughout the entire
+            // loop body.
+        }
+    };
 
-   class RemoveAsyncCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveAsyncCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveAsyncCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::TreeTop *asyncCheckTree)
-         : LoopImprovement(versioner, prep)
-         , _asyncCheckTree(asyncCheckTree)
-         {}
+        RemoveAsyncCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::TreeTop* asyncCheckTree)
+            : LoopImprovement(versioner, prep)
+            , _asyncCheckTree(asyncCheckTree)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::TreeTop * const _asyncCheckTree;
-      };
+    private:
+        TR::TreeTop* const _asyncCheckTree;
+    };
 
-   class RemoveNullCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveNullCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveNullCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::Node *nullCheckNode)
-         : LoopImprovement(versioner, prep)
-         , _nullCheckNode(nullCheckNode)
-         {}
+        RemoveNullCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::Node* nullCheckNode)
+            : LoopImprovement(versioner, prep)
+            , _nullCheckNode(nullCheckNode)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::Node * const _nullCheckNode;
-      };
+    private:
+        TR::Node* const _nullCheckNode;
+    };
 
-   class RemoveBoundCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveBoundCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveBoundCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::TreeTop *boundCheckTree)
-         : LoopImprovement(versioner, prep)
-         , _boundCheckTree(boundCheckTree)
-         {}
+        RemoveBoundCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::TreeTop* boundCheckTree)
+            : LoopImprovement(versioner, prep)
+            , _boundCheckTree(boundCheckTree)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::TreeTop * const _boundCheckTree;
-      };
+    private:
+        TR::TreeTop* const _boundCheckTree;
+    };
 
-   class RemoveSpineCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveSpineCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveSpineCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::TreeTop *spineCheckTree)
-         : LoopImprovement(versioner, prep)
-         , _spineCheckTree(spineCheckTree)
-         {}
+        RemoveSpineCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::TreeTop* spineCheckTree)
+            : LoopImprovement(versioner, prep)
+            , _spineCheckTree(spineCheckTree)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::TreeTop * const _spineCheckTree;
-      };
+    private:
+        TR::TreeTop* const _spineCheckTree;
+    };
 
-   class RemoveDivCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveDivCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveDivCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::Node *divCheckNode)
-         : LoopImprovement(versioner, prep)
-         , _divCheckNode(divCheckNode)
-         {}
+        RemoveDivCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::Node* divCheckNode)
+            : LoopImprovement(versioner, prep)
+            , _divCheckNode(divCheckNode)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::Node * const _divCheckNode;
-      };
+    private:
+        TR::Node* const _divCheckNode;
+    };
 
-   class RemoveWriteBarrier : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveWriteBarrier : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveWriteBarrier(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::Node *awrtbariNode)
-         : LoopImprovement(versioner, prep)
-         , _awrtbariNode(awrtbariNode)
-         {}
+        RemoveWriteBarrier(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::Node* awrtbariNode)
+            : LoopImprovement(versioner, prep)
+            , _awrtbariNode(awrtbariNode)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::Node * const _awrtbariNode;
-      };
+    private:
+        TR::Node* const _awrtbariNode;
+    };
 
-   class RemoveCheckCast : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveCheckCast : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveCheckCast(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::TreeTop *checkCastTree)
-         : LoopImprovement(versioner, prep)
-         , _checkCastTree(checkCastTree) {}
+        RemoveCheckCast(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::TreeTop* checkCastTree)
+            : LoopImprovement(versioner, prep)
+            , _checkCastTree(checkCastTree)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::TreeTop * const _checkCastTree;
-      };
+    private:
+        TR::TreeTop* const _checkCastTree;
+    };
 
-   class RemoveArrayStoreCheck : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class RemoveArrayStoreCheck : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      RemoveArrayStoreCheck(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::TreeTop *arrayStoreCheckTree)
-         : LoopImprovement(versioner, prep)
-         , _arrayStoreCheckTree(arrayStoreCheckTree)
-         {}
+        RemoveArrayStoreCheck(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::TreeTop* arrayStoreCheckTree)
+            : LoopImprovement(versioner, prep)
+            , _arrayStoreCheckTree(arrayStoreCheckTree)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::TreeTop * const _arrayStoreCheckTree;
-      };
+    private:
+        TR::TreeTop* const _arrayStoreCheckTree;
+    };
 
-   class FoldConditional : public LoopImprovement
-      {
-      public:
-      TR_ALLOC(TR_Memory::LoopTransformer)
+    class FoldConditional : public LoopImprovement {
+    public:
+        TR_ALLOC(TR_Memory::LoopTransformer)
 
-      FoldConditional(
-         TR_LoopVersioner *versioner,
-         LoopEntryPrep *prep,
-         TR::Node *conditionalNode,
-         bool reverseBranch,
-         bool original)
-         : LoopImprovement(versioner, prep)
-         , _conditionalNode(conditionalNode)
-         , _reverseBranch(reverseBranch)
-         , _original(original)
-         {}
+        FoldConditional(
+            TR_LoopVersioner* versioner,
+            LoopEntryPrep* prep,
+            TR::Node* conditionalNode,
+            bool reverseBranch,
+            bool original)
+            : LoopImprovement(versioner, prep)
+            , _conditionalNode(conditionalNode)
+            , _reverseBranch(reverseBranch)
+            , _original(original)
+        {
+        }
 
-      virtual void improveLoop();
+        virtual void improveLoop();
 
-      private:
-      TR::Node * const _conditionalNode;
-      const bool _reverseBranch;
-      const bool _original;
-      };
+    private:
+        TR::Node* const _conditionalNode;
+        const bool _reverseBranch;
+        const bool _original;
+    };
 
-   bool shouldOnlySpecializeLoops() { return _onlySpecializingLoops; }
-   void setOnlySpecializeLoops(bool b) { _onlySpecializingLoops = b; }
+    bool shouldOnlySpecializeLoops() { return _onlySpecializingLoops; }
+    void setOnlySpecializeLoops(bool b) { _onlySpecializingLoops = b; }
 
-   /* currently do not support wcode methods
+    /* currently do not support wcode methods
    * or realtime since aliasing of arraylets are not handled
    */
-   bool refineAliases() { return _refineLoopAliases && !comp()->generateArraylets(); }
+    bool refineAliases() { return _refineLoopAliases && !comp()->generateArraylets(); }
 
-   virtual bool processArrayAliasCandidates();
+    virtual bool processArrayAliasCandidates();
 
-   virtual void collectArrayAliasCandidates(TR::Node *node,vcount_t visitCount);
-   virtual void buildAliasRefinementComparisonTrees(List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, TR_ScratchList<TR::Node> *, TR::Block *);
-   virtual void initAdditionalDataStructures();
-   virtual void refineArrayAliases(TR_RegionStructure *);
+    virtual void collectArrayAliasCandidates(TR::Node* node, vcount_t visitCount);
+    virtual void buildAliasRefinementComparisonTrees(List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, TR_ScratchList<TR::Node>*, TR::Block*);
+    virtual void initAdditionalDataStructures();
+    virtual void refineArrayAliases(TR_RegionStructure*);
 
-   int32_t performWithDominators();
-   int32_t performWithoutDominators();
+    int32_t performWithDominators();
+    int32_t performWithoutDominators();
 
-   bool isStoreInSpecialForm(int32_t, TR_Structure *);
-   bool isConditionalTreeCandidateForElimination(TR::TreeTop * curTree) { return (!curTree->getNode()->getFirstChild()->getOpCode().isLoadConst() ||
-                                                                                  !curTree->getNode()->getSecondChild()->getOpCode().isLoadConst()); };
-   TR::Node *isDependentOnInductionVariable(TR::Node *, bool, bool &, TR::Node* &, TR::Node* &, bool &);
-   TR::Node *isDependentOnInvariant(TR::Node *);
-   bool boundCheckUsesUnchangedValue(TR::TreeTop *, TR::Node *, TR::SymbolReference *, TR_RegionStructure *);
-   bool findStore(TR::TreeTop *start, TR::TreeTop *end, TR::Node *node, TR::SymbolReference *symRef, bool ignoreLoads = false, bool lastTimeThrough = false);
-   TR::Node *findLoad(TR::Node *node, TR::SymbolReference *symRef, vcount_t origVisitCount);
-   void versionNaturalLoop(TR_RegionStructure *, List<TR::Node> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::Node> *, List<TR_NodeParentSymRef> *, List<TR_NodeParentSymRefWeightTuple> *, List<TR_Structure> *whileLoops, List<TR_Structure> *clonedInnerWhileLoops, bool skipVersioningAsynchk, SharedSparseBitVector &reverseBranchInLoops);
+    bool isStoreInSpecialForm(int32_t, TR_Structure*);
+    bool isConditionalTreeCandidateForElimination(TR::TreeTop* curTree) { return (!curTree->getNode()->getFirstChild()->getOpCode().isLoadConst() || !curTree->getNode()->getSecondChild()->getOpCode().isLoadConst()); };
+    TR::Node* isDependentOnInductionVariable(TR::Node*, bool, bool&, TR::Node*&, TR::Node*&, bool&);
+    TR::Node* isDependentOnInvariant(TR::Node*);
+    bool boundCheckUsesUnchangedValue(TR::TreeTop*, TR::Node*, TR::SymbolReference*, TR_RegionStructure*);
+    bool findStore(TR::TreeTop* start, TR::TreeTop* end, TR::Node* node, TR::SymbolReference* symRef, bool ignoreLoads = false, bool lastTimeThrough = false);
+    TR::Node* findLoad(TR::Node* node, TR::SymbolReference* symRef, vcount_t origVisitCount);
+    void versionNaturalLoop(TR_RegionStructure*, List<TR::Node>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::Node>*, List<TR_NodeParentSymRef>*, List<TR_NodeParentSymRefWeightTuple>*, List<TR_Structure>* whileLoops, List<TR_Structure>* clonedInnerWhileLoops, bool skipVersioningAsynchk, SharedSparseBitVector& reverseBranchInLoops);
 
-   TR::Node *findCallNodeInBlockForGuard(TR::Node *node);
-   bool loopIsWorthVersioning(TR_RegionStructure *naturalLoop);
+    TR::Node* findCallNodeInBlockForGuard(TR::Node* node);
+    bool loopIsWorthVersioning(TR_RegionStructure* naturalLoop);
 
-   bool detectInvariantChecks(List<TR::Node> *, List<TR::TreeTop> *);
-   bool detectInvariantBoundChecks(List<TR::TreeTop> *);
-   bool detectInvariantSpineChecks(List<TR::TreeTop> *);
-   bool detectInvariantDivChecks(List<TR::TreeTop> *);
-   bool detectInvariantAwrtbaris(List<TR::TreeTop> *);
-   bool detectInvariantTrees(TR_RegionStructure *whileLoop, List<TR::TreeTop> *, bool, bool *, SharedSparseBitVector &reverseBranchInLoops);
-   bool detectInvariantNodes(List<TR_NodeParentSymRef> *invariantNodes, List<TR_NodeParentSymRefWeightTuple> *invariantTranslationNodes);
-   bool detectInvariantSpecializedExprs(List<TR::Node> *);
-   bool detectInvariantArrayStoreChecks(List<TR::TreeTop> *);
-   bool isVersionableArrayAccess(TR::Node *);
+    bool detectInvariantChecks(List<TR::Node>*, List<TR::TreeTop>*);
+    bool detectInvariantBoundChecks(List<TR::TreeTop>*);
+    bool detectInvariantSpineChecks(List<TR::TreeTop>*);
+    bool detectInvariantDivChecks(List<TR::TreeTop>*);
+    bool detectInvariantAwrtbaris(List<TR::TreeTop>*);
+    bool detectInvariantTrees(TR_RegionStructure* whileLoop, List<TR::TreeTop>*, bool, bool*, SharedSparseBitVector& reverseBranchInLoops);
+    bool detectInvariantNodes(List<TR_NodeParentSymRef>* invariantNodes, List<TR_NodeParentSymRefWeightTuple>* invariantTranslationNodes);
+    bool detectInvariantSpecializedExprs(List<TR::Node>*);
+    bool detectInvariantArrayStoreChecks(List<TR::TreeTop>*);
+    bool isVersionableArrayAccess(TR::Node*);
 
-   bool isExprInvariant(TR::Node *, bool ignoreHeapificationStore = false);          // ignoreHeapificationStore flags for both
-   bool isExprInvariantRecursive(TR::Node *, bool ignoreHeapificationStore = false); // methods need to be in sync!
+    bool isExprInvariant(TR::Node*, bool ignoreHeapificationStore = false); // ignoreHeapificationStore flags for both
+    bool isExprInvariantRecursive(TR::Node*, bool ignoreHeapificationStore = false); // methods need to be in sync!
 
-   bool isDependentOnAllocation(TR::Node *, int32_t);
-   bool hasWrtbarBeenSeen(List<TR::TreeTop> *, TR::Node *);
+    bool isDependentOnAllocation(TR::Node*, int32_t);
+    bool hasWrtbarBeenSeen(List<TR::TreeTop>*, TR::Node*);
 
-   bool checkProfiledGuardSuitability(TR_ScratchList<TR::Block> *loopBlocks, TR::Node *guardNode, TR::SymbolReference *callSymRef, TR::Compilation *comp);
-   bool isBranchSuitableToVersion(TR_ScratchList<TR::Block> *loopBlocks, TR::Node *node, TR::Compilation *comp);
-   bool isBranchSuitableToDoLoopTransfer(TR_ScratchList<TR::Block> *loopBlocks, TR::Node *node, TR::Compilation *comp);
+    bool checkProfiledGuardSuitability(TR_ScratchList<TR::Block>* loopBlocks, TR::Node* guardNode, TR::SymbolReference* callSymRef, TR::Compilation* comp);
+    bool isBranchSuitableToVersion(TR_ScratchList<TR::Block>* loopBlocks, TR::Node* node, TR::Compilation* comp);
+    bool isBranchSuitableToDoLoopTransfer(TR_ScratchList<TR::Block>* loopBlocks, TR::Node* node, TR::Compilation* comp);
 
-   bool detectChecksToBeEliminated(TR_RegionStructure *, List<TR::Node> *, List<TR::TreeTop> *, List<int32_t> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<int32_t> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::Node> *, List<TR_NodeParentSymRef> *,List<TR_NodeParentSymRefWeightTuple> *, bool &);
+    bool detectChecksToBeEliminated(TR_RegionStructure*, List<TR::Node>*, List<TR::TreeTop>*, List<int32_t>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<int32_t>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::Node>*, List<TR_NodeParentSymRef>*, List<TR_NodeParentSymRefWeightTuple>*, bool&);
 
-   void buildNullCheckComparisonsTree(List<TR::Node> *, List<TR::TreeTop> *);
-   void buildBoundCheckComparisonsTree(List<TR::TreeTop> *, List<TR::TreeTop> *, bool);
-   void createRemoveBoundCheck(TR::TreeTop *, LoopEntryPrep *, List<TR::TreeTop> *);
-   void buildSpineCheckComparisonsTree(List<TR::TreeTop> *);
-   void buildDivCheckComparisonsTree(List<TR::TreeTop> *);
-   void buildAwrtbariComparisonsTree(List<TR::TreeTop> *);
-   void buildCheckCastComparisonsTree(List<TR::TreeTop> *);
-   void buildConditionalTree(List<TR::TreeTop> *, SharedSparseBitVector &reverseBranchInLoops);
-   void buildArrayStoreCheckComparisonsTree(List<TR::TreeTop> *);
-   bool buildSpecializationTree(List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::Node> *, List<TR::Node> *, TR::Block *, TR::SymbolReference **);
-   bool buildLoopInvariantTree(List<TR_NodeParentSymRef> *);
-   void convertSpecializedLongsToInts(TR::Node *, vcount_t, TR::SymbolReference **);
-   void collectAllExpressionsToBeChecked(List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, List<TR::TreeTop> *, TR::Node *, List<TR::Node> *, TR::Block *, vcount_t);
-   void collectAllExpressionsToBeChecked(TR::Node *, List<TR::Node> *);
-   bool requiresPrivatization(TR::Node *);
-   bool suppressInvarianceAndPrivatization(TR::SymbolReference *);
-   void dumpOptDetailsCreatingTest(const char *, TR::Node *);
-   void dumpOptDetailsFailedToCreateTest(const char *, TR::Node *);
-   bool depsForLoopEntryPrep(TR::Node *, TR::list<LoopEntryPrep*, TR::Region&> *, TR::NodeChecklist *, bool);
-   LoopEntryPrep *addLoopEntryPrepDep(LoopEntryPrep::Kind, TR::Node *, TR::list<LoopEntryPrep*, TR::Region&> *, TR::NodeChecklist *);
+    void buildNullCheckComparisonsTree(List<TR::Node>*, List<TR::TreeTop>*);
+    void buildBoundCheckComparisonsTree(List<TR::TreeTop>*, List<TR::TreeTop>*, bool);
+    void createRemoveBoundCheck(TR::TreeTop*, LoopEntryPrep*, List<TR::TreeTop>*);
+    void buildSpineCheckComparisonsTree(List<TR::TreeTop>*);
+    void buildDivCheckComparisonsTree(List<TR::TreeTop>*);
+    void buildAwrtbariComparisonsTree(List<TR::TreeTop>*);
+    void buildCheckCastComparisonsTree(List<TR::TreeTop>*);
+    void buildConditionalTree(List<TR::TreeTop>*, SharedSparseBitVector& reverseBranchInLoops);
+    void buildArrayStoreCheckComparisonsTree(List<TR::TreeTop>*);
+    bool buildSpecializationTree(List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::Node>*, List<TR::Node>*, TR::Block*, TR::SymbolReference**);
+    bool buildLoopInvariantTree(List<TR_NodeParentSymRef>*);
+    void convertSpecializedLongsToInts(TR::Node*, vcount_t, TR::SymbolReference**);
+    void collectAllExpressionsToBeChecked(List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, List<TR::TreeTop>*, TR::Node*, List<TR::Node>*, TR::Block*, vcount_t);
+    void collectAllExpressionsToBeChecked(TR::Node*, List<TR::Node>*);
+    bool requiresPrivatization(TR::Node*);
+    bool suppressInvarianceAndPrivatization(TR::SymbolReference*);
+    void dumpOptDetailsCreatingTest(const char*, TR::Node*);
+    void dumpOptDetailsFailedToCreateTest(const char*, TR::Node*);
+    bool depsForLoopEntryPrep(TR::Node*, TR::list<LoopEntryPrep*, TR::Region&>*, TR::NodeChecklist*, bool);
+    LoopEntryPrep* addLoopEntryPrepDep(LoopEntryPrep::Kind, TR::Node*, TR::list<LoopEntryPrep*, TR::Region&>*, TR::NodeChecklist*);
 
-   void copyOnWriteNode(TR::Node *original, TR::Node **current);
+    void copyOnWriteNode(TR::Node* original, TR::Node** current);
 
-   void updateDefinitionsAndCollectProfiledExprs(TR::Node *,TR::Node *, vcount_t, List<TR::Node> *, List<TR_NodeParentSymRef> *, List<TR_NodeParentSymRefWeightTuple> *, TR::Node *, bool, TR::Block *, int32_t);
-   void findAndReplaceContigArrayLen(TR::Node *, TR::Node *, vcount_t);
-   void performLoopTransfer();
+    void updateDefinitionsAndCollectProfiledExprs(TR::Node*, TR::Node*, vcount_t, List<TR::Node>*, List<TR_NodeParentSymRef>*, List<TR_NodeParentSymRefWeightTuple>*, TR::Node*, bool, TR::Block*, int32_t);
+    void findAndReplaceContigArrayLen(TR::Node*, TR::Node*, vcount_t);
+    void performLoopTransfer();
 
-   bool replaceInductionVariable(TR::Node *, TR::Node *, int, int, TR::Node *, int);
+    bool replaceInductionVariable(TR::Node*, TR::Node*, int, int, TR::Node*, int);
 
-   TR::Block *createEmptyGoto(TR::Block *source, TR::Block *dest, TR::TreeTop *endTree);
-   TR::Block *createClonedHeader(TR::Block *origHeader, TR::TreeTop **endTree);
-   TR::Node *createSwitchNode(TR::Block *clonedHeader, TR::SymbolReference *tempSymRef, int32_t numCase);
-   bool canPredictIters(TR_RegionStructure* whileLoop, const TR_ScratchList<TR::Block>& blocksInWhileLoop,
-      bool& isIncreasing, TR::SymbolReference*& firstChildSymRef);
-   bool isInverseConversions(TR::Node* node);
+    TR::Block* createEmptyGoto(TR::Block* source, TR::Block* dest, TR::TreeTop* endTree);
+    TR::Block* createClonedHeader(TR::Block* origHeader, TR::TreeTop** endTree);
+    TR::Node* createSwitchNode(TR::Block* clonedHeader, TR::SymbolReference* tempSymRef, int32_t numCase);
+    bool canPredictIters(TR_RegionStructure* whileLoop, const TR_ScratchList<TR::Block>& blocksInWhileLoop,
+        bool& isIncreasing, TR::SymbolReference*& firstChildSymRef);
+    bool isInverseConversions(TR::Node* node);
 
-   void recordCurrentBlock(TR::Block *b) { _currentBlock = b; }
-   TR::Block * getCurrentBlock(TR::Block *b) { return _currentBlock; }
+    void recordCurrentBlock(TR::Block* b) { _currentBlock = b; }
+    TR::Block* getCurrentBlock(TR::Block* b) { return _currentBlock; }
 
-   bool initExprFromNode(Expr *expr, TR::Node *node, bool onlySearching);
-   bool guardOkForExpr(TR::Node *node, bool onlySearching);
-   const Expr *makeCanonicalExpr(TR::Node *node);
-   const Expr *findCanonicalExpr(TR::Node *node);
-   const Expr *substitutePrivTemps(TR::TreeTop *tt, TR::Node *node, TR::NodeChecklist *visited);
-   TR::Node *emitExpr(const Expr *node);
-   TR::Node *emitExpr(const Expr *node, EmitExprMemo &memo);
-   void emitPrep(LoopEntryPrep *prep, List<TR::Node> *comparisonTrees);
-   void unsafelyEmitAllTests(const TR::list<LoopEntryPrep*, TR::Region&> &, List<TR::Node> *);
-   void setAndIncChildren(TR::Node *node, int n, TR::Node **children);
-   void nodeWillBeRemovedIfPossible(TR::Node *node, LoopEntryPrep *prep);
+    bool initExprFromNode(Expr* expr, TR::Node* node, bool onlySearching);
+    bool guardOkForExpr(TR::Node* node, bool onlySearching);
+    const Expr* makeCanonicalExpr(TR::Node* node);
+    const Expr* findCanonicalExpr(TR::Node* node);
+    const Expr* substitutePrivTemps(TR::TreeTop* tt, TR::Node* node, TR::NodeChecklist* visited);
+    TR::Node* emitExpr(const Expr* node);
+    TR::Node* emitExpr(const Expr* node, EmitExprMemo& memo);
+    void emitPrep(LoopEntryPrep* prep, List<TR::Node>* comparisonTrees);
+    void unsafelyEmitAllTests(const TR::list<LoopEntryPrep*, TR::Region&>&, List<TR::Node>*);
+    void setAndIncChildren(TR::Node* node, int n, TR::Node** children);
+    void nodeWillBeRemovedIfPossible(TR::Node* node, LoopEntryPrep* prep);
 
-   LoopEntryPrep *createLoopEntryPrep(LoopEntryPrep::Kind, TR::Node *, TR::NodeChecklist * = NULL, LoopEntryPrep * = NULL);
-   LoopEntryPrep *createChainedLoopEntryPrep(LoopEntryPrep::Kind, TR::Node *, LoopEntryPrep *);
-   void visitSubtree(TR::Node *node, TR::NodeChecklist *visited);
+    LoopEntryPrep* createLoopEntryPrep(LoopEntryPrep::Kind, TR::Node*, TR::NodeChecklist* = NULL, LoopEntryPrep* = NULL);
+    LoopEntryPrep* createChainedLoopEntryPrep(LoopEntryPrep::Kind, TR::Node*, LoopEntryPrep*);
+    void visitSubtree(TR::Node* node, TR::NodeChecklist* visited);
 
-   TR_BitVector *_seenDefinedSymbolReferences;
-   TR_BitVector *_additionInfo;
-   TR::Node *_nullCheckReference, *_conditionalTree, *_duplicateConditionalTree;
-   TR_RegionStructure *_currentNaturalLoop;
+    TR_BitVector* _seenDefinedSymbolReferences;
+    TR_BitVector* _additionInfo;
+    TR::Node *_nullCheckReference, *_conditionalTree, *_duplicateConditionalTree;
+    TR_RegionStructure* _currentNaturalLoop;
 
-   List<int32_t> _versionableInductionVariables, _specialVersionableInductionVariables, _derivedVersionableInductionVariables;
-   ////List<VirtualGuardPair> _virtualGuardPairs;
-   TR_LinkHead<VirtualGuardInfo> _virtualGuardInfo;
+    List<int32_t> _versionableInductionVariables, _specialVersionableInductionVariables, _derivedVersionableInductionVariables;
+    ////List<VirtualGuardPair> _virtualGuardPairs;
+    TR_LinkHead<VirtualGuardInfo> _virtualGuardInfo;
 
-   bool _containsGuard, _containsUnguardedCall, _nonInlineGuardConditionalsWillNotBeEliminated;
+    bool _containsGuard, _containsUnguardedCall, _nonInlineGuardConditionalsWillNotBeEliminated;
 
-   int32_t _counter, _origNodeCount, _origBlockCount;
-   bool _onlySpecializingLoops;
-   bool _inNullCheckReference, _containsCall, _neitherLoopCold, _loopConditionInvariant;
-   bool _refineLoopAliases;
-   bool _addressingTooComplicated;
-   List<TR::Node> _guardedCalls;
-   List<TR::Node> *_arrayAccesses;
-   List<TR_NodeParentBlockTuple> *_arrayLoadCandidates;
-   List<TR_NodeParentBlockTuple> *_arrayMemberLoadCandidates;
-   List<TR::TreeTop> _checksInDupHeader;
-   TR_BitVector *_unchangedValueUsedInBndCheck;
-   TR::Block *    _currentBlock;
-   TR_BitVector *_disqualifiedRefinementCandidates;
-   TR_BitVector               _visitedNodes; //used to track nodes visited by isExprInvariant
+    int32_t _counter, _origNodeCount, _origBlockCount;
+    bool _onlySpecializingLoops;
+    bool _inNullCheckReference, _containsCall, _neitherLoopCold, _loopConditionInvariant;
+    bool _refineLoopAliases;
+    bool _addressingTooComplicated;
+    List<TR::Node> _guardedCalls;
+    List<TR::Node>* _arrayAccesses;
+    List<TR_NodeParentBlockTuple>* _arrayLoadCandidates;
+    List<TR_NodeParentBlockTuple>* _arrayMemberLoadCandidates;
+    List<TR::TreeTop> _checksInDupHeader;
+    TR_BitVector* _unchangedValueUsedInBndCheck;
+    TR::Block* _currentBlock;
+    TR_BitVector* _disqualifiedRefinementCandidates;
+    TR_BitVector _visitedNodes; //used to track nodes visited by isExprInvariant
 
-   TR_PostDominators *_postDominators;
-   bool _loopTransferDone;
+    TR_PostDominators* _postDominators;
+    bool _loopTransferDone;
 
-   /**
+    /**
     * \brief The entry of the preheader of the duplicate (usually cold) loop.
     *
     * This is set in versionNaturalLoop() for each loop versioned.
     */
-   TR::TreeTop *_exitGotoTarget;
+    TR::TreeTop* _exitGotoTarget;
 
-   /// Data local to each \ref _currentNaturalLoop
-   CurLoop *_curLoop;
+    /// Data local to each \ref _currentNaturalLoop
+    CurLoop* _curLoop;
 
-   /// Whether to invalidate alias sets at the end of the pass.
-   bool _invalidateAliasSets;
-   };
-
+    /// Whether to invalidate alias sets at the end of the pass.
+    bool _invalidateAliasSets;
+};
 
 /**
  * Class TR_LoopSpecializer
@@ -1068,19 +1076,16 @@ class TR_LoopVersioner : public TR_LoopTransformer
  * value profiling infrastructure.
  */
 
-class TR_LoopSpecializer : public TR_LoopVersioner
-   {
-   public:
+class TR_LoopSpecializer : public TR_LoopVersioner {
+public:
+    TR_LoopSpecializer(TR::OptimizationManager* manager);
 
-   TR_LoopSpecializer(TR::OptimizationManager *manager);
+    virtual const char* optDetailString() const throw();
 
-   virtual const char * optDetailString() const throw();
-
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_LoopSpecializer(manager);
-      }
-   };
-
+    static TR::Optimization* create(TR::OptimizationManager* manager)
+    {
+        return new (manager->allocator()) TR_LoopSpecializer(manager);
+    }
+};
 
 #endif

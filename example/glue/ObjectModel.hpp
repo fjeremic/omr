@@ -26,8 +26,8 @@
  * @ddr_namespace: default
  */
 
-#include "Object.hpp"
 #include "Bits.hpp"
+#include "Object.hpp"
 #include "ObjectModelBase.hpp"
 #include "ObjectModelDelegate.hpp"
 
@@ -37,41 +37,40 @@ class MM_GCExtensionsBase;
  * Provides an example of an object model, sufficient to support basic GC test code (GCConfigTest)
  * and to illustrate some of the required facets of an OMR object model.
  */
-class GC_ObjectModel : public GC_ObjectModelBase
-{
-/*
+class GC_ObjectModel : public GC_ObjectModelBase {
+    /*
  * Member data and types
  */
 private:
 protected:
 public:
-
-/*
+    /*
  * Member functions
  */
 private:
 protected:
 public:
-	/**
+    /**
 	 * Initialize the receiver, a new instance of GC_ObjectModel. An implementation of this method is
 	 * required. Object models that require initialization after instantiation should perform this
 	 * initialization here. Otherwise, the implementation should simply return true.
 	 *
 	 * @return TRUE on success, FALSE on failure
 	 */
-	virtual bool initialize(MM_GCExtensionsBase *extensions) { return true; }
+    virtual bool initialize(MM_GCExtensionsBase* extensions) { return true; }
 
-	/**
+    /**
 	 * Tear down the receiver. A (possibly empty) implementation of this method is required. Any resources
 	 * acquired for the object model in the initialize() implementation should be disposed of here.
 	 */
-	virtual void tearDown(MM_GCExtensionsBase *extensions) {}
+    virtual void tearDown(MM_GCExtensionsBase* extensions) {}
 
-	/**
+    /**
 	 * Constructor.
 	 */
-	GC_ObjectModel()
-		: GC_ObjectModelBase()
-	{}
+    GC_ObjectModel()
+        : GC_ObjectModelBase()
+    {
+    }
 };
 #endif /* OBJECTMODEL_HPP_ */

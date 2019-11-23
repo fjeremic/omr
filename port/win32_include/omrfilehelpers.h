@@ -20,15 +20,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-
 #ifndef omrfilehelpers_h
 #define omrfilehelpers_h
 
-#include <windows.h>
 #include "omrport.h"
 #include "omrportpriv.h"
 #include "portnls.h"
 #include "ut_omrport.h"
+#include <windows.h>
 
 extern omrthread_tls_key_t tlsKeyOverlappedHandle;
 
@@ -36,12 +35,12 @@ int32_t
 findError(int32_t errorCode);
 
 int32_t
-omrfile_lock_bytes_helper(struct OMRPortLibrary *portLibrary, intptr_t fd, int32_t lockFlags, uint64_t offset, uint64_t length, BOOLEAN async);
+omrfile_lock_bytes_helper(struct OMRPortLibrary* portLibrary, intptr_t fd, int32_t lockFlags, uint64_t offset, uint64_t length, BOOLEAN async);
 
 int32_t
-omrfile_unlock_bytes_helper(struct OMRPortLibrary *portLibrary, intptr_t fd, uint64_t offset, uint64_t length, BOOLEAN async);
+omrfile_unlock_bytes_helper(struct OMRPortLibrary* portLibrary, intptr_t fd, uint64_t offset, uint64_t length, BOOLEAN async);
 
 HANDLE
-omrfile_get_overlapped_handle_helper(struct OMRPortLibrary *portLibrary);
+omrfile_get_overlapped_handle_helper(struct OMRPortLibrary* portLibrary);
 
-#endif     /* omrfilehelpers_h */
+#endif /* omrfilehelpers_h */

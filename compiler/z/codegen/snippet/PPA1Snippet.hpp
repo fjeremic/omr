@@ -29,7 +29,9 @@
 #include "codegen/Relocation.hpp"
 #include "codegen/Snippet.hpp"
 
-namespace TR { class S390zOSSystemLinkage; }
+namespace TR {
+class S390zOSSystemLinkage;
+}
 
 namespace TR {
 
@@ -126,37 +128,31 @@ namespace TR {
  *       +----------------------------------+----------------------------------+----------------------------------+----------------------------------+
  *  \endverbatim
  */
-class PPA1Snippet : public TR::Snippet
-   {
-   public:
-
-   /** \brief
+class PPA1Snippet : public TR::Snippet {
+public:
+    /** \brief
     *     Size (in bytes) of the fixed area of the PPA1 data structure which is always present.
     */
-   static const size_t FIXED_AREA_SIZE = 20;
+    static const size_t FIXED_AREA_SIZE = 20;
 
-   public:
+public:
+    PPA1Snippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage);
 
-   PPA1Snippet(TR::CodeGenerator* cg, TR::S390zOSSystemLinkage* linkage);
+    virtual uint8_t* emitSnippetBody();
 
-   virtual uint8_t* emitSnippetBody();
+    virtual uint32_t getLength(int32_t estimatedSnippetStart);
 
-   virtual uint32_t getLength(int32_t estimatedSnippetStart);
+private:
+    // TODO: We need to generalize the relocations in Relocation.hpp to accept a divisor and remove this relocation
+    class PPA1OffsetToPPA2Relocation : public TR::LabelRelocation {
+    public:
+        PPA1OffsetToPPA2Relocation(uint8_t* cursor, TR::LabelSymbol* ppa2);
 
-   private:
+        virtual void apply(TR::CodeGenerator* cg);
+    };
 
-   // TODO: We need to generalize the relocations in Relocation.hpp to accept a divisor and remove this relocation
-   class PPA1OffsetToPPA2Relocation : public TR::LabelRelocation
-      {
-      public:
-
-      PPA1OffsetToPPA2Relocation(uint8_t* cursor, TR::LabelSymbol* ppa2);
-
-      virtual void apply(TR::CodeGenerator* cg);
-      };
-
-   TR::S390zOSSystemLinkage* _linkage;
-   };
+    TR::S390zOSSystemLinkage* _linkage;
+};
 }
 
 #endif

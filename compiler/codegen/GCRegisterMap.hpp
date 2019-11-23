@@ -24,16 +24,15 @@
 
 #include "codegen/OMRGCRegisterMap.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class GCRegisterMap : public OMR::GCRegisterMapConnector
-   {
-   public:
-
-   GCRegisterMap() :
-      OMR::GCRegisterMapConnector() {}
-   };
+class GCRegisterMap : public OMR::GCRegisterMapConnector {
+public:
+    GCRegisterMap()
+        : OMR::GCRegisterMapConnector()
+    {
+    }
+};
 }
 
 #endif

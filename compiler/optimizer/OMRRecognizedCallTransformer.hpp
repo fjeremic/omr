@@ -22,45 +22,41 @@
 #ifndef OMRRECOGNIZEDCALLTRANSFORMER_INCL
 #define OMRRECOGNIZEDCALLTRANSFORMER_INCL
 
-#include <stdint.h>
 #include "il/Node.hpp"
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
+#include <stdint.h>
 
-namespace OMR
-{
+namespace OMR {
 
-class RecognizedCallTransformer : public TR::Optimization
-   {
-   public:
+class RecognizedCallTransformer : public TR::Optimization {
+public:
+    RecognizedCallTransformer(TR::OptimizationManager* manager)
+        : TR::Optimization(manager)
+    {
+    }
+    static TR::Optimization* create(TR::OptimizationManager* manager);
+    virtual int32_t perform();
+    virtual const char* optDetailString() const throw();
 
-   RecognizedCallTransformer(TR::OptimizationManager* manager)
-      : TR::Optimization(manager)
-      {}
-   static TR::Optimization* create(TR::OptimizationManager* manager);
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
-
-   protected:
-
-   /** \brief
+protected:
+    /** \brief
     *     Check if a treetop is inlineable. The treetop must have one sole child TR::call
     *
     *  \param treetop
     *     The treetop which anchors the call node.
     *
     */
-   virtual bool isInlineable(TR::TreeTop* treetop);
+    virtual bool isInlineable(TR::TreeTop* treetop);
 
-   /** \brief
+    /** \brief
     *     Perform transformation on the treetop. The treetop must have one sole child TR::call
     *
     *  \param treetop
     *     The treetop which anchors the call node.
     *
     */
-   virtual void transform(TR::TreeTop* treetop);
-   };
-
+    virtual void transform(TR::TreeTop* treetop);
+};
 }
 #endif

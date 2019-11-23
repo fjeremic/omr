@@ -23,18 +23,18 @@
 #ifndef MM_OMRGCSTARTUPAPI_HPP_
 #define MM_OMRGCSTARTUPAPI_HPP_
 
-#include "omr.h"
-#include "objectdescription.h"
-#include "omrcomp.h"
 #include "j9nongenerated.h"
+#include "objectdescription.h"
+#include "omr.h"
+#include "omrcomp.h"
 
 class MM_StartupManager;
 
 /* Initialization & Shutdown API */
 
-omr_error_t OMR_GC_InitializeHeap(OMR_VM* omrVM, MM_StartupManager *manager);
+omr_error_t OMR_GC_InitializeHeap(OMR_VM* omrVM, MM_StartupManager* manager);
 
-omr_error_t OMR_GC_IntializeHeapAndCollector(OMR_VM* omrVM, MM_StartupManager *manager);
+omr_error_t OMR_GC_IntializeHeapAndCollector(OMR_VM* omrVM, MM_StartupManager* manager);
 
 omr_error_t OMR_GC_InitializeDispatcherThreads(OMR_VMThread* omrVMThread);
 

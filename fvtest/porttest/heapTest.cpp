@@ -19,10 +19,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <limits.h>
 #include "omrTest.h"
 #include "omrport.h"
 #include "portTestHelpers.hpp"
+#include <limits.h>
 
 /**
  * Verify port library heap sub-allocator.
@@ -31,15 +31,15 @@
  */
 TEST(PortHeapTest, Initialization)
 {
-	OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
+    OMRPORT_ACCESS_FROM_OMRPORT(portTestEnv->getPortLibrary());
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_create);
+    OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_create);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_allocate);
+    OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_allocate);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_free);
+    OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_free);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_reallocate);
+    OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_reallocate);
 
-	OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_query_size);
+    OMRTEST_EXPECT_NOT_NULL(OMRPORTLIB->heap_query_size);
 }

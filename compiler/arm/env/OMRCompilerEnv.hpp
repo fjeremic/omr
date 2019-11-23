@@ -27,39 +27,38 @@
  */
 #ifndef OMR_COMPILER_ENV_CONNECTOR
 #define OMR_COMPILER_ENV_CONNECTOR
-namespace OMR { namespace ARM { class CompilerEnv; } }
-namespace OMR { typedef OMR::ARM::CompilerEnv CompilerEnvConnector; }
+namespace OMR {
+namespace ARM {
+    class CompilerEnv;
+}
+}
+namespace OMR {
+typedef OMR::ARM::CompilerEnv CompilerEnvConnector;
+}
 #else
 #error OMR::ARM::CompilerEnv expected to be a primary connector, but an OMR connector is already defined
 #endif
 
 #include "compiler/env/OMRCompilerEnv.hpp"
-#include "infra/Annotations.hpp"
 #include "env/RawAllocator.hpp"
+#include "infra/Annotations.hpp"
 
+namespace OMR {
 
-namespace OMR
-{
+namespace ARM {
 
-namespace ARM
-{
+    class OMR_EXTENSIBLE CompilerEnv : public OMR::CompilerEnv {
+    public:
+        CompilerEnv(TR::RawAllocator raw, const TR::PersistentAllocatorKit& persistentAllocatorKit)
+            : OMR::CompilerEnv(raw, persistentAllocatorKit)
+        {
+        }
 
-class OMR_EXTENSIBLE CompilerEnv : public OMR::CompilerEnv
-   {
-public:
-
-   CompilerEnv(TR::RawAllocator raw, const TR::PersistentAllocatorKit &persistentAllocatorKit) :
-         OMR::CompilerEnv(raw, persistentAllocatorKit)
-      {}
-
-   // Initialize 'target' environment for this compilation
-   //
-   void initializeTargetEnvironment();
-
-   };
-
+        // Initialize 'target' environment for this compilation
+        //
+        void initializeTargetEnvironment();
+    };
 }
-
 }
 
 #endif

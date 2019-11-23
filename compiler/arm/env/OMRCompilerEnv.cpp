@@ -19,21 +19,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "env/CPU.hpp"
 #include "env/CompilerEnv.hpp"
 #include "env/Environment.hpp"
-#include "env/CPU.hpp"
 #include "env/defines.h"
 
-
-void
-OMR::ARM::CompilerEnv::initializeTargetEnvironment()
-   {
-   OMR::CompilerEnv::initializeTargetEnvironment();
+void OMR::ARM::CompilerEnv::initializeTargetEnvironment()
+{
+    OMR::CompilerEnv::initializeTargetEnvironment();
 
 #if defined(ARMGNUEABI)
     target.setEABI(true);
 #else
     target.setEABI(false);
 #endif
-
-   }
+}

@@ -24,22 +24,26 @@
 
 #include "x/codegen/DataSnippet.hpp"
 
-#include <stdint.h>
 #include "codegen/Snippet.hpp"
+#include <stdint.h>
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
 
 namespace TR {
 
-class X86ConstantDataSnippet : public TR::X86DataSnippet
-   {
-   public:
-
-   inline X86ConstantDataSnippet(TR::CodeGenerator *cg, TR::Node *n, void *c, size_t size) : TR::X86DataSnippet(cg, n, c, size) { }
-   virtual Kind getKind() { return IsConstantData; }
-   };
-
+class X86ConstantDataSnippet : public TR::X86DataSnippet {
+public:
+    inline X86ConstantDataSnippet(TR::CodeGenerator* cg, TR::Node* n, void* c, size_t size)
+        : TR::X86DataSnippet(cg, n, c, size)
+    {
+    }
+    virtual Kind getKind() { return IsConstantData; }
+};
 }
 
 #endif

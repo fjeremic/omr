@@ -33,15 +33,18 @@ namespace TR {
  *     For each field entry its TR::DataType and 
  *     its offset (including the object header size) are recorded.  
  */
-class TypeLayoutEntry
-   {
-   public:
-   TypeLayoutEntry(TR::DataType datatype, int32_t offset, char * fieldname) 
-      : _datatype(datatype), _offset(offset), _fieldname(fieldname){}
-   TR::DataType _datatype;
-   int32_t _offset;
-   const char * _fieldname;
-   };
+class TypeLayoutEntry {
+public:
+    TypeLayoutEntry(TR::DataType datatype, int32_t offset, char* fieldname)
+        : _datatype(datatype)
+        , _offset(offset)
+        , _fieldname(fieldname)
+    {
+    }
+    TR::DataType _datatype;
+    int32_t _offset;
+    const char* _fieldname;
+};
 
 /** \brief
  *     TypeLayout represents the layout of fields.
@@ -49,12 +52,11 @@ class TypeLayoutEntry
  *     It contains TypeLayoutEntry that belongs to 
  *     a single class. It stores a `TR::vector` of TypeLayoutEntry objects.
  */
-class TypeLayout
-   {
-   public:
-   size_t count() const { return _entries.size(); }
+class TypeLayout {
+public:
+    size_t count() const { return _entries.size(); }
 
-   /** \brief
+    /** \brief
     *     Finds the corresponding entry based on index given.
     * 
     *  \param ind
@@ -63,9 +65,9 @@ class TypeLayout
     *  \return
     *     The TypeLayoutEntry object stored in the vector at given index.
     */
-   const TypeLayoutEntry& entry(size_t ind) const { return _entries.at(ind); } 
+    const TypeLayoutEntry& entry(size_t ind) const { return _entries.at(ind); }
 
-   /** \brief
+    /** \brief
     *     Queries for the index of the field at a given offset.
     * 
     *  \param offset
@@ -74,78 +76,81 @@ class TypeLayout
     *  \return
     *     The index of the entry that wants to be queried for.
     */
-   int32_t fieldIndex (int32_t offset) const
-      {
-      int32_t ind = 0;
-      while (_entries.at(ind)._offset != offset)
-         {
-         ind++;
-         }  
-      return ind;
-      }
-      
-   private:
-   TR::vector<TR::TypeLayoutEntry, TR::Region&> _entries; 
-   TypeLayout(TR::Region& region) : _entries(region) {}
+    int32_t fieldIndex(int32_t offset) const
+    {
+        int32_t ind = 0;
+        while (_entries.at(ind)._offset != offset) {
+            ind++;
+        }
+        return ind;
+    }
 
-   struct CompareOffset
-      {
-      bool operator() (const TypeLayoutEntry& entry1, const TypeLayoutEntry& entry2) const 
-         { 
-         return entry1._offset < entry2._offset; 
-         }
-      };
+private:
+    TR::vector<TR::TypeLayoutEntry, TR::Region&> _entries;
+    TypeLayout(TR::Region& region)
+        : _entries(region)
+    {
+    }
 
-   /** \brief
+    struct CompareOffset {
+        bool operator()(const TypeLayoutEntry& entry1, const TypeLayoutEntry& entry2) const
+        {
+            return entry1._offset < entry2._offset;
+        }
+    };
+
+    /** \brief
     *     Sorts TypeLayout entries by offset.
     */
-   void sort() 
-      { 
-      CompareOffset compareOffset;
-      std::sort(_entries.begin(), _entries.end(), compareOffset);
-      }
+    void sort()
+    {
+        CompareOffset compareOffset;
+        std::sort(_entries.begin(), _entries.end(), compareOffset);
+    }
 
-   friend class TypeLayoutBuilder;
-   };
+    friend class TypeLayoutBuilder;
+};
 
 /** \brief
  *     TypeLayoutBuilder is a builder class for TypeLayout.
  * 
  *     It encapsulates building a TypeLayout instance.
  */
-class TypeLayoutBuilder
-   {
-   public:
-   TypeLayoutBuilder(TR::Region & region) : tl(new (region) TypeLayout(region)) {}
+class TypeLayoutBuilder {
+public:
+    TypeLayoutBuilder(TR::Region& region)
+        : tl(new (region) TypeLayout(region))
+    {
+    }
 
-   /** \brief
+    /** \brief
     *     Add TypeLayoutEntry to TypeLayout being built.
     * 
     *  \param entry
     *     The entry being added.
     */
-   void add(TR::TypeLayoutEntry entry)
-      {
-      tl->_entries.push_back(entry);
-      }
+    void add(TR::TypeLayoutEntry entry)
+    {
+        tl->_entries.push_back(entry);
+    }
 
-   /** \brief
+    /** \brief
     *     Return built TypeLayout object.
     * 
     *  \return
     *     The built TypeLayout.
-    */  
-   TypeLayout* build()
-      {
-      tl->sort();
-      auto* temp = tl;
-      tl = NULL;
-      return temp;
-      }
+    */
+    TypeLayout* build()
+    {
+        tl->sort();
+        auto* temp = tl;
+        tl = NULL;
+        return temp;
+    }
 
-   private:
-   TypeLayout* tl;
-   };
+private:
+    TypeLayout* tl;
+};
 
 } //TR
 

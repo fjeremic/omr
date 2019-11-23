@@ -19,23 +19,21 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
+#include "tests/injectors/ChildlessUnaryOpIlInjector.hpp"
 #include "compile/Compilation.hpp"
 #include "env/FrontEnd.hpp"
-#include "tests/injectors/ChildlessUnaryOpIlInjector.hpp"
 
-namespace TestCompiler
+namespace TestCompiler {
+
+bool ChildlessUnaryOpIlInjector::injectIL()
 {
+    if (!isOpCodeSupported())
+        return false;
 
-bool
-ChildlessUnaryOpIlInjector::injectIL()
-   {
-   if (!isOpCodeSupported())
-      return false;
+    createBlocks(1);
+    returnValue(parm(1));
 
-   createBlocks(1);
-   returnValue(parm(1));
-
-   return true;
-   }
+    return true;
+}
 
 } // namespace TestCompiler

@@ -27,12 +27,16 @@
  */
 #ifndef OMR_METHOD_METADATAPOD_CONNECTOR
 #define OMR_METHOD_METADATAPOD_CONNECTOR
-namespace OMR { struct MethodMetaDataPOD; }
-namespace OMR { typedef OMR::MethodMetaDataPOD MethodMetaDataPODConnector; }
+namespace OMR {
+struct MethodMetaDataPOD;
+}
+namespace OMR {
+typedef OMR::MethodMetaDataPOD MethodMetaDataPODConnector;
+}
 #endif
 
-#include <stdint.h>
 #include "infra/Annotations.hpp"
+#include <stdint.h>
 
 /*
  * This structure describes the shape of the method meta data information.
@@ -42,15 +46,12 @@ namespace OMR { typedef OMR::MethodMetaDataPOD MethodMetaDataPODConnector; }
  *
  */
 
-namespace OMR
-{
+namespace OMR {
 
-struct OMR_EXTENSIBLE MethodMetaDataPOD
-   {
-   uintptr_t startPC;
-   uintptr_t endPC;
-   };
-
+struct OMR_EXTENSIBLE MethodMetaDataPOD {
+    uintptr_t startPC;
+    uintptr_t endPC;
+};
 }
 
 #endif

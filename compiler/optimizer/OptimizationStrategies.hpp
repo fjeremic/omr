@@ -22,14 +22,13 @@
 #ifndef OPTIMIZATIONSTRATEGIES_INCL
 #define OPTIMIZATIONSTRATEGIES_INCL
 
-#include <stdint.h>
 #include "optimizer/Optimizations.hpp"
+#include <stdint.h>
 
-struct OptimizationStrategy
-   {
-   OMR::Optimizations _num;
-   uint16_t      _options;
-   };
+struct OptimizationStrategy {
+    OMR::Optimizations _num;
+    uint16_t _options;
+};
 //optimization groups
 
 extern const OptimizationStrategy loopAliasRefinerOpts[];
@@ -60,6 +59,6 @@ extern const OptimizationStrategy methodHandleInvokeInliningOpts[];
 
 //arrays of optimizations
 
-extern const OptimizationStrategy * omrCompilationStrategies[];
+extern const OptimizationStrategy* omrCompilationStrategies[];
 
 #endif

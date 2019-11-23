@@ -20,17 +20,19 @@
  *******************************************************************************/
 
 #include "env/JitConfig.hpp"
-#include <string.h>
 #include "env/ConcreteFE.hpp"
+#include <string.h>
 
 TR::JitConfig::JitConfig()
-   : _processorInfo(0), _interpreterTOC(0), _pseudoTOC(0)
-   {
-   memcpy(_eyecatcher, "JITCONF" /* 7 bytes + null */, sizeof(this->_eyecatcher));
-   }
+    : _processorInfo(0)
+    , _interpreterTOC(0)
+    , _pseudoTOC(0)
+{
+    memcpy(_eyecatcher, "JITCONF" /* 7 bytes + null */, sizeof(this->_eyecatcher));
+}
 
-TR::JitConfig *
+TR::JitConfig*
 TR::JitConfig::instance()
-   {
-   return OMR::FrontEnd::singleton().jitConfig();
-   }
+{
+    return OMR::FrontEnd::singleton().jitConfig();
+}

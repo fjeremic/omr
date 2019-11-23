@@ -25,10 +25,10 @@
 
 #include "omrcfg.h"
 
-#include "omrcomp.h"
-#include "thread_api.h"
-#include "omrport.h"
 #include "AllocationCategory.hpp"
+#include "omrcomp.h"
+#include "omrport.h"
+#include "thread_api.h"
 
 #include <new>
 
@@ -38,15 +38,15 @@ class MM_GCExtensionsBase;
 namespace OMR {
 namespace GC {
 
-class Forge {
+    class Forge {
 
-/* Data Members */
-private:
-	OMRPortLibrary* _portLibrary;
-	
-/* Function Members */
-public:
-	/**
+        /* Data Members */
+    private:
+        OMRPortLibrary* _portLibrary;
+
+        /* Function Members */
+    public:
+        /**
 	 * Initialize internal structures of the memory forge.  An instance of Forge must be initialized before
 	 * the methods allocate or free are called.
 	 * 
@@ -54,16 +54,16 @@ public:
 	 * @return true if the forge was successfully initialized, otherwise returns false.  A instance of Forge
 	 * 		   should not be used before it has been successfully initialized.
 	 */
-	bool initialize(OMRPortLibrary* port);
-	
-	/**
+        bool initialize(OMRPortLibrary* port);
+
+        /**
 	 * Release any internal structures of the memory forge.  After tear down, there should be no calls to the 
 	 * methods allocate or free.
 	 * 
 	 */
-	void tearDown();
+        void tearDown();
 
-	/**
+        /**
 	 * Allocates the amount of memory requested in bytesRequested.  Returns a pointer to the allocated memory, 
 	 * or NULL if the request could not be performed.  This function is a wrapper of omrmem_allocate_memory.
 	 *
@@ -73,17 +73,17 @@ public:
 	 * 						 the OMR_GET_CALLSITE() macro
 	 * @return a pointer to the allocated memory, or NULL if the request could not be performed
 	 */
-	void* allocate(std::size_t bytesRequested, AllocationCategory::Enum category, const char* callsite);
+        void* allocate(std::size_t bytesRequested, AllocationCategory::Enum category, const char* callsite);
 
-	/**
+        /**
 	 * Deallocate memory that has been allocated by the garbage collector.  This function should not be called
 	 * to deallocate memory that has not been allocated by either the allocate or reallocate functions.  This 
 	 * function is a wrapper of omrmem_free_memory.
 	 *
 	 * @param[in] memoryPointer - a pointer to the memory that will be freed
 	 */
-	void free(void* memoryPointer);
-};
+        void free(void* memoryPointer);
+    };
 
 } // namespace GC
 } // namespace OMR
@@ -93,8 +93,9 @@ public:
  *   MyStruct* s = new(forge, AllocationCategory::FIXED, OMR_GET_CALLSITE(), std::nothrow) MyStruct(constructor params...);
  */
 inline void*
-operator new(std::size_t size, OMR::GC::Forge* forge, OMR::GC::AllocationCategory::Enum category, const char* site, const std::nothrow_t&) throw() {
-	return forge->allocate(size, category, site);
+operator new(std::size_t size, OMR::GC::Forge* forge, OMR::GC::AllocationCategory::Enum category, const char* site, const std::nothrow_t&) throw()
+{
+    return forge->allocate(size, category, site);
 }
 
 /**
@@ -102,8 +103,9 @@ operator new(std::size_t size, OMR::GC::Forge* forge, OMR::GC::AllocationCategor
  *   MyStruct* s = new(forge, AllocationCategory::FIXED, OMR_GET_CALLSITE(), std::nothrow) MyStruct(constructor params...);
  */
 inline void*
-operator new[](std::size_t size, OMR::GC::Forge* forge, OMR::GC::AllocationCategory::Enum category, const char* site, const std::nothrow_t&) throw() {
-	return operator new(size, forge, category, site, std::nothrow);
+operator new[](std::size_t size, OMR::GC::Forge* forge, OMR::GC::AllocationCategory::Enum category, const char* site, const std::nothrow_t&) throw()
+{
+    return operator new(size, forge, category, site, std::nothrow);
 }
 
 /**

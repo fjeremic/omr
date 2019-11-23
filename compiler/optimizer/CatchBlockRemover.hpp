@@ -22,10 +22,9 @@
 #ifndef CATCHBLOCKREMOVER_INCL
 #define CATCHBLOCKREMOVER_INCL
 
-#include <stdint.h>
 #include "optimizer/Optimization.hpp"
 #include "optimizer/OptimizationManager.hpp"
-
+#include <stdint.h>
 
 /*
  * Class TR_CatchBlockRemover
@@ -48,20 +47,18 @@
  * simpler for later analyses to work.
  */
 
-class TR_CatchBlockRemover : public TR::Optimization
-   {
-   public:
-   TR_CatchBlockRemover(TR::OptimizationManager *manager);
-   static TR::Optimization *create(TR::OptimizationManager *manager)
-      {
-      return new (manager->allocator()) TR_CatchBlockRemover(manager);
-      }
+class TR_CatchBlockRemover : public TR::Optimization {
+public:
+    TR_CatchBlockRemover(TR::OptimizationManager* manager);
+    static TR::Optimization* create(TR::OptimizationManager* manager)
+    {
+        return new (manager->allocator()) TR_CatchBlockRemover(manager);
+    }
 
-   virtual int32_t perform();
-   virtual const char * optDetailString() const throw();
+    virtual int32_t perform();
+    virtual const char* optDetailString() const throw();
 
-   private :
-
-   };
+private:
+};
 
 #endif

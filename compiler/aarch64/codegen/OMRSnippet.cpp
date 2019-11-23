@@ -19,24 +19,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "codegen/Snippet.hpp"
 #include "codegen/CodeGenerator.hpp"
-
-
-OMR::ARM64::Snippet::Snippet(
-      TR::CodeGenerator *cg,
-      TR::Node *node,
-      TR::LabelSymbol *label,
-      bool isGCSafePoint) :
-   OMR::Snippet(cg, node, label, isGCSafePoint)
-   {
-   }
-
+#include "codegen/Snippet.hpp"
 
 OMR::ARM64::Snippet::Snippet(
-      TR::CodeGenerator *cg,
-      TR::Node *node,
-      TR::LabelSymbol *label) :
-   OMR::Snippet(cg, node, label)
-   {
-   }
+    TR::CodeGenerator* cg,
+    TR::Node* node,
+    TR::LabelSymbol* label,
+    bool isGCSafePoint)
+    : OMR::Snippet(cg, node, label, isGCSafePoint)
+{
+}
+
+OMR::ARM64::Snippet::Snippet(
+    TR::CodeGenerator* cg,
+    TR::Node* node,
+    TR::LabelSymbol* label)
+    : OMR::Snippet(cg, node, label)
+{
+}

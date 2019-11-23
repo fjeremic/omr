@@ -27,11 +27,10 @@
  * @ddr_namespace: default
  */
 
-#include "omr.h"
 #include "OMR_BaseNonVirtual.hpp"
+#include "omr.h"
 
 extern "C" {
-
 }
 
 #endif /* OMR_VMCONFIGURATION_HPP_ */

@@ -22,30 +22,28 @@
 #ifndef TR_METHODSYMBOL_INCL
 #define TR_METHODSYMBOL_INCL
 
-#include <stddef.h>
 #include "codegen/LinkageConventionsEnum.hpp"
 #include "il/OMRMethodSymbol.hpp"
+#include <stddef.h>
 
-namespace TR { class Method; }
+namespace TR {
+class Method;
+}
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE MethodSymbol : public OMR::MethodSymbolConnector
-   {
+class OMR_EXTENSIBLE MethodSymbol : public OMR::MethodSymbolConnector {
 
 protected:
-
-   MethodSymbol(TR_LinkageConventions lc = TR_Private, TR::Method *m = NULL) :
-      OMR::MethodSymbolConnector(lc, m) { }
+    MethodSymbol(TR_LinkageConventions lc = TR_Private, TR::Method* m = NULL)
+        : OMR::MethodSymbolConnector(lc, m)
+    {
+    }
 
 private:
-
-   // When adding another class to the heirarchy, add it as a friend here
-   friend class OMR::MethodSymbol;
-
-   };
-
+    // When adding another class to the heirarchy, add it as a friend here
+    friend class OMR::MethodSymbol;
+};
 }
 
 #endif

@@ -22,22 +22,18 @@
 #ifndef TR_METHOD_METADATA_INCL
 #define TR_METHOD_METADATA_INCL
 
-#include "runtime/OMRCodeMetaData.hpp"
 #include "infra/Annotations.hpp"
+#include "runtime/OMRCodeMetaData.hpp"
 
-namespace TR
-{
+namespace TR {
 
-class OMR_EXTENSIBLE CodeMetaData : public OMR::CodeMetaDataConnector
-   {
+class OMR_EXTENSIBLE CodeMetaData : public OMR::CodeMetaDataConnector {
 public:
-
-   CodeMetaData(TR::Compilation *comp) : OMR::CodeMetaDataConnector(comp) {}
-
-   };
-
+    CodeMetaData(TR::Compilation* comp)
+        : OMR::CodeMetaDataConnector(comp)
+    {
+    }
+};
 }
 
 #endif
-
-

@@ -23,8 +23,8 @@
 #ifndef _SAFE_STORAGE_H_INCLUDED
 #define _SAFE_STORAGE_H_INCLUDED
 
-#include <tpf/c_proc.h>
 #include "omrosdump_helpers.h"
+#include <tpf/c_proc.h>
 
 /*
  * The only fields in safeStorage.argv that require setting by
@@ -40,17 +40,17 @@
  * responsible for completing them, if desired.
  */
 typedef struct _durable_storage {
-	U_8	workbuffer[PATH_MAX];
-	U_8	filename[PATH_MAX];
-	siginfo_t	siginfo;
-	ucontext_t ucontext;
-	struct sigcontext sigcontext;
-	_sigregs _sregs; /* sigcontext struct contains pointer to _sigregs */
-	DIB	*pDIB;
-	struct iproc *pPROC;
-	args argv;
+    U_8 workbuffer[PATH_MAX];
+    U_8 filename[PATH_MAX];
+    siginfo_t siginfo;
+    ucontext_t ucontext;
+    struct sigcontext sigcontext;
+    _sigregs _sregs; /* sigcontext struct contains pointer to _sigregs */
+    DIB* pDIB;
+    struct iproc* pPROC;
+    args argv;
 } safeStorage;
 
-extern safeStorage *allocateDurableStorage( void );
+extern safeStorage* allocateDurableStorage(void);
 
 #endif

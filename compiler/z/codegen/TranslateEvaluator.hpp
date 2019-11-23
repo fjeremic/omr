@@ -22,16 +22,22 @@
 #ifndef S390TRANSLATEEVALUATOR_INCL
 #define S390TRANSLATEEVALUATOR_INCL
 
+#include "codegen/InstOpCode.hpp"
 #include <stddef.h>
 #include <stdint.h>
-#include "codegen/InstOpCode.hpp"
 
-namespace TR { class CodeGenerator; }
-namespace TR { class Node; }
-namespace TR { class Register; }
+namespace TR {
+class CodeGenerator;
+}
+namespace TR {
+class Node;
+}
+namespace TR {
+class Register;
+}
 
 TR::InstOpCode::S390BranchCondition getConditionCodeFromCCCompare(uint8_t maskOnIf, uint8_t compVal);
-TR::Register *inlineTrtEvaluator(TR::Node *node, TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic opCode, bool isFoldedIf = false, bool isFoldedLookup = false, TR::Node *parent = NULL);
-TR::Register *inlineTrEvaluator(TR::Node *node, TR::CodeGenerator *cg);
+TR::Register* inlineTrtEvaluator(TR::Node* node, TR::CodeGenerator* cg, TR::InstOpCode::Mnemonic opCode, bool isFoldedIf = false, bool isFoldedLookup = false, TR::Node* parent = NULL);
+TR::Register* inlineTrEvaluator(TR::Node* node, TR::CodeGenerator* cg);
 
 #endif

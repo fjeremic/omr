@@ -21,12 +21,7 @@
 
 #include "control/Recompilation.hpp"
 
-#include <limits.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 #include "codegen/CodeGenerator.hpp"
-#include "env/FrontEnd.hpp"
 #include "compile/Compilation.hpp"
 #include "compile/CompilationTypes.hpp"
 #include "compile/ResolvedMethod.hpp"
@@ -34,6 +29,7 @@
 #include "control/OptimizationPlan.hpp"
 #include "control/Options.hpp"
 #include "control/Options_inlines.hpp"
+#include "env/FrontEnd.hpp"
 #include "env/PersistentInfo.hpp"
 #include "env/TRMemory.hpp"
 #include "env/jittypes.h"
@@ -41,26 +37,30 @@
 #include "infra/Assert.hpp"
 #include "infra/Link.hpp"
 #include "infra/Timer.hpp"
+#include <limits.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 class TR_OpaqueMethodBlock;
-namespace TR { class Instruction; }
-namespace TR { class SymbolReference; }
+namespace TR {
+class Instruction;
+}
+namespace TR {
+class SymbolReference;
+}
 
+OMR::Recompilation::Recompilation(TR::Compilation* comp)
+    : _compilation(comp)
+{
+}
 
-OMR::Recompilation::Recompilation(TR::Compilation * comp) :
-   _compilation(comp)
-   {
-   }
+void OMR::Recompilation::shutdown()
+{
+}
 
-
-void
-OMR::Recompilation::shutdown()
-   {
-   }
-
-
-TR::Recompilation *
+TR::Recompilation*
 OMR::Recompilation::self()
-   {
-   return static_cast<TR::Recompilation *>(this);
-   }
+{
+    return static_cast<TR::Recompilation*>(this);
+}

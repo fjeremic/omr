@@ -35,9 +35,9 @@
  * @param[out] serverAddr The socket address of the server created.
  * 
  * @return 0 on success, return an error otherwise.
- */ 
+ */
 int32_t
-start_server(struct OMRPortLibrary *portLibrary, const char *addrStr, const char *port, int32_t family, omrsock_socket_t *serverSocket, omrsock_sockaddr_t serverAddr) 
+start_server(struct OMRPortLibrary* portLibrary, const char* addrStr, const char* port, int32_t family, omrsock_socket_t* serverSocket, omrsock_sockaddr_t serverAddr)
 {
     return OMRPORT_ERROR_NOTEXIST;
 }
@@ -53,9 +53,9 @@ start_server(struct OMRPortLibrary *portLibrary, const char *addrStr, const char
  * @param[in] sessionClientAddr The socket address of the client created. 
  * 
  * @return 0 on success, return an error otherwise.
- */ 
+ */
 int32_t
-connect_client_to_server(struct OMRPortLibrary *portLibrary, const char *addrStr, const char *port, int32_t family, omrsock_socket_t *sessionClientSocket, omrsock_sockaddr_t sessionClientAddr) 
+connect_client_to_server(struct OMRPortLibrary* portLibrary, const char* addrStr, const char* port, int32_t family, omrsock_socket_t* sessionClientSocket, omrsock_sockaddr_t sessionClientAddr)
 {
     return OMRPORT_ERROR_NOTEXIST;
 }

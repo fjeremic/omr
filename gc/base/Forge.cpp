@@ -22,26 +22,26 @@
 
 #include "Forge.hpp"
 
-#include "omrcomp.h"
 #include "EnvironmentBase.hpp"
+#include "omrcomp.h"
 
 namespace OMR {
 namespace GC {
 
-bool
-Forge::initialize(OMRPortLibrary* port)
-{
-	_portLibrary = port;
-	return true;
-}
+    bool
+    Forge::initialize(OMRPortLibrary* port)
+    {
+        _portLibrary = port;
+        return true;
+    }
 
-void 
-Forge::tearDown()
-{
-	_portLibrary = NULL;
-}
+    void
+    Forge::tearDown()
+    {
+        _portLibrary = NULL;
+    }
 
-/**
+    /**
  * Allocates the amount of memory requested in bytesRequested.  Returns a pointer to the allocated memory, or NULL if the request could
  * not be performed.  This function is a wrapper of omrmem_allocate_memory.
  *
@@ -50,28 +50,28 @@ Forge::tearDown()
  * @param[in] callsite - the origin of the memory request (e.g. filename.c:5), which should be found using the OMR_GET_CALLSITE() macro
  * @return a pointer to the allocated memory, or NULL if the request could not be performed
  */
-void* 
-Forge::allocate(std::size_t bytesRequested, OMR::GC::AllocationCategory::Enum category, const char* callsite)
-{
-	return _portLibrary->mem_allocate_memory(_portLibrary, bytesRequested, callsite, OMRMEM_CATEGORY_MM);
-}
+    void*
+    Forge::allocate(std::size_t bytesRequested, OMR::GC::AllocationCategory::Enum category, const char* callsite)
+    {
+        return _portLibrary->mem_allocate_memory(_portLibrary, bytesRequested, callsite, OMRMEM_CATEGORY_MM);
+    }
 
-/**
+    /**
  * Deallocate memory that has been allocated by the garbage collector.  This function should not be called to deallocate memory that has
  * not been allocated by either the allocate or reallocate functions.  This function is a wrapper of omrmem_free_memory.
  *
  * @param[in] memoryPointer - a pointer to the memory that will be freed
  */
-void 
-Forge::free(void* memoryPointer)
-{	
-	if (NULL == memoryPointer) {
-		return;
-	}
-	
-	OMRPORT_ACCESS_FROM_OMRPORT(_portLibrary);
-	omrmem_free_memory(memoryPointer);
-}
+    void
+    Forge::free(void* memoryPointer)
+    {
+        if (NULL == memoryPointer) {
+            return;
+        }
+
+        OMRPORT_ACCESS_FROM_OMRPORT(_portLibrary);
+        omrmem_free_memory(memoryPointer);
+    }
 
 } // namespace GC
 } // namespace OMR

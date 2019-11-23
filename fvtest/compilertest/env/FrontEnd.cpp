@@ -21,13 +21,11 @@
 
 #include "env/FrontEnd.hpp"
 
-#include <limits.h>
-#include <stdio.h>
 #include "codegen/CodeGenerator.hpp"
 #include "codegen/GCStackAtlas.hpp"
 #include "codegen/GCStackMap.hpp"
-#include "compile/ResolvedMethod.hpp"
 #include "compile/Compilation.hpp"
+#include "compile/ResolvedMethod.hpp"
 #include "env/FEBase_t.hpp"
 #include "env/Processors.hpp"
 #include "env/jittypes.h"
@@ -35,49 +33,44 @@
 #include "il/ILOps.hpp"
 #include "runtime/CodeMetaDataPOD.hpp"
 #include "runtime/StackAtlasPOD.hpp"
+#include <limits.h>
+#include <stdio.h>
 
 //#include "util_api.h"
 
-#define RANGE_NEEDS_FOUR_BYTE_OFFSET(r) (((r) >= (USHRT_MAX   )) ? 1 : 0)
+#define RANGE_NEEDS_FOUR_BYTE_OFFSET(r) (((r) >= (USHRT_MAX)) ? 1 : 0)
 
-namespace TestCompiler
-{
+namespace TestCompiler {
 
-FrontEnd *FrontEnd::_instance = 0;
+FrontEnd* FrontEnd::_instance = 0;
 
 FrontEnd::FrontEnd()
-   : TR::FEBase<FrontEnd>()
-   {
-   TR_ASSERT(!_instance, "FrontEnd must be initialized only once");
-   _instance = this;
-   }
+    : TR::FEBase<FrontEnd>()
+{
+    TR_ASSERT(!_instance, "FrontEnd must be initialized only once");
+    _instance = this;
+}
 
-void
-FrontEnd::reserveTrampolineIfNecessary(TR::Compilation *comp, TR::SymbolReference *symRef, bool inBinaryEncoding)
-   {
-   // Do we handle trampoline reservations? return here for now.
-   return;
-   }
+void FrontEnd::reserveTrampolineIfNecessary(TR::Compilation* comp, TR::SymbolReference* symRef, bool inBinaryEncoding)
+{
+    // Do we handle trampoline reservations? return here for now.
+    return;
+}
 
-TR_ResolvedMethod *
-FrontEnd::createResolvedMethod(TR_Memory * trMemory, TR_OpaqueMethodBlock * aMethod,
-                                  TR_ResolvedMethod * owningMethod, TR_OpaqueClassBlock *classForNewInstance)
-   {
-   return new (trMemory->trHeapMemory()) ResolvedMethod(aMethod);
-   }
+TR_ResolvedMethod*
+FrontEnd::createResolvedMethod(TR_Memory* trMemory, TR_OpaqueMethodBlock* aMethod,
+    TR_ResolvedMethod* owningMethod, TR_OpaqueClassBlock* classForNewInstance)
+{
+    return new (trMemory->trHeapMemory()) ResolvedMethod(aMethod);
+}
 
 intptrj_t
-FrontEnd::methodTrampolineLookup(TR::Compilation *comp, TR::SymbolReference *symRef, void *callSite)
-   {
-   TR_UNIMPLEMENTED();
-   return 0;
-   }
-
+FrontEnd::methodTrampolineLookup(TR::Compilation* comp, TR::SymbolReference* symRef, void* callSite)
+{
+    TR_UNIMPLEMENTED();
+    return 0;
+}
 
 // -----------------------------------------------------------------------------
-
-
-
-
 
 } //namespace TestCompiler

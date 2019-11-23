@@ -22,13 +22,13 @@
 #ifndef OMR_Z_CODEGENERATOR_INLINES_INCL
 #define OMR_Z_CODEGENERATOR_INLINES_INCL
 
-#include "compiler/codegen/OMRCodeGenerator_inlines.hpp"
 #include "codegen/OMRCodeGenerator.hpp"
+#include "compiler/codegen/OMRCodeGenerator_inlines.hpp"
 
 template <class TR_AliasSetInterface>
-bool OMR::Z::CodeGenerator::loadAndStoreMayOverlap(::TR::Node *store, size_t storeSize, ::TR::Node *load, size_t loadSize, TR_AliasSetInterface &storeAliases)
-   {
-   return storeAliases.contains(load->getSymbolReference(), self()->comp());
-   }
+bool OMR::Z::CodeGenerator::loadAndStoreMayOverlap(::TR::Node* store, size_t storeSize, ::TR::Node* load, size_t loadSize, TR_AliasSetInterface& storeAliases)
+{
+    return storeAliases.contains(load->getSymbolReference(), self()->comp());
+}
 
 #endif // OMR_Z_CODEGENERATOR_INLINES_INCL

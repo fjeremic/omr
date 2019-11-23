@@ -25,10 +25,10 @@
 #if defined(LINUX)
 
 uint32_t
-OMR::ELFRelocationResolver::resolveRelocationType(const TR::StaticRelocation &relocation)
-   {
-   TR_UNIMPLEMENTED();
-   return static_cast<uint32_t>(-1);
-   }
+OMR::ELFRelocationResolver::resolveRelocationType(const TR::StaticRelocation& relocation)
+{
+    TR_UNIMPLEMENTED();
+    return static_cast<uint32_t>(-1);
+}
 
 #endif /* defined(LINUX) */

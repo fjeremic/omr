@@ -19,27 +19,27 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include <stddef.h>
+#include "codegen/RegisterIterator.hpp"
 #include "codegen/Machine.hpp"
 #include "codegen/RealRegister.hpp"
 #include "codegen/Register.hpp"
-#include "codegen/RegisterIterator.hpp"
 #include "infra/Assert.hpp"
+#include <stddef.h>
 
-TR::Register *
+TR::Register*
 TR::RegisterIterator::getFirst()
-   {
-   return _machine->getRealRegister((TR::RealRegister::RegNum)(_cursor = _firstRegIndex));
-   }
+{
+    return _machine->getRealRegister((TR::RealRegister::RegNum)(_cursor = _firstRegIndex));
+}
 
-TR::Register *
+TR::Register*
 TR::RegisterIterator::getCurrent()
-   {
-   return _machine->getRealRegister((TR::RealRegister::RegNum)_cursor);
-   }
+{
+    return _machine->getRealRegister((TR::RealRegister::RegNum)_cursor);
+}
 
-TR::Register *
+TR::Register*
 TR::RegisterIterator::getNext()
-   {
-   return _cursor == _lastRegIndex ? NULL : _machine->getRealRegister((TR::RealRegister::RegNum)(++_cursor));
-   }
+{
+    return _cursor == _lastRegIndex ? NULL : _machine->getRealRegister((TR::RealRegister::RegNum)(++_cursor));
+}

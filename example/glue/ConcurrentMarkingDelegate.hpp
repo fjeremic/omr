@@ -38,20 +38,18 @@ class MM_MarkingScheme;
 /**
  * Provides language-specific support for marking.
  */
-class MM_ConcurrentMarkingDelegate
-{
-	/*
+class MM_ConcurrentMarkingDelegate {
+    /*
 	 * Data members
 	 */
 private:
-
 protected:
-	GC_ObjectModel *_objectModel;
-	MM_ConcurrentGC *_collector;
-	MM_MarkingScheme *_markingScheme;
+    GC_ObjectModel* _objectModel;
+    MM_ConcurrentGC* _collector;
+    MM_MarkingScheme* _markingScheme;
 
 public:
-	/* This enum extends ConcurrentStatus with values in the exclusive range (CONCURRENT_ROOT_TRACING,
+    /* This enum extends ConcurrentStatus with values in the exclusive range (CONCURRENT_ROOT_TRACING,
 	 * CONCURRENT_TRACE_ONLY). ConcurrentStatus extensions allow the client language to define discrete
 	 * units of work that can be executed in parallel by mutator threads when they are called upon to
 	 * do some tracing work to pay an allocation tax. To extract this tax, ConcurrentGC will call
@@ -64,28 +62,26 @@ public:
 	 * @see MM_ConcurrentMarkingDelegate::getNextTracingMode(uintptr_t)
 	 * @see MM_ConcurrentMarkingDelegate::collectRoots(MM_EnvironmentBase *, uintptr_t, bool *, bool *)
 	 */
-	enum {
-		CONCURRENT_ROOT_TRACING1 = CONCURRENT_ROOT_TRACING + 1
-	};
+    enum {
+        CONCURRENT_ROOT_TRACING1 = CONCURRENT_ROOT_TRACING + 1
+    };
 
-	/*
+    /*
 	 * Function members
 	 */
 private:
-
 protected:
-
 public:
-	/**
+    /**
 	 * Initialize the delegate.
 	 *
 	 * @param env environment for calling thread
 	 * @param collector pointer to MM_ConcurrentGC (concurrent collector)
 	 * @return true if delegate initialized successfully
 	 */
-	bool initialize(MM_EnvironmentBase *env, MM_ConcurrentGC *collector);
+    bool initialize(MM_EnvironmentBase* env, MM_ConcurrentGC* collector);
 
-	/**
+    /**
 	 * In the case of Weak Consistency platforms we require this method to bring mutator threads to a safe point. A safe
 	 * point is a point at which a GC may occur.
 	 *
@@ -94,13 +90,13 @@ public:
 	 * to synchronize at a safe point
 	 * @see MM_ConcurrentSafepointCallback
 	 */
-	MMINLINE MM_ConcurrentSafepointCallback*
-	createSafepointCallback(MM_EnvironmentBase *env)
-	{
-		return MM_ConcurrentSafepointCallback::newInstance(env);
-	}
+    MMINLINE MM_ConcurrentSafepointCallback*
+    createSafepointCallback(MM_EnvironmentBase* env)
+    {
+        return MM_ConcurrentSafepointCallback::newInstance(env);
+    }
 
-	/**
+    /**
 	 * Concurrent marking component maintains a background helper thread to assist with concurrent marking
 	 * tasks. The delegate may provide a specialized signal handler (and associated argument) to process
 	 * signals raised from this thread.
@@ -108,14 +104,14 @@ public:
 	 * @param[out] signalHandlerArg receives (nullable) pointer to argument to be passed to signal handler when invoked
 	 * @return a pointer to the signal handler function (or NULL if no signal handler)
 	 */
-	MMINLINE omrsig_handler_fn
-	getProtectedSignalHandler(void **signalHandlerArg)
-	{
-		*signalHandlerArg = NULL;
-		return NULL;
-	}
+    MMINLINE omrsig_handler_fn
+    getProtectedSignalHandler(void** signalHandlerArg)
+    {
+        *signalHandlerArg = NULL;
+        return NULL;
+    }
 
-	/**
+    /**
 	 * Test whether a GC can be started. Under some circumstances it may be desirable to circumvent continued
 	 * concurrent marking and allow a GC to kick off immediately. In that case this method should return true
 	 * and set the kick off reason.
@@ -129,16 +125,16 @@ public:
 	 * @see J9MMCONSTANT_* (j9nonbuilderr.h) for gcCode values
 	 * @return true if Kickoff can be forced
 	 */
-	MMINLINE bool
-	canForceConcurrentKickoff(MM_EnvironmentBase *env, uintptr_t gcCode, uintptr_t *languageKickoffReason)
-	{
-		if (NULL != languageKickoffReason) {
-			*languageKickoffReason = NO_LANGUAGE_KICKOFF_REASON;
-		}
-		return false;
-	}
+    MMINLINE bool
+    canForceConcurrentKickoff(MM_EnvironmentBase* env, uintptr_t gcCode, uintptr_t* languageKickoffReason)
+    {
+        if (NULL != languageKickoffReason) {
+            *languageKickoffReason = NO_LANGUAGE_KICKOFF_REASON;
+        }
+        return false;
+    }
 
-	/**
+    /**
 	 * Determine the next unit of tracing work that must be performed during root collection. Each distinct
 	 * value returned represents a discrete unit of language-dependent root collection work. The executionMode
 	 * parameter represents the current tracing mode, the returned valued with be the next tracing mode. The
@@ -150,25 +146,25 @@ public:
 	 * @return the next language-defined tracing mode, or CONCURRENT_TRACE_ONLY if all language-defined roots have been traced
 	 * @see MM_ConcurrentMarkingDelegate::collectRoots(MM_EnvironmentBase *, uintptr_t, bool *, bool *)
 	 */
-	MMINLINE uintptr_t
-	getNextTracingMode(uintptr_t executionMode)
-	{
-		uintptr_t nextExecutionMode = CONCURRENT_TRACE_ONLY;
-		switch (executionMode) {
-		case CONCURRENT_ROOT_TRACING:
-			nextExecutionMode = CONCURRENT_ROOT_TRACING1;
-			break;
-		case CONCURRENT_ROOT_TRACING1:
-			nextExecutionMode = CONCURRENT_TRACE_ONLY;
-			break;
-		default:
-			Assert_MM_unreachable();
-		}
+    MMINLINE uintptr_t
+    getNextTracingMode(uintptr_t executionMode)
+    {
+        uintptr_t nextExecutionMode = CONCURRENT_TRACE_ONLY;
+        switch (executionMode) {
+        case CONCURRENT_ROOT_TRACING:
+            nextExecutionMode = CONCURRENT_ROOT_TRACING1;
+            break;
+        case CONCURRENT_ROOT_TRACING1:
+            nextExecutionMode = CONCURRENT_TRACE_ONLY;
+            break;
+        default:
+            Assert_MM_unreachable();
+        }
 
-		return nextExecutionMode;
-	}
+        return nextExecutionMode;
+    }
 
-	/**
+    /**
 	 * Trace language-defined roots. The concurrentStatus parameter receives the current tracing mode, which
 	 * will be one of the language-defined tracing modes returned by getNextTracingMode().
 	 *
@@ -178,15 +174,15 @@ public:
 	 * @param[out] taxPaid set this to true if any roots were collected
 	 * @see MM_ConcurrentMarkingDelegate::getNextTracingMode(uintptr_t)
 	 */
-	uintptr_t collectRoots(MM_EnvironmentBase *env, uintptr_t concurrentStatus, bool *collectedRoots, bool *paidTax);
+    uintptr_t collectRoots(MM_EnvironmentBase* env, uintptr_t concurrentStatus, bool* collectedRoots, bool* paidTax);
 
-	/**
+    /**
 	 * Informative. This method will be called when concurrent initialization is complete and root tracing
 	 * is about to begin.
 	 */
-	MMINLINE void concurrentInitializationComplete(MM_EnvironmentBase *env) { }
+    MMINLINE void concurrentInitializationComplete(MM_EnvironmentBase* env) {}
 
-	/**
+    /**
 	 * This method will be called to inform all mutator threads that they should trace their own
 	 * thread structures and stacks to mark all thread-referenced and stack-referenced heap objects.
 	 * Stack tracing can be performed only at safe points and this method may be required to request
@@ -195,29 +191,29 @@ public:
 	 *
 	 * @see MM_ConcurrentMarkingDelegate::scanThreadRoots(MM_EnvironmentBase *
 	 */
-	MMINLINE void signalThreadsToTraceStacks(MM_EnvironmentBase *env) { }
+    MMINLINE void signalThreadsToTraceStacks(MM_EnvironmentBase* env) {}
 
-	/**
+    /**
 	 * Once concurrent tracing has started, mutator threads must activate the appropriate
 	 * write barrier(s) to trigger whenever a reference-value field is updated, until a GC cycle is started.
 	 */
-	MMINLINE bool signalThreadsToActivateWriteBarrier(MM_EnvironmentBase *env)
-	{
-		return true;
-	}
+    MMINLINE bool signalThreadsToActivateWriteBarrier(MM_EnvironmentBase* env)
+    {
+        return true;
+    }
 
-	/**
+    /**
 	 * This can be used to optimize the concurrent write barrier(s) by conditioning threads to stop
 	 * triggering barriers once a GC has started.
 	 */
-	MMINLINE void signalThreadsToDeactivateWriteBarrier(MM_EnvironmentBase *env) { }
+    MMINLINE void signalThreadsToDeactivateWriteBarrier(MM_EnvironmentBase* env) {}
 
-	/**
+    /**
 	 * Informational. Will be called when concurrent tracing has completed and card cleaning has started.
 	 */
-	MMINLINE void cardCleaningStarted(MM_EnvironmentBase *env) { }
+    MMINLINE void cardCleaningStarted(MM_EnvironmentBase* env) {}
 
-	/**
+    /**
 	 * This method is called during card cleaning for each object associated with an uncleaned,
 	 * dirty card in the card table. No client actions are necessary but this method may be overridden
 	 * if desired to hook into card cleaning.
@@ -225,9 +221,9 @@ public:
 	 * @param[in] env The environment for the calling thread.
 	 * @param[in] objectPtr Reference to an object associated with an uncleaned, dirty card.
 	 */
-	MMINLINE void processItem(MM_EnvironmentBase *env, omrobjectptr_t objectPtr) { }
+    MMINLINE void processItem(MM_EnvironmentBase* env, omrobjectptr_t objectPtr) {}
 
-	/**
+    /**
 	 * Scan a thread structure and stack frames for roots. Implementation must call
 	 * MM_MarkingScheme::markObject(..) for each heap object reference found on the
 	 * thread's stack or in thread structure.
@@ -235,70 +231,71 @@ public:
 	 * @param env the thread environment for the thread to be scanned
 	 * @return true if the thread was scanned successfully
 	 */
-	MMINLINE bool
-	scanThreadRoots(MM_EnvironmentBase *env)
-	{
-		return true;
-	}
+    MMINLINE bool
+    scanThreadRoots(MM_EnvironmentBase* env)
+    {
+        return true;
+    }
 
-	/**
+    /**
 	 * Flush any roots held in thread local buffers.
 	 *
 	 * @param env the thread environment for the thread to be flushed
 	 * @return true if any data were flushed, false otherwise
 	 */
-	MMINLINE bool
-	flushThreadRoots(MM_EnvironmentBase *env)
-	{
-		return false;
-	}
+    MMINLINE bool
+    flushThreadRoots(MM_EnvironmentBase* env)
+    {
+        return false;
+    }
 
-	/**
+    /**
 	 * Informational. Will be called if the concurrent collection cycle is aborted.
 	 */
-	MMINLINE void abortCollection(MM_EnvironmentBase *env) { }
+    MMINLINE void abortCollection(MM_EnvironmentBase* env) {}
 
-	/**
+    /**
 	 * Deprecated. Use this default implementation unless otherwise required.
 	 */
-	MMINLINE bool
-	startConcurrentScanning(MM_EnvironmentBase *env, uintptr_t *bytesTraced, bool *collectedRoots)
-	{
-		*bytesTraced = 0;
-		*collectedRoots = false;
-		return false;
-	}
+    MMINLINE bool
+    startConcurrentScanning(MM_EnvironmentBase* env, uintptr_t* bytesTraced, bool* collectedRoots)
+    {
+        *bytesTraced = 0;
+        *collectedRoots = false;
+        return false;
+    }
 
-	/**
+    /**
 	 * Deprecated. Use this default implementation unless otherwise required.
 	 */
-	MMINLINE void concurrentScanningStarted(MM_EnvironmentBase *env, uintptr_t bytesTraced) { }
+    MMINLINE void concurrentScanningStarted(MM_EnvironmentBase* env, uintptr_t bytesTraced) {}
 
-	/**
+    /**
 	 * Deprecated. Use this default implementation unless otherwise required.
 	 */
-	MMINLINE bool
-	isConcurrentScanningComplete(MM_EnvironmentBase *env)
-	{
-		return true;
-	}
+    MMINLINE bool
+    isConcurrentScanningComplete(MM_EnvironmentBase* env)
+    {
+        return true;
+    }
 
-	/**
+    /**
 	 * Deprecated. Use this default implementation unless otherwise required.
 	 */
-	MMINLINE uintptr_t
-	reportConcurrentScanningMode(MM_EnvironmentBase *env)
-	{
-		return 0;
-	}
+    MMINLINE uintptr_t
+    reportConcurrentScanningMode(MM_EnvironmentBase* env)
+    {
+        return 0;
+    }
 
-	/**
+    /**
 	 * Constructor.
 	 */
-	MMINLINE MM_ConcurrentMarkingDelegate()
-		: _objectModel(NULL)
-		, _markingScheme(NULL)
-	{ }
+    MMINLINE MM_ConcurrentMarkingDelegate()
+        : _objectModel(NULL)
+        , _markingScheme(NULL)
+    {
+    }
 };
 
 #endif /* defined(OMR_GC_MODRON_CONCURRENT_MARK) */
