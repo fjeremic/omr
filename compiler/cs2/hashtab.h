@@ -35,8 +35,8 @@
 
 #ifdef CS2_ALLOCINFO
 #define allocate(x) allocate(x, __FILE__, __LINE__)
-#define deallocate(x,y) deallocate(x, y, __FILE__, __LINE__)
-#define reallocate(x,y,z) reallocate(x, y, z, __FILE__, __LINE__)
+#define deallocate(x, y) deallocate(x, y, __FILE__, __LINE__)
+#define reallocate(x, y, z) reallocate(x, y, z, __FILE__, __LINE__)
 #endif
 
 namespace CS2 {
@@ -57,9 +57,8 @@ const uint32_t kMinimumHashTableSize = 16;
 
 #define CS2_HT_TEMPARGS <AKeyType, ADataType, Allocator, AHashInfo>
 #define CS2_HT_TEMP template <typename AKeyType, typename ADataType, class Allocator, class AHashInfo>
-#define CS2_HT_DECL HashTable <AKeyType, ADataType, Allocator, AHashInfo>
-#define CS2_HTC_DECL HashTable <AKeyType, ADataType, Allocator, AHashInfo>::Cursor
-
+#define CS2_HT_DECL HashTable<AKeyType, ADataType, Allocator, AHashInfo>
+#define CS2_HTC_DECL HashTable<AKeyType, ADataType, Allocator, AHashInfo>::Cursor
 
 /*
    An implementation of the public domain FNV 1a (Fowler/Noll/Vo) 32-bit hash function.
@@ -69,13 +68,15 @@ const uint32_t kMinimumHashTableSize = 16;
 */
 const HashValue CS2_FNV_PRIME = 0x01000193u;
 const HashValue CS2_FNV_OFFSETBASIS = 0x811C9DC5u;
-inline HashValue  Hash_FNV (const unsigned char *s, uint32_t len, HashValue v = CS2_FNV_OFFSETBASIS) {
-  for (uint32_t i=0; i<len; i++) {
+inline HashValue Hash_FNV(const unsigned char* s, uint32_t len, HashValue v = CS2_FNV_OFFSETBASIS)
+{
+  for (uint32_t i = 0; i < len; i++) {
     v = v ^ s[i];
     v = v * CS2_FNV_PRIME;
   }
 
-  if (v==0) v = (s[0] ^ len)|HashValue(1); // ensure it is non-zero
+  if (v == 0)
+    v = (s[0] ^ len) | HashValue(1); // ensure it is non-zero
   return v;
 }
 
@@ -100,102 +101,117 @@ const HashValue CS2_DEFAULT_INITIALHASHVALUE = CS2_FNV_OFFSETBASIS;
 
 template <class AKeyType>
 struct HashInfo {
-  static HashValue  Hash  (const AKeyType &v1, const HashValue hv=CS2_DEFAULT_INITIALHASHVALUE) {
-       return Hash_FNV((const unsigned char *)&v1, sizeof(v1), hv);
+  static HashValue Hash(const AKeyType& v1, const HashValue hv = CS2_DEFAULT_INITIALHASHVALUE)
+  {
+    return Hash_FNV((const unsigned char*)&v1, sizeof(v1), hv);
   }
-  static bool       Equal (const AKeyType &v1, const AKeyType &v2) { return v1==v2;}
+  static bool Equal(const AKeyType& v1, const AKeyType& v2)
+  {
+    return v1 == v2;
+  }
 };
 
 template <>
-struct HashInfo<const char *> {
-  static HashValue  Hash (const char * const &v1, const HashValue hv = CS2_FNV_OFFSETBASIS) {
+struct HashInfo<const char*> {
+  static HashValue Hash(const char* const& v1, const HashValue hv = CS2_FNV_OFFSETBASIS)
+  {
     uint32_t i;
-    const unsigned char *lv1 = (const unsigned char *)(v1);
-    for (i=0; lv1[i]; i++) ;
-    return Hash_FNV (lv1, i, hv);
+    const unsigned char* lv1 = (const unsigned char*)(v1);
+    for (i = 0; lv1[i]; i++)
+      ;
+    return Hash_FNV(lv1, i, hv);
   }
 
-  static bool       Equal (const char * const &v1, const char * const &v2) {
+  static bool Equal(const char* const& v1, const char* const& v2)
+  {
     const char *lv1(v1), *lv2(v2);
     while (*lv1 == *lv2) {
-      if (*lv1==0) return true;
-      lv1+=1; lv2+=1;
+      if (*lv1 == 0)
+        return true;
+      lv1 += 1;
+      lv2 += 1;
     }
     return false;
   }
 };
 
 template <>
-  struct HashInfo<char *> : public HashInfo<const char *> { };
+struct HashInfo<char*> : public HashInfo<const char*> {};
 
 template <typename First, typename Second>
 struct CompoundHashKey {
-  First  fFirst;
+  First fFirst;
   Second fSecond;
 
-  CompoundHashKey(const First &f, const Second &s):fFirst(f),fSecond(s){}
+  CompoundHashKey(const First& f, const Second& s)
+    : fFirst(f)
+    , fSecond(s)
+  {}
 };
 
 template <typename First, typename Second>
 struct HashInfo<CompoundHashKey<First, Second> > {
   typedef CompoundHashKey<First, Second> Key;
-  static HashValue  Hash (const Key &v1, const HashValue hv = CS2_DEFAULT_INITIALHASHVALUE) {
+  static HashValue Hash(const Key& v1, const HashValue hv = CS2_DEFAULT_INITIALHASHVALUE)
+  {
     HashValue h1 = HashInfo<First>::Hash(v1.fFirst, hv);
     HashValue h2 = HashInfo<Second>::Hash(v1.fSecond, h1);
     return h2;
   }
 
-  static bool       Equal (const Key &v1, const Key &v2) {
+  static bool Equal(const Key& v1, const Key& v2)
+  {
     return HashInfo<First>::Equal(v1.fFirst, v2.fFirst) && HashInfo<Second>::Equal(v1.fSecond, v2.fSecond);
   }
 };
 
-template <typename AKeyType, typename ADataType,
-          class Allocator,
-          class AHashInfo = CS2::HashInfo<AKeyType> >
+template <typename AKeyType, typename ADataType, class Allocator, class AHashInfo = CS2::HashInfo<AKeyType> >
 class HashTable : private Allocator {
- private:
+private:
   void init(HashIndex numElements);
-  public:
 
- static  const uint32_t DefaultSize = 0; // for backward compat
+public:
+  static const uint32_t DefaultSize = 0; // for backward compat
 
-  HashTable (uint32_t ignored, const Allocator &a = Allocator()) : Allocator(a),
-    fTable(NULL),
-    fMask(0),
-    fNextFree(0),
-    fTableSize(0),
-    fHighestIndex(0)
-    {
-    }
+  HashTable(uint32_t ignored, const Allocator& a = Allocator())
+    : Allocator(a)
+    , fTable(NULL)
+    , fMask(0)
+    , fNextFree(0)
+    , fTableSize(0)
+    , fHighestIndex(0)
+  {}
 
-  HashTable (const Allocator &a = Allocator()) : Allocator(a),
-    fTable(NULL),
-    fMask(0),
-    fNextFree(0),
-    fTableSize(0),
-    fHighestIndex(0)
-    {
-    }
+  HashTable(const Allocator& a = Allocator())
+    : Allocator(a)
+    , fTable(NULL)
+    , fMask(0)
+    , fNextFree(0)
+    , fTableSize(0)
+    , fHighestIndex(0)
+  {}
 
   ~HashTable();
-  HashTable (const CS2_HT_DECL &);
+  HashTable(const CS2_HT_DECL&);
 
-  const Allocator& allocator() const { return *this;}
+  const Allocator& allocator() const
+  {
+    return *this;
+  }
 
-  CS2_HT_DECL &operator= (const CS2_HT_DECL &);
+  CS2_HT_DECL& operator=(const CS2_HT_DECL&);
 
   // Return the data value at the given index
-  const ADataType & operator[] (HashIndex) const;
-  ADataType & operator[] (HashIndex);
-  const ADataType &DataAt (HashIndex) const;
-  ADataType &DataAt (HashIndex);
+  const ADataType& operator[](HashIndex) const;
+  ADataType& operator[](HashIndex);
+  const ADataType& DataAt(HashIndex) const;
+  ADataType& DataAt(HashIndex);
 
   // Set the data value at the given index
-  void SetDataAt (HashIndex, const ADataType &);
+  void SetDataAt(HashIndex, const ADataType&);
 
   // Return the key value at the given index
-  const AKeyType &KeyAt (HashIndex) const;
+  const AKeyType& KeyAt(HashIndex) const;
 
   // Return the data value for the given key. It is considered a program
   // error for the key not to exist given a call to this function. An assert
@@ -218,7 +234,7 @@ class HashTable : private Allocator {
   bool Add(const AKeyType&, const ADataType&);
 
   // Remove the record at the given index.
-  void Remove (HashIndex);
+  void Remove(HashIndex);
 
   // Return the highest allocated index in the hash table
   HashIndex HighestIndex() const;
@@ -237,10 +253,11 @@ class HashTable : private Allocator {
 
   // Dump hash table statistics to cout
   template <class str>
-    void DumpStatistics(str &out);
+  void DumpStatistics(str& out);
 
   template <class ostr>
-  friend ostr &operator << (ostr &out, CS2_HT_DECL &table) {
+  friend ostr& operator<<(ostr& out, CS2_HT_DECL& table)
+  {
 
     typename CS2_HTC_DECL c(table);
     for (c.SetToFirst(); c.Valid(); c.SetToNext())
@@ -249,10 +266,9 @@ class HashTable : private Allocator {
   }
 
   class Cursor {
-    public:
-
-    Cursor (const CS2_HT_DECL &);
-    Cursor (const Cursor &);
+  public:
+    Cursor(const CS2_HT_DECL&);
+    Cursor(const Cursor&);
     // ~Cursor();
 
     // Set the cursor position
@@ -265,65 +281,59 @@ class HashTable : private Allocator {
     // Convert the cursor to a table index.
     operator HashIndex() const;
 
-    private:
-
-    Cursor &operator= (const Cursor &);
-    const CS2_HT_DECL &fTable;
-    uint32_t         fIndex;
+  private:
+    Cursor& operator=(const Cursor&);
+    const CS2_HT_DECL& fTable;
+    uint32_t fIndex;
   };
 
-  friend class Cursor ;
+  friend class Cursor;
 
- protected:
-
-  #define CS2_HTE_DECL CS2_HT_DECL::HashTableEntry
+protected:
+#define CS2_HTE_DECL CS2_HT_DECL::HashTableEntry
 
   class HashTableEntry {
-    public:
-
-    void *operator new (size_t, void *);
+  public:
+    void* operator new(size_t, void*);
 
     HashTableEntry();
     ~HashTableEntry();
-    HashTableEntry (const AKeyType &, const ADataType &, HashValue, HashIndex);
-    HashTableEntry (const HashTableEntry &);
-    HashTableEntry &operator= (const HashTableEntry &);
+    HashTableEntry(const AKeyType&, const ADataType&, HashValue, HashIndex);
+    HashTableEntry(const HashTableEntry&);
+    HashTableEntry& operator=(const HashTableEntry&);
 
-    const AKeyType  &Key() const;
-    void             SetKey (const AKeyType &);
+    const AKeyType& Key() const;
+    void SetKey(const AKeyType&);
 
-    ADataType       &Data();
-    const ADataType &Data() const;
-    void             SetData (const ADataType &);
+    ADataType& Data();
+    const ADataType& Data() const;
+    void SetData(const ADataType&);
 
     HashValue HashCode() const;
-    void      SetHashCode (HashValue);
+    void SetHashCode(HashValue);
 
-    bool   Valid() const;
-    void      Invalidate();
+    bool Valid() const;
+    void Invalidate();
 
     HashIndex CollisionChain() const;
-    void      SetCollisionChain (HashIndex);
+    void SetCollisionChain(HashIndex);
 
-    private:
-
-    AKeyType   fKey;
-    ADataType  fData;
-    HashValue  fHashCode;    // unmasked hash value
-    HashIndex  fChain;       // collision chain
-
+  private:
+    AKeyType fKey;
+    ADataType fData;
+    HashValue fHashCode; // unmasked hash value
+    HashIndex fChain; // collision chain
   };
 
   void Grow();
-                            // handle growth of internal tables
-  void GrowAndRehash( HashIndex, HashTableEntry *, HashIndex, HashIndex);
+  // handle growth of internal tables
+  void GrowAndRehash(HashIndex, HashTableEntry*, HashIndex, HashIndex);
 
-  HashTableEntry *fTable;
-  uint32_t fTableSize;        // Total table size (closed + open)
-  uint32_t fMask;             // Mask to compute modulus for closed area
-  uint32_t fNextFree;         // Next free slot in the open area
-  HashIndex fHighestIndex;  // Highest allocated index
-
+  HashTableEntry* fTable;
+  uint32_t fTableSize; // Total table size (closed + open)
+  uint32_t fMask; // Mask to compute modulus for closed area
+  uint32_t fNextFree; // Next free slot in the open area
+  HashIndex fHighestIndex; // Highest allocated index
 };
 
 // -----------------------------------------------------------------------
@@ -334,7 +344,8 @@ class HashTable : private Allocator {
 //
 // new operator that does not allocate storage.
 
-CS2_HT_TEMP inline void *CS2_HTE_DECL::operator new (size_t, void *ptr) {
+CS2_HT_TEMP inline void* CS2_HTE_DECL::operator new(size_t, void* ptr)
+{
   return ptr;
 }
 
@@ -342,23 +353,28 @@ CS2_HT_TEMP inline void *CS2_HTE_DECL::operator new (size_t, void *ptr) {
 //
 // Construct a hash table entry.
 
-CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry() :
-fHashCode(0) { }
+CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry()
+  : fHashCode(0)
+{}
 
 // HashTableEntry::HashTableEntry (...)
 //
 // Construct a hash table entry from parts.
 
-CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry (const AKeyType &key,
-                                             const ADataType &data,
-                                             HashValue value, HashIndex chain) :
-fKey(key), fData(data), fHashCode(value), fChain(chain) { }
+CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry(
+  const AKeyType& key, const ADataType& data, HashValue value, HashIndex chain)
+  : fKey(key)
+  , fData(data)
+  , fHashCode(value)
+  , fChain(chain)
+{}
 
 // HashTableEntry::~HashTableEntry
 //
 // Destroy a hash table entry.
 
-CS2_HT_TEMP inline CS2_HTE_DECL::~HashTableEntry() {
+CS2_HT_TEMP inline CS2_HTE_DECL::~HashTableEntry()
+{
   Invalidate();
 }
 
@@ -366,17 +382,19 @@ CS2_HT_TEMP inline CS2_HTE_DECL::~HashTableEntry() {
 //
 // Copy construct a hash table entry.
 
-CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry (const typename CS2_HTE_DECL &entry) :
-fKey(entry.fKey),
-fData(entry.fData),
-fHashCode(entry.fHashCode),
-fChain(entry.fChain) { }
+CS2_HT_TEMP inline CS2_HTE_DECL::HashTableEntry(const typename CS2_HTE_DECL& entry)
+  : fKey(entry.fKey)
+  , fData(entry.fData)
+  , fHashCode(entry.fHashCode)
+  , fChain(entry.fChain)
+{}
 
 // HashTableEntry::operator=
 //
 // Assign a hash table entry to another.
 
-CS2_HT_TEMP inline typename CS2_HTE_DECL &CS2_HTE_DECL::operator= (const typename CS2_HTE_DECL &entry) {
+CS2_HT_TEMP inline typename CS2_HTE_DECL& CS2_HTE_DECL::operator=(const typename CS2_HTE_DECL& entry)
+{
   fKey = entry.fKey;
   fData = entry.fData;
   fHashCode = entry.fHashCode;
@@ -389,7 +407,8 @@ CS2_HT_TEMP inline typename CS2_HTE_DECL &CS2_HTE_DECL::operator= (const typenam
 //
 // Return a handle to the key.
 
-CS2_HT_TEMP inline const AKeyType &CS2_HTE_DECL::Key() const {
+CS2_HT_TEMP inline const AKeyType& CS2_HTE_DECL::Key() const
+{
   return fKey;
 }
 
@@ -397,7 +416,8 @@ CS2_HT_TEMP inline const AKeyType &CS2_HTE_DECL::Key() const {
 //
 // Set the key value.
 
-CS2_HT_TEMP inline void CS2_HTE_DECL::SetKey (const AKeyType &key) {
+CS2_HT_TEMP inline void CS2_HTE_DECL::SetKey(const AKeyType& key)
+{
   fKey = key;
 }
 
@@ -405,11 +425,13 @@ CS2_HT_TEMP inline void CS2_HTE_DECL::SetKey (const AKeyType &key) {
 //
 // Return a handle to the data.
 
-CS2_HT_TEMP inline const ADataType &CS2_HTE_DECL::Data() const {
+CS2_HT_TEMP inline const ADataType& CS2_HTE_DECL::Data() const
+{
   return fData;
 }
 
-CS2_HT_TEMP inline ADataType &CS2_HTE_DECL::Data() {
+CS2_HT_TEMP inline ADataType& CS2_HTE_DECL::Data()
+{
   return fData;
 }
 
@@ -417,7 +439,8 @@ CS2_HT_TEMP inline ADataType &CS2_HTE_DECL::Data() {
 //
 // Set the data value.
 
-CS2_HT_TEMP inline void CS2_HTE_DECL::SetData (const ADataType &data) {
+CS2_HT_TEMP inline void CS2_HTE_DECL::SetData(const ADataType& data)
+{
   fData = data;
 }
 
@@ -425,7 +448,8 @@ CS2_HT_TEMP inline void CS2_HTE_DECL::SetData (const ADataType &data) {
 //
 // Return the hash code.
 
-CS2_HT_TEMP inline HashValue CS2_HTE_DECL::HashCode() const {
+CS2_HT_TEMP inline HashValue CS2_HTE_DECL::HashCode() const
+{
   return fHashCode;
 }
 
@@ -433,7 +457,8 @@ CS2_HT_TEMP inline HashValue CS2_HTE_DECL::HashCode() const {
 //
 // Set the hash code.
 
-CS2_HT_TEMP inline void CS2_HTE_DECL::SetHashCode (HashValue value) {
+CS2_HT_TEMP inline void CS2_HTE_DECL::SetHashCode(HashValue value)
+{
   fHashCode = value;
 }
 
@@ -441,7 +466,8 @@ CS2_HT_TEMP inline void CS2_HTE_DECL::SetHashCode (HashValue value) {
 //
 // Predicate to determine if the entry is valid.
 
-CS2_HT_TEMP inline bool CS2_HTE_DECL::Valid() const {
+CS2_HT_TEMP inline bool CS2_HTE_DECL::Valid() const
+{
   return (fHashCode != 0);
 }
 
@@ -449,7 +475,8 @@ CS2_HT_TEMP inline bool CS2_HTE_DECL::Valid() const {
 //
 // Invalidate the entry.
 
-CS2_HT_TEMP inline void CS2_HTE_DECL::Invalidate() {
+CS2_HT_TEMP inline void CS2_HTE_DECL::Invalidate()
+{
   fHashCode = 0;
 }
 
@@ -457,7 +484,8 @@ CS2_HT_TEMP inline void CS2_HTE_DECL::Invalidate() {
 //
 // Return the collision chain index.
 
-CS2_HT_TEMP inline HashIndex CS2_HTE_DECL::CollisionChain() const {
+CS2_HT_TEMP inline HashIndex CS2_HTE_DECL::CollisionChain() const
+{
   return fChain;
 }
 
@@ -465,7 +493,8 @@ CS2_HT_TEMP inline HashIndex CS2_HTE_DECL::CollisionChain() const {
 //
 // Set the collision chain index.
 
-CS2_HT_TEMP inline void CS2_HTE_DECL::SetCollisionChain (HashIndex chainIndex) {
+CS2_HT_TEMP inline void CS2_HTE_DECL::SetCollisionChain(HashIndex chainIndex)
+{
   fChain = chainIndex;
 }
 
@@ -477,11 +506,13 @@ CS2_HT_TEMP inline void CS2_HTE_DECL::SetCollisionChain (HashIndex chainIndex) {
 //
 // Return a reference to the data at the given index.
 
-CS2_HT_TEMP inline const ADataType &CS2_HT_DECL::operator[] (HashIndex index) const {
+CS2_HT_TEMP inline const ADataType& CS2_HT_DECL::operator[](HashIndex index) const
+{
   return DataAt(index);
 }
 
-CS2_HT_TEMP inline ADataType &CS2_HT_DECL::operator[] (HashIndex index) {
+CS2_HT_TEMP inline ADataType& CS2_HT_DECL::operator[](HashIndex index)
+{
   return DataAt(index);
 }
 
@@ -489,16 +520,18 @@ CS2_HT_TEMP inline ADataType &CS2_HT_DECL::operator[] (HashIndex index) {
 //
 // Return a reference to the data at the given index.
 
-CS2_HT_TEMP inline const ADataType &CS2_HT_DECL::DataAt (HashIndex index) const {
-  CS2Assert (index < fTableSize, ("Hash index %d out of range", index));
-  CS2Assert (fTable[index].Valid(), ("Invalid hash table entry"));
+CS2_HT_TEMP inline const ADataType& CS2_HT_DECL::DataAt(HashIndex index) const
+{
+  CS2Assert(index < fTableSize, ("Hash index %d out of range", index));
+  CS2Assert(fTable[index].Valid(), ("Invalid hash table entry"));
 
   return fTable[index].Data();
 }
 
-CS2_HT_TEMP inline ADataType &CS2_HT_DECL::DataAt (HashIndex index) {
-  CS2Assert (index < fTableSize, ("Hash index %d out of range", index));
-  CS2Assert (fTable[index].Valid(), ("Invalid hash table entry"));
+CS2_HT_TEMP inline ADataType& CS2_HT_DECL::DataAt(HashIndex index)
+{
+  CS2Assert(index < fTableSize, ("Hash index %d out of range", index));
+  CS2Assert(fTable[index].Valid(), ("Invalid hash table entry"));
 
   return fTable[index].Data();
 }
@@ -507,20 +540,22 @@ CS2_HT_TEMP inline ADataType &CS2_HT_DECL::DataAt (HashIndex index) {
 //
 // Set the data at the given index.
 
-CS2_HT_TEMP inline void CS2_HT_DECL::SetDataAt (HashIndex index, const ADataType & data) {
-  CS2Assert (index < fTableSize, ("Hash index %d out of range", index));
-  CS2Assert (fTable[index].Valid(), ("Invalid hash table entry"));
+CS2_HT_TEMP inline void CS2_HT_DECL::SetDataAt(HashIndex index, const ADataType& data)
+{
+  CS2Assert(index < fTableSize, ("Hash index %d out of range", index));
+  CS2Assert(fTable[index].Valid(), ("Invalid hash table entry"));
 
-  fTable[index].SetData (data);
+  fTable[index].SetData(data);
 }
 
 // HashTable::KeyAt
 //
 // Return a reference to the key at the given index.
 
-CS2_HT_TEMP inline const AKeyType &CS2_HT_DECL::KeyAt (HashIndex index) const {
-  CS2Assert (index < fTableSize, ("Hash index %d out of range", index));
-  CS2Assert (fTable[index].Valid(), ("Invalid hash table entry"));
+CS2_HT_TEMP inline const AKeyType& CS2_HT_DECL::KeyAt(HashIndex index) const
+{
+  CS2Assert(index < fTableSize, ("Hash index %d out of range", index));
+  CS2Assert(fTable[index].Valid(), ("Invalid hash table entry"));
 
   return fTable[index].Key();
 }
@@ -560,7 +595,8 @@ CS2_HT_TEMP inline const ADataType& CS2_HT_DECL::Get(const AKeyType& key) const
 //
 // Return the highest allocated index in the hash table
 
-CS2_HT_TEMP inline HashIndex CS2_HT_DECL::HighestIndex() const {
+CS2_HT_TEMP inline HashIndex CS2_HT_DECL::HighestIndex() const
+{
   return fHighestIndex;
 }
 
@@ -568,7 +604,8 @@ CS2_HT_TEMP inline HashIndex CS2_HT_DECL::HighestIndex() const {
 //
 // Predicate to determine if the hash table is empty.
 
-CS2_HT_TEMP inline bool CS2_HT_DECL::IsEmpty() const {
+CS2_HT_TEMP inline bool CS2_HT_DECL::IsEmpty() const
+{
   return (fHighestIndex == 0);
 }
 
@@ -580,19 +617,22 @@ CS2_HT_TEMP inline bool CS2_HT_DECL::IsEmpty() const {
 //
 // Construct a hash table cursor.
 
-CS2_HT_TEMP inline CS2_HTC_DECL::Cursor (const CS2_HT_DECL &inputTable) :
-fTable(inputTable),
-fIndex(0) { }
+CS2_HT_TEMP inline CS2_HTC_DECL::Cursor(const CS2_HT_DECL& inputTable)
+  : fTable(inputTable)
+  , fIndex(0)
+{}
 
-CS2_HT_TEMP inline CS2_HTC_DECL::Cursor (const typename CS2_HTC_DECL &other) :
-fTable(other.fTable),
-fIndex(other.fIndex) { }
+CS2_HT_TEMP inline CS2_HTC_DECL::Cursor(const typename CS2_HTC_DECL& other)
+  : fTable(other.fTable)
+  , fIndex(other.fIndex)
+{}
 
 // HashTable::Cursor::SetToFirst
 //
 // Set the cursor to point to the first valid entry.
 
-CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToFirst() {
+CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToFirst()
+{
   fIndex = 0;
   return SetToNext();
 }
@@ -601,9 +641,11 @@ CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToFirst() {
 //
 // Set the cursor to point to the next valid entry.
 
-CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToNext() {
+CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToNext()
+{
   for (++fIndex; fIndex < fTable.fTableSize; ++fIndex) {
-    if (Valid()) return fIndex;
+    if (Valid())
+      return fIndex;
   }
 
   return (fIndex = 0);
@@ -613,7 +655,8 @@ CS2_HT_TEMP inline HashIndex CS2_HTC_DECL::SetToNext() {
 //
 // Predicate to determine if the entry currently pointed to is valid.
 
-CS2_HT_TEMP inline bool CS2_HTC_DECL::Valid() const {
+CS2_HT_TEMP inline bool CS2_HTC_DECL::Valid() const
+{
   return (fIndex != 0) && (fTable.fTable[fIndex].Valid() != 0);
 }
 
@@ -621,7 +664,8 @@ CS2_HT_TEMP inline bool CS2_HTC_DECL::Valid() const {
 //
 // Return the index of the entry currently pointed to.
 
-CS2_HT_TEMP inline CS2_HTC_DECL::operator HashIndex() const {
+CS2_HT_TEMP inline CS2_HTC_DECL::operator HashIndex() const
+{
   return fIndex;
 }
 
@@ -629,19 +673,18 @@ CS2_HT_TEMP inline CS2_HTC_DECL::operator HashIndex() const {
 // HashTable methods
 // -----------------------------------------------------------------------
 
-CS2_HT_TEMP void
-inline CS2_HT_DECL::init(HashIndex numElements) {
+CS2_HT_TEMP void inline CS2_HT_DECL::init(HashIndex numElements)
+{
   HashIndex freeIndex, hashIndex;
 
-  HashIndex const closedAreaSize =
-    BitManipulator::CeilingPowerOfTwo(numElements) < kMinimumHashTableSize ?
-      kMinimumHashTableSize :
-      BitManipulator::CeilingPowerOfTwo(numElements);
+  HashIndex const closedAreaSize = BitManipulator::CeilingPowerOfTwo(numElements) < kMinimumHashTableSize
+    ? kMinimumHashTableSize
+    : BitManipulator::CeilingPowerOfTwo(numElements);
 
   HashIndex const openAreaSize = closedAreaSize / 4;
 
   HashIndex const newSize = closedAreaSize + openAreaSize;
-  HashTableEntry * const newTable = (HashTableEntry *) Allocator::allocate(newSize * sizeof(HashTableEntry));
+  HashTableEntry* const newTable = (HashTableEntry*)Allocator::allocate(newSize * sizeof(HashTableEntry));
   if (newTable == NULL)
     SystemResourceError::Memory();
 
@@ -657,21 +700,20 @@ inline CS2_HT_DECL::init(HashIndex numElements) {
   }
 
   // Initialize the rehash area to link up the free chain
-  for (freeIndex = fNextFree;
-       freeIndex < fTableSize - 1;
-       ++freeIndex) {
+  for (freeIndex = fNextFree; freeIndex < fTableSize - 1; ++freeIndex) {
     fTable[freeIndex].Invalidate();
-    fTable[freeIndex].SetCollisionChain (freeIndex + 1);
+    fTable[freeIndex].SetCollisionChain(freeIndex + 1);
   }
   fTable[fTableSize - 1].Invalidate();
-  fTable[fTableSize - 1].SetCollisionChain (0);
+  fTable[fTableSize - 1].SetCollisionChain(0);
 }
 
 // HashTable::~HashTable
 //
 // Destroy a hash table.
 
-CS2_HT_TEMP inline CS2_HT_DECL::~HashTable () {
+CS2_HT_TEMP inline CS2_HT_DECL::~HashTable()
+{
   MakeEmpty();
 }
 
@@ -680,30 +722,28 @@ CS2_HT_TEMP inline CS2_HT_DECL::~HashTable () {
 // Copy construct a hash table.
 
 CS2_HT_TEMP
-inline CS2_HT_DECL::HashTable (const CS2_HT_DECL &table) :
-Allocator(table),
-fTable(
-  table.fTableSize > 0 ?
-    (HashTableEntry *) Allocator::allocate(table.fTableSize * sizeof(HashTableEntry)) :
-    NULL),
-fTableSize(table.fTableSize),
-fMask(table.fMask),
-fNextFree(table.fNextFree),
-fHighestIndex(table.fHighestIndex) {
+inline CS2_HT_DECL::HashTable(const CS2_HT_DECL& table)
+  : Allocator(table)
+  , fTable(
+      table.fTableSize > 0 ? (HashTableEntry*)Allocator::allocate(table.fTableSize * sizeof(HashTableEntry)) : NULL)
+  , fTableSize(table.fTableSize)
+  , fMask(table.fMask)
+  , fNextFree(table.fNextFree)
+  , fHighestIndex(table.fHighestIndex)
+{
 
-   if (fTableSize > 0) {
+  if (fTableSize > 0) {
     for (HashIndex hashIndex = 0; hashIndex < fTableSize; ++hashIndex) {
-      HashTableEntry &entry = table.fTable[hashIndex];
+      HashTableEntry& entry = table.fTable[hashIndex];
 
       if (entry.Valid()) {
-        new (fTable + hashIndex) HashTableEntry (entry);
+        new (fTable + hashIndex) HashTableEntry(entry);
       } else {
         fTable[hashIndex].Invalidate();
-              fTable[hashIndex].SetCollisionChain (entry.CollisionChain());
+        fTable[hashIndex].SetCollisionChain(entry.CollisionChain());
       }
     }
   }
-
 }
 
 // HashTable::operator=
@@ -711,10 +751,11 @@ fHighestIndex(table.fHighestIndex) {
 // Assign a hash table to another.
 
 CS2_HT_TEMP
-inline CS2_HT_DECL &CS2_HT_DECL::operator= (const CS2_HT_DECL &table) {
+inline CS2_HT_DECL& CS2_HT_DECL::operator=(const CS2_HT_DECL& table)
+{
 
   if (fTableSize < table.fTableSize) {
-    HashTableEntry *newTable = (HashTableEntry *)Allocator::allocate(table.fTableSize * sizeof(HashTableEntry));
+    HashTableEntry* newTable = (HashTableEntry*)Allocator::allocate(table.fTableSize * sizeof(HashTableEntry));
     if (newTable == NULL)
       SystemResourceError::Memory();
     memcpy(newTable, fTable, fTableSize * sizeof(HashTableEntry));
@@ -731,7 +772,7 @@ inline CS2_HT_DECL &CS2_HT_DECL::operator= (const CS2_HT_DECL &table) {
   }
 
   for (HashIndex hashIndex = 0; hashIndex < table.fTableSize; ++hashIndex) {
-    const HashTableEntry &entry = table.fTable[hashIndex];
+    const HashTableEntry& entry = table.fTable[hashIndex];
     bool thisEntryValid;
 
     thisEntryValid = (hashIndex < fTableSize && fTable[hashIndex].Valid());
@@ -740,7 +781,7 @@ inline CS2_HT_DECL &CS2_HT_DECL::operator= (const CS2_HT_DECL &table) {
       if (thisEntryValid) {
         fTable[hashIndex] = entry;
       } else {
-        new (fTable + hashIndex) HashTableEntry (entry);
+        new (fTable + hashIndex) HashTableEntry(entry);
       }
     } else {
       if (thisEntryValid) {
@@ -749,7 +790,7 @@ inline CS2_HT_DECL &CS2_HT_DECL::operator= (const CS2_HT_DECL &table) {
       }
 
       fTable[hashIndex].Invalidate();
-      fTable[hashIndex].SetCollisionChain (entry.CollisionChain());
+      fTable[hashIndex].SetCollisionChain(entry.CollisionChain());
     }
   }
 
@@ -762,64 +803,63 @@ inline CS2_HT_DECL &CS2_HT_DECL::operator= (const CS2_HT_DECL &table) {
 
 // HashTable::GrowTo(n)
 // Grow table to handle at least newSize elements
-CS2_HT_TEMP void
-inline CS2_HT_DECL::GrowTo(uint32_t newSize) {
-  uint32_t    closedAreaSize, openAreaSize;
-  HashIndex   oldSize;
-  HashTableEntry *oldBase;
+CS2_HT_TEMP void inline CS2_HT_DECL::GrowTo(uint32_t newSize)
+{
+  uint32_t closedAreaSize, openAreaSize;
+  HashIndex oldSize;
+  HashTableEntry* oldBase;
 
   closedAreaSize = BitManipulator::CeilingPowerOfTwo(newSize);
   if (closedAreaSize < kMinimumHashTableSize)
-      closedAreaSize = kMinimumHashTableSize;
+    closedAreaSize = kMinimumHashTableSize;
   openAreaSize = closedAreaSize / 4;
 
-  if((closedAreaSize + openAreaSize) < fTableSize ) return;
+  if ((closedAreaSize + openAreaSize) < fTableSize)
+    return;
 
   // Record old base and size
   oldBase = fTable;
   oldSize = fTableSize;
 
-  GrowAndRehash(oldSize,oldBase,closedAreaSize,openAreaSize);
+  GrowAndRehash(oldSize, oldBase, closedAreaSize, openAreaSize);
 }
-
 
 // HashTable::Grow
 //
 // Grow the hash table to double the current size and rehash entries in
 // the new table.
 
-CS2_HT_TEMP void
-inline CS2_HT_DECL::Grow() {
-  HashTableEntry *oldBase;
-  HashIndex       oldSize, closedAreaSize, openAreaSize,newSize;
+CS2_HT_TEMP void inline CS2_HT_DECL::Grow()
+{
+  HashTableEntry* oldBase;
+  HashIndex oldSize, closedAreaSize, openAreaSize, newSize;
 
   // Record old base and size
   oldBase = fTable;
   oldSize = fTableSize;
 
   // Calculate the new mask value and table size
-  if (oldSize==0) newSize = kMinimumHashTableSize - 1;
+  if (oldSize == 0)
+    newSize = kMinimumHashTableSize - 1;
   else
-    newSize =  (fMask << 1) | 1;     // double the size
-  closedAreaSize = newSize  + 1;    // make it even
+    newSize = (fMask << 1) | 1; // double the size
+  closedAreaSize = newSize + 1; // make it even
   openAreaSize = closedAreaSize / 4;
 
-  GrowAndRehash(oldSize,oldBase,closedAreaSize,openAreaSize);
+  GrowAndRehash(oldSize, oldBase, closedAreaSize, openAreaSize);
 }
 
 // Grow and rehash table
-CS2_HT_TEMP void
-inline CS2_HT_DECL::GrowAndRehash(HashIndex oldSize,
-                              HashTableEntry *oldBase,
-                              HashIndex closedAreaSize,
-                              HashIndex openAreaSize) {
-  HashIndex      freeIndex, oldIndex, hashIndex;
-  //DumpStatistics();
-  CS2Assert(closedAreaSize,("closedAreaSize not set"));
-  CS2Assert(openAreaSize,("openAreaSize is 0"));
+CS2_HT_TEMP void inline CS2_HT_DECL::GrowAndRehash(
+  HashIndex oldSize, HashTableEntry* oldBase, HashIndex closedAreaSize, HashIndex openAreaSize)
+{
+  HashIndex freeIndex, oldIndex, hashIndex;
+  // DumpStatistics();
+  CS2Assert(closedAreaSize, ("closedAreaSize not set"));
+  CS2Assert(openAreaSize, ("openAreaSize is 0"));
 
   HashIndex const newTableSize = closedAreaSize + openAreaSize;
-  HashTableEntry * newTable = (HashTableEntry *) Allocator::allocate(newTableSize * sizeof(HashTableEntry));
+  HashTableEntry* newTable = (HashTableEntry*)Allocator::allocate(newTableSize * sizeof(HashTableEntry));
   if (newTable == NULL)
     SystemResourceError::Memory();
 
@@ -837,27 +877,28 @@ inline CS2_HT_DECL::GrowAndRehash(HashIndex oldSize,
   // Initialize the rehash area to link up the free chain
   for (freeIndex = fNextFree; freeIndex < fTableSize - 1; ++freeIndex) {
     fTable[freeIndex].Invalidate();
-    fTable[freeIndex].SetCollisionChain (freeIndex + 1);
+    fTable[freeIndex].SetCollisionChain(freeIndex + 1);
   }
   fTable[fTableSize - 1].Invalidate();
-  fTable[fTableSize - 1].SetCollisionChain (0);
+  fTable[fTableSize - 1].SetCollisionChain(0);
 
   // Rehash everything since the hash function is based on the table size.
   for (oldIndex = 0; oldIndex < oldSize; ++oldIndex) {
-    if (oldBase[oldIndex].Valid()) {   // this is a valid entry
+    if (oldBase[oldIndex].Valid()) { // this is a valid entry
       bool found;
       HashValue oldHash = oldBase[oldIndex].HashCode();
 
       // Attempt to locate a position for this entry in the new table.
-      found = Locate (oldBase[oldIndex].Key(), hashIndex, oldHash);
-      CS2Assert (! found, ("Unable to rehash entry %d", oldIndex));
+      found = Locate(oldBase[oldIndex].Key(), hashIndex, oldHash);
+      CS2Assert(!found, ("Unable to rehash entry %d", oldIndex));
 
       // hashIndex points at either an invalid hash table entry or the last
       // entry in a collision chain for this key
 
       if (fTable[hashIndex].Valid()) {
         fTable[hashIndex].SetCollisionChain(fNextFree);
-        CS2Assert (fNextFree != 0 && fNextFree<fTableSize, ("1:Invalid hash index %d %d", (int)hashIndex, (int)fNextFree));
+        CS2Assert(
+          fNextFree != 0 && fNextFree < fTableSize, ("1:Invalid hash index %d %d", (int)hashIndex, (int)fNextFree));
         hashIndex = fNextFree;
         fNextFree = fTable[fNextFree].CollisionChain();
       }
@@ -866,8 +907,8 @@ inline CS2_HT_DECL::GrowAndRehash(HashIndex oldSize,
         fHighestIndex = hashIndex;
 
       // Just bitwise copy the old element to the new.
-      memcpy (fTable + hashIndex, oldBase + oldIndex, sizeof(HashTableEntry));
-      fTable[hashIndex].SetCollisionChain (0);
+      memcpy(fTable + hashIndex, oldBase + oldIndex, sizeof(HashTableEntry));
+      fTable[hashIndex].SetCollisionChain(0);
     }
   }
 
@@ -880,14 +921,14 @@ inline CS2_HT_DECL::GrowAndRehash(HashIndex oldSize,
 // Dump hash table statistics
 CS2_HT_TEMP
 template <class str>
-void
-inline CS2_HT_DECL::DumpStatistics (str &out) {
+void inline CS2_HT_DECL::DumpStatistics(str& out)
+{
   int32_t nentries, partsize, low, high, cnt, tcnt;
 
   Cursor hi(*this);
   nentries = fTableSize;
-  partsize = nentries/5;
-  nentries = partsize*5;
+  partsize = nentries / 5;
+  nentries = partsize * 5;
   low = 0;
   high = partsize;
   cnt = 0;
@@ -905,13 +946,15 @@ inline CS2_HT_DECL::DumpStatistics (str &out) {
   if (cnt > 0) {
     out << low << " --> " << high << " cnt = " << cnt << "\n";
     tcnt += cnt;
-    if (high < nentries) cnt = 0;
+    if (high < nentries)
+      cnt = 0;
   }
   if (tcnt == 0)
-    out << "** empty **" << "\n";
+    out << "** empty **"
+        << "\n";
   else {
     out << "collisions = " << cnt << " total cnt = " << tcnt;
-    out << " percent col = " << (cnt * 100)/tcnt << "\n";
+    out << " percent col = " << (cnt * 100) / tcnt << "\n";
   }
 }
 
@@ -921,30 +964,31 @@ inline CS2_HT_DECL::DumpStatistics (str &out) {
 // true iff an entry is found.  If an entry is found, also set the hash
 // index parameter to the hash table index where the entry is located.
 
-CS2_HT_TEMP bool
-inline CS2_HT_DECL::Locate (const AKeyType &key, HashIndex &hashIndex,
-                            HashValue &hashValue) const {
+CS2_HT_TEMP bool inline CS2_HT_DECL::Locate(const AKeyType& key, HashIndex& hashIndex, HashValue& hashValue) const
+{
 
-  if (fTableSize==0) return false;
+  if (fTableSize == 0)
+    return false;
 
   if (hashValue == 0) {
-    hashValue = AHashInfo::Hash (key);
-    CS2Assert (hashValue != 0, ("Invalid hash value"));
+    hashValue = AHashInfo::Hash(key);
+    CS2Assert(hashValue != 0, ("Invalid hash value"));
   }
 
   hashIndex = (hashValue & fMask) + 1;
-  CS2Assert (hashIndex != 0 && hashIndex<fTableSize, ("Invalid hash index %d", (int)hashIndex));
+  CS2Assert(hashIndex != 0 && hashIndex < fTableSize, ("Invalid hash index %d", (int)hashIndex));
 
   // Search the hash table
-  if (! fTable[hashIndex].Valid()) return false;
+  if (!fTable[hashIndex].Valid())
+    return false;
 
-  while ((fTable[hashIndex].HashCode() != hashValue) ||
-         ! AHashInfo::Equal (key, fTable[hashIndex].Key())){
+  while ((fTable[hashIndex].HashCode() != hashValue) || !AHashInfo::Equal(key, fTable[hashIndex].Key())) {
 
     // Set index to next entry in the collision chain or, if empty, end search.
     if (fTable[hashIndex].CollisionChain() != 0) {
       HashIndex hi2 = fTable[hashIndex].CollisionChain();
-      CS2Assert (hi2 != 0 && hi2<fTableSize, ("2:Invalid hash index %d %d %p", (int)hi2, (int)hashIndex, (void *)&fTable[0]));
+      CS2Assert(
+        hi2 != 0 && hi2 < fTableSize, ("2:Invalid hash index %d %d %p", (int)hi2, (int)hashIndex, (void*)&fTable[0]));
       hashIndex = hi2;
     } else {
       return false;
@@ -964,12 +1008,13 @@ inline CS2_HT_DECL::Locate (const AKeyType &key, HashIndex &hashIndex,
 
 CS2_HT_TEMP bool
 
-inline CS2_HT_DECL::Add (const AKeyType &key, const ADataType &data,
-              HashIndex &hashIndex, HashValue hashValue, bool noLocate) {
+  inline CS2_HT_DECL::Add(
+    const AKeyType& key, const ADataType& data, HashIndex& hashIndex, HashValue hashValue, bool noLocate)
+{
   // Search the table for a record matching this key.
   // If a matching record is found, then fail.
 
-  if (!noLocate && Locate (key, hashIndex, hashValue)) {
+  if (!noLocate && Locate(key, hashIndex, hashValue)) {
     return false;
   }
 
@@ -978,9 +1023,8 @@ inline CS2_HT_DECL::Add (const AKeyType &key, const ADataType &data,
     Grow();
 
     // The grow routine rehashes everything, so we need to rehash this key.
-    bool foundThisRecord = Locate (key, hashIndex, hashValue);
-    CS2Assert (! foundThisRecord,
-            ("Failed to relocate entry to an empty record\n"));
+    bool foundThisRecord = Locate(key, hashIndex, hashValue);
+    CS2Assert(!foundThisRecord, ("Failed to relocate entry to an empty record\n"));
   }
 
   // hashIndex points at either an invalid hash table entry or the last
@@ -989,42 +1033,39 @@ inline CS2_HT_DECL::Add (const AKeyType &key, const ADataType &data,
   if (fTable[hashIndex].Valid()) {
     fTable[hashIndex].SetCollisionChain(fNextFree);
     hashIndex = fNextFree;
-    fNextFree = fTable[fNextFree].CollisionChain();  // maintain free chain
+    fNextFree = fTable[fNextFree].CollisionChain(); // maintain free chain
   }
 
   if (hashIndex > fHighestIndex)
     fHighestIndex = hashIndex;
 
-  new (fTable + hashIndex) HashTableEntry (key, data, hashValue, 0);
-  return true;  // record was successfully added
+  new (fTable + hashIndex) HashTableEntry(key, data, hashValue, 0);
+  return true; // record was successfully added
 }
 
 // HashTable::Remove
 //
 // Remove the given entry from the hash table.
 
-CS2_HT_TEMP void
-inline CS2_HT_DECL::Remove (HashIndex hashIndex) {
-  CS2Assert (fTable[hashIndex].Valid(),
-          ("Attempt to remove invalid hash table entry\n"));
+CS2_HT_TEMP void inline CS2_HT_DECL::Remove(HashIndex hashIndex)
+{
+  CS2Assert(fTable[hashIndex].Valid(), ("Attempt to remove invalid hash table entry\n"));
 
   // If the entry is in the rehash area, locate the head of the hash chain and
   // follow it to unlink this entry from the chain.  Then return the rehash area
   // space to the free pool.
 
-  if (hashIndex > (fMask+1)) {
+  if (hashIndex > (fMask + 1)) {
     HashIndex headOfChain = (fTable[hashIndex].HashCode() & fMask) + 1;
     HashIndex collisionIndex;
 
-    for (collisionIndex = headOfChain;
-         fTable[collisionIndex].CollisionChain() != hashIndex;
+    for (collisionIndex = headOfChain; fTable[collisionIndex].CollisionChain() != hashIndex;
          collisionIndex = fTable[collisionIndex].CollisionChain()) {
-      CS2Assert (collisionIndex != 0,
-		 ("Cannot find record on expected hash chain\n"));
+      CS2Assert(collisionIndex != 0, ("Cannot find record on expected hash chain\n"));
     }
 
-    fTable[collisionIndex].SetCollisionChain (fTable[hashIndex].CollisionChain());
-    fTable[hashIndex].SetCollisionChain (fNextFree);
+    fTable[collisionIndex].SetCollisionChain(fTable[hashIndex].CollisionChain());
+    fTable[hashIndex].SetCollisionChain(fNextFree);
     fTable[hashIndex].~HashTableEntry();
 
     fNextFree = hashIndex;
@@ -1038,12 +1079,12 @@ inline CS2_HT_DECL::Remove (HashIndex hashIndex) {
     if (collisionChain) {
       HashIndex firstCollision = collisionChain;
 
-      memcpy (fTable + hashIndex, fTable + firstCollision,
-              sizeof(HashTableEntry));
-      fTable[firstCollision].SetCollisionChain (fNextFree);
+      memcpy(fTable + hashIndex, fTable + firstCollision, sizeof(HashTableEntry));
+      fTable[firstCollision].SetCollisionChain(fNextFree);
       fTable[firstCollision].Invalidate();
       fNextFree = firstCollision;
-      if (firstCollision > hashIndex) hashIndex = firstCollision;
+      if (firstCollision > hashIndex)
+        hashIndex = firstCollision;
     }
   }
 
@@ -1053,7 +1094,8 @@ inline CS2_HT_DECL::Remove (HashIndex hashIndex) {
     HashIndex maxIndex;
 
     for (maxIndex = hashIndex - 1; maxIndex > 0; --maxIndex) {
-      if (fTable[maxIndex].Valid()) break;
+      if (fTable[maxIndex].Valid())
+        break;
     }
 
     fHighestIndex = maxIndex;
@@ -1064,8 +1106,8 @@ inline CS2_HT_DECL::Remove (HashIndex hashIndex) {
 //
 // Return the number of bytes of memory used by the hash table.
 
-CS2_HT_TEMP unsigned long
-inline CS2_HT_DECL::MemoryUsage() const {
+CS2_HT_TEMP unsigned long inline CS2_HT_DECL::MemoryUsage() const
+{
   unsigned long sizeInBytes;
 
   sizeInBytes = sizeof(CS2_HT_DECL);
@@ -1078,8 +1120,8 @@ inline CS2_HT_DECL::MemoryUsage() const {
 //
 // Destroy all valid entries in the table.
 
-CS2_HT_TEMP void
-inline CS2_HT_DECL::MakeEmpty() {
+CS2_HT_TEMP void inline CS2_HT_DECL::MakeEmpty()
+{
   HashIndex hashIndex;
 
   // Destroy valid entries.
@@ -1095,7 +1137,7 @@ inline CS2_HT_DECL::MakeEmpty() {
   fTable = NULL;
 }
 
-}
+} // namespace CS2
 
 #undef CS2_HT_TEMPARGS
 #undef CS2_HT_TEMP
