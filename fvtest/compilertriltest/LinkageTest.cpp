@@ -58,8 +58,9 @@ TYPED_TEST_CASE(LinkageTest, InputTypes);
 TYPED_TEST(LinkageTest, InvalidLinkageTest) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[200] = {0};
     const auto format_string = "(method return=Int32  args=[Int32] (block (ireturn (icall address=0x%jX args=[Int32] linkage=noexist  (iload parm=0)) )  ))";
@@ -75,8 +76,9 @@ TYPED_TEST(LinkageTest, InvalidLinkageTest) {
 TYPED_TEST(LinkageTest, SystemLinkageParameterPassingSingleArg) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[200] = {0};
     const auto format_string = "(method return=%s args=[%s] (block (%sreturn (%scall address=0x%jX args=[%s] linkage=system (%sload parm=0)) )  ))";
@@ -111,8 +113,9 @@ T fourthArg(T a, T b, T c, T d) { return d; }
 TYPED_TEST(LinkageTest, SystemLinkageParameterPassingFourArg) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
     const auto format_string = "(method return=%s args=[%s,%s,%s,%s] (block (%sreturn (%scall address=0x%jX args=[%s,%s,%s,%s] linkage=system"
@@ -187,8 +190,9 @@ T (*get_fourth_arg_from_callee())(T,T,T,T) {
 TYPED_TEST(LinkageTest, SystemLinkageJitedToJitedParameterPassingFourArg) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
 
@@ -250,8 +254,9 @@ T fifthArg(T a, T b, T c, T d, T e) { return e; }
 TYPED_TEST(LinkageTest, SystemLinkageParameterPassingFiveArg) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
     const auto format_string = "(method return=%s args=[%s,%s,%s,%s,%s] (block (%sreturn (%scall address=0x%jX args=[%s,%s,%s,%s,%s] linkage=system"
@@ -324,8 +329,9 @@ T stackUser(T a, T b, T c, T d, T e) {
 TYPED_TEST(LinkageTest, SystemLinkageParameterPassingFiveArgToStackUser) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
     const auto format_string = "(method return=%s args=[%s,%s,%s,%s,%s] (block (%sreturn (%scall address=0x%jX args=[%s,%s,%s,%s,%s] linkage=system"
@@ -385,8 +391,9 @@ typedef int32_t (*FourMixedArgumentFunction)(double,int32_t,double,int32_t);
 TEST_F(LinkageWithMixedTypesTest, SystemLinkageParameterPassingFourArgWithMixedTypes) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
     const auto format_string = "(method return=Int32 args=[Double,Int32,Double,Int32]"
@@ -421,8 +428,9 @@ typedef double (*FiveMixedArgumentFunction)(double,int32_t,double,int32_t,double
 TEST_F(LinkageWithMixedTypesTest, SystemLinkageParameterPassingFiveArgWithMixedTypes) {
     OMRPORT_ACCESS_FROM_OMRPORT(TRTest::TestWithPortLib::privateOmrPortLibrary);
     std::string arch = omrsysinfo_get_CPU_architecture();
-    SKIP_IF(OMRPORT_ARCH_HAMMER != arch, MissingImplementation)
-        << "Test is skipped on non-x86-64 platforms because calls are not currently supported on other platforms (see issue #1645)";
+    std::string os = omrsysinfo_get_OS_type();
+    SKIP_IF(!(OMRPORT_ARCH_HAMMER == arch || ((OMRPORT_ARCH_S390 == arch || OMRPORT_ARCH_S390X == arch) && os == "z/OS")), MissingImplementation)
+        << "Test is skipped because calls are not currently supported on this platforms (see issue #1645)";
 
     char inputTrees[400] = {0};
     const auto format_string = "(method return=Double args=[Double,Int32,Double,Int32,Double]"
