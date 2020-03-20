@@ -492,6 +492,13 @@ TR_Debug::getDiagnosticFormat(const char *format, char *buffer, int32_t length)
 bool
 TR_Debug::performTransformationImpl(bool canOmitTransformation, const char * format, ...)
    {
+   int32_t optIndex = _comp->getOptIndex();
+   int32_t firstOptIndex = _comp->getOptions()->getFirstOptIndex();
+   int32_t lastOptIndex = _comp->getOptions()->getLastOptIndex();
+   // Dont' do optional transformations in an opt
+   if (canOmitTransformation && (optIndex < firstOptIndex || optIndex > lastOptIndex))
+      return false;
+
    if (_comp->getOptimizer())
       _comp->getOptimizer()->incOptMessageIndex();
 
