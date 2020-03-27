@@ -79,6 +79,8 @@ featured languages to enrich the options available to programmers.
 It is our community's fervent goal to be one of active contribution, improvement,
 and continual consumption.
 
+Trivial change in the README to test Azure Pipelines PR triggers.
+
 Who is using Eclipse OMR?
 =========================
 
