@@ -2222,6 +2222,7 @@ protected:
 
    // Option flag words
    //
+   public:
    uint32_t                    _options[TR_OWM+1];
 
    // Logging and debugging options
