@@ -1104,10 +1104,7 @@ OMR::Z::Instruction::assignRegisterNoDependencies(TR::Register * reg)
       return reg;
       }
 
-   uint64_t regMask = 0xffffffff;
-   if (reg->isUsedInMemRef())
-      regMask = ~TR::RealRegister::GPR0Mask;
-   return self()->cg()->machine()->assignBestRegister(reg, self(), BOOKKEEPING, regMask);
+   return self()->cg()->machine()->assignBestRegister(reg, self(), BOOKKEEPING);
    }
 
 // Make sure reg life is really ended.
