@@ -983,7 +983,6 @@ OMR::Z::Machine::assignBestRegisterSingle(TR::Register    *targetRegister,
          // find a new register to shuffle to
          TR::RealRegister * newAssignedRegister = self()->findBestRegisterForShuffle(currInst, targetRegister, availRegMask);
          TR::Instruction *cursor = self()->registerCopy(self()->cg(), kindOfRegister, toRealRegister(assignedRegister), newAssignedRegister, currInst);
-         targetRegister->setAssignedRegister(newAssignedRegister);
          newAssignedRegister->setAssignedRegister(targetRegister);
          newAssignedRegister->setState(TR::RealRegister::Assigned);
          assignedRegister->setAssignedRegister(NULL);
