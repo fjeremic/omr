@@ -727,7 +727,8 @@ TR_Debug::printInstrDumpHeader(const char * title)
 uint8_t *
 TR_Debug::printPrefix(TR::FILE *pOutFile, TR::Instruction *instr, uint8_t *cursor, uint8_t size)
    {
-   if (cursor != NULL)
+   // Code start is unknown until after the binary encoding phase
+   if (_comp->cg()->getCodeGeneratorPhase() >= TR::CodeGenPhase::BinaryEncodingPhase && cursor >= _comp->cg()->getCodeStart())
       {
       uint32_t offset = cursor - _comp->cg()->getCodeStart();
 
